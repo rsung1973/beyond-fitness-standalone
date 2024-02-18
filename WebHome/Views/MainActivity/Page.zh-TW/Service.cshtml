@@ -174,7 +174,7 @@
                                           cssStyle = "me-5";
                                        }
                                        <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
-                                          <div class="card-header" id="@Html.Raw($"heading{content1[i].ID}")">
+                                          <div class="card-header py-2 py-lg-0 py-md-0" id="@Html.Raw($"heading{content1[i].ID}")">
                                              <h4 class="card-title m-0 beyond-toggle-title">
                                                 <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
                                                    data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content1[i].ID}")" aria-expanded="false"
@@ -188,7 +188,7 @@
                                                 @{
                                                    if (!String.IsNullOrEmpty((String)content1[i].Link)) 
                                                    {
-                                                      <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/{content1[i].Link}"))" class="read-more text-color-dark font-weight-semibold text-2 fst-italic float float-end my-3 mx-4">Read More <i
+                                                      <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/{content1[i].Link}"))" class="read-more text-color-dark font-weight-semibold text-3 fst-italic float float-end my-3 mx-4">Read More <i
 																         class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
                                                    }
                                                 }
@@ -247,7 +247,7 @@
                                           cssStyle = "ms-5";
                                     }
                                     <div class="card card-default border-radius-20 @Html.Raw(cssStyle) mt-3 bg-color-primary">
-                                          <div class="card-header" id="@Html.Raw($"heading{content2[i].ID}")">
+                                          <div class="card-header py-2 py-lg-0 py-md-0" id="@Html.Raw($"heading{content2[i].ID}")">
                                              <h4 class="card-title m-0 beyond-toggle-title">
                                                 <a class="accordion-toggle text-color-dark  collapsed py-2 px-4 font-weight-medium"
                                                       data-bs-toggle="collapse" data-bs-target="@Html.Raw($"#{content2[i].ID}")" aria-expanded="false"

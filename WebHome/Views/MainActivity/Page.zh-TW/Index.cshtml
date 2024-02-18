@@ -118,7 +118,7 @@
                             @Html.Raw(homeAll.KeyPoint_1_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_1)</h4>
                         <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))#scientific_container"
-                            class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+                            class="btn btn-default btn-rounded fst-italic font-weight-normal text-3">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
             </div>
@@ -132,7 +132,7 @@
                             @Html.Raw(homeAll.KeyPoint_2_Subject)</p>
                         <h4 class="font-weight-semi-bold pb-2">@Html.Raw(homeAll.KeyPoint_2)</h4>
                         <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Service"))#healthy_container"
-                            class="btn btn-default btn-rounded fst-italic font-weight-normal text-2">@Html.Raw(commonAll.ReadMore)</a>
+                            class="btn btn-default btn-rounded fst-italic font-weight-normal text-3">@Html.Raw(commonAll.ReadMore)</a>
                     </div>
                 </div>
             </div>
@@ -330,7 +330,7 @@
                                         </div>
                                         <div class="col-6 d-flex align-items-end justify-content-end">
                                             <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { DocID = article.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
-                                                class="read-more text-color-dark font-weight-semibold text-2 fst-italic">@Html.Raw(commonAll.ReadMore)<i
+                                                class="read-more text-color-dark font-weight-semibold text-3 fst-italic">@Html.Raw(commonAll.ReadMore)<i
                                                     class="fas fa-angle-right position-relative top-1 ms-1"></i></a>
                                         </div>
                                     </div>
@@ -439,9 +439,10 @@
                                                             }
                                                         }
                                                         <div class="row text-center pt-5">
-                                                            <div class="col-12">
-                                                                <h5 class="mb-2">@Html.Raw(branch["Name"])/@Html.Raw(coach["JobTitle"])</h5>
-                                                                <h4>@Html.Raw(coach["NameDesc"])</h4>
+                                                            <div class="col-12">                                                                
+                                                                <h5 class="text-uppercase">@Html.Raw(branch["Name"])</h5>
+                                                                <h3 class="font-weight-semi-bold mb-2">@Html.Raw(coach["NameDesc"])</h3>
+                                                                <h6 class="font-weight-normal">@Html.Raw(coach["JobTitle"])</h6>
                                                             </div>
                                                         </div>
                                                         @{
@@ -613,7 +614,7 @@
             </div>
             <div class="col-12 pt-5">
                 <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/PartnerInfo"))"
-                    class="btn btn-default btn-rounded fst-italic font-weight-normal text-2 simple-ajax-popup">More
+                    class="btn btn-default btn-rounded fst-italic font-weight-normal text-3 simple-ajax-popup">More
                     Partner</a>
             </div>
         </div>

@@ -13,14 +13,14 @@
                     "TableNote": "※△：No all",
                     "TableRow1": "Beyond<br />Fitness",
                     "TableRow2": "Others",
-                    "TableColumn1": "International Certification Assurance",
-                    "TableColumn2": "Personalized Customer System",
+                    "TableColumn1": "International Certification",
+                    "TableColumn2": "Personalized System",
                     "TableColumn3": "Health Service",
-                    "TableColumn4": "Systematic Customized Schedule",
-                    "TableColumn5": "Indoor Crowd Control",
-                    "TableColumn6": "Escrow Performance Guarantee ",
-                    "TableColumn7": "Training Competency Assessment",
-                    "TableColumn8": "Regular Staff Trainings"
+                    "TableColumn4": "Customized Schedule",
+                    "TableColumn5": "Crowd Control",
+                    "TableColumn6": "Escrow Guarantee",
+                    "TableColumn7": "Competency Assessment",
+                    "TableColumn8": "Regular Trainings"
                 }
             ]
 
@@ -39,7 +39,7 @@
         {
             "ID": "Q3",
             "Icon": "money.svg",
-            "Question": "Service charges",
+            "Question": "Beyond, Service Charges",
             "Answer": [
                 {
                     "Items": [
@@ -47,7 +47,7 @@
                             "Content": "Private Training(In person\\Remote)"
                         },
                         {
-                            "Content": "Nutritional Counseling and Planning"
+                            "Content": "Nutritional Counseling"
                         },
                         {
                             "Content": "Sports injury prevention"
@@ -59,8 +59,8 @@
                     "Types": [
                         {
                             "ID": "A",
-                            "Name": "In-person one-on-one personal training",
-                            "Content": "<p class=\"bg-color-primary border-radius-10 py-2 my-4 text-center mx-4 mx-xl-5 mx-lg-3 mx-md-4\">About ＄1,800~$1,900 NT / 單堂</p><p class=\"px-4 px-xl-5 px-lg-2 mx-md-2\">The price of our one-on-one customized training program will vary depending on your training goals, the length, and the number of sessions.</p>" 
+                            "Name": "one-on-one training",
+                            "Content": "<p class=\"bg-color-primary border-radius-10 py-2 my-4 text-center mx-4 mx-xl-5 mx-lg-3 mx-md-4\">＄1,800~$1,900 NT / Single</p><p class=\"px-4 px-xl-5 px-lg-2 mx-md-2\">The price of our one-on-one customized training program will vary depending on your training goals, the length, and the number of sessions.</p>" 
                         },
                         {
                             "ID": "B",

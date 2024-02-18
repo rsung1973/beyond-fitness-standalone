@@ -72,7 +72,8 @@
                <div class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
                   <hr class="my-0" style="width: 50px; height: 3px;">
                </div>
-               <h3 class="font-weight-bold line-height-5 d-flex justify-content-center justify-content-lg-start">
+               <h3
+                  class="font-weight-bold line-height-5 d-flex justify-content-center justify-content-lg-start text-center text-lg-start text-md-center">
                   @Html.Raw(joinUsAll.MessageSlogan)</h3>
             </div>
          </div>
@@ -165,8 +166,9 @@
                                           }
                                           <div class="row text-center pt-5">
                                              <div class="col-12">
-                                                <h5 class="mb-2">@Html.Raw(branch["Name"])/@Html.Raw(coach["JobTitle"])</h5>
-                                                <h4>@Html.Raw(coach["NameDesc"])</h4>
+                                                <h5 class="text-uppercase">@Html.Raw(branch["Name"])</h5>
+                                                <h3 class="font-weight-semi-bold mb-2">@Html.Raw(coach["NameDesc"])</h3>
+                                                <h6 class="font-weight-normal">@Html.Raw(coach["JobTitle"])</h6>
                                              </div>
                                           </div>
                                           @{

@@ -90,7 +90,7 @@
             dynamic content1 = ((JArray)(item[0].Answer)).FirstOrDefault();
          }
          <section
-            class="section section-no-background section-text-dark section-center border-0 py-0 mt-0 mb-0 my-0 px-0 px-xl-5 px-lg-5 px-md-5 mx-0 mx-xl-5">
+            class="section section-no-background section-text-dark border-0 py-0 mt-0 mb-0 my-0 px-0 px-xl-5 px-lg-5 px-md-5 mx-0 mx-xl-5">
             <div class="row h-min-700px pt-5">
                <div
                   class="col-12 col-lg-4 align-self-center py-3 py-lg-0 py-md-3 my-3 my-lg-0 my-md-3 px-5 px-xl-4 px-lg-3 px-md-2 pe-lg-0">
@@ -122,28 +122,28 @@
                         </tr>
                         <tr class="text-4">
                            <th class="bg-gold-01"></th>
-                           <th class="text-center bg-gold-03">
+                           <th class="text-center bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn1)
                            </th>
-                           <th class="text-center bg-gold-02">
+                           <th class="text-center bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn2)
                            </th>
-                           <th class="text-center bg-gold-03">
+                           <th class="text-center bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn3)
                            </th>
-                           <th class="text-center bg-gold-02">
+                           <th class="text-center bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn4)
                            </th>
-                           <th class="text-center bg-gold-03">
+                           <th class="text-center bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn5)
                            </th>
-                           <th class="text-center bg-gold-02">
+                           <th class="text-center bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn6)
                            </th>
-                           <th class="text-center bg-gold-03">
+                           <th class="text-center bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn7)
                            </th>
-                           <th class="text-center bg-gold-02">
+                           <th class="text-center bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn8)
                            </th>
                         </tr>
@@ -225,7 +225,7 @@
                      </thead>
                      <tbody>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                           <td class="text-center text-4 font-weight-medium bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn1)
                            </td>
                            <td class="text-center bg-pink-03"><i
@@ -236,7 +236,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                           <td class="text-center text-4 font-weight-medium bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn2)
                            </td>
                            <td class="text-center bg-pink-02"><i
@@ -247,7 +247,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                           <td class="text-center text-4 font-weight-medium bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn3)
                            </td>
                            <td class="text-center bg-pink-03"><i
@@ -258,7 +258,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                           <td class="text-center text-4 font-weight-medium bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn4)
                            </td>
                            <td class="text-center bg-pink-02"><i
@@ -269,7 +269,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                           <td class="text-center text-4 font-weight-medium bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn5)
                            </td>
                            <td class="text-center bg-pink-03"><i
@@ -280,7 +280,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                           <td class="text-center text-4 font-weight-medium bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn6)
                            </td>
                            <td class="text-center bg-pink-02"><i
@@ -291,7 +291,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-03">
+                           <td class="text-center text-4 font-weight-medium bg-gold-03 text-3">
                               @Html.Raw(content1.TableColumn7)
                            </td>
                            <td class="text-center bg-pink-03"><i
@@ -302,7 +302,7 @@
                            </td>
                         </tr>
                         <tr>
-                           <td class="text-center text-4 font-weight-medium bg-gold-02">
+                           <td class="text-center text-4 font-weight-medium bg-gold-02 text-3">
                               @Html.Raw(content1.TableColumn8)
                            </td>
                            <td class="text-center bg-pink-02"><i
@@ -359,7 +359,7 @@
                   <div
                      class="col-12 col-lg-auto align-self-center py-5 py-lg-0 py-md-5 px-0 px-xl-5 px-xl-5 px-lg-3 px-md-0">
                      <h3 class="font-weight-semi-bold mb-2 text-capitalize line-height-5 text-center text-lg-start">
-                        Beyond，<br />@Html.Raw(item[2].Question)
+                        @Html.Raw(item[2].Question)
                      </h3>
                      <div class="divider divider-tertiary divider-small divider-xxs py-4 hidden-md-down">
                         <hr class="my-0" style="width: 50px; height: 3px;">
@@ -577,7 +577,7 @@
    </div>
    <div class="row py-5">
       <div class="col-12 text-center">
-			<a href="#main" class="btn border-color-dark text-color-dark btn-rounded fst-italic font-weight-normal text-2 positive-ls-3">更多常見問題</a>
+			<a href="#main" class="btn border-color-dark text-color-dark btn-rounded fst-italic font-weight-normal text-3 positive-ls-3">更多常見問題</a>
 		</div>
 	</div>
 </div>

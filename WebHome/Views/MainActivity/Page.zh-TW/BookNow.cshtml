@@ -167,8 +167,7 @@
          <div class="col-12 col-lg-5 col-md-12 px-0">
             <div class="row">
                <div class="col-12 px-3 px-lg-5 px-md-5">
-                  <h2
-                     class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase text-center text-lg-start">
+                  <h2 class="text-color-tertiary font-weight-semi-bold mb-2 text-uppercase text-center text-lg-start">
                      @Html.Raw(bookNowAll.Reservation)
                   </h2>
                   <span
@@ -180,23 +179,28 @@
                      class="divider divider-tertiary divider-small divider-small-center divider-xxs py-4 hidden-lg-up">
                      <hr class="my-0" style="width: 50px; height: 3px;">
                   </div>
-                  <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
-                     @Html.Raw(bookNowAll.ReservationSlogan)
-                  </h3>
+                  @{
+                     if (!String.IsNullOrEmpty((String)bookNowAll.ReservationSlogan))
+                    {
+                        <h3 class="font-weight-bold line-height-5 text-center text-lg-start">
+                           @Html.Raw(bookNowAll.ReservationSlogan)
+                        </h3>
+                    }
+                  }                  
                </div>
                <div class="col-12 px-3 px-lg-5 px-md-5">
                   <p class="px-3 px-lg-0 px-md-5 text-center text-lg-start">
-                     <span class="font-weight-medium">@Html.Raw(bookNowAll.ReservationTo)</span>
+                     <span class="font-weight-normal">@Html.Raw(bookNowAll.ReservationTo)</span>
                   </p>
                   <p class="px-5 px-lg-0 px-md-5 text-lg-start">
-                     @Html.Raw(bookNowAll.ReservationMessage)
+                     <span class="font-weight-normal">@Html.Raw(bookNowAll.ReservationMessage)</span>
                   </p>
-               </div>
+               </div>               
             </div>
             <div class="row flex-column flex-md-row text-center text-lg-start">
                <div class="col-12 ps-3 pe-3 pe-lg-0 px-lg-5 px-md-5 order-2 order-lg-1 order-md-2 py-5 py-lg-3 py-md-5">
                   <p class="px-3 px-lg-0 px-md-3 text-center text-lg-start">
-                     <span class="font-weight-medium">@Html.Raw(bookNowAll.ReservationFrom)</span>
+                     <span class="font-weight-normal">@Html.Raw(bookNowAll.ReservationFrom)</span>
                   </p>
                   <a href="javascript:showForm();"
                      class="btn btn-default btn-rounded fst-italic hidden-lg-up showform mt-3">@Html.Raw(commonAll.BookNow)</a>
@@ -505,7 +509,6 @@
                                                       <div class="content_sub"><a href="tel:@Html.Raw(item[i].TelDial)"
                                                             class="text-color-dark">@Html.Raw(item[i].Tel)</a>
                                                       </div>
-                                                      <div class="content_sub">@Html.Raw(item[i].MRTShort)</div>
                                                    </div>
                                                 </label>
                                              </div>
@@ -534,7 +537,8 @@
                                     <textarea maxlength="100" rows="4" class="form-control text-3 h-auto py-2"
                                        name="Question" placeholder="@Html.Raw(bookNowAll.FormColumn8Desc)"></textarea>
                                  </div>
-                                 <p class="font-weight-medium px-4">@Html.Raw(bookNowAll.FormSendPreDesc)</p>
+                                 <p class="font-weight-medium px-4 text-3-4 line-height-2">
+                                    @Html.Raw(bookNowAll.FormSendPreDesc)</p>
                               </div>
                               <div class="row px-3">
                                  <div class="form-group col-12">
