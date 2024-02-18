@@ -21,7 +21,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://Saturn:5000"
+                "ASPNETCORE_URLS": "http://GarfaildiMac.local:5050"
             },            
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"
