@@ -693,6 +693,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertForEmployee(ForEmployee instance);
     partial void UpdateForEmployee(ForEmployee instance);
     partial void DeleteForEmployee(ForEmployee instance);
+    partial void InsertBlogCategoryLocale(BlogCategoryLocale instance);
+    partial void UpdateBlogCategoryLocale(BlogCategoryLocale instance);
+    partial void DeleteBlogCategoryLocale(BlogCategoryLocale instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2580,6 +2583,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<ForEmployee>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BlogCategoryLocale> BlogCategoryLocale
+		{
+			get
+			{
+				return this.GetTable<BlogCategoryLocale>();
 			}
 		}
 		
@@ -48041,6 +48052,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<BlogTag> _BlogTag;
 		
+		private EntitySet<BlogCategoryLocale> _BlogCategoryLocale;
+		
     #region 擴充性方法定義
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
@@ -48058,6 +48071,7 @@ namespace WebHome.Models.DataEntity
 		public BlogCategoryDefinition()
 		{
 			this._BlogTag = new EntitySet<BlogTag>(new Action<BlogTag>(this.attach_BlogTag), new Action<BlogTag>(this.detach_BlogTag));
+			this._BlogCategoryLocale = new EntitySet<BlogCategoryLocale>(new Action<BlogCategoryLocale>(this.attach_BlogCategoryLocale), new Action<BlogCategoryLocale>(this.detach_BlogCategoryLocale));
 			OnCreated();
 		}
 		
@@ -48154,6 +48168,19 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BlogCategoryDefinition_BlogCategoryLocale", Storage="_BlogCategoryLocale", ThisKey="CategoryID", OtherKey="CategoryID")]
+		public EntitySet<BlogCategoryLocale> BlogCategoryLocale
+		{
+			get
+			{
+				return this._BlogCategoryLocale;
+			}
+			set
+			{
+				this._BlogCategoryLocale.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -48181,6 +48208,18 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_BlogTag(BlogTag entity)
+		{
+			this.SendPropertyChanging();
+			entity.BlogCategoryDefinition = null;
+		}
+		
+		private void attach_BlogCategoryLocale(BlogCategoryLocale entity)
+		{
+			this.SendPropertyChanging();
+			entity.BlogCategoryDefinition = this;
+		}
+		
+		private void detach_BlogCategoryLocale(BlogCategoryLocale entity)
 		{
 			this.SendPropertyChanging();
 			entity.BlogCategoryDefinition = null;
@@ -71337,6 +71376,181 @@ namespace WebHome.Models.DataEntity
 						this._UID = default(int);
 					}
 					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.BlogCategoryLocale")]
+	public partial class BlogCategoryLocale : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _CategoryID;
+		
+		private string _Language;
+		
+		private string _Category;
+		
+		private string _Description;
+		
+		private EntityRef<BlogCategoryDefinition> _BlogCategoryDefinition;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnCategoryIDChanging(int value);
+    partial void OnCategoryIDChanged();
+    partial void OnLanguageChanging(string value);
+    partial void OnLanguageChanged();
+    partial void OnCategoryChanging(string value);
+    partial void OnCategoryChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public BlogCategoryLocale()
+		{
+			this._BlogCategoryDefinition = default(EntityRef<BlogCategoryDefinition>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoryID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int CategoryID
+		{
+			get
+			{
+				return this._CategoryID;
+			}
+			set
+			{
+				if ((this._CategoryID != value))
+				{
+					if (this._BlogCategoryDefinition.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnCategoryIDChanging(value);
+					this.SendPropertyChanging();
+					this._CategoryID = value;
+					this.SendPropertyChanged("CategoryID");
+					this.OnCategoryIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Language", DbType="NVarChar(8) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string Language
+		{
+			get
+			{
+				return this._Language;
+			}
+			set
+			{
+				if ((this._Language != value))
+				{
+					this.OnLanguageChanging(value);
+					this.SendPropertyChanging();
+					this._Language = value;
+					this.SendPropertyChanged("Language");
+					this.OnLanguageChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Category", DbType="NVarChar(32) NOT NULL", CanBeNull=false)]
+		public string Category
+		{
+			get
+			{
+				return this._Category;
+			}
+			set
+			{
+				if ((this._Category != value))
+				{
+					this.OnCategoryChanging(value);
+					this.SendPropertyChanging();
+					this._Category = value;
+					this.SendPropertyChanged("Category");
+					this.OnCategoryChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BlogCategoryDefinition_BlogCategoryLocale", Storage="_BlogCategoryDefinition", ThisKey="CategoryID", OtherKey="CategoryID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public BlogCategoryDefinition BlogCategoryDefinition
+		{
+			get
+			{
+				return this._BlogCategoryDefinition.Entity;
+			}
+			set
+			{
+				BlogCategoryDefinition previousValue = this._BlogCategoryDefinition.Entity;
+				if (((previousValue != value) 
+							|| (this._BlogCategoryDefinition.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BlogCategoryDefinition.Entity = null;
+						previousValue.BlogCategoryLocale.Remove(this);
+					}
+					this._BlogCategoryDefinition.Entity = value;
+					if ((value != null))
+					{
+						value.BlogCategoryLocale.Add(this);
+						this._CategoryID = value.CategoryID;
+					}
+					else
+					{
+						this._CategoryID = default(int);
+					}
+					this.SendPropertyChanged("BlogCategoryDefinition");
 				}
 			}
 		}

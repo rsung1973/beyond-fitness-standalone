@@ -77,7 +77,7 @@
                     @{ 
                         var currentTag = _model.BlogTag.FirstOrDefault();
                     }
-                    @Html.Raw(currentTag?.BlogCategoryDefinition.Category)
+                    @Html.Raw(currentTag?.BlogCategoryDefinition.BlogCategoryLocale.Where(l=>l.Language==lang).FirstOrDefault()?.Category ?? currentTag?.BlogCategoryDefinition.Category)
                 </p>
             </div>
         </div>
