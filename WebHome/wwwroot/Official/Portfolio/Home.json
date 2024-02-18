@@ -76,13 +76,13 @@
     "Location": "Location•",
     "LocationDesc": "分店資訊",
     "NewsItem": [
-        {
-            "ImgName": "event01-img",
-            "Link": "",
-        },
-        {
-            "ImgName": "event02-img",
-            "Link": "",
-        }
+        // {
+        //     "ImgName": "event01-img",
+        //     "Link": "",
+        // },
+        // {
+        //     "ImgName": "event02-img",
+        //     "Link": "",
+        // }
     ]
 }

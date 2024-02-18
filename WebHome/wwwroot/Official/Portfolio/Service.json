@@ -108,7 +108,7 @@
                 {
                     "Name": "信託履約保證",
                     "Desc": "確實遵守台灣相關法規，依信託法規規定交付台新銀行（即信託業者）開立信託專戶管理，保障您的權益讓你放心在BEYOND運動。",
-                    "Link": "download/trust.pdf",
+                    "Link": "../download/trust.pdf",
                     "LinkType": "PDF",
                     "LinkName": "信託聲明",
                 },
