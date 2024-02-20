@@ -549,12 +549,12 @@
         <div class="row mt-3">
             <div class="col-12">
                 <div class="home-map hidden-sm-down">
-                    <img src="../images/home/beyond-map-lg.svg" alt="BeyondFitness|分店一覽" data-icon
+                    <img src="../images/home/beyond-map-lg-20240220.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}"
                         width="700" />
                 </div>
                 <div class="home-map hidden-md-up">
-                    <img src="../images/home/beyond-map-sm.svg" alt="BeyondFitness|分店一覽" data-icon
+                    <img src="../images/home/beyond-map-sm-20240220.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}" />
                 </div>
             </div>
@@ -635,42 +635,22 @@
 
                     element.addEventListener('mouseover', function (event) {
                         //游標移到後背景變色					
-                        if (event.target.tagName == 'path') {
+                       if (event.target.tagName == 'rect') {
                             event.target.style.fill = '#fff';
-                            var text = event.target.parentElement.querySelector('text');
-                            if (text != null) {
-                                text.style.fill = '#282828';
-                            }
-                        }
-                        if (event.target.tagName == 'tspan') {
-                            var text = event.target.parentElement;
-                            if (text != null) {
-                                text.style.fill = '#282828';
-                            }
-                            var path = text.parentElement.querySelector('path');
-                            if (path != null) {
-                                path.style.fill = '#fff';
+                            var text = event.target.parentElement.querySelectorAll('path');
+                            for (i = 0; i < text.length; i++) {
+                                text[i].style.fill = '#282828';
                             }
                         }
                     });
 
                     element.addEventListener('mouseout', function (event) {
                         //游標移到後背景變色
-                        if (event.target.tagName == 'path') {
+                        if (event.target.tagName == 'rect') {
                             event.target.style.fill = '#282828';
-                            var text = event.target.parentElement.querySelector('text');
-                            if (text != null) {
-                                text.style.fill = '#fff';
-                            }
-                        }
-                        if (event.target.tagName == 'tspan') {
-                            var text = event.target.parentElement;
-                            if (text != null) {
-                                text.style.fill = '#fff';
-                            }
-                            var path = text.parentElement.querySelector('path');
-                            if (path != null) {
-                                path.style.fill = '#282828';
+                            var text = event.target.parentElement.querySelectorAll('path');
+                            for (i = 0; i < text.length; i++) {
+                                text[i].style.fill = '#fff';
                             }
                         }
                     });
