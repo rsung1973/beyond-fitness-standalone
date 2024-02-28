@@ -48,19 +48,22 @@
     <div class="col-lg-3 col-md-6 col-sm-6 col-12 forPT">
         <div class="header">
             @{
-                switch((Naming.LessonPriceStatus?)_model.Status)
+                switch ((Naming.LessonPriceStatus?)_model.Status)
                 {
                     case Naming.LessonPriceStatus.營養課程:
-                                <text>S.D Session(營養諮詢)</text>
+                        <text>S.D Session(營養諮詢)</text>
                         break;
                     case Naming.LessonPriceStatus.運動恢復課程:
-                                <text>S.R Session(運動恢復)</text>
+                        <text>S.R Session(運動恢復)</text>
                         break;
                     case Naming.LessonPriceStatus.運動防護課程:
-                                <text>A.T Session(運動防護)</text>
+                        <text>A.T Session(運動防護)</text>
+                        break;
+                    case Naming.LessonPriceStatus.自主訓練:
+                        <text>P.I Session(自主訓練)</text>
                         break;
                     default:
-                                <text>P.T Session(私人教練)</text>
+                        <text>P.T Session(私人教練)</text>
                         break;
                 }
             }
@@ -69,11 +72,11 @@
                     var property = _model.LessonPriceProperty.Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BundlePackage).FirstOrDefault();
                     if (property != null)
                     {
-                                <text>@Html.Raw(property.Description)</text>
+                        <text>@Html.Raw(property.Description)</text>
                     }
                     else
                     {
-                                <text>@Html.Raw(_model.DurationInMinutes)分鐘</text>
+                        <text>@Html.Raw(_model.DurationInMinutes)分鐘</text>
                     }
                 }
                 / @($"{_model.ListPrice * (_model.BundleCount ?? 1):##,###}")元
@@ -111,19 +114,22 @@
             <div class="header">
                 <span class="col-red">@(packageItem.Title)</span>
                 @{
-                    switch((Naming.LessonPriceStatus?)item.Status)
+                    switch ((Naming.LessonPriceStatus?)item.Status)
                     {
                         case Naming.LessonPriceStatus.營養課程:
-                                    <text>S.D Session(營養諮詢)</text>
+                            <text>S.D Session(營養諮詢)</text>
                             break;
                         case Naming.LessonPriceStatus.運動恢復課程:
-                                    <text>S.R Session(運動恢復)</text>
+                            <text>S.R Session(運動恢復)</text>
                             break;
                         case Naming.LessonPriceStatus.運動防護課程:
-                                    <text>A.T Session(運動防護)</text>
+                            <text>A.T Session(運動防護)</text>
+                            break;
+                        case Naming.LessonPriceStatus.自主訓練:
+                            <text>P.I Session(自主訓練)</text>
                             break;
                         default:
-                                    <text>P.T Session(私人教練)</text>
+                            <text>P.T Session(私人教練)</text>
                             break;
                     }
                 }
@@ -132,11 +138,11 @@
                         property = item.LessonPriceProperty.Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.BundlePackage).FirstOrDefault();
                         if (property != null)
                         {
-                                    <text>@Html.Raw(property.Description)</text>
+                            <text>@Html.Raw(property.Description)</text>
                         }
                         else
                         {
-                                    <text>@Html.Raw(item.DurationInMinutes)分鐘</text>
+                            <text>@Html.Raw(item.DurationInMinutes)分鐘</text>
                         }
                     }
                     / @($"{item.ListPrice * (item.BundleCount ?? 1):##,###}")元

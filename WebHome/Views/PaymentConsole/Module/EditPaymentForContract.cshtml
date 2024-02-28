@@ -36,24 +36,45 @@
                 <th class="text-right">單價</th>
             </tr>
         </thead>
-        <tbody>
-            <tr>
-                <td>專業顧問建置與諮詢費</td>
-                <td class="text-right">@($"{(_viewModel.PayoffAmount * 8 + 5) / 10:##,###,###,###}")</td>
-            </tr>
-            <tr>
-                <td>教練課程費</td>
-                <td class="text-right">@($"{(_viewModel.PayoffAmount * 2 + 5) / 10:##,###,###,###}")</td>
-            </tr>
-        </tbody>
-        <tfoot>
-            <tr>
-                <td>專業顧問服務總費用：</td>
-                <td class="text-danger text-right">
-                    <h6>TWD @($"{_viewModel.PayoffAmount:##,###,###,###}")</h6>
-                </td>
-            </tr>
-        </tfoot>
+
+        @if (_item.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+        {
+            <tbody>
+                <tr>
+                    <td>@Html.Raw(_item.CourseContractType.TypeName) @(_item.Lessons)堂</td>
+                    <td class="text-right">@($"{_viewModel.PayoffAmount:##,###,###,###}")</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>總計：</td>
+                    <td class="text-danger text-right">
+                        <h6 id="payoffAmount">TWD @(_viewModel.PayoffAmount)</h6>
+                    </td>
+                </tr>
+            </tfoot>
+        }
+        else
+        {
+            <tbody>
+                <tr>
+                    <td>專業顧問建置與諮詢費</td>
+                    <td class="text-right">@($"{(_viewModel.PayoffAmount * 8 + 5) / 10:##,###,###,###}")</td>
+                </tr>
+                <tr>
+                    <td>教練課程費</td>
+                    <td class="text-right">@($"{(_viewModel.PayoffAmount * 2 + 5) / 10:##,###,###,###}")</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>專業顧問服務總費用：</td>
+                    <td class="text-danger text-right">
+                        <h6>TWD @($"{_viewModel.PayoffAmount:##,###,###,###}")</h6>
+                    </td>
+                </tr>
+            </tfoot>
+        }
     </table>
 </div>
 <div class="row clearfix m-t-20">

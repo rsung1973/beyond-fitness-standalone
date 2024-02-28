@@ -91,8 +91,8 @@ namespace WebHome.Helper
                         || (!l.CoachAttendance.HasValue && !(l.PriceStatus==(int)Naming.LessonPriceFeature.體驗課程 || l.ELStatus == (int)Naming.LessonPriceFeature.體驗課程)));
 
         public IQueryable<V_Tuition> PTSession => LessonItems
-                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
-                            || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
+                    .Where(t => BusinessConsoleExtensions.GeneralPTSessionScope.Contains(t.PriceStatus)
+                            || BusinessConsoleExtensions.GeneralPTSessionScope.Contains(t.ELStatus));
 
         public IQueryable<V_Tuition> TSSession => LessonItems
                     .Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程);

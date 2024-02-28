@@ -23675,6 +23675,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<bool> _OnlineCourse;
 		
+		private System.Nullable<int> _TrustType;
+		
 		private EntitySet<CourseContract> _CourseContract;
 		
 		private EntitySet<ObjectiveContractLessonPrice> _ObjectiveContractLessonPrice;
@@ -23697,6 +23699,8 @@ namespace WebHome.Models.DataEntity
     partial void OnGroupingMemberCountChanged();
     partial void OnOnlineCourseChanging(System.Nullable<bool> value);
     partial void OnOnlineCourseChanged();
+    partial void OnTrustTypeChanging(System.Nullable<int> value);
+    partial void OnTrustTypeChanged();
     #endregion
 		
 		public CourseContractType()
@@ -23827,6 +23831,26 @@ namespace WebHome.Models.DataEntity
 					this._OnlineCourse = value;
 					this.SendPropertyChanged("OnlineCourse");
 					this.OnOnlineCourseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TrustType", DbType="Int")]
+		public System.Nullable<int> TrustType
+		{
+			get
+			{
+				return this._TrustType;
+			}
+			set
+			{
+				if ((this._TrustType != value))
+				{
+					this.OnTrustTypeChanging(value);
+					this.SendPropertyChanging();
+					this._TrustType = value;
+					this.SendPropertyChanged("TrustType");
+					this.OnTrustTypeChanged();
 				}
 			}
 		}

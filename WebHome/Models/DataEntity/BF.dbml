@@ -926,7 +926,8 @@
       <Column Name="IsGroup" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="OnlineCourse" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="CourseContractType_CourseContract" Member="CourseContract" ThisKey="TypeID" OtherKey="ContractType" Type="CourseContract" />
+		<Column Name="TrustType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Association Name="CourseContractType_CourseContract" Member="CourseContract" ThisKey="TypeID" OtherKey="ContractType" Type="CourseContract" />
       <Association Name="CourseContractType_ObjectiveContractLessonPrice" Member="ObjectiveContractLessonPrice" ThisKey="TypeID" OtherKey="ContractType" Type="ObjectiveContractLessonPrice" />
       <Association Name="GroupingLessonDiscount_CourseContractType" Member="GroupingLessonDiscount" ThisKey="GroupingMemberCount" OtherKey="GroupingMemberCount" Type="GroupingLessonDiscount" IsForeignKey="true" />
     </Type>

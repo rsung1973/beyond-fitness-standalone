@@ -622,11 +622,11 @@ namespace WebHome.Helper
             IQueryable<V_Tuition> tuitionItems = lessonItems;
             int lessonAchievement;
             var coachTuitionItems = tuitionItems.Where(t => t.AttendingCoach == coachID);
-            lessonAchievement = coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-            lessonAchievement += (coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+            lessonAchievement = coachTuitionItems.Where(t => GeneralPTSessionScope.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+            lessonAchievement += (coachTuitionItems.Where(t => GeneralPTSessionScope.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
 
-            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.PriceStatus)).Count()
-                                    + coachTuitionItems.Where(t => SessionScopeForAveragePrice.Contains(t.ELStatus)).Count(), 1);
+            var completeLessonCount = Math.Max(coachTuitionItems.Where(t => GeneralPTSessionScope.Contains(t.PriceStatus)).Count()
+                                    + coachTuitionItems.Where(t => GeneralPTSessionScope.Contains(t.ELStatus)).Count(), 1);
 
             return (lessonAchievement + completeLessonCount - 1) / completeLessonCount;
         }

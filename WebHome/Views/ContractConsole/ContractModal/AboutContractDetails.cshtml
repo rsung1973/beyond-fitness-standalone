@@ -57,6 +57,7 @@
                         @if(_model.Status >= (int)Naming.CourseContractStatus.已生效
                             && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CNA
                             && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CRA
+                            && _model.ContractType != (int)CourseContractType.ContractTypeDefinition.CIA
                             && _model.CourseContractOrder.Any())
                         {
                             await Html.RenderPartialAsync("~/Views/ContractConsole/Items/LessonCombinationDetails.cshtml");

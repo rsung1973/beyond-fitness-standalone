@@ -20,7 +20,7 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
         };
 
-        public static readonly int?[] SessionScopeForAveragePrice = new int?[]
+        public static readonly int?[] GeneralPTSessionScope = new int?[]
         {
                     (int)Naming.LessonPriceStatus.一般課程,
                     (int)Naming.LessonPriceStatus.已刪除,

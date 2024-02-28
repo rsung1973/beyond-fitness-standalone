@@ -99,13 +99,20 @@ namespace WebHome.Helper
                                 balancedPayment.InvoiceID = dummyInvoice.InvoiceID;
                             models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
 
-                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                            if (item.SourceContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                             {
-                                ContractID = item.OriginalContract.Value,
-                                EventDate = balancedPayment.PayoffDate.Value,
-                                Payment = balancedPayment,
-                                TrustType = Naming.TrustType.X.ToString()
-                            });
+
+                            }
+                            else
+                            {
+                                models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                                {
+                                    ContractID = item.OriginalContract.Value,
+                                    EventDate = balancedPayment.PayoffDate.Value,
+                                    Payment = balancedPayment,
+                                    TrustType = Naming.TrustType.X.ToString()
+                                });
+                            }
                         }
 
                         models.SubmitChanges();
@@ -155,13 +162,20 @@ namespace WebHome.Helper
                             };
                             models.GetTable<Payment>().InsertOnSubmit(balancedPayment);
 
-                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                            if (contract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                             {
-                                ContractID = contract.ContractID,
-                                EventDate = balancedPayment.PayoffDate.Value,
-                                Payment = balancedPayment,
-                                TrustType = Naming.TrustType.T.ToString()
-                            });
+
+                            }
+                            else
+                            {
+                                models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                                {
+                                    ContractID = contract.ContractID,
+                                    EventDate = balancedPayment.PayoffDate.Value,
+                                    Payment = balancedPayment,
+                                    TrustType = Naming.TrustType.T.ToString()
+                                });
+                            }
 
                             models.SubmitChanges();
                         }
@@ -486,7 +500,6 @@ namespace WebHome.Helper
                                     ReturnAmount = returnAmt,
                                 });
                             }
-
                         }
 
                         models.SubmitChanges();

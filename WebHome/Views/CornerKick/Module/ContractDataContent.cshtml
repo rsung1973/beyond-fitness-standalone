@@ -74,22 +74,29 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">專業顧問建置與諮詢費</div>
-                            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 8 + 5) / 10))</div>
+                @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                {
+
+                }
+                else
+                {
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">專業顧問建置與諮詢費</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 8 + 5) / 10))</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">教練課程費</div>
-                            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 2 + 5) / 10))</div>
+                    </li>
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">教練課程費</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 2 + 5) / 10))</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
                 <li>
                     <div class="list_tb tb2">
                         <div class="list_tr">

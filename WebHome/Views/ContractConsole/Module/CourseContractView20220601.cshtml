@@ -142,22 +142,28 @@
             </table>
             <table class="table" style="margin:0;padding:0;">
                 <tbody>
-                    <tr>
-                        <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
-                        <td colspan="2">教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>                        
-                    </tr>  
+                    @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                    {
+                    }
+                    else
+                    {
+                        <tr>
+                            <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
+                            <td colspan="2">教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
+                        </tr>
+                    }
                     <tr>
                         <td colspan="3">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
-                    </tr>                                      
+                    </tr>
                     <tr>
-                        <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>                        
+                        <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
                     </tr>
                     <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
                         <td colspan="3"><b>繳費內容</b></td>
                     </tr>
                     <tr>
                         <td>繳費方式：@(_model.CourseContractExtension.PaymentMethod)</td>
-                        <td>繳費時間：@(_model.PayoffDue.HasValue ? $"躉繳，應於{_model.PayoffDue:yyyy/MM/dd}前繳清" : null) </td>                       
+                        <td>繳費時間：@(_model.PayoffDue.HasValue ? $"躉繳，應於{_model.PayoffDue:yyyy/MM/dd}前繳清" : null) </td>
                         <td>
                             @if (_model.CourseContractExtension.AttachmentID.HasValue)
                             {
@@ -167,24 +173,25 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="3" style="height: 1.5cm">                                                        
+                        <td colspan="3" style="height: 1.5cm">
                             @if (_model.Status == (int)Naming.CourseContractStatus.待審核)
                             {
                                 <text>備註：@(_model.Remark)</text>
-                                if(_model.Remark !=null)
+                                if (_model.Remark != null)
                                 {
-                                    <br/>
+                                    <br />
                                 }
                                 <text>@(CourseContractExtension.PriceAdjustment[_model.CourseContractExtension.UnitPriceAdjustmentType??0])</text>
                             }
                             else
                             {
-                                if (!String.IsNullOrEmpty(_model.Remark)) {
+                                if (!String.IsNullOrEmpty(_model.Remark))
+                                {
                                     <text>備註：@(_model.Remark)</text>
                                 }
                             }
-                        </td>  
-                    </tr>        
+                        </td>
+                    </tr>
                 </tbody>
             </table>                       
     </div>

@@ -515,6 +515,7 @@ namespace WebHome.Models.DataEntity
         {
             return item.SeriesID.HasValue
                     ? item.Status == (int)Naming.LessonPriceStatus.營養課程
+                        || item.Status == (int)Naming.LessonPriceStatus.自主訓練
                         ? item.Description
                         : item.LowerLimit == 1
                             ? "單堂"
@@ -807,6 +808,7 @@ namespace WebHome.Models.DataEntity
             CVB,
             CVC,
             CRF,
+            CIA,
         }
 
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
@@ -824,6 +826,11 @@ namespace WebHome.Models.DataEntity
         public bool IsCombination => this.ContractCode?.StartsWith("CG") == true;
 
         public bool IsVirtualCourse => this.ContractCode?.StartsWith("CV") == true;
+        public enum TrustTypeDefinition
+        {
+            Ignore = 0,
+            Normal = 1,
+        }
     }
 
     public partial class CourseContractExtension

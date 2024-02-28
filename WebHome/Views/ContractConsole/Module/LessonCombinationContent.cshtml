@@ -94,6 +94,9 @@
             case Naming.LessonPriceStatus.運動防護課程:
                 <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
                 break;
+            case Naming.LessonPriceStatus.自主訓練:
+                <text>P.I Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
             default:
                 <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
                 break;

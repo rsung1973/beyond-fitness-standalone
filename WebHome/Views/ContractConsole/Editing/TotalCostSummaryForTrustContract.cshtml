@@ -1,0 +1,48 @@
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContractQueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+    LessonPriceType _model = this.Model as LessonPriceType;
+}
+
+@if (_model != null /*&& _model.IsCombination*/)
+{
+    int totalLessons = 0;
+    int totalCost = 0;
+    List<LessonPriceType> items = models.EvaluateCustomCombinationTotalCost(_viewModel, null, out totalLessons, out totalCost);
+
+    <div class="col-12 text-right m-t-10">
+        <p>
+            顧問課程堂數：@(totalLessons)堂<br />
+            <b>專業顧問建置與諮詢費：</b> @($"{(totalCost * 8 + 5) / 10:##,###,###}")<br />
+            教練課程費：@($"{(totalCost * 2 + 5) / 10:##,###,###}")
+        </p>
+        <h3 class="text-right col-blush">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", totalCost))</h3>
+        <script>
+            $('.btnConfirm').css('display','block');
+            $global.viewModel.Lessons = @(totalLessons);
+            $global.viewModel.TotalCost = @(totalCost);
+            resetInstallmentPlan();
+        </script>
+        @if (totalLessons >= 25)
+        {
+            <script>
+                loadInstallments(@(totalLessons));
+            </script>
+        }
+    </div>
+}

@@ -93,7 +93,7 @@
                         <td colspan="2">名稱：@(_model.CourseContractType.TypeName)(@(_model.LessonPriceType.DurationInMinutes)分鐘)</td>
                         <td>
                             @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
+                               || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
                             }
@@ -103,10 +103,17 @@
                             }
                         </td>
                     </tr>
-                    <tr>
-                        <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
-                        <td>教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
-                    </tr>
+                    @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                    {
+
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2">專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
+                            <td>教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
+                        </tr>
+                    }
                     <tr>
                         <td colspan="2">購買堂數：@(_model.Lessons ?? _model.LessonPriceType?.ExpandActualLessonCount(models))</td>
                         <td>專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>

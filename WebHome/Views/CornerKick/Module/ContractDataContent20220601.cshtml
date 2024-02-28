@@ -73,22 +73,29 @@
                         </div>
                     </div>
                 </li>
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">專業顧問建置與諮詢費</div>
-                            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 8 + 5) / 10))</div>
+                @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                {
+
+                }
+                else
+                {
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">專業顧問建置與諮詢費</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 8 + 5) / 10))</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">教練課程費</div>
-                            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 2 + 5) / 10))</div>
+                    </li>
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">教練課程費</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (totalCost * 2 + 5) / 10))</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
                 <li>
                     <div class="list_tb tb2">
                         <div class="list_tr">
@@ -170,7 +177,7 @@
                                 </li>
                             }
                         }
-                </ul>
+                    </ul>
                 }
             }
 
@@ -286,14 +293,14 @@
                 </ul>
             }
             @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
-            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
-            || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+           || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+           || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
+           || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
             {
-                    <p class="black-t12">本人同意並授權以下人員得使用本人與超越體能顧問有限公司購買之體能/健康顧問服務課程，任一人員(含本人)使用體能顧問服務，皆需計入體能/健康顧問服務次數內，並應共同遵守合約及特約條款之規定</p>
+                <p class="black-t12">本人同意並授權以下人員得使用本人與超越體能顧問有限公司購買之體能/健康顧問服務課程，任一人員(含本人)使用體能顧問服務，皆需計入體能/健康顧問服務次數內，並應共同遵守合約及特約條款之規定</p>
 
                 <ul class="mb_list">
-                        <li class="tit"><i class="zmdi zmdi-folder-star-alt"></i> 學員名單</li>
+                    <li class="tit"><i class="zmdi zmdi-folder-star-alt"></i> 學員名單</li>
                     <li>
                         <div class="list_tb tb2">
                             <div class="list_tr hd_ct">
@@ -341,9 +348,9 @@
     </li>
 </ul>
 <script>
-    $(function() {
+    $(function () {
         $global.hasViewedDetails = false;
-        $('.scroll-container').scroll(function() {
+        $('.scroll-container').scroll(function () {
             //scroll-container捲軸高度
             var scrollHeight = $('.scroll-container').prop('scrollHeight');
             //scroll-container顯示高度
@@ -365,17 +372,21 @@
         switch ((Naming.LessonPriceStatus?)priceItem.Status)
         {
             case Naming.LessonPriceStatus.營養課程:
-    <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                            break;
-                        case Naming.LessonPriceStatus.運動恢復課程:
-    <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                            break;
-                        case Naming.LessonPriceStatus.運動防護課程:
-    <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                            break;
-                        default:
-    <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
-                            break;
+                <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.自主訓練:
+                <text>P.I Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+
+            default:
+                <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
         }
     }
 }

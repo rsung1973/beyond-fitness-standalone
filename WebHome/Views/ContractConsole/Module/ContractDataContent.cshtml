@@ -19,7 +19,7 @@
 
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (CourseContract)this.Model;
     _profile = await Context.GetUserAsync();
 }
@@ -78,46 +78,61 @@
         </div>
     </div>
 </li>
-<li>
-    <div class="list_tb tb2">
-        <div class="list_tr">
-            <div class="list_td hd p-l-20">專業顧問服務總費用</div>
-            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</div>
+@if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+{
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd p-l-20">@Html.Raw(_model.CourseContractType.TypeName) @(_model.Lessons)堂總費用</div>
+                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", _model.TotalCost))</div>
+            </div>
         </div>
-    </div>
-</li>
-<li>
-    <div class="list_tb tb2">
-        <div class="list_tr">
-            <div class="list_td hd p-l-20">教練課程費</div>
-            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</div>
+    </li>
+}
+else
+{
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd p-l-20">專業顧問服務總費用</div>
+                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</div>
+            </div>
         </div>
-    </div>
-</li>
+    </li>
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd p-l-20">教練課程費</div>
+                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</div>
+            </div>
+        </div>
+    </li>
+}
+
 @{
     await Html.RenderPartialAsync($"~/Views/ContractConsole/Module/ContractPriceData{_model.CourseContractExtension.Version}.cshtml");
 }
 @*<li>
-    <div class="list_tb tb2">
-        <div class="list_tr">
-            <div class="list_td hd">應收款期限</div>
-            <div class="list_td rt col-red">@($"{_model.PayoffDue:yyyy/MM/dd}")</div>
-        </div>
-    </div>
-</li>
-<li>
-    <div class="list_tb tb2">
-        <div class="list_tr">
-            <div class="list_td hd">付款方式</div>
-            <div class="list_td rt">
-                @if (_model.CourseContractExtension?.PaymentMethod != null)
-                {
-                    <text>@(_model.CourseContractExtension.PaymentMethod)</text>
-                }
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">應收款期限</div>
+                <div class="list_td rt col-red">@($"{_model.PayoffDue:yyyy/MM/dd}")</div>
             </div>
         </div>
-    </div>
-</li>*@
+    </li>
+    <li>
+        <div class="list_tb tb2">
+            <div class="list_tr">
+                <div class="list_td hd">付款方式</div>
+                <div class="list_td rt">
+                    @if (_model.CourseContractExtension?.PaymentMethod != null)
+                    {
+                        <text>@(_model.CourseContractExtension.PaymentMethod)</text>
+                    }
+                </div>
+            </div>
+        </div>
+    </li>*@
 
 <li>
     <div class="list_tb tb2">
@@ -162,7 +177,7 @@
         </div>
     </div>
 </li>
-@if(_model.Renewal!=true)
+@if (_model.Renewal != true)
 {
     <li>
         <div class="list_tb tb2">

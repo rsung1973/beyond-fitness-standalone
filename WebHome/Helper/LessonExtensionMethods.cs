@@ -255,9 +255,8 @@ namespace WebHome.Helper
                     break;
 
                 case Naming.LessonQueryType.自主訓練:
-                    //items = items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
-                    //    || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
-                    items = items.Where(l => l.TrainingBySelf == 1);
+                    items = items.PILesson();
+                    //items = items.Where(l => l.TrainingBySelf == 1);
                     break;
                 case Naming.LessonQueryType.教練PI:
                     items = items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI);
@@ -369,7 +368,10 @@ namespace WebHome.Helper
 
         public static IQueryable<LessonTime> PILesson(this IQueryable<LessonTime> items)
         {
-            return items.Where(l => l.TrainingBySelf == 1);
+            return items.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練
+                || (l.RegisterLesson.RegisterLessonEnterprise != null && l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status == (int)Naming.LessonPriceStatus.自主訓練));
+
+            //return items.Where(l => l.TrainingBySelf == 1);
         }
 
         public static IQueryable<V_Tuition> PILesson(this IQueryable<V_Tuition> items)
@@ -1460,13 +1462,20 @@ namespace WebHome.Helper
 
                 if (lesson.RegisterLessonContract != null)
                 {
-                    models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                    if (lesson.RegisterLessonContract.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                     {
-                        ContractID = lesson.RegisterLessonContract.ContractID,
-                        EventDate = timeItem.ClassTime.Value,
-                        LessonTime = timeItem,
-                        TrustType = Naming.TrustType.N.ToString()
-                    });
+
+                    }
+                    else
+                    {
+                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        {
+                            ContractID = lesson.RegisterLessonContract.ContractID,
+                            EventDate = timeItem.ClassTime.Value,
+                            LessonTime = timeItem,
+                            TrustType = Naming.TrustType.N.ToString()
+                        });
+                    }
                 }
 
             }

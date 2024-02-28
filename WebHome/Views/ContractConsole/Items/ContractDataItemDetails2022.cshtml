@@ -71,11 +71,15 @@
             case Naming.LessonPriceStatus.運動防護課程:
                 <text>A.T Session</text>
                 break;
+            case Naming.LessonPriceStatus.自主訓練:
+                <text>P.I Session</text>
+                break;
             default:
                 <text>P.T Session</text>
                 break;
         }
-        <span class="col-red">@(lesson.RemainedLessonCount())</span>@($"/{lesson.Lessons}")<br/>
+        <span class="col-red">@(lesson.RemainedLessonCount())</span>@($"/{lesson.Lessons}")
+        <br />
 
     }
 }
