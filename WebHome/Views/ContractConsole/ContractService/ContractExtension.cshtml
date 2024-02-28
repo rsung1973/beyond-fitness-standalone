@@ -65,13 +65,13 @@
                     <span class="col-red"><i class="zmdi zmdi-block"></i>營養</span>
                     <br />
                 }
-                else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true 
+                @* else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true 
                         || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
                 {
                     applicable = false;
                     <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span>
                     <br />
-                }
+                } *@
             }
         </div>
         <div class="col-4 text-right">

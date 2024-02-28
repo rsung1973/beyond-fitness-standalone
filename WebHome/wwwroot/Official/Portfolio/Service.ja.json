@@ -151,7 +151,7 @@
                 {
                     "Name": "信託履行保証",
                     "Desc": "台湾の関連法令を厳格に遵守し、信託法の規定に基づいて、信託業者である台新銀行に信託専用口座を開設しております。BEYONDでは、お客様の権益を保護し安心してご利用いただけます。",
-                    "Link": "download/trust.pdf",
+                    "Link": "../download/trust.pdf",
                     "LinkType": "PDF",
                     "LinkName": "信託声明",
                 },
