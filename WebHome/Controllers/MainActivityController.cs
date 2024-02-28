@@ -57,13 +57,14 @@ namespace WebHome.Controllers
             var lang = Request.Cookies["cLang"];
             if (lang == null)
             {
-                lang = Request.Headers.AcceptLanguage.Contains("zh")
-                                ? "zh-TW"
-                                : Request.Headers.AcceptLanguage.Contains("en")
-                                    ? "en-US"
-                                    : Request.Headers.AcceptLanguage.Contains("ja")
-                                        ? "ja"
-                                        : AppSettings.Default.Language;
+                lang = AppSettings.Default.Language;
+                //lang = Request.Headers.AcceptLanguage.Contains("zh")
+                //                ? "zh-TW"
+                //                : Request.Headers.AcceptLanguage.Contains("en")
+                //                    ? "en-US"
+                //                    : Request.Headers.AcceptLanguage.Contains("ja")
+                //                        ? "ja"
+                //                        : AppSettings.Default.Language;
                 lang.SelectUICulture();
             }
             ViewBag.Lang = lang;
@@ -145,13 +146,14 @@ namespace WebHome.Controllers
             }
             else
             {
-                lang = Request.Headers.AcceptLanguage.Contains("zh")
-                                    ? "tw"
-                                    : Request.Headers.AcceptLanguage.Contains("en")
-                                        ? "en"
-                                        : Request.Headers.AcceptLanguage.Contains("ja")
-                                            ? "ja"
-                                            : "tw";
+                lang = "tw";
+                //lang = Request.Headers.AcceptLanguage.Contains("zh")
+                //                    ? "tw"
+                //                    : Request.Headers.AcceptLanguage.Contains("en")
+                //                        ? "en"
+                //                        : Request.Headers.AcceptLanguage.Contains("ja")
+                //                            ? "ja"
+                //                            : "tw";
 
             }
 

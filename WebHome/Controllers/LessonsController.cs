@@ -645,13 +645,20 @@ namespace WebHome.Controllers
 
                 if (lesson.RegisterLessonContract != null)
                 {
-                    models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                    if (lesson.RegisterLessonContract.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                     {
-                        ContractID = lesson.RegisterLessonContract.ContractID,
-                        EventDate = timeItem.ClassTime.Value,
-                        LessonTime = timeItem,
-                        TrustType = Naming.TrustType.N.ToString()
-                    });
+
+                    }
+                    else
+                    {
+                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        {
+                            ContractID = lesson.RegisterLessonContract.ContractID,
+                            EventDate = timeItem.ClassTime.Value,
+                            LessonTime = timeItem,
+                            TrustType = Naming.TrustType.N.ToString()
+                        });
+                    }
                 }
 
             }

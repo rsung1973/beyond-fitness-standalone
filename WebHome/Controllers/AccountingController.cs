@@ -739,30 +739,30 @@ namespace WebHome.Controllers
             return Json(new { result = true });
         }
 
-        public ActionResult InitializeTrust()
-        {
-            var items = models.GetTable<RegisterLesson>().Where(r => r.AttendedLessons > 0)
-                    .Where(r => r.GroupingLesson.LessonTime.Count > 0);
+        //public ActionResult InitializeTrust()
+        //{
+        //    var items = models.GetTable<RegisterLesson>().Where(r => r.AttendedLessons > 0)
+        //            .Where(r => r.GroupingLesson.LessonTime.Count > 0);
 
-            foreach(var item in items)
-            {
-                var firstLesson = item.GroupingLesson.LessonTime.First();
-                for (int i = 0; i < item.AttendedLessons; i++)
-                {
-                    models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
-                    {
-                        ContractID = item.RegisterLessonContract.ContractID,
-                        EventDate = firstLesson.ClassTime.Value,
-                        LessonID = firstLesson.LessonID,
-                        TrustType = Naming.TrustType.N.ToString()
-                    });
-                }
-            }
+        //    foreach(var item in items)
+        //    {
+        //        var firstLesson = item.GroupingLesson.LessonTime.First();
+        //        for (int i = 0; i < item.AttendedLessons; i++)
+        //        {
+        //            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+        //            {
+        //                ContractID = item.RegisterLessonContract.ContractID,
+        //                EventDate = firstLesson.ClassTime.Value,
+        //                LessonID = firstLesson.LessonID,
+        //                TrustType = Naming.TrustType.N.ToString()
+        //            });
+        //        }
+        //    }
 
-            models.SubmitChanges();
+        //    models.SubmitChanges();
 
-            return Json(new { result = true });
-        }
+        //    return Json(new { result = true });
+        //}
 
         public ActionResult ExecuteSettlement(DateTime? startDate,DateTime? endDate)
         {

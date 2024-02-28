@@ -305,13 +305,21 @@ namespace WebHome.Controllers
                     models.GetTable<Payment>().InsertOnSubmit(item);
                     item.InvoiceItem = invoice;
 
-                    models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                    if(contract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                     {
-                        ContractID = contract.ContractID,
-                        EventDate = viewModel.PayoffDate.Value,
-                        Payment = item,
-                        TrustType = Naming.TrustType.B.ToString()
-                    });
+
+                    }
+                    else
+                    {
+                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        {
+                            ContractID = contract.ContractID,
+                            EventDate = viewModel.PayoffDate.Value,
+                            Payment = item,
+                            TrustType = Naming.TrustType.B.ToString()
+                        });
+                    }
+
                 }
 
                 preparePayment(viewModel, profile, item);
@@ -1079,13 +1087,20 @@ namespace WebHome.Controllers
                     }
                     else
                     {
-                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        if (item.Payment.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                         {
-                            ContractID = item.Payment.ContractPayment.ContractID,
-                            EventDate = item.VoidDate.Value,
-                            VoidID = item.VoidID,
-                            TrustType = Naming.TrustType.V.ToString()
-                        });
+
+                        }
+                        else
+                        {
+                            models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                            {
+                                ContractID = item.Payment.ContractPayment.ContractID,
+                                EventDate = item.VoidDate.Value,
+                                VoidID = item.VoidID,
+                                TrustType = Naming.TrustType.V.ToString()
+                            });
+                        }
                     }
                 }
 
@@ -1109,13 +1124,20 @@ namespace WebHome.Controllers
 
                 if (item.Payment.ContractPayment != null)
                 {
-                    models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                    if (item.Payment.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
                     {
-                        ContractID = item.Payment.ContractPayment.ContractID,
-                        EventDate = item.VoidDate.Value,
-                        VoidID = item.VoidID,
-                        TrustType = Naming.TrustType.V.ToString()
-                    });
+
+                    }
+                    else
+                    {
+                        models.GetTable<ContractTrustTrack>().InsertOnSubmit(new ContractTrustTrack
+                        {
+                            ContractID = item.Payment.ContractPayment.ContractID,
+                            EventDate = item.VoidDate.Value,
+                            VoidID = item.VoidID,
+                            TrustType = Naming.TrustType.V.ToString()
+                        });
+                    }
                 }
 
                 models.SubmitChanges();

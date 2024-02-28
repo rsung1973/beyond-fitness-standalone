@@ -412,6 +412,12 @@ namespace WebHome.Controllers
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CIA)
+            {
+                items = items
+                    .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
+                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.自主訓練);
+            }
             else
             {
                 //if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux
