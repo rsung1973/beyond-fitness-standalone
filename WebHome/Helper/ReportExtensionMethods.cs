@@ -1352,7 +1352,7 @@ namespace WebHome.Helper
                     models.SubmitChanges();
 
                     //抽個人
-                    if (salary.SpecialBonus == 0 && achievementRatio <= 85)
+                    if ((salary.SpecialBonus == 0 || !salary.SpecialBonus.HasValue) && achievementRatio <= 85)
                     {
                         calcCoachBonus();
                         salary.SpecialBonus = salary.AchievementBonus;
