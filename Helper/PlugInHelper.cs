@@ -21,6 +21,11 @@ namespace CommonLib.Core.Helper
 
         private PlugInHelper() 
         {
+            InitializePdfUtility();
+        }
+
+        private void InitializePdfUtility()
+        {
             try
             {
                 if (!String.IsNullOrEmpty(Startup.Properties["IPdfUtilityImpl"]))
@@ -28,7 +33,7 @@ namespace CommonLib.Core.Helper
                     FileLogger.Logger.Info("Pdf Utility intent type => " + Startup.Properties["IPdfUtilityImpl"]);
 
                     Type type = Type.GetType(Startup.Properties["IPdfUtilityImpl"]);
-                    if (type!=null && type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
+                    if (type != null && type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
                     {
                         _pdfUtility = (IPdfUtility)type.Assembly.CreateInstance(type.FullName);
                         FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility.GetType().FullName);
@@ -62,7 +67,7 @@ namespace CommonLib.Core.Helper
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 FileLogger.Logger.Error(ex);
             }
@@ -70,6 +75,10 @@ namespace CommonLib.Core.Helper
 
         public static IPdfUtility GetPdfUtility()
         {
+            if (_instance._pdfUtility == null)
+            {
+                _instance.InitializePdfUtility();
+            }
             if (_instance._pdfUtility == null)
             {
                 throw new Exception("未設定PDF輸出套件!!");
