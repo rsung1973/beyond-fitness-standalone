@@ -115,6 +115,7 @@
                                     resetContractType();
                                     resetBranch();
                                     resetPricePackage();
+                                    resetSignOnline();
                                 });
                             });
                         </script>
@@ -164,6 +165,18 @@
                                     $('select[name="ContractType"] option').eq(0).prop('selected', true);
                                 }
                                 $('select[name="ContractType"]').selectpicker('refresh');
+                            }
+
+                            function resetSignOnline() {
+                                var ct = $('select[name="ContractTypeCategory"] option:selected').attr('class');
+
+                                if (ct == 'CIA') {
+                                    $('input[name="SignOnline"]').prop('checked', false);
+                                    $global.viewModel.SignOnline = false;
+                                    $('.signOnline').css('display', 'none');
+                                } else {
+                                    $('.signOnline').css('display', 'block');
+                                }
                             }
                         </script>
                     </div>

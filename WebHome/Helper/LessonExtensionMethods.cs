@@ -430,7 +430,7 @@ namespace WebHome.Helper
 
         public static bool IsPISession(this LessonTime item)
         {
-            return item.TrainingBySelf == 1;
+            return item.TrainingBySelf == 1 || item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練;
         }
 
         public static bool IsReceivableSession(this LessonTime item)

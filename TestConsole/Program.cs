@@ -3,6 +3,10 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Properties;
 using WebHome.Helper;
+using WebHome.Models.MIG3_1.C0401;
+using CommonLib.Utility;
+using CommonLib.Logger;
+using CommonLib.Core.Utility;
 
 namespace TestConsole
 {
@@ -18,8 +22,42 @@ namespace TestConsole
 
             //test03();
 
-            test02(args);
+            //test02(args);
             //test01();
+            if (!(args?.Length > 0))
+            {
+                return;
+            }
+
+            using(ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                var invoiceNo = args[0];
+
+                var item = models.GetTable<InvoiceItem>().Where(i => i.TrackCode == invoiceNo.Substring(0, 2)
+                        && i.No == invoiceNo.Substring(2))
+                    .OrderByDescending(i => i.InvoiceID)
+                    .FirstOrDefault();
+                if (item != null)
+                {
+                    var c0401 = item.CreateC0401();
+                    c0401.ConvertToXml().Save(Path.Combine(FileLogger.Logger.LogDailyPath, $"C0401-{invoiceNo}.xml"));
+                    var voidItem = new WebHome.Models.MIG3_1.C0701.VoidInvoice
+                    {
+                        VoidInvoiceNumber = invoiceNo,
+                        InvoiceDate = String.Format("{0:yyyyMMdd}", item.InvoiceDate),
+                        BuyerId = item.InvoiceBuyer.ReceiptNo,
+                        SellerId = item.InvoiceSeller.ReceiptNo,
+                        VoidDate = DateTime.Now.Date.ToString("yyyyMMdd"),
+                        VoidTime = DateTime.Now,
+                        VoidReason = "註銷重開",
+                        Remark = ""
+                    };
+
+                    voidItem.ConvertToXml().Save(Path.Combine(FileLogger.Logger.LogDailyPath, $"C0701-{invoiceNo}.xml"));
+                    Console.WriteLine(voidItem.ConvertToXml().OuterXml);
+                }
+
+            }
         }
 
         private static void test03()

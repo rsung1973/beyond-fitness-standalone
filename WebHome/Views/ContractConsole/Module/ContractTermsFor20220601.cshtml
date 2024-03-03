@@ -23,7 +23,14 @@
 }
 <div class="@(_viewModel.Pdf=="1" ? "font-size: 13px;" : "scroll-container")">
     @{
-        await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTerms.cshtml");
+		if(_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
+		{
+			await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTermsForCIA.cshtml");
+		}
+		else
+		{
+			await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractTerms.cshtml");
+		}
     }
 </div>
 <script>

@@ -58,20 +58,26 @@
 
                 //    <br />
                 //}
-                //else 
+                //else
                 if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CNA)
                 {
                     applicable = false;
                     <span class="col-red"><i class="zmdi zmdi-block"></i>營養</span>
                     <br />
                 }
-                @* else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true 
-                        || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
+                if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
                 {
                     applicable = false;
-                    <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span>
+                    <span class="col-red"><i class="zmdi zmdi-block"></i>@(_model.CourseContractType.TypeName)</span>
                     <br />
-                } *@
+                }
+                @* else if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
+                    || _model.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true)
+            {
+                applicable = false;
+                <span class="col-red"><i class="zmdi zmdi-block"></i>遠距</span>
+                <br />
+            } *@
             }
         </div>
         <div class="col-4 text-right">

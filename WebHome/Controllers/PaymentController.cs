@@ -239,12 +239,24 @@ namespace WebHome.Controllers
                     ModelState.AddModelError("CustomBrief", "請選擇發票品項是否更改");
                 }
 
-                viewModel.ItemNo = new string[] { "01", "02" };
-                viewModel.Brief = new string[] { "專業顧問建置與諮詢費", "教練課程費" };
-                viewModel.CostAmount = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
-                viewModel.UnitCost = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
-                viewModel.Piece = new int?[] { 1, 1 };
-                viewModel.ItemRemark = new string[] { null, null };
+                if (contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
+                {
+                    viewModel.ItemNo = new string[] { "01" };
+                    viewModel.Brief = new string[] { "自主體能顧問課程費" };
+                    viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
+                    viewModel.UnitCost = new int?[] { viewModel.PayoffAmount };
+                    viewModel.Piece = new int?[] { 1 };
+                    viewModel.ItemRemark = new string[] { null };
+                }
+                else
+                {
+                    viewModel.ItemNo = new string[] { "01", "02" };
+                    viewModel.Brief = new string[] { "專業顧問建置與諮詢費", "教練課程費" };
+                    viewModel.CostAmount = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
+                    viewModel.UnitCost = new int?[] { (viewModel.PayoffAmount * 8 + 5) / 10, (viewModel.PayoffAmount * 2 + 5) / 10 };
+                    viewModel.Piece = new int?[] { 1, 1 };
+                    viewModel.ItemRemark = new string[] { null, null };
+                }
             }
 
             InvoiceItem invoice = null;
@@ -1878,16 +1890,16 @@ namespace WebHome.Controllers
                                       : "",
                         摘要 = i.TransactionType==(int)Naming.PaymentTransactionType.合約終止沖銷
                                 ? i.AdjustmentAmount>0
-                                    ? $"(沖:終止轉收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"    
+                                    ? $"(沖:終止轉收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"    
                                     //(沖:終止轉收)課程顧問費用-CPA201801290752-00-陳筱鈴
-                                    : $"(沖:終止減收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                    : $"(沖:終止減收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
                                 : i.TransactionType==(int)Naming.PaymentTransactionType.體能顧問費 
-                                    ? $"課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}({i.PaymentType})"
+                                    ? $"課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}({i.PaymentType})"
                                     //(沖:轉讓)課程顧問費用-CPA201706277998-00-陳潔
                                     : i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                                             || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額
-                                        ? $"{i.Remark}-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
-                                        : $"(沖:{i.Remark})-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                                        ? $"{i.Remark}-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        : $"(沖:{i.Remark})-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
                         退款金額_含稅 =  i.TransactionType==(int)Naming.PaymentTransactionType.合約終止沖銷
                                             ? i.AdjustmentAmount
                                             : !(i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
@@ -1936,11 +1948,11 @@ namespace WebHome.Controllers
                                               ? "否"
                                               : "",
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
                                         : i.VoidPayment.Remark == "終止退款"
-                                            ? $"(沖:{i.PayoffDate:yyyyMMdd}-終止退款)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
-                                            : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                                            ? $"(沖:{i.PayoffDate:yyyyMMdd}-終止退款)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                            : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,
@@ -2062,16 +2074,16 @@ namespace WebHome.Controllers
                                       : "",
                         摘要 = i.TransactionType == (int)Naming.PaymentTransactionType.合約終止沖銷
                                 ? i.AdjustmentAmount > 0
-                                    ? $"(沖:終止轉收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                    ? $"(沖:終止轉收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
                                     //(沖:終止轉收)課程顧問費用-CPA201801290752-00-陳筱鈴
-                                    : $"(沖:終止減收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                    : $"(沖:終止減收)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
                                 : i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
-                                    ? $"課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}({i.PaymentType})"
+                                    ? $"課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}({i.PaymentType})"
                                     //(沖:轉讓)課程顧問費用-CPA201706277998-00-陳潔
                                     : i.TransactionType == (int)Naming.PaymentTransactionType.合約轉讓餘額
                                             || i.TransactionType == (int)Naming.PaymentTransactionType.合約轉點餘額
-                                        ? $"{i.Remark}-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
-                                        : $"(沖:{i.Remark})-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                                        ? $"{i.Remark}-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        : $"(沖:{i.Remark})-課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
                         退款金額_含稅 = i.TransactionType == (int)Naming.PaymentTransactionType.合約終止沖銷
                                             ? i.AdjustmentAmount
                                             : !(i.TransactionType == (int)Naming.PaymentTransactionType.體能顧問費
@@ -2120,11 +2132,11 @@ namespace WebHome.Controllers
                                               ? "否"
                                               : "",
                                 摘要 = i.InvoiceItem.InvoiceCancellation != null
-                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                        ? $"(沖:{i.PayoffDate:yyyyMMdd}-作廢)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
                                         //(沖:20190104-作廢)課程顧問費用-CFA201810091870-00-林妍君
                                         : i.VoidPayment.Remark == "終止退款"
-                                            ? $"(沖:{i.PayoffDate:yyyyMMdd}-終止退款)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
-                                            : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
+                                            ? $"(沖:{i.PayoffDate:yyyyMMdd}-終止退款)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}"
+                                            : $"(沖:{i.PayoffDate:yyyyMMdd}-折讓)課程顧問費用-{i.ContractPayment.CourseContract.ContractNo()}《{(i.ContractPayment.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore ? "非信託" : "信託")}》-{i.ContractPayment.CourseContract.ContractLearnerName("/")}",
                                 退款金額_含稅 = i.AllowanceID.HasValue
                                                 ? (int?)(i.InvoiceAllowance.TotalAmount + i.InvoiceAllowance.TaxAmount)
                                                 : i.PayoffAmount,

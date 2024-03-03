@@ -747,9 +747,33 @@ namespace WebHome.Models.DataEntity
 
     public partial class LessonPriceType
     {
-        public String SimpleDescription => IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status)
-                                            ? "《單堂購買》P.T Session"
-                                            : Description?.Substring(Description.IndexOf('】') + 1);
+        public String SimpleDescription
+        {
+            get
+            {
+                if (IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status))
+                    return "《單堂購買》P.T";
+
+                if (Description == null) 
+                    return null;
+
+                int start = Description.IndexOf('》');
+                if (start == -1)
+                {
+                    start = Description.IndexOf('】');
+                }
+
+                int end = Description.IndexOf('-');
+                if(end == -1)
+                {
+                    end = Description.IndexOf('/');
+                }
+                return end == -1
+                            ? Description[(start + 1)..]
+                            : Description[(start + 1)..end];
+
+            }
+        }
         public bool IsPackagePrice => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.LessonPackage) == true;
         public bool IsDietaryConsult => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.DietaryConsult) == true;
         public bool IsDistanceLesson => this?.ObjectiveLessonPrice.Any(p => p.CatalogID == (int)ObjectiveLessonCatalog.CatalogDefinition.OnLine) == true;

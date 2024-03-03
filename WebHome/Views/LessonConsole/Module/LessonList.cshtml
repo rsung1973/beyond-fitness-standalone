@@ -46,11 +46,12 @@
                     @($"{lesson.ClassTime:HH:mm}")-@($"{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}")
                 </td>
                 <td>
-                    @(lesson.LessonTypeStatus())
+                    @Html.Raw(item.RegisterLesson.LessonPriceType.SimpleDescription)
+                    @*@(lesson.LessonTypeStatus())
                     @if (lesson.IsPISession())
                     {
                         <text>《@(lesson.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
-                    }
+                    }*@
                 </td>
                 <td>@($"{item.LessonAttendance?.CompleteDate:yyyy/MM/dd HH:mm:ss}")</td>
                 <td>

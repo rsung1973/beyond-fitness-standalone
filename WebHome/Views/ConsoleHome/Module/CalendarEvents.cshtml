@@ -115,7 +115,8 @@
             });
         }
 
-        items = totalItems.Where(l => l.TrainingBySelf == 1);
+        items = totalItems.Where(l => l.TrainingBySelf == 1
+                                    || l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練);
         if (items.Count() > 0)
         {
             totalItems = totalItems.Except(items).ToList();
@@ -131,7 +132,7 @@
             });
         }
 
-        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.DocumentLevelDefinition.教練PI);
+        items = totalItems.Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.教練PI);
         if (items.Count() > 0)
         {
             totalItems = totalItems.Except(items).ToList();

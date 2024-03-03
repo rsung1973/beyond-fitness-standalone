@@ -335,10 +335,10 @@ namespace WebHome.Helper
                 return false;
             }
 
-            if (lessonItem.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練)
-            {
-                return false;
-            }
+            //if (lessonItem.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練)
+            //{
+            //    return false;
+            //}
 
             if (lessonItem.IsCoachPISession())
             {
