@@ -751,8 +751,11 @@ namespace WebHome.Models.DataEntity
         {
             get
             {
-                if (IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status))
-                    return "P.T《單堂購買》";
+                //if (IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status))
+                //    return "P.T《單堂購買》";
+                var singleCharge = this?.LessonPriceProperty
+                        .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款)
+                        .FirstOrDefault();
 
                 if (Description == null) 
                     return null;
@@ -770,8 +773,8 @@ namespace WebHome.Models.DataEntity
                 }
 
                 return end == -1
-                            ? Description[(start + 1)..].Trim()
-                            : Description[(start + 1)..end].Trim();
+                            ? $"{Description[(start + 1)..].Trim()}{singleCharge?.Description}"
+                            : $"{Description[(start + 1)..end].Trim()}{singleCharge?.Description}";
 
             }
         }
