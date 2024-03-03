@@ -37,7 +37,7 @@
             <div class="accordion__item js-accordion-item active">
                 <div class="accordion-header js-accordion-header light-gray">
                     <ul class="lesson-box">
-                        <li class="lesson-spot">@($"{_model.ClassTime:yyyy/MM/dd}") - @(_model.RegisterLesson.LessonPriceType.SimpleDescription) @(_model.AsAttendingCoach.UserProfile.FullName())</li>
+                        <li class="lesson-spot">@($"{_model.ClassTime:yyyy/MM/dd}")（@(_model.RegisterLesson.LessonPriceType.SimpleDescription)）@(_model.AsAttendingCoach.UserProfile.FullName())</li>
                         @if (_training != null)
                         {
                             <li class="lesson-item">@(_training.Emphasis ?? "課程預約好囉，但是教練忘記打上課重點，提醒他一下！（或踹他一下）")</li>

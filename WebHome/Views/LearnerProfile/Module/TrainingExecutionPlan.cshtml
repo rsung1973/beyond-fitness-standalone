@@ -29,7 +29,7 @@
         <ul class="lesson-box">
             <li class="lesson-spot">
                 <span class="title">
-                    @($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}") - @Html.Raw(_model.RegisterLesson.LessonPriceType.SimpleDescription)
+                    @($"{_model.ClassTime:yyyy/MM/dd HH:mm}")-@($"{_model.ClassTime.Value.AddMinutes(_model.DurationInMinutes.Value):HH:mm}")（@Html.Raw(_model.RegisterLesson.LessonPriceType.SimpleDescription)）
                     @(_model.AsAttendingCoach.UserProfile.FullName())
                     <i class="zmdi zmdi-pin"></i>@(_model.BranchID.HasValue ? _model.BranchStore.BranchName : _model.Place)
                 </span>

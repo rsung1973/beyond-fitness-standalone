@@ -752,7 +752,7 @@ namespace WebHome.Models.DataEntity
             get
             {
                 if (IsSingleCharge && SessionScopeForPTSingleCharge.Contains(this?.Status))
-                    return "《單堂購買》P.T";
+                    return "P.T《單堂購買》";
 
                 if (Description == null) 
                     return null;
@@ -763,14 +763,15 @@ namespace WebHome.Models.DataEntity
                     start = Description.IndexOf('】');
                 }
 
-                int end = Description.IndexOf('-');
+                int end = Description.IndexOf('-', start + 1);
                 if(end == -1)
                 {
-                    end = Description.IndexOf('/');
+                    end = Description.IndexOf('/', start + 1);
                 }
+
                 return end == -1
-                            ? Description[(start + 1)..]
-                            : Description[(start + 1)..end];
+                            ? Description[(start + 1)..].Trim()
+                            : Description[(start + 1)..end].Trim();
 
             }
         }
