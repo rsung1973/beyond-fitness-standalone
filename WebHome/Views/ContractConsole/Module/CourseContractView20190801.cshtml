@@ -118,7 +118,8 @@
                         <td>專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
                     </tr>
                     <tr>
-                        <td colspan="2">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
+                        <td colspan="2">合約使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至
+                            @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
                         <td>
                             @if (_model.CourseContractExtension?.PaymentMethod != null)
                             {

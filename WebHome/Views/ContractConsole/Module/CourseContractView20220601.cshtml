@@ -155,9 +155,6 @@
                         <tr>
                             <td colspan="3">自主體能訓練場地使用費：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
                         </tr>
-                        <tr style="border-width: 1px; border-bottom-style: dashed;">
-                            <td colspan="3">合約期間：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
-                        </tr>
                     }
                     else
                     {
@@ -167,11 +164,11 @@
                         </tr>
                         <tr>
                             <td colspan="3">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
-                        </tr>
+                        </tr>                       
                     }
+                     <tr>
+                        <td colspan="3">合約使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
+                     </tr>
                     <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
                         <td colspan="3"><b>繳費內容</b></td>
                     </tr>
