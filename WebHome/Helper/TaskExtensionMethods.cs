@@ -12,6 +12,7 @@ using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 //
 using WebHome.Helper.BusinessOperation;
+using WebHome.Properties;
 
 namespace WebHome.Helper
 {
@@ -803,6 +804,7 @@ namespace WebHome.Helper
                                         String fileName = Path.Combine(C0401Outbound, item.TrackCode + item.No + ".xml");
                                         item.CreateC0401().ConvertToXml().Save(fileName);
                                         models.ExecuteCommand("delete InvoiceItemDispatch where InvoiceID={0}", item.InvoiceID);
+                                        File.WriteAllText(Path.Combine(AppSettings.Default.TurnkeyCheckListPath, $"{item.Document.DocID}"), "");
                                     }
                                 }
 
@@ -815,6 +817,11 @@ namespace WebHome.Helper
                                         String fileName = Path.Combine(C0501Outbound, item.TrackCode + item.No + ".xml");
                                         item.CreateC0501().ConvertToXml().Save(fileName);
                                         models.ExecuteCommand("delete InvoiceCancellationDispatch where InvoiceID={0}", item.InvoiceID);
+                                        var doc = item.Document.AtSource.FirstOrDefault();
+                                        if (doc != null)
+                                        {
+                                            File.WriteAllText(Path.Combine(AppSettings.Default.TurnkeyCheckListPath, $"{doc.DocID}"), "");
+                                        }
                                     }
                                 }
 
@@ -827,6 +834,7 @@ namespace WebHome.Helper
                                         String fileName = Path.Combine(D0401Outbound, item.AllowanceNumber + ".xml");
                                         item.CreateD0401().ConvertToXml().Save(fileName);
                                         models.ExecuteCommand("delete InvoiceAllowanceDispatch where AllowanceID={0}", item.AllowanceID);
+                                        File.WriteAllText(Path.Combine(AppSettings.Default.TurnkeyCheckListPath, $"{item.Document.DocID}"), "");
                                     }
                                 }
 

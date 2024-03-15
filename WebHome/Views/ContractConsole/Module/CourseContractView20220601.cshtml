@@ -279,20 +279,26 @@
                         }
                     </tr>
                     <tr>
-                        @if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
                         {
-                            <td>
-                                <label class="fancy-checkbox custom-bgcolor-pink">
-                                    <input type="checkbox" name="extension">
-                                    <span>展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</span>
-                                </label>
-                            </td>
-                        } 
-                        else if (_viewModel.Pdf == "1")
+                        }
+                        else
                         {
-                            <td style="padding:0;">
-                                <b style="font-size:20px">☑</b> <b>展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</b>
-                            </td>
+                            if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                            {
+                                <td>
+                                    <label class="fancy-checkbox custom-bgcolor-pink">
+                                        <input type="checkbox" name="extension">
+                                        <span>展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</span>
+                                    </label>
+                                </td>
+                            }
+                            else if (_viewModel.Pdf == "1")
+                            {
+                                <td style="padding:0;">
+                                    <b style="font-size:20px">☑</b> <b>展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</b>
+                                </td>
+                            }
                         }
                     </tr>
                     <tr>

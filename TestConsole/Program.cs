@@ -7,6 +7,7 @@ using WebHome.Models.MIG3_1.C0401;
 using CommonLib.Utility;
 using CommonLib.Logger;
 using CommonLib.Core.Utility;
+using WebHome.Helper.Jobs;
 
 namespace TestConsole
 {
@@ -24,12 +25,56 @@ namespace TestConsole
 
             //test02(args);
             //test01();
+            //test04(args);
+            //test05();
+            //test06();
+
+            (new CheckInvoiceDispatch()).DoJob();
+
+        }
+
+        private static void test06()
+        {
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                var items = models.GetTable<Organization>()
+                                .Where(o => models.GetTable<BranchStore>()
+                                                    .Any(b => b.BranchID == o.CompanyID));
+                File.WriteAllText("data.json", items.JsonStringify());
+            }
+        }
+
+        private static void test05()
+        {
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                foreach (var item in models.GetTable<InvoiceItem>())
+                {
+                    try
+                    {
+                        var c0401 = item.CreateC0401();
+                        c0401.ConvertToXml().Save(Path.Combine(FileLogger.Logger.LogDailyPath, $"C0401-{item.TrackCode}{item.No}.xml"));
+                        Console.Write("+");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error:{item.InvoiceID},{item.TrackCode}{item.No}");
+                        FileLogger.Logger.Error(ex);
+                    }
+                }
+
+            }
+        }
+
+
+        private static void test04(string[] args)
+        {
             if (!(args?.Length > 0))
             {
                 return;
             }
 
-            using(ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoiceNo = args[0];
 

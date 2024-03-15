@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WebHome.Models.ViewModel;
 using CommonLib.Utility;
+using CommonLib.Core.Utility;
 
 namespace WebHome.Properties
 {
@@ -31,7 +32,7 @@ namespace WebHome.Properties
 
         public AppSettings()
         {
-
+            TurnkeyCheckListPath.CheckStoredPath();
         }
 
         public void Save()
@@ -129,6 +130,8 @@ namespace WebHome.Properties
 
         public String GTM_Key { get; set; } = "GTM-MPFS89SL";
 
+        public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList");
+        public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyLog";
     }
 
     public class Settings

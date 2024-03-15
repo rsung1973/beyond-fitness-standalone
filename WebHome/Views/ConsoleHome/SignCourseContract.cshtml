@@ -111,10 +111,11 @@
 
                 return ;
             }
+            var $extension = $('input[name="extension"]');
             showLoading();
             $.post('@Html.Raw(Url.Action("ConfirmSignature","ContractConsole",new { KeyID = _item.ContractID.EncryptKey() }))',
                 {
-                    'Extension': $('input[name="extension"]').is(':checked'),
+                    'Extension': $extension.length > 0 ? $extension.is(':checked') : true,
                     'Booking': $('input[name="booking"]').is(':checked'),
                     'Cancel': $('input[name="cancel"]').is(':checked'),
                     'Agree': $('input[name="Agree"]').is(':checked'),

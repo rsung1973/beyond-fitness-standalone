@@ -315,6 +315,7 @@ namespace WebHome.Helper
                 EffectiveDateTo = item.EndExclusiveDate,
             };
             IQueryable<CourseContract> contractItems = contractQuery.InquireContract(models);
+            IQueryable<CourseContract> BRCountingItems = contractItems.Where(c => !c.Installment.HasValue || c.Installment == false);
             IQueryable<CourseContract> installmentItems = contractItems.Where(c => c.Installment.HasValue);
             IQueryable<CourseContract> nonInstallmentItems = contractItems.Where(c => !c.Installment.HasValue);
 
@@ -580,7 +581,7 @@ namespace WebHome.Helper
                     coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
                     var extensionItems = models.GetTable<CourseContractExtension>()
                                             .Where(n => n.BRByCoach == coachIndicator.CoachID);
-                    coachIndicator.ActualBRCount = contractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
+                    coachIndicator.ActualBRCount = BRCountingItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
                     extensionItems = models.GetTable<CourseContractExtension>()
                                                                 .Where(n => n.BRByCoach.HasValue);
                     coachIndicator.DealedCountWithBR = coachContractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));

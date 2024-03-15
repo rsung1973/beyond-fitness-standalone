@@ -734,15 +734,19 @@ namespace WebHome.Models.DataEntity
                     ? TuitionInstallment != null
                         ? this.TuitionInstallment.IntuitionCharge.RegisterLesson.LessonPriceType.SimpleDescription
                         : "T.S/P.I"
-                    : String.Concat(((Naming.PaymentTransactionType)this.TransactionType).ToString(),
-                        "-",
-                        this.TransactionType == (int)Naming.PaymentTransactionType.運動商品
-                            || this.TransactionType == (int)Naming.PaymentTransactionType.食飲品
-                            || this.TransactionType == (int)Naming.PaymentTransactionType.各項費用
-                        ? this.PaymentTransaction.PaymentOrder.Any()
-                            ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
-                            : String.Join("/", this.InvoiceItem?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief))
-                        : null);
+                    : ContractPayment != null
+                        ? ContractPayment.CourseContract.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA
+                            ? "自主體能顧問課程費"
+                            : ((Naming.PaymentTransactionType)this.TransactionType).ToString()
+                        : String.Concat(((Naming.PaymentTransactionType)this.TransactionType).ToString(),
+                                    "-",
+                                    this.TransactionType == (int)Naming.PaymentTransactionType.運動商品
+                                        || this.TransactionType == (int)Naming.PaymentTransactionType.食飲品
+                                        || this.TransactionType == (int)Naming.PaymentTransactionType.各項費用
+                                    ? this.PaymentTransaction.PaymentOrder.Any()
+                                        ? String.Join("/", this.PaymentTransaction.PaymentOrder.Select(p => p.MerchandiseWindow.ProductName))
+                                        : String.Join("/", this.InvoiceItem?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief))
+                                    : null);
     }
 
     public partial class LessonPriceType

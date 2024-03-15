@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BeyondFitnessProd2" Class="BFDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BeyondFitnessProd2" Class="BFDataContext" Serialization="Unidirectional" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Table Name="dbo.UserRoleDefinition" Member="UserRoleDefinitions">
     <Type Name="UserRoleDefinition">
       <Column Name="RoleID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -926,8 +926,8 @@
       <Column Name="IsGroup" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="GroupingMemberCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="OnlineCourse" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-		<Column Name="TrustType" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Association Name="CourseContractType_CourseContract" Member="CourseContract" ThisKey="TypeID" OtherKey="ContractType" Type="CourseContract" />
+      <Column Name="TrustType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CourseContractType_CourseContract" Member="CourseContract" ThisKey="TypeID" OtherKey="ContractType" Type="CourseContract" />
       <Association Name="CourseContractType_ObjectiveContractLessonPrice" Member="ObjectiveContractLessonPrice" ThisKey="TypeID" OtherKey="ContractType" Type="ObjectiveContractLessonPrice" />
       <Association Name="GroupingLessonDiscount_CourseContractType" Member="GroupingLessonDiscount" ThisKey="GroupingMemberCount" OtherKey="GroupingMemberCount" Type="GroupingLessonDiscount" IsForeignKey="true" />
     </Type>
@@ -2764,10 +2764,10 @@
       <Column Name="EmploymentDurationGradeIndex" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="TSAttendanceCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ManagementBonusGrade" Type="System.Decimal" DbType="Decimal(6,4)" CanBeNull="true" />
-		<Column Name="JobTenureInDays" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Column Name="BasicWage" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Column Name="StaffWelfareFund" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Association Name="CoachMonthlySalary_CoachBranchMonthlyBonus" Member="CoachBranchMonthlyBonus" ThisKey="CoachID,SettlementID" OtherKey="CoachID,SettlementID" Type="CoachBranchMonthlyBonus" />
+      <Column Name="JobTenureInDays" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="BasicWage" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="StaffWelfareFund" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CoachMonthlySalary_CoachBranchMonthlyBonus" Member="CoachBranchMonthlyBonus" ThisKey="CoachID,SettlementID" OtherKey="CoachID,SettlementID" Type="CoachBranchMonthlyBonus" />
       <Association Name="BranchStore_CoachMonthlySalary" Member="BranchStore" ThisKey="WorkPlace" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_CoachMonthlySalary" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ServingCoach_CoachMonthlySalary" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />

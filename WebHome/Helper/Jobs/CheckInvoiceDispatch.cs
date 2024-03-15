@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Net;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 using CommonLib.Core.Helper;
+using CommonLib.Core.Utility;
 using CommonLib.Helper;
 using CommonLib.Utility;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
+using WebHome.Properties;
 
 
 namespace WebHome.Helper.Jobs
@@ -19,13 +24,14 @@ namespace WebHome.Helper.Jobs
     {
         public void Dispose()
         {
-            
+
         }
 
         public void DoJob()
         {
             using (ModelSource<UserProfile> models = new ModelSource<UserProfile>())
             {
+                CheckTurnkeyLog(models);
                 checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
                 checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
                 checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "ERR"), Naming.GeneralStatus.Failed);
@@ -41,7 +47,7 @@ namespace WebHome.Helper.Jobs
             }
         }
 
-        private void checkC0401(ModelSource<UserProfile> models,String storePath, Naming.GeneralStatus status)
+        private void checkC0401(ModelSource<UserProfile> models, String storePath, Naming.GeneralStatus status)
         {
             try
             {
@@ -77,10 +83,137 @@ namespace WebHome.Helper.Jobs
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ApplicationLogging.CreateLogger<CheckInvoiceDispatch>()
                     .LogError(ex, ex.Message);
+            }
+        }
+
+        private TurnkeyLog[] GetInvoiceTurnkeyLog(string invoiceNo,String docType)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Encoding = Encoding.UTF8;
+                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?InvoiceNo={invoiceNo}&DocType={docType}";
+                String result = client.DownloadString(url);
+                if(result?.Length>0)
+                {
+                    FileLogger.Logger.Info(result);
+                    return JsonConvert.DeserializeObject<TurnkeyLog[]>(result);
+                }
+            }
+            return null;
+        }
+
+        private TurnkeyLog[] GetAllowanceTurnkeyLog(string allowanceNo, String docType)
+        {
+            using (WebClient client = new WebClient())
+            {
+                client.Encoding = Encoding.UTF8;
+                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?AllowanceNo={allowanceNo}&DocType={docType}";
+                String result = client.DownloadString(url);
+                if (result?.Length > 0)
+                {
+                    return JsonConvert.DeserializeObject<TurnkeyLog[]>(result);
+                }
+            }
+            return null;
+        }
+
+        private void CheckTurnkeyLog(ModelSource<UserProfile> models)
+        {
+            foreach (var f in Directory.EnumerateFiles(AppSettings.Default.TurnkeyCheckListPath, "*", SearchOption.AllDirectories))
+            {
+                try
+                {
+                    if (int.TryParse(Path.GetFileNameWithoutExtension(f), out int docID))
+                    {
+                        var docItem = models.GetTable<Document>().Where(d => d.DocID == docID).FirstOrDefault();
+                        if (docItem != null)
+                        {
+                            TurnkeyLog[] logItems = null;
+                            switch ((Naming.DocumentTypeDefinition)docItem.DocType)
+                            {
+                                case Naming.DocumentTypeDefinition.E_Invoice:
+                                    var item = docItem.InvoiceItem;
+                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0401");
+                                    if (logItems?.Length > 0)
+                                    {
+                                        if (item.InvoiceItemDispatchLog == null)
+                                        {
+                                            item.InvoiceItemDispatchLog = new InvoiceItemDispatchLog
+                                            {
+                                            };
+                                        }
+                                        item.InvoiceItemDispatchLog.DispatchDate = DateTime.Now;
+                                        item.InvoiceItemDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+
+                                        models.SubmitChanges();
+
+                                    }
+                                    break;
+
+                                case Naming.DocumentTypeDefinition.E_InvoiceCancellation:
+                                    item = docItem.DerivedDocument?.TargetDocument?.InvoiceItem;
+                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0501");
+                                    if (logItems?.Length > 0)
+                                    {
+                                        if (item.InvoiceCancellation != null)
+                                        {
+                                            if (item.InvoiceCancellation.InvoiceCancellationDispatchLog == null)
+                                            {
+                                                item.InvoiceCancellation.InvoiceCancellationDispatchLog = new InvoiceCancellationDispatchLog
+                                                {
+                                                };
+                                            }
+                                            item.InvoiceCancellation.InvoiceCancellationDispatchLog.DispatchDate = DateTime.Now;
+                                            item.InvoiceCancellation.InvoiceCancellationDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+                                            models.SubmitChanges();
+                                        }
+                                    }
+                                    break;
+
+                                case Naming.DocumentTypeDefinition.E_Allowance:
+                                    var allowance = docItem.InvoiceAllowance;
+                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0401");
+                                    if (logItems?.Length > 0)
+                                    {
+                                        if (allowance.InvoiceAllowanceDispatchLog == null)
+                                        {
+                                            allowance.InvoiceAllowanceDispatchLog = new InvoiceAllowanceDispatchLog
+                                            {
+                                            };
+                                        }
+                                        allowance.InvoiceAllowanceDispatchLog.DispatchDate = DateTime.Now;
+                                        allowance.InvoiceAllowanceDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+                                        models.SubmitChanges();
+                                    }
+                                    break;
+
+                                case Naming.DocumentTypeDefinition.E_AllowanceCancellation:
+                                    allowance = docItem.DerivedDocument?.TargetDocument?.InvoiceAllowance;
+                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0501");
+                                    if (logItems?.Length > 0)
+                                    {
+                                        if (allowance.InvoiceAllowanceCancellation != null)
+                                        {
+
+                                        }
+
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                    File.Delete(f);
+
+                }
+                catch (Exception ex)
+                {
+                    ApplicationLogging.CreateLogger<CheckInvoiceDispatch>()
+                        .LogError(ex, ex.Message);
+                }
             }
         }
 
@@ -120,7 +253,7 @@ namespace WebHome.Helper.Jobs
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ApplicationLogging.CreateLogger<CheckInvoiceDispatch>()
                     .LogError(ex, ex.Message);
@@ -191,4 +324,20 @@ namespace WebHome.Helper.Jobs
             return current.AddMinutes(30);
         }
     }
+
+    public class TurnkeyLog
+    {
+        public string SEQNO { get; set; }
+        public string SUBSEQNO { get; set; }
+        public string STATUS { get; set; }
+        public string DocType { get; set; }
+        public string TrackCode { get; set; }
+        public string No { get; set; }
+        public string InvoiceNo { get; set; }
+        public DateTime? InvoiceDate { get; set; }
+        public string AllowanceNo { get; set; }
+        public DateTime? AllowanceDate { get; set; }
+        public DateTime? MESSAGE_DTS { get; set; }
+    }
+
 }
