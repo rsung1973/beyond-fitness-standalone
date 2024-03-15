@@ -64,7 +64,14 @@
                     <input type="checkbox" name="Extension" id="agree1" value="true" />
                     <label for="agree1">
                         展延：
-                        <span class="help-text">我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</span>
+                        @if (_item.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
+                        {
+                            <span class="help-text">我已閱讀並同意第2條自主訓練服務期間與展延申請之規定。</span>
+                        }
+                        else
+                        {
+                            <span class="help-text">我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</span>
+                        }
                     </label>
                 </div>
             </div>

@@ -73,9 +73,16 @@
                         </div>
                     </div>
                 </li>
-                @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
                 {
-
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">自主體能訓練場地使用費</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", totalCost))</div>
+                            </div>
+                        </div>
+                    </li>
                 }
                 else
                 {
@@ -95,15 +102,15 @@
                             </div>
                         </div>
                     </li>
-                }
-                <li>
-                    <div class="list_tb tb2">
-                        <div class="list_tr">
-                            <div class="list_td hd">專業顧問服務總費用</div>
-                            <div class="list_td rt">@(String.Format("{0:##,###,###,###}", totalCost))</div>
+                    <li>
+                        <div class="list_tb tb2">
+                            <div class="list_tr">
+                                <div class="list_td hd">專業顧問服務總費用</div>
+                                <div class="list_td rt">@(String.Format("{0:##,###,###,###}", totalCost))</div>
+                            </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
+                }
                 <li>
                     <div class="list_tb tb2">
                         <div class="list_tr">

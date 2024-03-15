@@ -54,9 +54,9 @@
                         IEnumerable<CourseContractMember> items;
                     }
                     @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CFA
-                        || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
-                        || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
-                        || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
+                       || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
+                       || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
+                       || _model.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF)
                     {
                         items = _model.CourseContractMember.Where(m => m.UID == _model.OwnerID);
                     }
@@ -82,16 +82,24 @@
                         </tr>
                         <tr>
                             <td colspan="3">地址：@(m.UserProfile.Address())</td>
-                        </tr>                        
-                    } 
+                        </tr>
+
+                    }
                     <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
                         <td colspan="3"><b>課程內容</b></td>
                     </tr>
                     <tr>
-                    <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.CurrentPrice.DurationInMinutes)分鐘)</td>
+                        @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
+                        {
+                            <td>名稱：自主體能訓練課程(@(_model.CurrentPrice.DurationInMinutes)分鐘)</td>
+                        }
+                        else
+                        {
+                            <td>名稱：@(_model.CourseContractType.TypeName)(@(_model.CurrentPrice.DurationInMinutes)分鐘)</td>
+                        }
                         <td colspan="2">
                             @if (_model.LessonPriceType.BranchStore?.IsVirtualClassroom() == true
-                                    || _model.CourseContractType.ForVirtaulClass)
+                               || _model.CourseContractType.ForVirtaulClass)
                             {
                                 <text>上課場所/簽約分店：遠距/@(_model.CourseContractExtension.BranchStore.BranchName)</text>
                             }
@@ -142,8 +150,14 @@
             </table>
             <table class="table" style="margin:0;padding:0;">
                 <tbody>
-                    @if (_model.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore)
+                    @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
                     {
+                        <tr>
+                            <td colspan="3">自主體能訓練場地使用費：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
+                        </tr>
+                        <tr style="border-width: 1px; border-bottom-style: dashed;">
+                            <td colspan="3">合約期間：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
+                        </tr>
                     }
                     else
                     {
@@ -151,13 +165,13 @@
                             <td>專業顧問建置與諮詢費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 8 + 5) / 10))</td>
                             <td colspan="2">教練課程費：@(String.Format("{0:##,###,###,###}", (_model.TotalCost * 2 + 5) / 10))</td>
                         </tr>
+                        <tr>
+                            <td colspan="3">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
+                        </tr>
                     }
-                    <tr>
-                        <td colspan="3">專業顧問服務總費用：@(String.Format("{0:##,###,###,###}", _model.TotalCost))</td>
-                    </tr>
-                    <tr>
-                        <td colspan="3">顧問服務使用期限：自 @(String.Format("{0:yyyy/MM/dd}", _model.ValidFrom)) 起，至 @(String.Format("{0:yyyy/MM/dd}", _model.Expiration)) 止。</td>
-                    </tr>
                     <tr style="border-width: 1px; border-top-style: dashed;background-color: #f2f2f2;">
                         <td colspan="3"><b>繳費內容</b></td>
                     </tr>
@@ -281,6 +295,21 @@
                     <tr>
                         @if (_model.ContractType == (int)CourseContractType.ContractTypeDefinition.CIA)
                         {
+                            if (_model.Status < (int)Naming.CourseContractStatus.待審核)
+                            {
+                                <td>
+                                    <label class="fancy-checkbox custom-bgcolor-pink">
+                                        <input type="checkbox" name="extension">
+                                        <span>展延：我已閱讀並同意第2條自主訓練服務期間與展延申請之規定。</span>
+                                    </label>
+                                </td>
+                            }
+                            else if (_viewModel.Pdf == "1")
+                            {
+                                <td style="padding:0;">
+                                    <b style="font-size:20px">☑</b> <b>展延：我已閱讀並同意第2條自主訓練服務期間與展延申請之規定。</b>
+                                </td>
+                            }
                         }
                         else
                         {
