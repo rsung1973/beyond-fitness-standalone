@@ -37,13 +37,16 @@
                 </ul>
                 <b>本場館依法向國泰產物保險股份有限公司承保公共意外責任險(現場、官網公告)。</b><br /><br />
                 <ul style="list-style-type:disc; padding-left: 15px; margin: 0;">
-                    <li>南京店預計簽約消費者數： 人。本場所現有簽約消費者數： 人。</li>
+                    @{ 
+                        var effectiveItems = models.PromptEffectiveContract();
+                    }
+                    <li>南京店預計簽約消費者數： 人。本場所現有簽約消費者數： @(effectiveItems.Where(c=>c.CourseContractExtension.BranchID == (int)Naming.BranchName.南京).Count())人。</li>
                     <li>南京店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
+                    <li>信義安和店預計簽約消費者數： 人。本場所現有簽約消費者數： @(effectiveItems.Where(c=>c.CourseContractExtension.BranchID == (int)Naming.BranchName.信義).Count())人。</li>
                     <li>信義安和店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
-                    <li>信義安和店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
+                    <li>忠孝店實際預計簽約消費者數： 人。本場所現有簽約消費者數： @(effectiveItems.Where(c=>c.CourseContractExtension.BranchID == (int)Naming.BranchName.忠孝).Count())人。</li>
                     <li>忠孝店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
-                    <li>忠孝店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
-                    <li>東門店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
+                    <li>東門店實際預計簽約消費者數： 人。本場所現有簽約消費者數： @(effectiveItems.Where(c=>c.CourseContractExtension.BranchID == (int)Naming.BranchName.東門).Count())人。</li>
                     <li>東門店實際可供學員使用之總面積： 平方公尺。本場所最大容留人數： 人。</li>
                 </ul>
             </td>

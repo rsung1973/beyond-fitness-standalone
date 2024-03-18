@@ -90,13 +90,13 @@ namespace WebHome.Helper.Jobs
             }
         }
 
-        private TurnkeyLog[] GetInvoiceTurnkeyLog(string invoiceNo,String docType)
+        private TurnkeyLog[] GetInvoiceTurnkeyLog(string invoiceNo,String docType,out String result)
         {
             using (WebClient client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
                 String url = $"{AppSettings.Default.TurnkeyCheckUrl}?InvoiceNo={invoiceNo}&DocType={docType}";
-                String result = client.DownloadString(url);
+                result = client.DownloadString(url);
                 if(result?.Length>0)
                 {
                     FileLogger.Logger.Info(result);
@@ -106,13 +106,13 @@ namespace WebHome.Helper.Jobs
             return null;
         }
 
-        private TurnkeyLog[] GetAllowanceTurnkeyLog(string allowanceNo, String docType)
+        private TurnkeyLog[] GetAllowanceTurnkeyLog(string allowanceNo, String docType,out String result)
         {
             using (WebClient client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
                 String url = $"{AppSettings.Default.TurnkeyCheckUrl}?AllowanceNo={allowanceNo}&DocType={docType}";
-                String result = client.DownloadString(url);
+                result = client.DownloadString(url);
                 if (result?.Length > 0)
                 {
                     return JsonConvert.DeserializeObject<TurnkeyLog[]>(result);
@@ -137,7 +137,7 @@ namespace WebHome.Helper.Jobs
                             {
                                 case Naming.DocumentTypeDefinition.E_Invoice:
                                     var item = docItem.InvoiceItem;
-                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0401");
+                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0401",out String result);
                                     if (logItems?.Length > 0)
                                     {
                                         if (item.InvoiceItemDispatchLog == null)
@@ -147,16 +147,27 @@ namespace WebHome.Helper.Jobs
                                             };
                                         }
                                         item.InvoiceItemDispatchLog.DispatchDate = DateTime.Now;
-                                        item.InvoiceItemDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+                                        item.InvoiceItemDispatchLog.Status = logItems[0].STATUS == "C"
+                                            ? (int)Naming.GeneralStatus.Successful
+                                            : logItems[0].STATUS == "E"
+                                                ? (int)Naming.GeneralStatus.Failed
+                                                : null;
 
                                         models.SubmitChanges();
-
+                                        if(item.InvoiceItemDispatchLog.Status.HasValue)
+                                        {
+                                            File.Delete(f);
+                                        }
+                                        else
+                                        {
+                                            File.WriteAllText(f, result);
+                                        }
                                     }
                                     break;
 
                                 case Naming.DocumentTypeDefinition.E_InvoiceCancellation:
                                     item = docItem.DerivedDocument?.TargetDocument?.InvoiceItem;
-                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0501");
+                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0501",out result);
                                     if (logItems?.Length > 0)
                                     {
                                         if (item.InvoiceCancellation != null)
@@ -168,15 +179,29 @@ namespace WebHome.Helper.Jobs
                                                 };
                                             }
                                             item.InvoiceCancellation.InvoiceCancellationDispatchLog.DispatchDate = DateTime.Now;
-                                            item.InvoiceCancellation.InvoiceCancellationDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+                                            item.InvoiceCancellation.InvoiceCancellationDispatchLog.Status = 
+                                                logItems[0].STATUS == "C"
+                                                    ? (int)Naming.GeneralStatus.Successful
+                                                    : logItems[0].STATUS == "E"
+                                                        ? (int)Naming.GeneralStatus.Failed
+                                                        : null;
                                             models.SubmitChanges();
+
+                                            if (item.InvoiceCancellation.InvoiceCancellationDispatchLog.Status.HasValue)
+                                            {
+                                                File.Delete(f);
+                                            }
+                                            else
+                                            {
+                                                File.WriteAllText (f, result);
+                                            }
                                         }
                                     }
                                     break;
 
                                 case Naming.DocumentTypeDefinition.E_Allowance:
                                     var allowance = docItem.InvoiceAllowance;
-                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0401");
+                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0401",out result);
                                     if (logItems?.Length > 0)
                                     {
                                         if (allowance.InvoiceAllowanceDispatchLog == null)
@@ -186,27 +211,44 @@ namespace WebHome.Helper.Jobs
                                             };
                                         }
                                         allowance.InvoiceAllowanceDispatchLog.DispatchDate = DateTime.Now;
-                                        allowance.InvoiceAllowanceDispatchLog.Status = logItems[0].STATUS == "C" ? (int)Naming.GeneralStatus.Successful : (int)Naming.GeneralStatus.Failed;
+                                        allowance.InvoiceAllowanceDispatchLog.Status =
+                                                logItems[0].STATUS == "C"
+                                                    ? (int)Naming.GeneralStatus.Successful
+                                                    : logItems[0].STATUS == "E"
+                                                        ? (int)Naming.GeneralStatus.Failed
+                                                        : null;
                                         models.SubmitChanges();
+
+                                        if(allowance.InvoiceAllowanceDispatchLog.Status.HasValue)
+                                        {
+                                            File.Delete(f);
+                                        }
+                                        else
+                                        {
+                                            File.WriteAllText(f, result);
+                                        }
                                     }
                                     break;
 
                                 case Naming.DocumentTypeDefinition.E_AllowanceCancellation:
                                     allowance = docItem.DerivedDocument?.TargetDocument?.InvoiceAllowance;
-                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0501");
+                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0501", out result);
                                     if (logItems?.Length > 0)
                                     {
                                         if (allowance.InvoiceAllowanceCancellation != null)
                                         {
 
                                         }
-
+                                        File.Delete(f);
                                     }
                                     break;
                             }
                         }
                     }
-                    File.Delete(f);
+                    else
+                    {
+                        File.Delete(f);
+                    }
 
                 }
                 catch (Exception ex)

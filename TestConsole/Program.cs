@@ -21,7 +21,7 @@ namespace TestConsole
                 //AppSettings.Default.BFDbConnection = "Password=beyond;Persist Security Info=True;User ID=bf;Initial Catalog=BeyondFitnessProd2;Data Source=vm-titan\\sqlexpress,1433;MultipleActiveResultSets=true;";
             }
 
-            //test03();
+            test03();
 
             //test02(args);
             //test01();
@@ -29,7 +29,8 @@ namespace TestConsole
             //test05();
             //test06();
 
-            (new CheckInvoiceDispatch()).DoJob();
+            //(new CheckInvoiceDispatch()).DoJob();
+            //test08();
 
         }
 
@@ -59,6 +60,51 @@ namespace TestConsole
                     catch (Exception ex)
                     {
                         Console.WriteLine($"Error:{item.InvoiceID},{item.TrackCode}{item.No}");
+                        FileLogger.Logger.Error(ex);
+                    }
+                }
+
+            }
+        }
+
+        private static void test07()
+        {
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                foreach (var item in models.GetTable<InvoiceItem>()
+                                        .Where(i=>models.GetTable<InvoiceCancellation>().Any(c=>c.InvoiceID==i.InvoiceID)))
+                {
+                    try
+                    {
+                        var c0501 = item.CreateC0501();
+                        c0501.ConvertToXml().Save(Path.Combine(FileLogger.Logger.LogDailyPath, $"C0401-{item.TrackCode}{item.No}.xml"));
+                        Console.Write("+");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error:{item.InvoiceID},{item.TrackCode}{item.No}");
+                        FileLogger.Logger.Error(ex);
+                    }
+                }
+
+            }
+        }
+
+        private static void test08()
+        {
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                foreach (var item in models.GetTable<InvoiceAllowance>())
+                {
+                    try
+                    {
+                        var d0401 = item.CreateD0401();
+                        d0401.ConvertToXml().Save(Path.Combine(FileLogger.Logger.LogDailyPath, $"D0401-{item.AllowanceNumber}.xml"));
+                        Console.Write("+");
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Error:{item.AllowanceID},{item.AllowanceNumber}");
                         FileLogger.Logger.Error(ex);
                     }
                 }
@@ -110,12 +156,12 @@ namespace TestConsole
             using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoice = models.GetTable<InvoiceItem>()
-                        .Where(i => i.TrackCode == "QZ")
-                        .Where(i => i.No == "05760009").FirstOrDefault();
+                        .Where(i => i.TrackCode == "XA")
+                        .Where(i => i.No == "95118096").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 14000, "退費", DateTime.Now);
+                    var allowance = models.PrepareAllowanceForPayment(payment, 14000, "退款", DateTime.Now);
                 }
             }
         }

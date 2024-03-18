@@ -1170,10 +1170,10 @@ namespace WebHome.Helper.BusinessOperation
                                 if (priceItem.Status == (int)Naming.LessonPriceStatus.運動恢復課程
                                     || priceItem.Status == (int)Naming.LessonPriceStatus.運動防護課程)
                                 {
-                                    if (viewModel.OrderLessons[i] > viewModel.OrderLessons[0])
-                                    {
-                                        ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{viewModel.OrderLessons[0]}單位");
-                                    }
+                                    //if (viewModel.OrderLessons[i] > viewModel.OrderLessons[0])
+                                    //{
+                                    //    ModelState.AddModelError($"OrderLessons,{i}", $"購買不可大於{viewModel.OrderLessons[0]}單位");
+                                    //}
                                 }
                                 else if (priceItem.Status == (int)Naming.LessonPriceStatus.營養課程)
                                 {
