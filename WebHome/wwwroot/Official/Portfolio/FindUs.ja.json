@@ -95,6 +95,50 @@
                     ],
                     "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
                 },
+                 {
+                    "MemberCode": "NU84688353",
+                    "Name": "許若宸",
+                    "NameDesc": "Zoe",
+                    "JobTitle": "副理",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(62.61 184.4)",
+                            "JobPosition": "translate(62.52 154.46)",
+                            "ImgXShifting": -40,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Take action will achieve the results that everyone dreams of.",
+                    "SloganDesc": "唯有採取行動的少數人能獲得大家都夢想的成果。",
+                    "Desc": "喜歡用輕鬆、細膩和耐心的方式與他人相處。透過實際體驗來了解事情的本源，同時具備靈活的特質，難以被框架侷限。",
+                    "License":[
+                        {
+                            "Name": "NASM",
+                        },
+                        {
+                            "Name": "EFA",
+                        }, 
+                        {
+                            "Name": "Z-TSCA",
+                        }, 
+                        {
+                            "Name": "SSI",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                    
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"hiking",
+                        },
+                        {
+                            "Name":"diving",
+                        }
+                    ],
+                    "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
+                },
                 {
                     "MemberCode": "CJ29229466",
                     "Name": "蔡恆易",
@@ -315,51 +359,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2021.2022超級體能聯賽團體組決賽</li></ul>"                    
-                },
-                {
-                    "MemberCode": "NU84688353",
-                    "Name": "許若宸",
-                    "NameDesc": "Zoe",
-                    "JobTitle": "私人教練",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(80.61 184.4)",
-                            "JobPosition": "translate(62.52 154.46)",
-                            "ImgXShifting": -40,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Take action will achieve the results that everyone dreams of.",
-                    "SloganDesc": "唯有採取行動的少數人能獲得大家都夢想的成果。",
-                    "Desc": "喜歡用輕鬆、細膩和耐心的方式與他人相處。透過實際體驗來了解事情的本源，同時具備靈活的特質，難以被框架侷限。",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "EFA",
-                        }, 
-                        {
-                            "Name": "Z-TSCA",
-                        }, 
-                        {
-                            "Name": "SSI",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                    
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
-                },
+                },               
                 {
                     "MemberCode": "DK80697151",
                     "Name": "蔣文寶",
