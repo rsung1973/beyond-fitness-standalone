@@ -38,7 +38,7 @@
                                                             EffectiveDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
                                                             EffectiveDateTo = DateTime.Today.FirstDayOfMonth(),
                                                             ContractQueryMode = (int)Naming.ContractServiceMode.ContractOnly,
-                                                            Status = (int)Naming.CourseContractStatus.已生效,
+                                                            //Status = (int)Naming.CourseContractStatus.已生效,
                                                         })));'>
                     <div class="icon">
                         <i class="zmdi livicon livicon-evo" data-options="name: box.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
@@ -59,7 +59,7 @@
                                                             EffectiveDateFrom = DateTime.Today.FirstDayOfMonth().AddMonths(-1),
                                                             EffectiveDateTo = DateTime.Today.FirstDayOfMonth(),
                                                             ContractQueryMode = (int)Naming.ContractServiceMode.ServiceOnly,
-                                                            Status = (int)Naming.CourseContractStatus.已生效,
+                                                            //Status = (int)Naming.CourseContractStatus.已生效,
                                                         })));'>
                     <div class="icon">
                         <i class="zmdi livicon livicon-evo" data-options="name: briefcase.svg; size: 60px; style: linesAlt; strokeWidth:2px; autoPlay:true"></i>
@@ -123,7 +123,7 @@
                         viewModel.EffectiveDateFrom = viewModel.DateFrom;
                         viewModel.EffectiveDateTo = moment(viewModel.DateTo).add(1, 'days').format('YYYY-MM-DD');
                         viewModel.ContractQueryMode = @((int)Naming.ContractServiceMode.ContractOnly);
-                        viewModel.Status = @((int)Naming.CourseContractStatus.已生效);
+                        @*viewModel.Status = @((int)Naming.CourseContractStatus.已生效);*@
                         downloadContractReport(viewModel);
                     }
                     $(data).appendTo($('body'));
@@ -149,7 +149,7 @@
                     $global.doQuery = function (viewModel) {
                         viewModel.EffectiveDateFrom = viewModel.DateFrom;
                         viewModel.EffectiveDateTo = moment(viewModel.DateTo).add(1, 'days').format('YYYY-MM-DD');
-                        viewModel.Status = @((int)Naming.CourseContractStatus.已生效);
+                        @*viewModel.Status = @((int)Naming.CourseContractStatus.已生效);*@
                         viewModel.ContractQueryMode = @((int)Naming.ContractServiceMode.ServiceOnly);
                         downloadServiceReport(viewModel);
                     }

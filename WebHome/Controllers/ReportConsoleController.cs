@@ -104,6 +104,7 @@ namespace WebHome.Controllers
                     遠距 = i.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || i.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? "是" : "",
                     教練BR = i.CourseContractExtension.BRByCoach.HasValue ? i.CourseContractExtension.BRCoach.FullName(false) : null,
                     學生BR = i.CourseContractExtension.BRByLearner.HasValue ? i.CourseContractExtension.BRLearner.RealName : null,
+                    是否續約 = i.Renewal == true ? "Y" : null,
                 });
 
 

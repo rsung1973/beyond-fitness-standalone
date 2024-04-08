@@ -629,39 +629,39 @@ namespace WebHome.Helper
         }
 
         public static TrainingPlan AssertLearnerTrainingPlan(this LessonTime item, GenericManager<BFDataContext> models, int UID, Naming.DocumentLevelDefinition? planStatus = null)
-            
         {
-
-            var lesson = item.GroupingLesson.RegisterLesson.Where(r => r.UID == UID).First();
-
-            var plan = item.TrainingPlan.Where(p => p.RegisterID == lesson.RegisterID).FirstOrDefault();
-            if (plan == null)
+            lock(typeof(LessonExtensionMethods))
             {
-                plan = item.TrainingPlan.Where(t => !t.RegisterID.HasValue).FirstOrDefault();
-                if (plan != null)
+                var lesson = item.GroupingLesson.RegisterLesson.Where(r => r.UID == UID).First();
+
+                var plan = item.TrainingPlan.Where(p => p.RegisterID == lesson.RegisterID).FirstOrDefault();
+                if (plan == null)
                 {
-                    plan.RegisterID = lesson.RegisterID;
+                    plan = item.TrainingPlan.Where(t => !t.RegisterID.HasValue).FirstOrDefault();
+                    if (plan != null)
+                    {
+                        plan.RegisterID = lesson.RegisterID;
+                        models.SubmitChanges();
+                    }
+                }
+
+                if (plan == null)
+                {
+                    plan = new TrainingPlan
+                    {
+                        RegisterID = lesson.RegisterID,
+                        PlanStatus = (int?)planStatus,
+                        TrainingExecution = new TrainingExecution
+                        {
+                        }
+                    };
+
+                    item.TrainingPlan.Add(plan);
                     models.SubmitChanges();
                 }
+
+                return plan;
             }
-
-            if (plan == null)
-            {
-                plan = new TrainingPlan
-                {
-                    RegisterID = lesson.RegisterID,
-                    PlanStatus = (int?)planStatus,
-                    TrainingExecution = new TrainingExecution
-                    {
-                    }
-                };
-
-                item.TrainingPlan.Add(plan);
-                models.SubmitChanges();
-            }
-
-            return plan;
-
         }
 
         public static PersonalExercisePurposeItem AssertPurposeItem(this UserProfile profile, GenericManager<BFDataContext> models,String purposeItem)

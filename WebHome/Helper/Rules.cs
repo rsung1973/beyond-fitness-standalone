@@ -29,7 +29,7 @@ namespace WebHome.Helper
                     (int)Naming.LessonPriceStatus.團體學員課程,
                     (int)Naming.LessonPriceStatus.運動恢復課程,
                     (int)Naming.LessonPriceStatus.運動防護課程,
-                    (int)Naming.LessonPriceStatus.營養課程,
+                    //(int)Naming.LessonPriceStatus.營養課程,   //Cami 為PT兼SD，SD課暫不計入 2024/3/31
         };
 
         public static readonly int?[] HSSessionScope = new int?[]

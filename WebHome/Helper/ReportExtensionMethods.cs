@@ -1408,6 +1408,11 @@ namespace WebHome.Helper
                         if (bonusIdx != null)
                         {
                             salary.AttendanceBonus = (int)((totalCount - bonusIdx[2]) * bonusIdx[1]);
+                            salary.PTAverageUnitPrice = bonusIdx[1];
+                        }
+                        else
+                        {
+                            salary.PTAverageUnitPrice = 0;
                         }
                     }
 

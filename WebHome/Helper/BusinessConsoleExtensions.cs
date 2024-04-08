@@ -587,7 +587,8 @@ namespace WebHome.Helper
                     coachIndicator.DealedCountWithBR = coachContractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
                     extensionItems = models.GetTable<CourseContractExtension>()
                                                                 .Where(n => !n.BRByCoach.HasValue);
-                    coachIndicator.TrialDealedCount = coachContractItems
+                    coachIndicator.TrialDealedCount = BRCountingItems
+                                    .Where(c => c.FitnessConsultant == coachIndicator.CoachID)
                                     .Where(c => c.Renewal == false)
                                     .Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
                                     .Count();
