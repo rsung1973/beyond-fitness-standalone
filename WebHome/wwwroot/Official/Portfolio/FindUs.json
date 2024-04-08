@@ -103,7 +103,7 @@
                         }
                     ],
                     "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
-                },          
+                },                         
                 {
                     "MemberCode": "CJ29229466",
                     "Name": "蔡恆易",
@@ -277,7 +277,6 @@
                     ],
                     "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>2003 救國團/企業瑜伽專任教練</li><li>攀登百岳#嘉明湖</li></ul>"                    
                 },
-
                 {
                     "MemberCode": "KE83515245",
                     "Name": "林哲儀",
@@ -324,16 +323,16 @@
                         }
                     ],
                     "Experience": "<ul><li>2021.2022超級體能聯賽團體組決賽</li></ul>"                    
-                },
+                },       
                 {
                     "MemberCode": "NU84688353",
                     "Name": "許若宸",
                     "NameDesc": "Zoe",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "副理",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(80.61 184.4)",
+                            "NamePosition": "translate(62.61 184.4)",
                             "JobPosition": "translate(62.52 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
@@ -368,7 +367,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
-                },
+                },          
                 {
                     "MemberCode": "DK80697151",
                     "Name": "蔣文寶",
