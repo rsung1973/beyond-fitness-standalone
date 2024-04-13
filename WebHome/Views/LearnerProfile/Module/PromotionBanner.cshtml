@@ -65,8 +65,8 @@
         </div>
         <script>
             $(".achivementRank").on("click", function (event) {
-                @*$('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))');*@
-                Swal.fire({
+                $('').launchDownload('@Html.Raw(Url.Action("AchievementRankingOverview", "ConsoleHome"))');
+                @*Swal.fire({
                     title: "想知道你的排名嗎？",
                     text: "春酒就揭曉！",
                     icon: "warning",
@@ -77,7 +77,7 @@
                     // if (result.isConfirmed) {
                     //   $("#editActionModal").modal('show');
                     // }
-                });
+                });*@
             });
         </script>
     </div>
