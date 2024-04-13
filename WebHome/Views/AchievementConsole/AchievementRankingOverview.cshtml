@@ -152,7 +152,7 @@
     CalcScores(PIRanking);
 
     var BRRanking = items.GroupBy(c => c.CoachID)
-                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualBRCount) })
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualBRCount+c.DealedCountWithBR) })
                         .OrderByDescending(s => s.Subtotal)
                         .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0 }).ToList();
     CalcScores(BRRanking);

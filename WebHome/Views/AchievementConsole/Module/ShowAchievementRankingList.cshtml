@@ -68,7 +68,7 @@
                                 <tr>
                                     <th>分店</th>
                                     <th>姓名</th>
-                                    <th>等級</th>
+                                    @* <th>等級</th> *@
                                     <th>累計業績金額</th>
                                     <th>工作月數</th>
                                     <th>平均業績金額</th>
@@ -92,7 +92,7 @@
                                     <tr>
                                         <td>@Html.Raw(d.BranchStore?.BranchName)</td>
                                         <td>@Html.Raw(d.ServingCoach.UserProfile.FullName())</td>
-                                        <td>@Html.Raw(d.ProfessionalLevel.LevelName)</td>
+                                        @* <td>@Html.Raw(d.ProfessionalLevel.LevelName)</td> *@
                                         <td>@($"{item[1]:##,###,###,###.##}")</td>
                                         <td>@($"{item[2]}")</td>
                                         <td>@($"{item[3]:##,###,###,###.00}")</td>
@@ -138,7 +138,7 @@
                 "bPaginate": true,
                 "info": true,
                 "order": [
-                    [5, 'desc']
+                    [4, 'desc']
                 ],
                 "language": {
                     "lengthMenu": "每頁顯示 _MENU_ 筆資料",
@@ -157,7 +157,7 @@
                     },
                 },
                 "columnDefs": [{
-                    targets: [0, 2, 3, 4, 5, 6, 7],
+                    targets: [2, 3, 4, 5, 6],
                     className: "align-center"
                 }],
                 scrollX: true,
