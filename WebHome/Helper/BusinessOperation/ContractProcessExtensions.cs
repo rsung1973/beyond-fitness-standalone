@@ -937,6 +937,7 @@ namespace WebHome.Helper.BusinessOperation
             }
 
             item = models.InitiateCourseContract2022(viewModel, profile, lessonPrice, paymentMethod: paymentMethod, draftOnly: draftOnly);
+            item.Installment = null;
             DateTime payoffDue = item.ContractDate.Value.AddMonths(1).FirstDayOfMonth();
             item.PayoffDue = payoffDue.AddDays(-1);
             if (storedPath != null)

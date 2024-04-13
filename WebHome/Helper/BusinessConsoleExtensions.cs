@@ -310,11 +310,13 @@ namespace WebHome.Helper
             CourseContractQueryViewModel contractQuery = new CourseContractQueryViewModel
             {
                 ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-                Status = (int)Naming.CourseContractStatus.已生效,
+                //Status = (int)Naming.CourseContractStatus.已生效,
                 EffectiveDateFrom = item.StartDate,
                 EffectiveDateTo = item.EndExclusiveDate,
             };
-            IQueryable<CourseContract> contractItems = contractQuery.InquireContract(models);
+            IQueryable<CourseContract> contractItems =
+                contractQuery.InquireContract(models)
+                    .Where(c => c.Status != (int)Naming.CourseContractStatus.已終止);
             IQueryable<CourseContract> BRCountingItems = contractItems.Where(c => !c.Installment.HasValue || c.Installment == false);
             IQueryable<CourseContract> installmentItems = contractItems.Where(c => c.Installment.HasValue);
             IQueryable<CourseContract> nonInstallmentItems = contractItems.Where(c => !c.Installment.HasValue);
@@ -581,17 +583,19 @@ namespace WebHome.Helper
                     coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
                     var extensionItems = models.GetTable<CourseContractExtension>()
                                             .Where(n => n.BRByCoach == coachIndicator.CoachID);
-                    coachIndicator.ActualBRCount = BRCountingItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
+                    coachIndicator.ActualBRCount = BRCountingItems.Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
+                                                    .Sum(c => c.CourseContractType.GroupingMemberCount) ?? 0;
                     extensionItems = models.GetTable<CourseContractExtension>()
-                                                                .Where(n => n.BRByCoach.HasValue);
-                    coachIndicator.DealedCountWithBR = coachContractItems.Count(c => extensionItems.Any(n => n.ContractID == c.ContractID));
+                                                                .Where(n => n.BRByCoach.HasValue || n.BRByLearner.HasValue);
+                    coachIndicator.DealedCountWithBR = coachContractItems.Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
+                                                            .Sum(c => c.CourseContractType.GroupingMemberCount) ?? 0;
                     extensionItems = models.GetTable<CourseContractExtension>()
                                                                 .Where(n => !n.BRByCoach.HasValue);
                     coachIndicator.TrialDealedCount = BRCountingItems
                                     .Where(c => c.FitnessConsultant == coachIndicator.CoachID)
                                     .Where(c => c.Renewal == false)
                                     .Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
-                                    .Count();
+                                    .Sum(c => c.CourseContractType.GroupingMemberCount) ?? 0;
                     models.SubmitChanges();
                 }
             }
