@@ -1484,32 +1484,29 @@
             "MRT":"Blue line (Bannan)  • MRT Zongxiao Fuxing station Exit 3 (or Exit 14 of East Metro Mall)",
             "MRTShort":"MRT Zongxiao Fuxing station Exit <b>3</b>",
             "GoogleMap": "https://maps.app.goo.gl/PqrY1V3N2U1HW64s8",
-            "BannerImgCount": 1,            
+            "BannerImgCount": 2,            
             "Slogan": "Let us guide you to become Healthy and Beautiful!",
             "SloganMessage": "<p>Do you often feel like your time is swallowed by busy family and work commitments,making it difficult to find your own precious time? We understand. We tailor special training programs that fits your need. </p><p class=\"d-block d-lg-none d-md-block\">When you have some free time,coming to Beyond will become the highlight of your day. Our trainers will accompany you like friends,carefully designing various relaxation training courses to help you relieve stress,exercise your body,find your balance and beauty. Through these courses,you can achieve your fitness goals in the shortest time and unlock a better figure and mental state. </p><p>Every workout is a chance for You to bloom and find your confidence. together,let's build a healthier,more vibrant future for you. </p>",
             "DemoImgItems":[
                 {
-                    "FileName": "demo01.png"
+                    "FileName": "demo08.png"
                 },
                 {
-                    "FileName": "demo02.png"
+                    "FileName": "demo09.png"
                 },
                 {
-                    "FileName": "demo03.png"
+                    "FileName": "demo10.png"
                 },
                 {
-                    "FileName": "demo04.png"
+                    "FileName": "demo11.png"
                 },
                 {
-                    "FileName": "demo05.png"
+                    "FileName": "demo12.png"
                 },
                 {
-                    "FileName": "demo06.png"
-                },
-                {
-                    "FileName": "demo07.png"
-                },
-            ],      
+                    "FileName": "demo13.png"
+                }
+            ],        
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
