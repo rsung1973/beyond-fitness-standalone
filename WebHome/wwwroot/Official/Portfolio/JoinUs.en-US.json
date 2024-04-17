@@ -1,15 +1,15 @@
 {    
     "Message":"Message·",
     "MessageDesc":"",
-    "MessageSlogan":"Accomplish yourself <br class=\"d-block d-lg-block d-md-none\"/>& make a difference <br/>in the world.",
-    "MessageContent1": "<b>Dear friend,</b><br /><br />This is a sincere invitation.<br /><br />Yes, we are looking for a team member who is passionate about helping others grow, improving their health, and making a positive impact on their lives.<br /><br />Beyond is a company that is focused, dedicated, and exudes joyful vibes. Here, we are more than just colleagues; we are each other's supporters and friends. We create an open, inclusive, and challenging work environment that fosters problem-solving skills, communication, and a sense of purpose in both work and life.<br /><br />We sincerely invite you to join the Beyond team and become an integral part of this family. Your expertise and passion will be valued and appreciated here, and you will find a sense of belonging. Let's work together to achieve greatness.",
+    "MessageSlogan":"Make a Difference <br/> in Yourself and the World",
+    "MessageContent1": "<b>Dear friend,</b><br /><br />This is a sincere invitation.<br /><br />Yes,we are looking for a team member who is passionate about helping others grow,improving their health,and making a positive impact on their lives.<br /><br />Beyond is a company that is focused,dedicated,professional and exudes joyful vibes. Here,we are more than just colleagues;we are each other's supporters and friends. We create an open, inclusive, and challenging work environment that fosters problem-solving skills, communication, and a sense of purpose in both work and life.<br /><br />We sincerely invite you to join the Beyond team and become an integral part of this family. Your expertise and passion will be valued and appreciated here, and you will find a sense of belonging. Let's work together to achieve greatness.",
     "MessageContent2": "We look forward to meeting you!<br /> See you soon !",
     "MessageFrom": "All members of the Beyond team",
     "Voice": "Voice·",
     "VoiceDesc": "About US",
     "VoiceSlogan1": "「Life becomes better」",
-    "VoiceSlogan2": "We are proud to help our customers shine.",
-    "VoiceMessage":"Listen to the genuine <br class=\"d-block d-lg-block d-md-none\" />thoughts of our team member.",
+    "VoiceSlogan2": "We are Proud to <br class=\"d-block d-lg-block d-md-none\" />Help Our Customers Shine",
+    "VoiceMessage":"The genuine thoughts <br class=\"d-block d-lg-block d-md-none\" />of our team member",
     "VoiceItem": [
         {
             "MemberCode": "BD56192749",
@@ -35,7 +35,7 @@
     "Traning": "Traning·",
     "TraningDesc": "System",
     "TraningMessageSlogan": "If you are enthusiastic, we will welcome you with open arms",
-    "TraningMessage": " In the Taiwanese fitness market, many trainers lack updated certifications, consistent regular training, and compliance with regulations regarding standardized consumer-friendly contracts. This has led to frequent disputes and potential risks within the industry.<br /><br />As a profession, trainers should be more organized, regulated, and valued. However, institutions that truly and consistently cultivate professional personal trainers are rare. Beyond Fitness is the first company in Taiwan to truly invest in this area. Our goal is to develop a personal trainer institution that can help society.<br /><br />In addition to our vision and dedication to our work, we are also a fun and interactive team. We are open to communication and collaboration. We achieve self-realization through continuous learning in creative and challenging environments. We work together on in-house training, assessments, training programs, and public service initiatives. We share laughter and grow together.",
+    "TraningMessage": "In the Taiwanese fitness market,many trainers lack updated certifications,consistent regular training,and compliance with regulations regarding standardized consumer-friendly contracts. This has led to frequent disputes and potential risks within the industry. <br /><br />As a profession,trainers should be more organized,regulated,and valued. However,institutions that truly and consistently cultivate professional personal trainers are rare. Beyond Fitness is the first company in Taiwan to truly invest in this area. Our goal is to develop a personal trainer institution that can help society.<br /><br />In addition to our vision and dedication to our work,we are also a fun and interactive team. We are open to communication and collaboration. We achieve self-realization through continuous learning in creative and challenging environments. We work together on in-house training,assessments,training programs,and public service initiatives. We share laughter and grow together.",
     "TraningItem":[
         {
             "ID": "Week",
@@ -102,7 +102,7 @@
                     "Content": "Practical assessment (Field, equipment and physical fitness assessment)",
                 },
                 {
-                    "Content": "General exercise assessment",
+                    "Content": "Mass sports assessment",
                 }
             ],
             "PlaceOrder": 2

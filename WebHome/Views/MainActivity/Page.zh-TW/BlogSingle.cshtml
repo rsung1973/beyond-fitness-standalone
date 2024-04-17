@@ -68,17 +68,37 @@
 <section class="section border-0 m-0 p-0 banner container-background pt-5">
     <div class="container pt-5 h-100">
         <div class="row align-items-center pt-5 h-100 text-center px-0 px-lg-5 px-md-0">
-            <div class="col-12 py-5 px-0 px-lg-5">                
-                <h2 class="text-color-tertiary font-weight-semi-bold mt-5 mb-2 text-uppercase d-flex justify-content-center">
-                    Orange Generation•
-                </h2>
-                <p class="text-color-light text-center title-tag-ls">
-                    <span class="text-color-grey">@Html.Raw(commonAll.Artical) /</span>
-                    @{ 
-                        var currentTag = _model.BlogTag.FirstOrDefault();
+            <div class="col-12 py-5 px-0 px-lg-5">    
+            @{
+                var currentTag = _model.BlogTag.FirstOrDefault();
+                    if (lang == "zh-TW" || lang== "ja")
+                    {
+                    <h2
+                        class="text-color-tertiary font-weight-semi-bold mt-5 mb-2 text-uppercase d-flex justify-content-center">                                    
+                        Orange Generation•
+                    </h2>
+                        <p class="text-color-light text-center title-tag-ls">
+                            <span class="text-color-grey">@Html.Raw(commonAll.Artical) /</span>
+                            
+                            @Html.Raw(currentTag?.BlogCategoryDefinition.BlogCategoryLocale.Where(l => l.Language == lang).FirstOrDefault()?.Category
+                                 ?? currentTag?.BlogCategoryDefinition.Category)
+                        </p>
                     }
-                    @Html.Raw(currentTag?.BlogCategoryDefinition.BlogCategoryLocale.Where(l=>l.Language==lang).FirstOrDefault()?.Category ?? currentTag?.BlogCategoryDefinition.Category)
-                </p>
+                    else { 
+                        <h2
+                            class="text-color-tertiary font-weight-semi-bold mt-5 mb-2 text-uppercase d-flex justify-content-center">
+                            @Html.Raw(currentTag?.BlogCategoryDefinition.BlogCategoryLocale.Where(l => l.Language ==
+                                 lang).FirstOrDefault()?.Category
+                                 ?? currentTag?.BlogCategoryDefinition.Category)
+                        </h2>
+                        <p class="text-color-light text-center title-tag-ls">
+                            <span class="text-color-grey">@Html.Raw(commonAll.Artical)</span>
+                        </p>
+                    }
+                }
+               
+                
+                
             </div>
         </div>
     </div>

@@ -1,16 +1,17 @@
 {
     "FAQ": "FAQ•",
     "FAQDesc": "Questions",
+    "MoreFaqs": "More FAQs",
     "QuestionItmes": [
         {
             "ID": "Q1",
             "Icon": "why.svg",
-            "Question": "Why Beyond?",
+            "Question": "Why chose Beyond?",
             "Answer":[
                 {
                     "Desc": "We offer proven professional training programs, personalized to your goals. We care deeply about your nutrition and health, providing expert guidance and tracking your progress. Our tailored training and escrow performance guarantee ensure you see results. These are our promises, and they make us your ideal place to find your personal trainer.",
                     "Table": "Service Differentiation Matrix",
-                    "TableNote": "※△：No all",
+                    "TableNote": "※△：Not all",
                     "TableRow1": "Beyond<br />Fitness",
                     "TableRow2": "Others",
                     "TableColumn1": "International Certification",
@@ -28,11 +29,11 @@
         {
             "ID": "Q2",
             "Icon": "clock.svg",
-            "Question": "Apart from the training lessons, can I go to Beyond to excise?",
+            "Question": "Can I go to Beyond at ANYTIME?",
             "Answer": [
                 {
-                    "Subject": "Yes. Apart from the training lessons, you can come to Beyond to excise. ",
-                    "Desc": "To insure our client the best fitness experience, Beyond Fitness will control the number of people in the gym. Any Beyond Fitness member can make an appointment with a trainer in advance to use the gym during non-training hours. We also provide a professional self-training P.I Session schedule tailored to your needs, so you can enjoy the fun of exercise anytime."
+                    "Subject": "Yes. Apart From the Training Lessons, You Can Come to Beyond to Excise.",
+                    "Desc": "To insure our client the best fitness experience, Beyond Fitness will control the number of people in the gym. Any Beyond Fitness member can make an appointment with a trainer in advance to use the gym during non-training hours. We also provide a professional self-training P.I Session, so you can enjoy a fun workout anytime you want."
                 }
             ],
         }, 
@@ -65,7 +66,7 @@
                         {
                             "ID": "B",
                             "Name": "Other service charges",
-                            "Content": "<p class=\"py-4 px-4 px-xl-4 px-lg-3\">Remote training sessions, nutritional counseling and planning, sports injury prevention, and sports massage and recovery services will be adjusted according to your actual needs and fitness condition, to help you achieve your greatest success.</p>" 
+                            "Content": "<p class=\"py-4 px-4 px-xl-4 px-lg-3\">Remote training sessions, nutritional counseling and planning, sports injury prevention, and recovery massage services will be adjusted according to your actual needs and fitness condition, to help you achieve your greatest success.</p>" 
                         },
                     ]
                 },
@@ -86,23 +87,23 @@
         {
             "ID": "Q5",
             "Icon": "coach.svg",
-            "Question": "可不可以指定教練？",
+            "Question": "Can I request a specific trainer? ",
             "Answer": [
                 {
-                    "Subject": "Beyond assist you to find your perfect personal trainer.",
+                    "Subject": "Beyond Assists You to Find Your Perfect Personal Trainer",
                     "Desc": "Beyond’s mission is to help you find a personal trainer who shares your goals and can provide you the best guidance. Whether your goals are fitness or lifestyle, Beyond can provide you with the most professional and personalized training services.",
                     "Items": [
                         {
                             "Author": "Sabrina",
                             "Subject": "Is what I think is suitable really suitable for me?",
                             "Content": "We often think that something is right for us, but we can't know for sure without actually trying it...",
-                            "LinkID": "82533",
+                            "LinkID": "83906",
                         },
                         {
                             "Author": "Bill",
-                            "Subject": "Being able to understand your problem is more important than providing a quick fix.",
+                            "Subject": "Understand Your Problem is More Important than Providing a Quick Fix",
                             "Content": "In this fast-paced world, we are so busy trying to solve problems that we forget what we really need....",
-                            "LinkID": "82540",
+                            "LinkID": "83907",
                         },
                     ]
                 }

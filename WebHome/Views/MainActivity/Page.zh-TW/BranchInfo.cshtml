@@ -180,7 +180,7 @@
         <div class="col-12 col-lg-5 px-5 pe-xl-5 pe-lg-0">
             <div
                 class="w-xl-75pct w-lg-100pct w-md-100pct w-sm-100pct float-none float-lg-end px-0 px-lg-0 px-md-5 ps-0 ps-lg-5 ps-md-5">
-                <h3 class="font-weight-bold line-height-5 text-start text-capitalize">@Html.Raw(branch.Slogan)</h3>
+                <h3 class="font-weight-bold line-height-5 text-start">@Html.Raw(branch.Slogan)</h3>
                 @Html.Raw(branch.SloganMessage)
             </div>
         </div>
@@ -290,7 +290,7 @@
                     </div>
                 </div>
                 <div class="row px-4 px-lg-0">
-                    <div class="col-auto pe-0 pe-xl-5 pe-lg-3 pe-md-0 me-0 me-xl-5 me-lg-0 me-md-0">
+                    <div class="col-auto">
                         <h3 class="font-weight-semi-bold positive-ls-5 mb-2">@Html.Raw(branch.Name)</h3>
                         <a href="tel:@Html.Raw(branch.TelDial)">
                             <p class="d-flex mb-2">@Html.Raw(branch.Tel)</p>
@@ -321,7 +321,7 @@
                                 data-appear-animation="customSVGLineAnim"></line>
                         </svg>
                     </div>
-                    <div class="col-12 col-lg-7 col-md-12 mt-3 mt-lg-0 mt-md-5">
+                    <div class="col-12 col-lg-7 col-md-12 mt-3 mt-lg-0 mt-md-5">					
                         <div class="row mt-2">
                             <div class="col-auto">
                                 <div class="d-flex align-items-center">
@@ -337,10 +337,8 @@
                                 <div class="d-flex align-items-start">
                                     <img width="25" src="../images/icons/clock.svg" alt="BeyondFitness|分店地址" class="mt-1" />
                                     <p class="mb-1 mb-0 ps-2 line-height-7">
-                                        @Html.Raw(findUsAll.WeekDays)<span
-                                            class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
-                                        @Html.Raw(findUsAll.Holiday)<span
-                                            class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoHolidayTime)
+                                        @Html.Raw(findUsAll.WeekDays)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
+                                        @Html.Raw(findUsAll.Holiday)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoHolidayTime)
                                     </p>
                                 </div>
                             </div>

@@ -1,12 +1,12 @@
 {
     "Info": "Information·",
-    "InfoDesc": "Branch Info",
-    "WeekDays": "WeekDays",
+    "InfoDesc": "Location Info",
+    "WeekDays": "Weekdays",
     "Holiday": "Holidays",    
     "Others": "Others•",
     "OthersDesc": "",                                   
     "Team": "OUR TEAM",   
-    "TeamSlogan": "We are here to help you.",    
+    "TeamSlogan": "We are Here to Help You",    
     "BranchItems": [
         {
             "ID": 1,
@@ -21,8 +21,8 @@
             "MRTShort":"MRT Taipei Arena Station Exit <b>1</b>",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
             "BannerImgCount": 1,  
-            "Slogan": "We believe that exercise is more than just a physical activity.",
-            "SloganMessage": "<p class=\"hidden-lg-down\">Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy, healthy, and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
+            "Slogan": "Exercise is More Than <br class=\"d-block d-lg-block d-md-none\" />a Physical Activity",
+            "SloganMessage": "<p>Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy,healthy,and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
             "DemoImgItems":[
                 {
                     "FileName": "Demo01.png"
@@ -43,11 +43,11 @@
                     "FileName": "Demo06.png"
                 }
             ],           
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
                 {
-                    "Content": "Exit 1 of MRT Taipei Arena "
+                    "Content": "Exit 1 of MRT Taipei Arena"
                 },
                 {
                     "Content": "Near Breeze Center"
@@ -609,7 +609,7 @@
             "MRTShort":"MRT Xinyi Anhe Station Exit <b>2A</b>",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
             "BannerImgCount": 1,  
-            "Slogan": "Beyond is an extension of your home.",
+            "Slogan": "Immerse yourself in our energetic vibes of sports!",
             "SloganMessage": "<p>Beyond believes that exercise is more than just a physical activity. It is a way of life, a way of loving and caring for ourselves. For modern working professionals, Beyond offers a unique space to combine exercise with style.<br /><br />This is not just a gym, it is a sanctuary after work, a place where the mind and body can resonate. At here, exercise is no longer a burden, but a pleasure, like working out at home.<br /><br /></p><p class=\"hidden-lg-down\">Through personalized training, cutting-edge equipment, and a vibrant community, we empower you to carve out balance in your work-filled days. Let your confidence blossom, your energy ignite. Let exercise become your sanctuary, your fuel, your limitless potential. Beyond awaits, ready to unlock your best self.</p>",
             "DemoImgItems":[
                 {
@@ -631,8 +631,8 @@
                     "FileName": "Demo06.png"
                 }
             ],              
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
                 {
                     "Content": "Exit 2A of the MRT Xinyi Anhe"
@@ -641,7 +641,7 @@
                     "Content": "Mega International Commercial Bank"
                 },
                 {
-                    "Content": "Lih-Jen International Private School campus."
+                    "Content": "Lih-Jen International Private School"
                 }
             ],
             "Coaches": [
@@ -1485,8 +1485,8 @@
             "MRTShort":"MRT Zongxiao Fuxing station Exit <b>3</b>",
             "GoogleMap": "https://maps.app.goo.gl/PqrY1V3N2U1HW64s8",
             "BannerImgCount": 1,            
-            "Slogan": "Every workout is a chance for you to bloom and find your confidence.",
-            "SloganMessage": "<p class=\"hidden-lg-down\">Do you often feel like your time is swallowed by busy family and work commitments, making it difficult to find your own precious time? We understand. We tailor special training programs that fits your need.</p><p>When you have some free time, coming to Beyond will become the highlight of your day. Our trainers will accompany you like friends, carefully designing various relaxation training courses to help you relieve stress, exercise your body, find your balance and beauty. Through these courses, you can achieve your fitness goals in the shortest time and unlock a better figure and mental state.<br /><br />Together, let's build a healthier, more vibrant future for you.<br /><br /></p>",
+            "Slogan": "Let us guide you to become Healthy and Beautiful!",
+            "SloganMessage": "<p>Do you often feel like your time is swallowed by busy family and work commitments,making it difficult to find your own precious time? We understand. We tailor special training programs that fits your need. </p><p class=\"d-block d-lg-none d-md-block\">When you have some free time,coming to Beyond will become the highlight of your day. Our trainers will accompany you like friends,carefully designing various relaxation training courses to help you relieve stress,exercise your body,find your balance and beauty. Through these courses,you can achieve your fitness goals in the shortest time and unlock a better figure and mental state. </p><p>Every workout is a chance for You to bloom and find your confidence. together,let's build a healthier,more vibrant future for you. </p>",
             "DemoImgItems":[
                 {
                     "FileName": "demo01.png"
@@ -1510,8 +1510,8 @@
                     "FileName": "demo07.png"
                 },
             ],      
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
                 {
                     "Content": "Exit 3 (B14) of MRT Zhongxiao Fuxing"
@@ -1912,7 +1912,7 @@
             "MRTShort":"MRT Dongmen Exit <b>3</b>",
             "GoogleMap": "https://maps.app.goo.gl/1VkxACVTrMTaFm3DA",
             "BannerImgCount": 3,  
-            "Slogan": "Through exercise, you see a more energetic self!",
+            "Slogan": "Reclaim your energetic self! ",
             "SloganMessage": "<p>Our trainers are more than instructors, they're your personal hype squad, pushing you to conquer your goals with a smile. <br /><br />No matter what your age, you can improve your strength, balance, and coordination, which will enable you to pursue better cardiovascular health. These efforts allow you to see a more energetic self and rekindle your passion for life.<br /><br /></p><p class=\"hidden-md-down\">This is an adventure about health and a journey of self-discovery. No matter how old you are, join us to create a vibrant and joyful exercise environment. Walk side by side with us and enjoy every moment of a healthy life!</p>",
             "DemoImgItems":[
                 {
@@ -1937,8 +1937,8 @@
                     "FileName": "demo07.png"
                 },
             ],  
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",        
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",        
             "FeatureItems":[
                 {
                     "Content": "Exit 3 of MRT Dongmen"

@@ -1,12 +1,12 @@
 {
-    "CentralAxisSlogan": "Beyond helps you <br class=\"hidden-sm-down\" />find your true self", 
-    "CentralAxisSloganDesc": "Providing diligent and heartfelt service<br /> is <span class=\"text-color-tertiary px-1\">BEYOND</span> top work ethic",
+    "CentralAxisSlogan": "Beyond Accompany You <br class=\"hidden-sm-down\" />to Find Your True Self", 
+    "CentralAxisSloganDesc": "Providing diligent and heartfelt service<br /> is <span class=\"text-color-tertiary px-1\">Beyond's</span> top work ethic.",
     "CentralAxisDescLg": "We listen to your needs and <Br class=\"hidden-lg-up\"/>assist you to achieve your goals. <Br />Your success is our greatest reward, <Br class=\"hidden-lg-up\"/>and with our passion and professionalism, <Br />we will craft a one-of-a-kind exercise experience that fits your needs.",
     "CentralAxisDescSm": "We listen to your needs and assist you to achieve your goals. Your success is our greatest reward, and with our passion and professionalism, we will craft a one-of-a-kind exercise experience that fits your needs.",
     "YoutubeSlogan": "Beyond <br />Personal Coach",
     "YoutubeLink": "https://www.youtube.com/watch?v=vOM38-QHzEU",
     "KeyPoint": "3&nbsp;Key<br />Point•",
-    "KeyPointDesc": "Service",
+    "KeyPointDesc": "Services",
     "KeyPoint_1": "Scientific",
     "KeyPoint_2": "One-Stop Medical",
     "KeyPoint_3": "Commitment",
@@ -15,7 +15,7 @@
     "KeyPoint_3_Subject": "Declaration of Trust",     
     "Voice": "VOICE•",
     "VoiceDesc": "About US",
-    "VoiceSlogan": "Find the personal coach <br /> who makes you love yourself and understand yourself.",
+    "VoiceSlogan": "Find the Trainer <br class=\"d-block d-lg-block d-md-none\"/>that Suits You Best",
     // "VoiceItem": [
     //     {
     //         "Type": "Blog",
@@ -70,10 +70,10 @@
     "News": "News•",
     "NewsDesc": "Article",
     "BookSlogan": "Choose<span class=\"text-color-tertiary ps-2\">Byoned</span>，<br />be your Best Partner",
-    "BookDesc1": "When you step into a gym, does the unfamiliar and uncertain environment make you doubt, \"Can I do this?",
+    "BookDesc1": "When you step into a gym, does the unfamiliar and uncertain environment make you doubt, \"Can I do this\" ?",
     "BookDesc2": "Make an appointment now and let Beyond be your best partner in your journey of change!",
     "Location": "Location•",
-    "LocationDesc": "Branch",   
+    "LocationDesc": "Branches",   
     "NewsItem": [
         // {
         //     "ImgName": "event01-img",
