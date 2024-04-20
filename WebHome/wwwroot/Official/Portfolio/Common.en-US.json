@@ -3,18 +3,18 @@
     "AboutUs": "About",
     "FindUs": "Branches",
     "Service": "Services",
-    "Session": "Traning",
+    "Session": "Programs",
     "FAQ": "FAQs",
     "JoinUs": "Join Us",
     "Booking": "Reservation",
     "Blog": "Blog",
 
     "PartnerMenu": "Partner",
-    "Partner": "Partner•",
-    "PartnerDesc": "Cooperation",
+    "Partner": "Partners•",
+    "PartnerDesc": "Corporations",
     "PartnerMessage": "At Beyond, we believe in exercise as a lifelong commitment to physical fitness. We collaborate with multiple partners to provide comprehensive services that empower our customers to reach their health and fitness aspirations.",    
 
-    "BookNow": "Let's get Start!",
+    "BookNow": "Let’s get started!",
     "JoinUsGo": "Join Us!",
     "ViewJobs": "View Job Openings",
 
@@ -162,7 +162,7 @@
         }
     ],
 
-    "Slogan":"Starts <br class=\"hidden-sm-up\" />with Liking Yourself",
+    "Slogan":"Starts from Liking Yourself",
     "SloganDesc":"",    
 
     "Experience": "Experience",

@@ -739,15 +739,36 @@ u {
 }
 .findus .banner .zhongxiao-1 {
   /* 預設的背景圖片 */
-  background-image: url("../images/banner/zhongxiao-lg.jpg");
+  background-image: url("../images/banner/zhongxiao-lg-1.jpg");
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .findus .banner .zhongxiao-1 {
+    background-position: top;
+    background-image: url("../images/banner/zhongxiao-sm-1.jpg") !important;
+  }
+}
+@media (max-width: 767px) {
+  .findus .banner .zhongxiao-1 {
+    background-position: bottom;
+    background-image: url("../images/banner/zhongxiao-sm-1.jpg") !important;
+  }
+}
+.findus .banner .zhongxiao-2 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/zhongxiao-lg-2.jpg");
   background-size: cover;
   background-position: bottom;
   height: 100vh;
   /* 手機版 */
 }
 @media (max-width: 767px) {
-  .findus .banner .zhongxiao-1 {
-    background-image: url("../images/banner/zhongxiao-sm.jpg") !important;
+  .findus .banner .zhongxiao-2 {
+    background-image: url("../images/banner/zhongxiao-sm-2.jpg") !important;
   }
 }
 .findus .banner .xinyianhe-1 {
@@ -906,7 +927,7 @@ u {
   }
 }
 .findus .slogan.container-background.zhongxiao {
-  background-image: url("../images/slogan/zhongxiao-lg.jpg");
+  background-image: url("../images/slogan/zhongxiao-lg-1.jpg");
   /* PC */
   /* iPad直板 */
   /* iPad直板+手機 */
@@ -918,13 +939,13 @@ u {
 }
 @media (max-width: 990px) and (min-width: 768px) {
   .findus .slogan.container-background.zhongxiao {
-    background-image: url("../images/slogan/zhongxiao-sm.jpg");
+    background-image: url("../images/slogan/zhongxiao-sm-1.jpg");
     height: 900px;
   }
 }
 @media (max-width: 767px) {
   .findus .slogan.container-background.zhongxiao {
-    background-image: url("../images/slogan/zhongxiao-sm.jpg");
+    background-image: url("../images/slogan/zhongxiao-sm-1.jpg");
   }
 }
 .findus .slogan.container-background.nanjing {

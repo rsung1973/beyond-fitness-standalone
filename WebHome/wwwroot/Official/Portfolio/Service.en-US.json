@@ -1,14 +1,14 @@
 {   
     "PT": "Personal<BR />Traniner·",
-    "PTDesc": "Craftsman",
+    "PTDesc": "Professional",
     "BFYoutube": "Beyond Fitness<Br />Youtube",
-    "PTSlogan": "A listening personal trainer is your best exercise partner.",
-    "PTMessage": "<p>Beyond Personal Trainers dive deep into your life, understanding your personality, habits, and desires. Then, using their knowledge of exercise science, psychology, physiology and kinesiology, they craft a custom program that's not just right for your body, but right for you. </p><p class=\"font-weight-semibold\">As you push towards your goals, they're there every step of the way, guiding you to become the strongest, happiest version of yourself.</p>",
+    "PTSlogan": "A Listening Professional Trainer <br class=\"d-none d-lg-block d-md-block\" />is Your Best Training Partner",
+    "PTMessage": "<p>Beyond Personal Trainers dive deep into your life to have a better understanding of your needs. Then,using their profession to craft a custom program that's not just right for your body, but right for you.</p><p class=\"font-weight-semibold\">As you push towards your goals, they're there every step of the way,guiding you to become the strongest,happiest version of yourself.</p>",
     "YoutubeLink1": "https://www.youtube.com/watch?v=SCLtJ4ONi7I",
     "YoutubeLink2": "https://www.youtube.com/watch?v=Igj6BP0ak9w",
     "Service": "Service·",
     "ServiceDesc": "Personalized",
-    "ServiceSlogan": "We <span class=\"text-color-tertiary\">care about</span> your health and well-being, <br />both in and out of the gym.",
+    "ServiceSlogan": "We <span class=\"text-color-tertiary\">Care About</span> Your Health and Well-being",
     "ServiceItems": [
         {
             "Name": "Scientific Method",
@@ -42,12 +42,12 @@
             "Items":[
                 {
                     "ID": "Recover",
-                    "Name": "Rehabilitation Massage Therapist ",
+                    "Name": "Recovery Massage",
                     "Desc": "Provide precise treatment for sports fatigue and injuries, and effectively reduce sports injuries."
                 },
                 {
                     "ID": "Nutrition",
-                    "Name": "Certified Nutritionist ",
+                    "Name": "Certified Nutritionist",
                     "Desc": "Personalized diet plan, attentively tracking body changes, and provide ongoing support for your daily meals.",
                     "Link": "Voice"
                 },
