@@ -34,9 +34,9 @@
 
 <script>
 
-    var brDevDT = @Html.Raw(items.Select(m=> m.BRCount>0 && m.ActualBRCount>0 ? Math.Round(m.ActualBRCount.Value*100M/m.BRCount.Value,2) : 0).JsonStringify());
-    var brDealDT = @Html.Raw(items.Select(m=> m.BRTrialCount>0 && m.DealedCountWithBR>0 ? Math.Round(m.DealedCountWithBR.Value*100M/m.BRTrialCount.Value,2) : 0).JsonStringify());
-    var vsitorDT = @Html.Raw(items.Select(m=> m.ExamTrialCount>0 && m.TrialDealedCount>0 ? Math.Round(m.TrialDealedCount.Value*100M/m.ExamTrialCount.Value,2) : 0).JsonStringify());
+    var brDevDT = @Html.Raw(items.Select(m=> m.BRCount>0 && m.FinalActualBRCount > 0 ? Math.Round(m.FinalActualBRCount.Value*100M/m.BRCount.Value,2) : 0).JsonStringify());
+    var brDealDT = @Html.Raw(items.Select(m=> m.BRTrialCount>0 && m.FinalDealedCountWithBR > 0 ? Math.Round(m.FinalDealedCountWithBR.Value*100M/m.BRTrialCount.Value,2) : 0).JsonStringify());
+    var vsitorDT = @Html.Raw(items.Select(m=> m.ExamTrialCount>0 && m.FinalTrialDealedCount > 0 ? Math.Round(m.FinalTrialDealedCount.Value*100M/m.ExamTrialCount.Value,2) : 0).JsonStringify());
 
     //指定圖表的配置項和資料
     $global.echarts.option = {

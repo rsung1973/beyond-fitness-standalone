@@ -112,9 +112,9 @@
                     <td>
                         @if (_currentItem?.BRCount > 0)
                         {
-                            <text>@(Math.Round((_currentItem.ActualBRCount ?? 0M) / _currentItem.BRCount.Value * 100M,2)) %</text>
+                            <text>@(Math.Round((_currentItem.FinalActualBRCount ?? 0M) / _currentItem.BRCount.Value * 100M,2)) %</text>
                         }
-                        else if (_currentItem?.ActualBRCount == 0)
+                        else if (_currentItem?.FinalActualBRCount == 0)
                         {
                             <text>0 %</text>
                         }
@@ -126,9 +126,9 @@
                     <td>
                         @if (_currentItem?.BRTrialCount > 0)
                         {
-                            <text>@(Math.Round((_currentItem.DealedCountWithBR ?? 0M) / _currentItem.BRTrialCount.Value * 100M,2)) %</text>
+                            <text>@(Math.Round((_currentItem.FinalDealedCountWithBR ?? 0M) / _currentItem.BRTrialCount.Value * 100M,2)) %</text>
                         }
-                        else if (_currentItem?.DealedCountWithBR == 0)
+                        else if (_currentItem?.FinalDealedCountWithBR == 0)
                         {
                             <text>0 %</text>
                         }
@@ -140,9 +140,9 @@
                     <td>
                         @if (_currentItem?.ExamTrialCount > 0)
                         {
-                            <text>@(Math.Round((_currentItem.TrialDealedCount ?? 0M) / _currentItem.ExamTrialCount.Value * 100M,2)) %</text>
+                            <text>@(Math.Round((_currentItem.FinalTrialDealedCount ?? 0M) / _currentItem.ExamTrialCount.Value * 100M,2)) %</text>
                         }
-                        else if (_currentItem?.TrialDealedCount == 0)
+                        else if (_currentItem?.FinalTrialDealedCount == 0)
                         {
                             <text>0 %</text>
                         }

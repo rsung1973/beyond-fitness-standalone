@@ -2321,6 +2321,9 @@
       <Column Name="TrialDealedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="BRTrialCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="ExamTrialCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjustActualBRCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjustDealedCountWithBR" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="AdjustTrialDealedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />

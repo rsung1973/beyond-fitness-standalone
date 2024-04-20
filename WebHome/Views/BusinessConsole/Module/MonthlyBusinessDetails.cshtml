@@ -95,7 +95,7 @@
             </td>
             <td>
                 @{
-                    var actualBRSubtotal = coachIndicatorItems.Sum(c => c.ActualBRCount);
+                    var actualBRSubtotal = coachIndicatorItems.Sum(c => c.ActualBRCount + c.AdjustActualBRCount);
                 }
                 @if (BRSubtotal > 0)
                 {
@@ -125,7 +125,7 @@
             </td>
             <td>
                 @{
-                    var dealedBRSubtotal = coachIndicatorItems.Sum(c => c.DealedCountWithBR);
+                    var dealedBRSubtotal = coachIndicatorItems.Sum(c => c.DealedCountWithBR+c.AdjustDealedCountWithBR);
                 }
                 @if (BRTrialSubtotal > 0)
                 {
@@ -155,7 +155,7 @@
             </td>
             <td>
                 @{
-                    var trialDealedSubtotal = coachIndicatorItems.Sum(c => c.TrialDealedCount);
+                    var trialDealedSubtotal = coachIndicatorItems.Sum(c => c.TrialDealedCount+c.AdjustTrialDealedCount);
                 }
                 @if (trialSubtotal > 0)
                 {

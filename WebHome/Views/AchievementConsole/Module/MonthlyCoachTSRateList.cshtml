@@ -47,14 +47,14 @@
         {
             <tr>
                 <td>@($"{item.MonthlyIndicator.StartDate:yyyyMM}")</td>
-                <td>@(item.ActualBRCount > 0 && item.BRCount > 0 ? Math.Round(item.ActualBRCount.Value*100M/item.BRCount.Value,2) : 0)%</td>
-                <td>@(item.ActualBRCount ?? 0)</td>
+                <td>@(item.FinalActualBRCount > 0 && item.BRCount > 0 ? Math.Round(item.FinalActualBRCount.Value*100M/item.BRCount.Value,2) : 0)%</td>
+                <td>@(item.FinalActualBRCount ?? 0)</td>
                 <td>@(item.BRCount ?? 0)</td>
-                <td>@(item.DealedCountWithBR ?? 0)</td>
-                <td>@(item.BRTrialCount>0 && item.DealedCountWithBR>0 ? Math.Round(item.DealedCountWithBR.Value*100M/item.BRTrialCount.Value,2) : 0)%</td>
+                <td>@(item.FinalDealedCountWithBR ?? 0)</td>
+                <td>@(item.BRTrialCount>0 && item.FinalDealedCountWithBR > 0 ? Math.Round(item.FinalDealedCountWithBR.Value*100M/item.BRTrialCount.Value,2) : 0)%</td>
                 <td>@(item.BRTrialCount ?? 0)</td>
-                <td>@(item.TrialDealedCount > 0 && item.ExamTrialCount > 0 ? Math.Round(item.TrialDealedCount.Value*100M/item.ExamTrialCount.Value,2) : 0)%</td>
-                <td>@(item.TrialDealedCount ?? 0)</td>
+                <td>@(item.FinalTrialDealedCount > 0 && item.ExamTrialCount > 0 ? Math.Round(item.FinalTrialDealedCount.Value*100M/item.ExamTrialCount.Value,2) : 0)%</td>
+                <td>@(item.FinalTrialDealedCount ?? 0)</td>
                 <td>@(item.ExamTrialCount ?? 0)</td>
             </tr>
         }

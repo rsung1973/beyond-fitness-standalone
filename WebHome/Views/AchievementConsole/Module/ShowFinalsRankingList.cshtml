@@ -20,7 +20,7 @@
     ViewBag.ReuseModal = true;
 
     var rankingItems = _model.GroupBy(c => c.CoachID)
-                    .Select(g => new object[] { (MonthlyCoachRevenueIndicator)g.First(), g.Sum(c=>c.ActualCompleteLessonCount), g.Sum(c => c.InstallmentAchievement), g.Sum(c=>c.ActualCompletePICount), g.Sum(c => c.ActualBRCount), 0 })
+                    .Select(g => new object[] { (MonthlyCoachRevenueIndicator)g.First(), g.Sum(c => c.ActualCompleteLessonCount), g.Sum(c => c.InstallmentAchievement), g.Sum(c => c.ActualCompletePICount), g.Sum(c => c.ActualBRCount + c.AdjustActualBRCount), 0 })
                     .ToList();
 
     CalcScores(rankingItems, 1);

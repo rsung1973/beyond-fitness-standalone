@@ -683,7 +683,7 @@ namespace WebHome.Models.DataEntity
             PIOnly = 2,
             LimitedAccount = 4,
             Anonymous = 8,
-            RegularCustomer = 16,
+            RegularCustomer = 16,   // <2020/1/1 建檔學員
         }
     }
 
@@ -695,6 +695,10 @@ namespace WebHome.Models.DataEntity
                     + (ATCount ?? 0)
                     + (SRCount ?? 0)
                     + (SDCount ?? 0);
+
+        public int? FinalActualBRCount { get => (ActualBRCount ?? 0) + (AdjustActualBRCount ?? 0); }
+        public int? FinalDealedCountWithBR { get => (DealedCountWithBR ?? 0) + (AdjustDealedCountWithBR ?? 0); }
+        public int? FinalTrialDealedCount { get => (TrialDealedCount ?? 0) + (AdjustTrialDealedCount ?? 0); }
     }
 
     public partial class BranchStore

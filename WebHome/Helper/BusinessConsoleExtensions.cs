@@ -168,6 +168,9 @@ namespace WebHome.Helper
                         //    ? (c.ActualLessonAchievement + c.ActualCompleteLessonCount - 1) / actualCount
                         //    : 0,
                         AverageLessonPrice = sampleItem.CalculateAverageLessonPrice(models, c.CoachID),
+                        AdjustActualBRCount = 0,
+                        AdjustDealedCountWithBR = 0,
+                        AdjustTrialDealedCount = 0,
                     };
                     newItem.LessonTuitionGoal = newItem.CompleteLessonsGoal * newItem.AverageLessonPrice;
 

@@ -371,6 +371,9 @@ namespace WebHome.Controllers
                     CoachID = viewModel.CoachID.Value,
                     BranchID = viewModel.BranchID,
                     LevelID = coach.LevelID,
+                    AdjustActualBRCount = 0,
+                    AdjustDealedCountWithBR = 0,
+                    AdjustTrialDealedCount = 0,
                 };
                 models.GetTable<MonthlyCoachRevenueIndicator>().InsertOnSubmit(item);
 

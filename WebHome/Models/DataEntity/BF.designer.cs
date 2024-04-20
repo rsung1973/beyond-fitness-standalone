@@ -60110,6 +60110,12 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _ExamTrialCount;
 		
+		private System.Nullable<int> _AdjustActualBRCount;
+		
+		private System.Nullable<int> _AdjustDealedCountWithBR;
+		
+		private System.Nullable<int> _AdjustTrialDealedCount;
+		
 		private EntityRef<BranchStore> _BranchStore;
 		
 		private EntityRef<MonthlyIndicator> _MonthlyIndicator;
@@ -60202,6 +60208,12 @@ namespace WebHome.Models.DataEntity
     partial void OnBRTrialCountChanged();
     partial void OnExamTrialCountChanging(System.Nullable<int> value);
     partial void OnExamTrialCountChanged();
+    partial void OnAdjustActualBRCountChanging(System.Nullable<int> value);
+    partial void OnAdjustActualBRCountChanged();
+    partial void OnAdjustDealedCountWithBRChanging(System.Nullable<int> value);
+    partial void OnAdjustDealedCountWithBRChanged();
+    partial void OnAdjustTrialDealedCountChanging(System.Nullable<int> value);
+    partial void OnAdjustTrialDealedCountChanged();
     #endregion
 		
 		public MonthlyCoachRevenueIndicator()
@@ -61061,6 +61073,69 @@ namespace WebHome.Models.DataEntity
 					this._ExamTrialCount = value;
 					this.SendPropertyChanged("ExamTrialCount");
 					this.OnExamTrialCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjustActualBRCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=41)]
+		public System.Nullable<int> AdjustActualBRCount
+		{
+			get
+			{
+				return this._AdjustActualBRCount;
+			}
+			set
+			{
+				if ((this._AdjustActualBRCount != value))
+				{
+					this.OnAdjustActualBRCountChanging(value);
+					this.SendPropertyChanging();
+					this._AdjustActualBRCount = value;
+					this.SendPropertyChanged("AdjustActualBRCount");
+					this.OnAdjustActualBRCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjustDealedCountWithBR", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=42)]
+		public System.Nullable<int> AdjustDealedCountWithBR
+		{
+			get
+			{
+				return this._AdjustDealedCountWithBR;
+			}
+			set
+			{
+				if ((this._AdjustDealedCountWithBR != value))
+				{
+					this.OnAdjustDealedCountWithBRChanging(value);
+					this.SendPropertyChanging();
+					this._AdjustDealedCountWithBR = value;
+					this.SendPropertyChanged("AdjustDealedCountWithBR");
+					this.OnAdjustDealedCountWithBRChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AdjustTrialDealedCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=43)]
+		public System.Nullable<int> AdjustTrialDealedCount
+		{
+			get
+			{
+				return this._AdjustTrialDealedCount;
+			}
+			set
+			{
+				if ((this._AdjustTrialDealedCount != value))
+				{
+					this.OnAdjustTrialDealedCountChanging(value);
+					this.SendPropertyChanging();
+					this._AdjustTrialDealedCount = value;
+					this.SendPropertyChanged("AdjustTrialDealedCount");
+					this.OnAdjustTrialDealedCountChanged();
 				}
 			}
 		}

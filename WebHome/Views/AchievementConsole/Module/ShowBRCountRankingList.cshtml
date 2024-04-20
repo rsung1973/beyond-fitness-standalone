@@ -20,7 +20,7 @@
     ViewBag.ReuseModal = true;
 
     var lessonCountRanking = _model.GroupBy(c => c.CoachID)
-                    .Select(g => new { DataItem = g.First(), Subtotal = g.Sum(c => c.ActualBRCount), DealSubtotal = g.Sum(c => c.DealedCountWithBR) })
+                    .Select(g => new { DataItem = g.First(), Subtotal = g.Sum(c => c.ActualBRCount+c.AdjustActualBRCount), DealSubtotal = g.Sum(c => c.DealedCountWithBR+c.AdjustDealedCountWithBR) })
                     .OrderByDescending(s => (s.Subtotal+s.DealSubtotal)).ToList();
 }
 <div class="modal" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
