@@ -7,6 +7,7 @@
     "OthersDesc": "其他分店",                               
     "Team": "OUR TEAM",   
     "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
+    "MapImg": "map.svg",
     "BranchItems": [
         {
             "ID": 1,
@@ -44,7 +45,7 @@
                 }
             ],           
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoHolidayTime": "AM 08:00- PM 22:00",            
             "FeatureItems":[
                 {
                     "Content": "捷運小巨蛋1號出口，走路約1分鐘可以抵達。"

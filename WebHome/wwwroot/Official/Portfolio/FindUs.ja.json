@@ -5,6 +5,9 @@
     "Holiday": "休日",
     "Others": "Others•",
     "OthersDesc": "其他分店",       
+    "Team": "OUR TEAM",   
+    "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
+    "MapImg": "map.svg",
     "BranchItems": [
         {
             "ID": 1,

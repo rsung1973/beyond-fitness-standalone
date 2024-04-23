@@ -6,7 +6,8 @@
     "Others": "Others•",
     "OthersDesc": "",                                   
     "Team": "OUR TEAM",   
-    "TeamSlogan": "We are Here to Help You",    
+    "TeamSlogan": "We are Here to Help You",  
+    "MapImg": "map_en.svg",  
     "BranchItems": [
         {
             "ID": 1,
@@ -144,8 +145,8 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(80.31 183.4)",
-                            "JobPosition": "translate(85.31 153.46)",
+                            "NamePosition": "translate(75.31 183.4)",
+                            "JobPosition": "translate(75.31 153.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -323,8 +324,8 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(62.61 184.4)",
-                            "JobPosition": "translate(62.52 154.46)",
+                            "NamePosition": "translate(32.61 184.4)",
+                            "JobPosition": "translate(32.52 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
