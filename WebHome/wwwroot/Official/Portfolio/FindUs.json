@@ -7,6 +7,7 @@
     "OthersDesc": "其他分店",                               
     "Team": "OUR TEAM",   
     "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
+    "MapImg": "map.svg",
     "BranchItems": [
         {
             "ID": 1,
@@ -44,7 +45,7 @@
                 }
             ],           
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoHolidayTime": "AM 08:00- PM 22:00",            
             "FeatureItems":[
                 {
                     "Content": "捷運小巨蛋1號出口，走路約1分鐘可以抵達。"
@@ -1493,31 +1494,28 @@
             "MRT":"板南線(藍線) • 忠孝復興站3號出口（地下街14號出口）",
             "MRTShort":"捷運忠孝復興站<b>3號</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/PqrY1V3N2U1HW64s8",
-            "BannerImgCount": 1,            
+            "BannerImgCount": 2,            
             "Slogan": "每次的鍛鍊，<br class=\"hidden-md-down\" />都是幫助您重新找回綻放與自信。",
             "SloganMessage": "<p class=\"hidden-lg-down\">是否常常感到自己的時間都被忙碌的家庭與工作佔據，難以找到屬於自己的寶貴時光？我們明白你的需求，在這邊我們特別設計了獨特的運動訓練。</p><p>在休閒的空檔時間，來到Beyond，將是你每天期待的時刻。我們的教練就像你的朋友一樣，將細心陪伴著你，設計各種放鬆訓練課程幫助你釋放壓力，鍛鍊身材，在短時間內不僅能夠鍛鍊身材，還能找到自己的平衡和美麗，擁有更好的身體和精神狀態。<br /><br />讓我們陪伴著你們，一同走向更加健康和美麗的未來。<br /><br /></p>",
             "DemoImgItems":[
                 {
-                    "FileName": "demo01.png"
+                    "FileName": "demo08.png"
                 },
                 {
-                    "FileName": "demo02.png"
+                    "FileName": "demo09.png"
                 },
                 {
-                    "FileName": "demo03.png"
+                    "FileName": "demo10.png"
                 },
                 {
-                    "FileName": "demo04.png"
+                    "FileName": "demo11.png"
                 },
                 {
-                    "FileName": "demo05.png"
+                    "FileName": "demo12.png"
                 },
                 {
-                    "FileName": "demo06.png"
-                },
-                {
-                    "FileName": "demo07.png"
-                },
+                    "FileName": "demo13.png"
+                }
             ],      
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
             "InfoHolidayTime": "AM 08:00- PM 22:00",

@@ -324,8 +324,8 @@
                     <div class="col-12 col-lg-7 col-md-12 mt-3 mt-lg-0 mt-md-5">					
                         <div class="row mt-2">
                             <div class="col-auto">
-                                <div class="d-flex align-items-center">
-                                    <img width="26" src="../images/icons/location.svg" alt="BeyondFitness|分店地址" />
+                                <div class="d-flex align-items-start">
+                                    <img width="26" src="../images/icons/location.svg" alt="BeyondFitness|分店地址" class="mt-1" />
                                     <p class="my-1 d-inline-flex ps-2 line-height-3">
                                         <a href="@Html.Raw(branch.GoogleMap)" target="_blank">@Html.Raw(branch.AddLong)</a>
                                     </p>
@@ -369,7 +369,7 @@
             </div>
             <div class="col-12 col-lg-5 col-md-12 align-self-center mt-5">
                 <a href="@Html.Raw(branch.GoogleMap)" target="_blank">
-                    <img src="../images/findus/@Html.Raw(subClass)/map.svg" alt="BeyondFitness|地圖" class="map-img">
+                    <img src="../images/findus/@Html.Raw(subClass)/@Html.Raw(findUsAll.MapImg)" alt="BeyondFitness|地圖" class="map-img">
                 </a>
             </div>
         </div>
