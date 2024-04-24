@@ -21,7 +21,7 @@ namespace TestConsole
                 //AppSettings.Default.BFDbConnection = "Password=beyond;Persist Security Info=True;User ID=bf;Initial Catalog=BeyondFitnessProd2;Data Source=vm-titan\\sqlexpress,1433;MultipleActiveResultSets=true;";
             }
 
-            test03();
+            //test03();
 
             //test02(args);
             //test01();
@@ -31,6 +31,19 @@ namespace TestConsole
 
             //(new CheckInvoiceDispatch()).DoJob();
             //test08();
+
+            System.Diagnostics.Debugger.Launch();
+            if(args.Length > 0 && int.TryParse(args[0],out int periodID))
+            {
+                using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+                {
+                    var item = models.GetTable<MonthlyIndicator>().Where(m => m.PeriodID == periodID).FirstOrDefault();
+                    if (item != null)
+                    {
+                        item.UpdateMonthlyAchievement(models);
+                    }
+                }
+            }
 
         }
 

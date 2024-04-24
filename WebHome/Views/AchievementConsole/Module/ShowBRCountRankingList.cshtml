@@ -20,8 +20,11 @@
     ViewBag.ReuseModal = true;
 
     var lessonCountRanking = _model.GroupBy(c => c.CoachID)
-                    .Select(g => new { DataItem = g.First(), Subtotal = g.Sum(c => c.ActualBRCount+c.AdjustActualBRCount), DealSubtotal = g.Sum(c => c.DealedCountWithBR+c.AdjustDealedCountWithBR) })
-                    .OrderByDescending(s => (s.Subtotal+s.DealSubtotal)).ToList();
+                    .Select(g => new { DataItem = g.First(), Subtotal = g.Sum(c => c.ActualBRCount + c.AdjustActualBRCount), DealSubtotal = g.Sum(c => c.DealedCountWithBR + c.AdjustDealedCountWithBR) })
+                    .OrderByDescending(s => (s.Subtotal + s.DealSubtotal))
+                    .ThenByDescending(s => s.Subtotal)
+                    .ThenByDescending(s => s.DealSubtotal)
+                    .ToList();
 }
 <div class="modal" tabindex="-1" role="dialog" id="@(_dialogID)" aria-labelledby="exampleModalLongTitle"
      aria-hidden="true">
@@ -48,15 +51,22 @@
                                 @{ 
                                     int idx = 0;
                                     int? current = 0;
+                                    int? subtotal = 0, dealSubtotal = 0;
                                 }
                                 @foreach (var item in lessonCountRanking)
                                 {
                                     var d = item.DataItem;
-                                    if(current!=(item.Subtotal+item.DealSubtotal))
+                                    if (current != (item.Subtotal + item.DealSubtotal))
+                                    {
+                                        idx++;
+                                    }
+                                    else if (subtotal != item.Subtotal && dealSubtotal != item.DealSubtotal)
                                     {
                                         idx++;
                                     }
                                     current = item.Subtotal + item.DealSubtotal;
+                                    subtotal = item.Subtotal;
+                                    dealSubtotal = item.DealSubtotal;
                                     <tr>
                                         <td>@Html.Raw(d.BranchStore?.BranchName)</td>
                                         <td>@Html.Raw(d.ServingCoach.UserProfile.FullName())</td>

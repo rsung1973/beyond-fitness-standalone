@@ -14,16 +14,18 @@
     ModelStateDictionary _modelState;
     UserProfile _model;
     MonthlyIndicatorQueryViewModel _viewModel;
-    IQueryable<ServingCoach> coachItems;
     List<decimal?[]> countableBase;
     int baseCount;
 
     void CalcScores(List<decimal?[]> items)
     {
         int index = 0;
-        foreach (var g in items.GroupBy(s => s[1]).OrderByDescending(g => g.Key))
+        foreach (var g in items.GroupBy(s => new { Subtotal = s[1], ActualBR = s[3], DealedBR = s[4] })
+            .OrderByDescending(g => g.Key.Subtotal)
+            .ThenByDescending(g => g.Key.ActualBR)
+            .ThenByDescending(g => g.Key.DealedBR))
         {
-            if (g.Key > 0)
+            if (g.Key.Subtotal > 0)
             {
                 foreach (var item in g)
                 {
@@ -59,6 +61,8 @@
             if(target!=null)
             {
                 target[2] += s[2];
+                target[3] += s[3];
+                target[4] += s[4];
                 if (s[1]>0)
                 {
                     target[1] = s[1];
@@ -137,24 +141,24 @@
     //int?[][3] { CoachID, Subtotal, Scores }
     var lessonCountRanking = items.GroupBy(c => c.CoachID)
                         .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.PTCount) })
-                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0 }).ToList();
+                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0, 0, 0 }).ToList();
     CalcScores(lessonCountRanking);
 
     var achievementRanking = items.GroupBy(c => c.CoachID)
                         .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.InstallmentAchievement) })
-                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0 }).ToList();
+                        .Select(s => new decimal?[] { s.CoachID, CalcAverage(s.CoachID, s.Subtotal), 0, 0, 0 }).ToList();
     CalcScores(achievementRanking);
 
     var PIRanking = items.GroupBy(c => c.CoachID)
                         .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualCompletePICount) })
                         .OrderByDescending(s => s.Subtotal)
-                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0 }).ToList();
+                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0, 0, 0 }).ToList();
     CalcScores(PIRanking);
 
     var BRRanking = items.GroupBy(c => c.CoachID)
-                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualBRCount + c.DealedCountWithBR + c.AdjustActualBRCount + c.AdjustDealedCountWithBR) })
+                        .Select(g => new { CoachID = g.Key, Subtotal = g.Sum(c => c.ActualBRCount + c.DealedCountWithBR + c.AdjustActualBRCount + c.AdjustDealedCountWithBR), ActualBR = g.Sum(c => c.ActualBRCount + c.AdjustActualBRCount), DealedBR = g.Sum(c => c.DealedCountWithBR + c.AdjustDealedCountWithBR) })
                         .OrderByDescending(s => s.Subtotal)
-                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0 }).ToList();
+                        .Select(s => new decimal?[] { s.CoachID, s.Subtotal, 0, s.ActualBR, s.DealedBR }).ToList();
     CalcScores(BRRanking);
 
 

@@ -159,6 +159,9 @@ namespace WebHome.Controllers
                                 CoachID = coach.CoachID,
                                 BranchID = coach.CoachWorkplace.First().BranchID,
                                 LevelID = coach.LevelID,
+                                AdjustActualBRCount = 0,
+                                AdjustDealedCountWithBR = 0,
+                                AdjustTrialDealedCount = 0,
                             };
                             models.GetTable<MonthlyCoachRevenueIndicator>().InsertOnSubmit(item);
 
