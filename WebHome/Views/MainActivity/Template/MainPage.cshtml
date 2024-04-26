@@ -307,7 +307,7 @@
                                             href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/JoinUs"))"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.JoinUs)</a></li>
                                     <li class="ps-0 text-4"><a
-                                            href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { DocID = 81295 }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+                                            href="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { DocID = commonAll.BlogLink }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
                                             class="link-hover-style-1 ms-1">@Html.Raw(commonAll.Blog)</a></li>
                                     <li class="ps-0 text-4"><a
                                             href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/PartnerInfo"))"
