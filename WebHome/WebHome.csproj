@@ -139,6 +139,7 @@
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\MyTest\" />
     <Folder Include="Views\SystemInfo\" />
+    <Folder Include="wwwroot\LearnerActivity\" />
   </ItemGroup>
 
   <ItemGroup>

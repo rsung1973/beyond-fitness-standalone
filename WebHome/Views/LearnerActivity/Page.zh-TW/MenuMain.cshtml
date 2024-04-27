@@ -1,0 +1,146 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+}
+
+<div class="menu-header mb-2">
+
+    <!-- <a href="#" data-toggle-theme class="border-right-0 show-on-theme-dark"><i class="fa fa-lightbulb font-30 color-beyondwhite-light opacity-30"></i></a>
+
+    <a href="#" data-toggle-theme class="border-right-0 show-on-theme-light"><i class="fas fa-moon font-30 color-beyondwhite-light"></i></a>
+
+    <a href="profile.html" class="border-right-0"><i class="fa font-30 color-beyondwhite-light fa-cog"></i></a>
+
+    <a href="#" class="border-right-0"><i class="fa-solid fa-right-from-bracket font-30 color-beyondwhite-light"></i></a>-->
+
+    <a href="#" class="close-menu border-right-0 text-end pe-3 mt-3"><i class="fa font-30 color-white fa-times"></i></a>
+
+</div>
+
+
+
+<div class="menu-logo text-center">
+
+    <div class="avatar">
+
+        <a href="setting.html">
+            <img class="avatar-rounded-circle" src="../images/avatars/garfaild.png">
+
+            <em class="badge color-beyondblue-light"><i class="fa-thin fa-pen font-20 fa-rotate-90"></i></em>
+
+        </a>
+
+    </div>
+
+    <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">劉加菲</h1>
+
+    <p class="font-15 font-600 color-beyondred-dark d-block custom-font-secondary fst-italic">Start from Liking Yourself</p>
+
+</div>
+
+
+
+<div class="menu-items mb-4 text-center">
+
+    <!-- <h5 class="text-uppercase opacity-20 font-12 pl-3">Menu</h5> -->
+
+    <a id="nav-welcome" href="index.html">
+
+        <span class="font-20 ps-0 color-white">任務牆</span>
+
+    </a>
+
+    <a id="nav-book" href="contactbook.html">
+
+        <span class="font-20 ps-0 color-white">運動日誌</span>
+
+    </a>
+
+    <a id="nav-event" href="event-checkin.html">
+
+        <span class="font-20 ps-0 color-white">動態快訊</span>
+
+    </a>
+
+    <a id="nav-trasaction" href="transaction-avticeContract.html">
+
+        <span class="font-20 ps-0 color-white">交易管家</span>
+
+    </a>
+
+    <a id="nav-trasaction" href="#">
+
+        <span class="font-20 ps-0 color-white">精選文章</span>
+
+    </a>
+
+    <a id="nav-trasaction" href="setting.html">
+
+        <span class="font-20 ps-0 color-white">喜好設定</span>
+
+    </a>
+
+    <a id="nav-descript" href="profile.html">
+
+        <span class="font-20 ps-0 color-white">操作說明</span>
+
+    </a>
+
+    <a class="close-menu" href="walkthrough.html">
+
+        <span class="font-20 ps-0 color-white">登出</span>
+
+    </a>
+
+</div>
+
+
+
+<div class="text-center mt-5">
+
+    <a href="https://www.facebook.com/beyond.fitness.pro/" target="_blank" title="Facebook" class="mx-3">
+        <img class="img-fluid" src="../images/icons/social/fb.svg" width="10" alt="BeyondFitness|Facebook">
+    </a>
+
+
+
+    <a href="https://www.instagram.com/beyond_ft/" target="_blank" title="Instagram" class="mx-3">
+        <img class="img-fluid"
+             src="../images/icons/social/ig.svg" width="15" alt="BeyondFitness|Instagram">
+    </a>
+
+
+
+    <a href="https://www.youtube.com/@@BeyondFitnessProfessional" target="_blank" title="Youtube" class="mx-3">
+        <img class="img-fluid" src="../images/icons/social/yt.svg" width="15" alt="BeyondFitness|Youtube">
+    </a>
+
+
+
+    <a href="https://liff.line.me/1645278921-kWRPP32q/?accountId=beyond_ft" target="_blank" title="Line" class="mx-3">
+        <img class="img-fluid" src="../images/icons/social/line.svg" width="15" alt="BeyondFitness|Line">
+    </a>
+
+
+
+    <p class="mb-0 pt-2 font-10 color-white opacity-30">Copyright <span class="copyright-year"></span> Beyond Fitness. All rights reserved</p>
+
+</div>
+

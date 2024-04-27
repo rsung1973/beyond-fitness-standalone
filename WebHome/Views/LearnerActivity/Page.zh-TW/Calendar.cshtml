@@ -1,0 +1,724 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+}
+
+@section MainContent
+{
+
+
+    <div class="card header-card shape-rounded" data-card-height="310">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    </div>
+
+
+
+    <!--行事曆-->
+
+    <div class="card card-style custom-rounded-card top-100">
+
+        <div class="content text-center mt-5">
+
+            <h2 class="letter-spacing-5 font-24">運動行事曆</h2>
+
+            <p class="boxed-text-xl">Workout Calendar</p>
+
+        </div>
+
+
+
+        <div class="calendar bg-theme">
+
+            <div class="cal-header">
+
+                <h4 class="cal-title text-center text-uppercase font-800 bg-theme color-theme">2022年03月</h4>
+
+                <h6 class="cal-title-left color-theme"><i class="fa fa-chevron-left color-beyondred-dark font-20"></i></h6>
+
+                <h6 class="cal-title-right color-theme"><i class="fa fa-chevron-right color-beyondred-dark font-20"></i></h6>
+
+            </div>
+
+            <div class="clearfix"></div>
+
+            <div class="divider mb-0"></div>
+
+            <div class="cal-days bg-theme opacity-80 pt-2 pb-2">
+
+                <a href="#" class="color-theme">週一</a>
+
+                <a href="#" class="color-theme">週二</a>
+
+                <a href="#" class="color-theme">週三</a>
+
+                <a href="#" class="color-theme">週四</a>
+
+                <a href="#" class="color-theme">週五</a>
+
+                <a href="#" class="color-theme">週六</a>
+
+                <a href="#" class="color-theme">週日</a>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+            <div class="divider mb-1"></div>
+
+            <div class="cal-dates cal-dates-border">
+
+                <a href="#" class="cal-disabled">26</a>
+
+                <a href="#" class="cal-disabled">27</a>
+
+                <a href="#" class="cal-disabled">28</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>1</span></a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>2</span></a>
+
+                <a href="#">3</a>
+
+                <a href="#">4</a>
+
+                <a href="#">5</a>
+
+                <a href="#">6</a>
+
+                <a href="#">7</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>8</span></a>
+
+                <a href="#" class="cal-selected"><i class="fa fa-circle color-highlight"></i><span>9</span></a>
+
+                <a href="#">10</a>
+
+                <a href="#">11</a>
+
+                <a href="#">12</a>
+
+                <a href="#">13</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>14</span></a>
+
+                <a href="#">15</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>16</span></a>
+
+                <a href="#">17</a>
+
+                <a href="#">18</a>
+
+                <a href="#">19</a>
+
+                <a href="#">20</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>21</span></a>
+
+                <a href="#">22</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>23</span></a>
+
+                <a href="#">24</a>
+
+                <a href="#">25</a>
+
+                <a href="#">26</a>
+
+                <a href="#">27</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>28</span></a>
+
+                <a href="#">29</a>
+
+                <a href="#" class="cal-event"><i class="fa fa-circle color-highlight"></i><span>30</span></a>
+
+                <a href="#">31</a>
+
+                <a href="#" class="cal-disabled">1</a>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--該月上課清單-->
+
+    <div class="row">
+
+        <div class="col-12 col-lg-6 col-md-6">
+
+            <!--P.T-->
+
+            <div class="card card-style bg-beyond-dark">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+
+                    <div class="d-flex align-self-center">
+
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                            <img src="../images/icons/session/trx.svg" width="40" class="me-3">
+                        </span>
+
+                        <div>
+
+                            <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                體能訓練·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">P.T Session</small>
+                            </h4>
+
+                            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
+
+                                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                            </svg>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="clearfix"></div>
+
+                    <a href="course-PT.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">基礎肌力D10</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/02 15:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-PT.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">基礎肌力D11</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/09 15:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-PT.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">基礎肌力D12</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/16 15:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-PT.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">基礎肌力D13</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/30 15:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!--P.I-->
+
+            <div class="card card-style bg-beyond-dark">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+
+                    <div class="d-flex align-self-center">
+
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                            <img src="../images/icons/session/core.svg"
+                                 width="40" class="me-3">
+                        </span>
+
+                        <div>
+
+                            <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                自主訓練·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">P.I Session</small>
+                            </h4>
+
+                            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
+
+                                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                            </svg>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="clearfix"></div>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">訓練重點空</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/01 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-6 col-md-6">
+
+            <!--S.R-->
+
+            <div class="card card-style bg-beyond-dark">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+
+                    <div class="d-flex align-self-center">
+
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                            <img src="../images/icons/session/joint.svg" width="40" class="me-3">
+                        </span>
+
+                        <div>
+
+                            <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                運動恢復·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">S.R Session</small>
+                            </h4>
+
+                            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
+
+                                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                            </svg>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="clearfix"></div>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">肩胛胸闊鎖骨關節、臂肘筋膜、髖髂腿肌群</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/02 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">髖腰、肩、側線、肘臂</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/09 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">訓練部位緩解</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/14 17:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>信義安和
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">髂腰、髖臀腿、肩胛</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/16 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">上肢舒緩</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/21 17:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>信義安和
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">髖腰、肩、側線、肘臂</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/23 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">手臂舒緩</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/28 17:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>信義安和
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SR.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">髖髂、踝</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/30 16:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>東門
+                            </h5>
+
+                        </div>
+
+                        <div class="align-self-center">
+
+                            <i class="fa fa-angle-right color-white opacity-20"></i>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+            <!--S.D-->
+
+            <div class="card card-style bg-beyond-dark">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+
+                    <div class="d-flex align-self-center">
+
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                            <img src="../images/icons/consulting/healthy.svg" width="40" class="me-3">
+                        </span>
+
+                        <div>
+
+                            <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                營養諮詢·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">S.D Session</small>
+                            </h4>
+
+                            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
+
+                                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                            </svg>
+
+                        </div>
+
+
+
+                    </div>
+
+
+
+                    <div class="clearfix"></div>
+
+                    <a href="course-SD.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">Fitlo營養諮詢-2</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/01 14:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>遠距
+                            </h5>
+
+                        </div>
+
+                    </a>
+
+                    <a href="course-SD.html" class="d-flex my-5">
+
+                        <div class="align-self-start ms-3 me-3">
+
+                            <h5 class="letter-spacing-2 color-white">Fitlo營養諮詢-2</h5>
+
+                            <span class="font-14 color-white opacity-40 letter-spacing-1">2024/03/08 14:00</span>
+
+                        </div>
+
+                        <div class="align-self-center ms-auto me-3">
+
+                            <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
+                                <i class="fa-solid fa-location-dot pe-2"></i>遠距
+                            </h5>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}

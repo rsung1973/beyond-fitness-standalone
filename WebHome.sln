@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExternalPdfWrapper", "Exter
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Data.Linq", "DotNetLib\System.Data.Linq\System.Data.Linq.csproj", "{391DFB5D-04B6-47CA-945A-0845FD07A3A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{582C53DF-4867-416A-976D-A8CB3ABAA66F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{582C53DF-4867-416A-976D-A8CB3ABAA66F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -196,6 +196,21 @@ namespace WebHome
                     defaults: new { controller = "MainActivity", action = "HandleUnknownAction" });
 
                 endpoints.MapControllerRoute(
+                    name: "LearnerTW",
+                    pattern: "LearnerActivity/tw/{*actionName}",
+                    defaults: new { controller = "LearnerActivity", action = "HandleUnknownAction", lang = "tw" });
+
+                endpoints.MapControllerRoute(
+                    name: "LearnerEN",
+                    pattern: "LearnerActivity/en/{*actionName}",
+                    defaults: new { controller = "LearnerActivity", action = "HandleUnknownAction", lang = "en" });
+
+                endpoints.MapControllerRoute(
+                    name: "LearnerJA",
+                    pattern: "LearnerActivity/ja/{*actionName}",
+                    defaults: new { controller = "LearnerActivity", action = "HandleUnknownAction", lang = "ja" });
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
 

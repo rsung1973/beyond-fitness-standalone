@@ -1,0 +1,223 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+}
+
+@section MainContent
+{
+    <div class="card header-card shape-rounded" data-card-height="310">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    </div>
+
+
+
+    <h1 class="boxed-text-xl font-28 color-beyondsunny-dark z-index-10 pt-5">營養諮詢</h1>
+
+    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>60 Min</p>
+
+
+
+    <img style="margin-bottom:-80px" src="../images/icons/consulting/healthy.svg"
+         class="mx-auto over-card bg-transparent" width="180">
+
+    <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
+
+        <div class="content">
+
+            <div class="row text-center px-4">
+
+                <h3 class="color-white letter-spacing-1">Fitlo營養諮詢測試</h3>
+
+                <span class="color-white opacity-30 fst-italic letter-spacing-1">fitlo</span>
+
+            </div>
+
+            <div class="row text-center">
+
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
+
+                    <p class="mb-1 font-14 color-beyondred-dark">攝取水分c.c</p>
+
+                    <h1 class="color-white">1800</h1>
+
+                </div>
+
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
+
+                    <p class="mb-1 font-14 color-beyondred-dark">睡眠時間<small class="font-11">hh:mm</small></p>
+
+                    <h1 class="color-white">08:05</h1>
+
+                </div>
+
+                <div class="col-6 col-lg-3 col-md-3">
+
+                    <p class="mb-1 font-14 color-beyondred-dark">生理疲勞</p>
+
+                    <h1 class="color-white">5</h1>
+
+                </div>
+
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
+
+                    <p class="mb-1 font-14 color-beyondred-dark">心理壓力</p>
+
+                    <h1 class="color-white">5</h1>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <a href="../images/pictures/nutrition.png" target="_blank" class="btn btn-center-l rounded-xl color-theme bg-beyondwhite-dark font-500 font-15 px-3 py-2 under-slider-btn mt-n5">View Report</a>
+
+
+
+    <div class="card card-style mt-5">
+
+        <div class="content">
+
+            <h2 class="text-center mb-1 letter-spacing-2">諮詢感受</h2>
+
+            <p class="text-center font-12 mb-4 color-theme opacity-40">How you feel about our services</p>
+
+            <div class="d-flex">
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('1');">
+
+                    <h1 class="font-40">😍</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">很喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('2');">
+
+                    <h1 class="font-40">😃</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('3');">
+
+                    <h1 class="font-40">😐</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">普通</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('4');">
+
+                    <h1 class="font-40">😥</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">不喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('5');">
+
+                    <h1 class="font-40">😡</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">不滿意</strong> -->
+
+                </div>
+
+            </div>
+
+            <p class="text-center pt-4">
+
+                <a href="#" class="font-500 px-3 py-2 font-13 mt-5 fst-italic letter-spacing-2 opacity-80 color-theme">
+                    More
+
+                    Feedback
+
+                    <i class="fa-solid fa-chevron-right opacity-80 color-theme pe-3"></i>
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!--切換上下堂課-->
+
+    <div class="row text-center mt-2 mb-0">
+
+        <div class="col-12 col-lg-5 col-md-5 col-md-5 mt-2 mt-lg-2 mt-md-2" onclick="javasciprt:gotoCourseSR();">
+
+            <div class="row d-flex justify-content-center">
+
+                <div class="col-auto">
+
+                    <i class="fa-solid fa-chevron-left color-beyondred-dark"></i>
+
+                </div>
+
+                <div class="col-10 text-start letter-spacing-1 font-15">
+
+                    <b class="color-theme font-400">上一堂</b><b class="color-theme font-400 ms-3">Previous Session</b>
+
+                    <!-- <div class="mt-1 color-white">
+
+                                                        基礎肌力D12
+
+                                                    </div> -->
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-2 d-none d-lg-block d-md-block">
+
+            <svg class="mb-4 hidden-sm-down" width="15" height="50">
+
+                <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width="2"></line>
+
+            </svg>
+
+        </div>
+
+    </div>
+
+}

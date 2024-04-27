@@ -1,0 +1,267 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+}
+
+@section MainContent
+{
+
+    <div class="card header-card shape-rounded" data-card-height="280">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    </div>
+
+
+    <div class="content">
+
+        <!--Beyond幣與會員等級-->
+
+        <div class="card bg-transparent mb-0 mx-auto" data-card-height="110" style="width: 250px;box-shadow:none">
+
+            <div class="card-top">
+
+                <span class="icon icon-xl rounded-s float-end me-4 mt-0 mb-0"><img src="../images/icons/consulting/healthy.svg" width="60"></span>
+
+            </div>
+
+            <div class="card-bottom">
+
+                <h1 class="font-700 text-center color-white font-32 mb-2">182 <small>點</small></h1>
+
+                <p class="text-center z-index-10">玩家等級：Level 0<i class="fa-solid fa-chevron-right ms-1"></i></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--每月挑戰-->
+
+    <div class="content mb-3" style="margin-top: 100px;">
+
+        <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme">
+            每月挑戰·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Monthly Challenges</small>
+        </h4>
+
+        <div class="clearfix"></div>
+
+    </div>
+
+    <div class="splide single-slider slider-no-arrows slider-no-dots homepage-slider" id="single-slider-1">
+
+        <div class="splide__track">
+
+            <div class="splide__list">
+
+                <div class="splide__slide">
+
+                    <div class="card card-style shadow-l preload-img" data-src="../images/card/mission-01.jpg" data-card-height="300">
+
+                        <div class="card-top p-3">
+
+                            <h5 class="color-beyondwhite-dark font-600 letter-spacing-1">1/2 Missions</h5>
+
+                        </div>
+
+                        <div class="card-bottom p-3">
+
+                            <h1 class="font-24 font-700 color-theme letter-spacing-2">訓練感受</h1>
+
+                            <p class="mb-0 mt-n2 color-theme opacity-60">
+                                這是一小段任務說明這是一小段任務說明這是一小段任務說明這是一小段
+
+                                <a href="#"
+                                   class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-12 mt-2">
+                                    Read
+
+                                    More
+                                </a>
+
+                            </p>
+
+                        </div>
+
+                        <div class="card-overlay bg-gradient-fade"></div>
+
+                    </div>
+
+                </div>
+
+                <div class="splide__slide">
+
+                    <div class="card card-style shadow-l preload-img" data-src="../images/card/mission-02.jpg" data-card-height="300">
+
+                        <div class="card-top p-3">
+
+                            <h5 class="color-beyondwhite-dark font-600 letter-spacing-1">2/2 Missions</h5>
+
+                        </div>
+
+                        <div class="card-bottom p-3">
+
+                            <h1 class="font-24 font-700 color-theme letter-spacing-2">S.R 恢復按摩</h1>
+
+                            <p class="mb-0 mt-n2 color-theme opacity-60">
+                                這是一小段任務說明這是一小段任務說明這是一小段任務說明這是一小段
+
+                                <a href="#"
+                                   class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-12 mt-2">
+                                    Read
+
+                                    More
+                                </a>
+
+                            </p>
+
+                        </div>
+
+                        <div class="card-overlay bg-gradient-fade"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!--固定任務-->
+
+    <div class="card content pt-3 mt-5 shadow-l mx-0 mb-0">
+
+        <div class="card-body">
+
+            <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">固定任務·<small class="ps-2 font-14 font-400 text-capitalize">Fun Missions</small> <i data-feather="info" data-feather-line="2" data-feather-size="24" data-feather-color="beyondsunny-dark" class="ms-1"></i></h4>
+
+            <div class="list-group list-custom-large me-2 mt-5">
+
+                <!-- <a data-menu="menu-task-item" href="funacademy-question.html">
+
+                    <i class="fa-solid fa-question bg-beyondsunny-dark color-theme rounded-xl font-12 font-12"></i>
+
+                    <span class="letter-spacing-1 font-16 color-white">運動小學堂</span>
+
+                    <strong class="letter-spacing-1 font-12">Fun Quizzes</strong>
+
+                    <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
+
+                </a> -->
+
+                <a data-menu="menu-task-item" href="event-checkin.html">
+
+                    <i class="fa-solid fa-heart rounded-xl color-beyondred-dark font-24"></i>
+
+                    <span class="letter-spacing-1 font-16 color-white opacity-70">課前健康自評</span>
+
+                    <strong class="letter-spacing-1 font-12 color-white opacity-50">Health Index</strong>
+
+                    <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
+
+                </a>
+
+                <a data-menu="menu-task-item" href="event-checkin.html">
+
+                    <i class="fa-solid fa-comments color-beyondgrass-light font-24"></i>
+
+                    <span class="letter-spacing-1 font-16 color-white opacity-70">課後訓練回饋</span>
+
+                    <strong class="letter-spacing-1 font-12 color-white opacity-50">Feelings</strong>
+
+                    <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
+
+                </a>
+
+
+
+            </div>
+
+        </div>
+
+        <div class="card-overlay bg-beyond-dark opacity-95 shadow-l"></div>
+
+    </div>
+
+    <!--特殊任務-->
+
+    <div class="card content pt-0 mt-0 shadow-l mx-0 bg-theme">
+
+        <div class="content my-5" style="margin-top: 100px;">
+
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme">
+                金牌任務·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Mission Possible</small>
+            </h4>
+
+            <div class="clearfix mb-5"></div>
+
+
+
+            <div class="splide double-slider slider-no-dots boxed-slider" id="double-slider-2">
+
+                <div class="splide__track">
+
+                    <div class="splide__list">
+
+                        <div class="splide__slide">
+
+                            <div data-card-height="160" data-card-width="160" class="card mx-2 bg-transparent text-center" style="box-shadow: none;">
+
+                                <img src="../images/icons/mission/default.png" width="100" class="align-self-center">
+
+                                <div class="card-bottom p-3">
+
+                                    <h4 class="color-theme font-600 font-14">敬啟期待</h4>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+}
