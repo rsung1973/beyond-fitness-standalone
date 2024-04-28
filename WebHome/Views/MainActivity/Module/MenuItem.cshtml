@@ -82,13 +82,13 @@
                                     <a href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BookNow"))"
                                         class="btn btn-link-effect-1 btn-link-underline-1 px-0 py-0 @(menuClass) border-0  font-weight-semi-bold text-decoration-none">@Html.Raw(commonAll.Booking)</a>
                                 </li>
-                                 @*<li class="list-inline-item">
+                                 <li class="list-inline-item">
                                     <div class="header-nav-feature header-nav-features-cart d-inline-flex ms-2">                                        
                                         @{
                                             await Html.RenderPartialAsync("~/Views/MainActivity/Module/LanguageMenuItem.cshtml");
                                         }
                                     </div>
-                                </li>*@
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                 <div class="col-3 col-md-8 text-end hidden-lg-up">
                     <div class="header-nav-feature header-nav-features-cart d-inline-flex ms-2">
                         @{
-//await Html.RenderPartialAsync("~/Views/MainActivity/Module/LanguageMenuItem.cshtml");
+                            await Html.RenderPartialAsync("~/Views/MainActivity/Module/LanguageMenuItem.cshtml");
                         }
                         <script>
                             var reloadPage;
