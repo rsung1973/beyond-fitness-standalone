@@ -1,0 +1,141 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+}
+
+@section MainContent
+{
+
+    <div class="card header-card shape-rounded" data-card-height="310">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+    </div>
+
+    <!--喜好設定選單-->
+    <div class="card card-style custom-rounded-card top-100">
+        <div class="content text-center mt-5">
+            <h2 class="letter-spacing-5 font-24"><b class="color-beyondred-dark">喜</b><b class="color-beyondsunny-light">好</b><b class="color-beyondblue-dark">設</b><b class="color-beyondgrass-light">定</b></h2>
+            <p class="boxed-text-xl">Preferences</p>
+        </div>
+        <div class="content mt-0 mb-2">
+            <div class="list-group list-custom-large mb-2">
+                <a href="#" data-menu="menu-foto-update">
+                    <i class="fa font-18 fa-images bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                    <span class="font-500 font-16">更換大頭貼</span>
+                    <strong class="font-14 mt-3">PhotoSticker</strong>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                <a href="#" data-toggle-theme class="show-on-theme-light">
+                    <i class="fa font-18 fa-moon bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                    <span class="font-16">深色模式</span>
+                    <strong class="font-14 mt-3">Dark Mode</strong>
+                    <i class="fa fa-angle-right me-2"></i>
+                </a>
+                <a href="#" data-toggle-theme class="show-on-theme-dark">
+                    <i class="fa font-18 fa-lightbulb bg-beyond-dark color-white rounded-sm"></i>
+                    <span class="font-16">淺色模式</span>
+                    <strong class="font-14 mt-3">Dark Mode</strong>
+                    <i class="fa fa-angle-right me-2"></i>
+                </a>
+                <a href="#" data-menu="menu-highlights">
+                    <i class="fa font-18 fa-brush bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                    <span class="font-16">前景調色盤</span>
+                    <strong class="font-14 mt-3">Foreground Color</strong>
+                    <i class="fa fa-angle-right me-2"></i>
+                </a>
+                <a href="#" data-menu="menu-backgrounds">
+                    <i class="fa font-18 fa-tint bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                    <span class="font-16">背景調色盤</span>
+                    <strong class="font-14 mt-3">Background Color</strong>
+                    <i class="fa fa-angle-right me-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+    <!--資料設定選單-->
+    <div class="footer">
+        <div class="footer card card-style custom-rounded-card bottom-100 mx-0">
+            <div class="content mt-0 mb-2 mx-0">
+                <div class="list-group list-custom-large mb-2">  
+                    <a href="#" data-menu="menu-forgot">
+                        <i class="fa-solid font-18 fa-key bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                        <span class="font-500 font-16">忘記密碼</span>
+                        <span class="font-14 mt-3 font-500 color-gray-dark let">Forget password</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>                    
+                    <a href="#" data-menu="menu-updateEmail">
+                        <i class="fa-solid font-18 fa-envelope bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                        <span class="font-500 font-16">更新電子郵件</span>
+                        <span class="font-14 mt-3 font-500 color-gray-dark let">Email Update</span>
+                        <span class="badge bg-beyondred-dark font-13">未認證</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                    <a href="login-active.html">
+                        <i class="fab font-32 fa-line color-line"></i>
+                        <span class="font-500 font-16">LINE</span>
+                        <span class="font-14 mt-3 font-500 color-gray-dark let">Bound</span>
+                        <span class="badge bg-beyondred-dark font-13">未綁定</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+                    <a href="#" data-menu="menu-unbound">
+                        <i class="fab font-32 fa-line color-line"></i>
+                        <span class="font-500 font-16">LINE</span>
+                        <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
+                        <span class="badge bg-beyondred-dark font-13">綁定中</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>                    
+                    <a href="#" data-menu="update-mobilebarcode">
+                        <i class="fa-solid font-18 fa-barcode bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
+                        <span class="font-500 font-16">手機條碼載具設定</span>
+                        <span class="font-14 mt-3 font-500 color-gray-dark let">Mobile Barcode Setting</span>
+                        <i class="fa fa-angle-right"></i>
+                    </a>                    
+                </div>
+                <div class="mt-5 text-center">
+                    <h2 class="letter-spacing-5 font-24 color-beyondwhite-dark">其他設定</h2>
+                    <p class="boxed-text-xl color-beyondwhite-dark">Settings</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-card card shape-rounded" style="height:310px">
+            <div class="card-overlay bg-beyond-dark opacity-95"></div>
+        </div>
+    </div>
+
+}
+
+@section PopupBox
+{
+    <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m"
+        data-menu-load="BackgroundsItem.cshtml" data-menu-height="310" data-menu-effect="menu-over">
+    </div>
+    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="menu-colors.html"
+        data-menu-height="410" data-menu-effect="menu-over">
+    </div>
+}
