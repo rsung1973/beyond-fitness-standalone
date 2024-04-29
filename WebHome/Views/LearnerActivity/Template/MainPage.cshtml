@@ -13,6 +13,8 @@
 @using WebHome.Models.Resources
 
 @{
+    Layout = "~/Views/LearnerActivity/Template/BasicPage.cshtml";
+
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
@@ -29,225 +31,45 @@
             ? "en"
             : "ja";
 }
-<html lang="en">
 
-<head>
+@section Header
+{
+    <div class="header header-fixed header-auto-show header-logo-center mb-4">
 
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <a href="index.html" class="header-logo">Beyond<span class="color-highlight"> Fitness</span></a>
 
-    <meta name="apple-mobile-web-app-capable" content="yes">
+        <a href="#" data-menu="menu-main" class="header-icon header-icon-1 font-20 "><i class="fas fa-bars"></i></a>
 
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-dark font-20">
+            <i class="fa-regular fa-lightbulb"></i>
+        </a>
 
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+        <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-light font-20">
+            <i class="fas fa-moon"></i>
+        </a>
 
-    <title>Beyond Fitness</title>
-
-
-
-    <link rel="stylesheet" href="../fonts/css/fontawesome-all.min.css" type="text/css">
-
-    <link rel="manifest" href="../_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
-
-
-    <meta name="author" content="beyond-fitness.com.tw">
-
-    <!-- Favicon -->
-
-    <link rel="shortcut icon" href="../app/icons/favicon.ico" type="image/x-icon" />
-
-    <link rel="icon" href="../app/icons/icon-96x96.png">
-
-    <!-- Specifying a Webpage Icon for Web Clip -->
-
-    <link rel="apple-touch-icon" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="../app/icons/icon-96x96.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="../app/icons/icon-128x128.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../app/icons/icon-144x144.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../app/icons/icon-152x152.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="../app/icons/icon-192x192.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="../app/icons/icon-384x384.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="../app/icons/icon-512x512.png">
-
-    <!-- Web Fonts  -->
-
-    <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
-          rel="stylesheet" type="text/css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans+TC:wght@100&display=swap"
-          rel="stylesheet">
-
-
-
-    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/style.css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/custom.css">
-
-</head>
-
-
-
-<body class="theme-light detect-dark-mode" data-highlight="beyond">
-
-
-
-    <div id="preloader" class="color-beyondwhite-dark">
-
-        <div class="preloader-body">
-
-            <div class="cssload-float-bars-container">
-
-                <ul class="cssload-float-bars-flex-container">
-
-                    <li><span class="cssload-float-bars-loading"></span></li>
-
-                </ul>
-
-            </div>
-
-        </div>
+        <a href="calendar.html" class="header-icon header-icon-4 font-20"><i class="fa-solid fa-calendar-check"></i></a>
 
     </div>
+}
 
+@section FooterBar
+{
+    <div id="footer-bar" class="footer-bar-2">
 
+        <a href="index.html" class="active-nav"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務牆</span></a>
 
-    <div id="page">
+        <a href="contactbook.html"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
 
+        <a href="event-checkin.html">
+            <i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em>
+        </a>
 
+        <a href="#" data-menu="popup-official"><i class="fa-solid fa-newspaper mb-2"></i><span class="font-12">精選文章</span></a>
 
-        <!-- header and footer bar go here-->
-
-
-
-        <div class="header header-fixed header-auto-show header-logo-center mb-4">
-
-            <a href="index.html" class="header-logo">Beyond<span class="color-highlight"> Fitness</span></a>
-
-            <a href="#" data-menu="menu-main" class="header-icon header-icon-1 font-20 "><i class="fas fa-bars"></i></a>
-
-            <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-dark font-20">
-                <i class="fa-regular fa-lightbulb"></i>
-            </a>
-
-            <a href="#" data-toggle-theme class="header-icon header-icon-3 show-on-theme-light font-20">
-                <i class="fas fa-moon"></i>
-            </a>
-
-            <a href="calendar.html" class="header-icon header-icon-4 font-20"><i class="fa-solid fa-calendar-check"></i></a>
-
-        </div>
-
-
-
-        <div id="footer-bar" class="footer-bar-2">
-
-            <a href="index.html" class="active-nav"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務牆</span></a>
-
-            <a href="contactbook.html"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
-
-            <a href="event-checkin.html">
-                <i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em>
-            </a>
-
-            <a href="#" data-menu="popup-official"><i class="fa-solid fa-newspaper mb-2"></i><span class="font-12">精選文章</span></a>
-
-            <a href="setting.html"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
-
-        </div>
-
-        <div class="page-content">
-
-            <div class="page-title page-title-small">
-
-                <h2 class="letter-spacing-2 color-white">
-                    從喜歡自己開始<small class="font-15 font-600 color-highlight d-block custom-font-secondary fst-italic">
-                        Start from Liking
-
-                        Yourself
-                    </small>
-                </h2>
-
-                <a href="#" data-menu="menu-main" class="bg-fade-highlight-light shadow-xl preload-img"
-                   data-src="../images/avatars/garfaild.png"></a>
-
-            </div>
-
-            @RenderSection("MainContent", false)
-        </div>
-        <!-- end of page content-->
-
-        <div id="menu-main" class="menu menu-box-left menu-box-detached rounded-m" data-menu-width="cover"
-             data-menu-load="MenuMain" data-menu-active="nav-welcome" data-menu-effect="menu-over">
-
-        </div>
-
-
-
-        <!--Go To Official Artical-->
-
-        <div id="popup-official" class="menu menu-box-top" data-menu-width="cover" data-menu-load="PopupGotoOfficialArtical" data-menu-effect="menu-over">
-
-        </div>
-
-
+        <a href="setting.html"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
 
     </div>
+}
 
-
-
-    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
-
-    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
-
-    <!-- Jquery Knob Plugin Js -->
-
-    <script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
-
-    <script type="text/javascript" src="../scripts/custom.js"></script>
-
-    <script type="text/javascript">
-
-        //家庭聯絡簿
-
-        $(".knob").knob();
-
-        $({
-
-            animatedVal: 0
-
-        }).animate({
-
-            animatedVal: 86
-
-        }, {
-
-            duration: 3800,
-
-            easing: "swing",
-
-            step: function () {
-
-                $(".knob").val(Math.ceil(this.animatedVal)).trigger("change");
-
-            }
-
-        });
-
-    </script>
-
-</body>
-
-</html>
+@RenderSection("MainContent", false)
