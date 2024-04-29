@@ -1,0 +1,55 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";    
+
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+}
+<div class="menu-title">
+    <div class="d-flex mx-2 mx-lg-4 my-2">
+        <h1 class="letter-spacing-2 mb-0 color-theme letter-spacing-2">背景調色盤·<small
+                class="ps-2 font-12 font-400 text-capitalize color-theme opacity-60">Color your Life</small></h1>
+        <a href="#" class="close-menu color-theme"><i class="fa fa-times"></i></a>
+    </div>
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mx-2 ps-3 mx-lg-4 ">
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+    </svg>
+</div>
+<div class="content">
+    <p class="px-2 color-theme opacity-60 font-500 mb-2">
+        隨心情變換顏色，<br />讓您的訓練隨時充滿無限色彩！
+    </p>
+    <div class="background-changer pt-3 pb-2">
+        <a href="#" data-change-background="beyond"><i class="fa fa-circle body-beyond"></i><span
+                class="color-beyond-light">Beyond</span></a>
+        <a href="#" data-change-background="default"><i class="fa fa-circle body-default"></i><span
+                class="color-night-dark">Gray</span></a>
+        <a href="#" data-change-background="white"><i class="fa fa-circle body-white"></i><span
+                class="color-night-dark">White</span></a>
+        <a href="#" data-change-background="black"><i class="fa fa-circle body-black"></i><span
+                class="color-black-dark">Black</span></a>        
+        <div class="clearfix"></div>
+    </div>
+</div>

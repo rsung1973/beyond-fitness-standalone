@@ -1,0 +1,51 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";    
+
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+}
+<div class="menu-title text-center">
+    <div class="text-center">
+        <img id="image-data" src="../images/avatars/garfaild.png" class="avatar-rounded-circle large mt-5" width="150"
+            height="150">
+        <div class="file-data">
+            <input type="file" id="file-upload" class="upload-photostick" accept="image/*">
+            <p class="upload-file-text font-15 color-theme opacity-80"><i class="fa-regular fa-image pe-2"></i>點擊更換圖片</p>
+        </div>
+    </div>
+</div>
+<div class="content mt-5">
+    <div class="input-style input-style-always-active has-borders has-icon validate-field mb-4">
+        <i class="fa-solid fa-user-tag color-theme"></i>
+        <input type="name" class="form-control validate-name" id="form1ab" placeholder="飛天兔">
+        <label for="form1ab" class="color-beyondred-dark text-capitalize font-700 font-16">暱稱</label>
+        <i class="fa fa-times disabled invalid color-red-dark"></i>
+        <i class="fa fa-check disabled valid color-green-dark"></i>
+    </div>
+
+    <a href="setting.html"
+        class="btn close-menu btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定更新！</a>
+</div>

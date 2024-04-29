@@ -1,0 +1,60 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";    
+
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+}
+<div class="menu-title">
+    <div class="d-flex mx-2 mx-lg-4 my-2">
+        <h1 class="letter-spacing-2 mb-0 color-theme letter-spacing-2">前景調色盤·<small class="ps-2 font-12 font-400 text-capitalize color-highlight">Color your Life</small></h1>
+        <a href="#" class="close-menu color-theme"><i class="fa fa-times"></i></a>
+    </div>
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mx-2 ps-3 mx-lg-4 ">
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+    </svg>        
+</div>
+<div class="content">
+    <p class="px-2 color-theme opacity-60 font-500 mb-2">
+        隨心情變換顏色，<br />讓您的訓練隨時充滿無限色彩！
+    </p>
+
+    <div class="highlight-changer pt-3 pb-2">
+    
+        <a href="#" data-change-highlight="beyond"><i class="fa fa-circle color-beyond-light"></i><span
+                class="color-beyond-light">Beyond</span></a>
+        <a href="#" data-change-highlight="beyondsunny"><i class="fa fa-circle color-beyondsunny-light"></i><span
+                class="color-beyondsunny-light">Sunny</span></a>
+        <a href="#" data-change-highlight="beyondblue"><i class="fa fa-circle color-beyondblue-light"></i><span
+                class="color-beyondblue-light">Blue</span></a>
+        <a href="#" data-change-highlight="beyondgrass"><i class="fa fa-circle color-beyondgrass-light"></i><span
+                class="color-beyondgrass-light">Grass</span></a>
+        <a href="#" data-change-highlight="beyondpink"><i class="fa fa-circle color-beyondpink-light"></i><span
+                class="color-beyondpink-light">Pink</span></a>
+        <a href="#" data-change-highlight="beyondpurple"><i class="fa fa-circle color-beyondpurple-light"></i><span
+                class="color-beyondpurple-light">Purple</span></a>
+        <div class="clearfix"></div>
+    </div>
+</div>
