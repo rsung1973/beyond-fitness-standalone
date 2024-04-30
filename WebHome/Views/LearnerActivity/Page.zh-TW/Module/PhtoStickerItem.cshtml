@@ -32,7 +32,7 @@
     <div class="text-center">
         <img id="image-data" src="@(profile.PictureID.HasValue
                 ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{profile.PictureID}?stretch=true"
-                : VirtualPathUtility.ToAbsolute("~/ConsoleHome/images/avatar/noname.png"))"
+                : VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatar/default-mm.png"))"
              class="avatar-rounded-circle large mt-5" width="150" height="150" />
         <div class="file-data">
             <input type="file" id="file-upload" class="upload-photostick" accept="image/*">
@@ -42,7 +42,9 @@
             document.addEventListener("DOMContentLoaded", function (event) {
                 $('#file-upload').on('change', function (event) {
                     var $this = $(this);
-                    if (this.files && this.files[0]) {                        var value = this.files[0];                        console.log(value);
+                    if (this.files && this.files[0]) {
+                        var value = this.files[0];
+                        console.log(value);
                         console.log('上傳圖片');
                         var reader = new FileReader();
                         reader.readAsDataURL(value);
@@ -61,7 +63,7 @@
 <div class="content mt-5">
     <div class="input-style input-style-always-active has-borders has-icon validate-field mb-4">
         <i class="fa-solid fa-user-tag color-theme"></i>
-        <input type="name" class="form-control validate-name" id="form1ab" placeholder="飛天兔">
+        <input type="name" class="form-control validate-name" id="form1ab" placeholder="冠軍王" value="@(profile.UserName)">
         <label for="form1ab" class="color-beyondred-dark text-capitalize font-700 font-16">暱稱</label>
         <i class="fa fa-times disabled invalid color-red-dark"></i>
         <i class="fa fa-check disabled valid color-green-dark"></i>
