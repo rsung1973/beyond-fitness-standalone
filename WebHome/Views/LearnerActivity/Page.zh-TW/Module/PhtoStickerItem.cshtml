@@ -22,19 +22,40 @@
         ? "tw"
         : lang == "en-US"
             ? "en"
-            : "ja";    
+            : "ja";
 
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
-    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    var profile = await Context.GetUserAsync();
 }
 <div class="menu-title text-center">
     <div class="text-center">
-        <img id="image-data" src="../images/avatars/garfaild.png" class="avatar-rounded-circle large mt-5" width="150"
-            height="150">
+        <img id="image-data" src="@(profile.PictureID.HasValue
+                ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{profile.PictureID}?stretch=true"
+                : VirtualPathUtility.ToAbsolute("~/ConsoleHome/images/avatar/noname.png"))"
+             class="avatar-rounded-circle large mt-5" width="150" height="150" />
         <div class="file-data">
             <input type="file" id="file-upload" class="upload-photostick" accept="image/*">
             <p class="upload-file-text font-15 color-theme opacity-80"><i class="fa-regular fa-image pe-2"></i>點擊更換圖片</p>
         </div>
+        <script>
+            document.addEventListener("DOMContentLoaded", function (event) {
+                $('#file-upload').on('change', function (event) {
+                    var $this = $(this);
+                    if (this.files && this.files[0]) {                        var value = this.files[0];                        console.log(value);
+                        console.log('上傳圖片');
+                        var reader = new FileReader();
+                        reader.readAsDataURL(value);
+                        reader.onloadend = function () {
+                            var base64String = reader.result;
+                            doPost('@Html.Raw(Url.Action("UpdateProfileImage", "LearnerActivity"))', { 'DataContent': base64String }, function (data) {
+                                console.log(base64String);
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
     </div>
 </div>
 <div class="content mt-5">

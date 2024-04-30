@@ -80,9 +80,17 @@ namespace WebHome.Controllers
         protected ViewEngineResult CheckView(String actionName)
         {
             ViewEngineResult viewResult = _viewEngine.GetView("~/", $"/Views/{RouteData.Values["controller"]}/Page.{Lang}/{actionName}.cshtml", isMainPage: false);
-            if(!viewResult.Success)
+            if (!viewResult.Success)
+            {
+                viewResult = _viewEngine.GetView("~/", $"/Views/{RouteData.Values["controller"]}/Module/{actionName}.cshtml", isMainPage: false);
+            }
+            if (!viewResult.Success)
             {
                 viewResult = _viewEngine.GetView("~/", $"/Views/{RouteData.Values["controller"]}/Page.zh-TW/{actionName}.cshtml", isMainPage: false);
+            }
+            if (!viewResult.Success)
+            {
+                viewResult = _viewEngine.GetView("~/", $"/Views/{RouteData.Values["controller"]}/Page.zh-TW/Module/{actionName}.cshtml", isMainPage: false);
             }
             return viewResult;
         }

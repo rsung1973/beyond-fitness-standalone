@@ -137,6 +137,43 @@
         });
     }
 
+    function doPost(url, viewModel, done) {
+        showLoading();
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: JSON.stringify(viewModel),
+            type: "POST",
+            //dataType: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        if (done) {
+                            done(data);
+                        }
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                } else {
+                    if (done) {
+                        done(data);
+                    }
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                hideLoading();
+                console.log(xhr.status);
+                console.log(thrownError);
+            }
+        });
+    }
+
 
 </script>
 @{

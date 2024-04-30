@@ -40,12 +40,50 @@ using Microsoft.AspNetCore.Mvc.ViewEngines;
 
 namespace WebHome.Controllers
 {
+    [Authorize]
     public class LearnerActivityController : ActivityBaseController
     {
         public LearnerActivityController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
 
         }
+
+        [HttpPost]
+        public async Task<ActionResult> UpdateProfileImageAsync([FromBody]LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            UserProfile item = await HttpContext.GetUserAsync();
+
+            if (item == null || !(viewModel.DataContent?.Length > 0))
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            var idx = viewModel.DataContent.IndexOf(',');
+            if (!(idx > 0))
+            {
+                return Json(new { result = false, message = "請選擇圖像檔!!" });
+            }
+
+
+            String storePath = Path.Combine(FileLogger.Logger.LogDailyPath, Guid.NewGuid().ToString() + ".dat");
+            System.IO.File.WriteAllBytes(storePath, Convert.FromBase64String(viewModel.DataContent.Substring(idx + 1)));
+
+            item = item.LoadInstance(models);
+            if (item.Attachment == null)
+            {
+                item.Attachment = new Attachment
+                {
+
+                };
+            }
+
+            item.Attachment.StoredPath = storePath;
+            models.SubmitChanges();
+
+            return Json(new { result = true, pictureID = item.PictureID });
+        }
+
 
     }
 }

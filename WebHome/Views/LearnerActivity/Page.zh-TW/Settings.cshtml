@@ -82,13 +82,13 @@
     <div class="footer">
         <div class="footer card card-style custom-rounded-card bottom-100 mx-0">
             <div class="content mt-0 mb-2 mx-0">
-                <div class="list-group list-custom-large mb-2">  
+                <div class="list-group list-custom-large mb-2">
                     <a href="#" data-menu="menu-forgot">
                         <i class="fa-solid font-18 fa-key bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
                         <span class="font-500 font-16">忘記密碼</span>
                         <span class="font-14 mt-3 font-500 color-gray-dark let">Forget password</span>
                         <i class="fa fa-angle-right"></i>
-                    </a>                    
+                    </a>
                     <a href="#" data-menu="menu-updateEmail">
                         <i class="fa-solid font-18 fa-envelope bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
                         <span class="font-500 font-16">更新電子郵件</span>
@@ -109,13 +109,13 @@
                         <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
                         <span class="badge bg-beyondred-dark font-13">綁定中</span>
                         <i class="fa fa-angle-right"></i>
-                    </a>                    
+                    </a>
                     <a href="#" data-menu="update-mobilebarcode">
                         <i class="fa-solid font-18 fa-barcode bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
                         <span class="font-500 font-16">手機條碼載具設定</span>
                         <span class="font-14 mt-3 font-500 color-gray-dark let">Mobile Barcode Setting</span>
                         <i class="fa fa-angle-right"></i>
-                    </a>                    
+                    </a>
                 </div>
                 <div class="mt-5 text-center">
                     <h2 class="letter-spacing-5 font-24 color-beyondwhite-dark">其他設定</h2>
@@ -133,9 +133,20 @@
 @section PopupBox
 {
     <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m"
-        data-menu-load="BackgroundsItem.cshtml" data-menu-height="310" data-menu-effect="menu-over">
+         data-menu-load="BackgroundsItem" data-menu-height="310" data-menu-effect="menu-over">
     </div>
-    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="menu-colors.html"
-        data-menu-height="410" data-menu-effect="menu-over">
+    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="MenuColors"
+         data-menu-height="410" data-menu-effect="menu-over">
     </div>
+    <!--變更大頭照-->
+
+    <div id="menu-foto-update"
+         class="menu menu-box-bottom menu-box-detached rounded-m"
+         data-menu-height="420"
+         data-menu-effect="menu-over">
+        @{ 
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/PhtoStickerItem.cshtml");
+        }
+    </div>
+
 }

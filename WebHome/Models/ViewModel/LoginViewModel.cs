@@ -189,6 +189,7 @@ namespace WebHome.Models.ViewModel
 
         public int? LevelID { get; set; }
         public bool IsAdult => Birthday.HasValue && Birthday <= DateTime.Today.AddYears(-18);
+        public String DataContent { get; set; }
 
     }
 

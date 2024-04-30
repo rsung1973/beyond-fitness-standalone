@@ -1,0 +1,140 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+}
+
+<!-- <div class="card header-card color-card shape-rounded" style="height:40%">
+
+    <div class="card-overlay bg-highlight opacity-95"></div>
+
+</div>
+
+
+
+<div class="card bg-transparent mb-0">
+
+    <h1 class="text-center color-white mt-4 font-35 font-800">前景調色盤</h1>
+
+    <p class="text-center mt-n1 pb-2 mb-3 color-beyondred-dark">Color your Life</p>
+
+</div> -->
+
+<div class="menu-title">
+
+    <div class="d-flex mx-2 mx-lg-4 my-2">
+
+        <h1 class="letter-spacing-2 mb-0 color-theme letter-spacing-2">前景調色盤·<small class="ps-2 font-12 font-400 text-capitalize color-highlight">Color your Life</small></h1>
+
+        <a href="#" class="close-menu color-theme"><i class="fa fa-times"></i></a>
+
+    </div>
+
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mx-2 ps-3 mx-lg-4 ">
+
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+    </svg>        
+
+</div>
+
+<div class="content">
+
+    <p class="px-2 color-theme opacity-60 font-500 mb-2">
+
+        隨心情變換顏色，<br />讓您的訓練隨時充滿無限色彩！
+
+    </p>
+
+
+
+    <div class="highlight-changer pt-3 pb-2">
+
+    
+
+        <a href="#" data-change-highlight="beyond"><i class="fa fa-circle color-beyond-light"></i><span
+
+                class="color-beyond-light">Beyond</span></a>
+
+        <a href="#" data-change-highlight="beyondsunny"><i class="fa fa-circle color-beyondsunny-light"></i><span
+
+                class="color-beyondsunny-light">Sunny</span></a>
+
+        <a href="#" data-change-highlight="beyondblue"><i class="fa fa-circle color-beyondblue-light"></i><span
+
+                class="color-beyondblue-light">Blue</span></a>
+
+        <a href="#" data-change-highlight="beyondgrass"><i class="fa fa-circle color-beyondgrass-light"></i><span
+
+                class="color-beyondgrass-light">Grass</span></a>
+
+        <a href="#" data-change-highlight="beyondpink"><i class="fa fa-circle color-beyondpink-light"></i><span
+
+                class="color-beyondpink-light">Pink</span></a>
+
+        <a href="#" data-change-highlight="beyondpurple"><i class="fa fa-circle color-beyondpurple-light"></i><span
+
+                class="color-beyondpurple-light">Purple</span></a>
+
+        <!-- <a href="#" data-change-highlight="blue"><i class="fa fa-circle color-blue-dark"></i><span class="color-blue-light">Blue</span></a>
+
+            <a href="#" data-change-highlight="viviblue"><i class="fa fa-circle color-viviblue-dark"></i><span class="color-viviblue-light">ViviBlue</span></a>
+
+            <a href="#" data-change-highlight="red"><i class="fa fa-circle color-red-dark"></i><span class="color-red-light">Red</span></a>            
+
+            <a href="#" data-change-highlight="orange"><i class="fa fa-circle color-orange-dark"></i><span class="color-orange-light">Orange</span></a>            
+
+            <a href="#" data-change-highlight="pink2"><i class="fa fa-circle color-pink2-dark"></i><span class="color-pink2-light">Pink</span></a>
+
+            <a href="#" data-change-highlight="brightred"><i class="fa fa-circle color-brightred-dark"></i><span class="color-brightred-light">BrightRed</span></a>
+
+            <a href="#" data-change-highlight="magenta"><i class="fa fa-circle color-magenta-dark"></i><span class="color-magenta-light">Purple</span></a>    
+
+            <a href="#" data-change-highlight="aqua"><i class="fa fa-circle color-aqua-dark"></i><span class="color-aqua-light">Aqua</span></a>      
+
+            <a href="#" data-change-highlight="teal"><i class="fa fa-circle color-teal-dark"></i><span class="color-teal-light">Teal</span></a>      
+
+            <a href="#" data-change-highlight="mint"><i class="fa fa-circle color-mint-dark"></i><span class="color-mint-light">Mint</span></a>      
+
+            <a href="#" data-change-highlight="green"><i class="fa fa-circle color-green-dark"></i><span class="color-green-light">Green</span></a>    
+
+            <a href="#" data-change-highlight="grass"><i class="fa fa-circle color-green-dark"></i><span class="color-green-light">Grass</span></a>       
+
+            <a href="#" data-change-highlight="sunny"><i class="fa fa-circle color-yellow-dark"></i><span class="color-yellow-dark">Sunny</span></a>    
+
+            <a href="#" data-change-highlight="yellow"><i class="fa fa-circle color-yellow-dark"></i><span class="color-yellow-light">Goldish</span></a>
+
+            <a href="#" data-change-highlight="brown"><i class="fa fa-circle color-brown-dark"></i><span class="color-brown-light">Wood</span></a>    
+
+            <a href="#" data-change-highlight="gray"><i class="fa fa-circle color-gray-dark"></i><span class="color-gray-light">Gray</span></a>
+
+            <a href="#" data-change-highlight="lightgray"><i class="fa fa-circle color-lightgray-dark"></i><span class="color-dark-light">LighGray</span></a>
+
+            <a href="#" data-change-highlight="dark"><i class="fa fa-circle color-dark-dark"></i><span class="color-dark-light">Dark</span></a>       
+
+            <a href="#" data-change-highlight="night"><i class="fa fa-circle color-night-dark"></i><span
+
+                    class="color-dark-light">Nigh</span></a>-->
+
+        <div class="clearfix"></div>
+
+    </div>
+
+</div>
+

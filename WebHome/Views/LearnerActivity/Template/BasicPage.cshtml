@@ -167,6 +167,7 @@
 
         </div>
 
+        @RenderSection("PopupBox", false)
 
 
     </div>
@@ -212,7 +213,9 @@
         });
 
     </script>
-
+    @{
+        await Html.RenderPartialAsync("~/Views/Common/JQueryHelper.cshtml");
+    }
 </body>
 
 </html>
