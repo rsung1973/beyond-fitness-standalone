@@ -514,7 +514,7 @@ namespace WebHome.Controllers
                             ByInstallments = 1
                         },
                         LessonPriceType = priceType,
-                        AdvisorID = Startup.Properties.GetValue<int>("DefaultCoach"),
+                        AdvisorID = WebApp.Properties.GetValue<int>("DefaultCoach"),
                         AttendedLessons = 0,
                         UID = profile.UID
                     };

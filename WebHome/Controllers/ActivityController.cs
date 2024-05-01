@@ -125,7 +125,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             LessonTime lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();

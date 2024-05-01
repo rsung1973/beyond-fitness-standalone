@@ -900,7 +900,7 @@ namespace WebHome.Helper
                     new []
                     {
                         new int[] { 101, 180,12 },
-                        new int[] { 13, 180,12 },
+                        new int[] { 13, 150,12 },
                     }
                 },
                 { 33,   //  level 1

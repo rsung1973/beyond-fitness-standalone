@@ -22,10 +22,10 @@
         ? "tw"
         : lang == "en-US"
             ? "en"
-            : "ja";    
+            : "ja";
 
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
-    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 }
 <div class="menu-header mb-2">
     <!-- <a href="#" data-toggle-theme class="border-right-0 show-on-theme-dark"><i class="fa fa-lightbulb font-30 color-beyondwhite-light opacity-30"></i></a>

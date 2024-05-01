@@ -99,7 +99,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             if (branch?.IsVirtualClassroom() != true && !models.GetTable<CoachWorkplace>()

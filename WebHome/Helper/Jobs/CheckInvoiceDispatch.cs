@@ -32,17 +32,17 @@ namespace WebHome.Helper.Jobs
             using (ModelSource<UserProfile> models = new ModelSource<UserProfile>())
             {
                 CheckTurnkeyLog(models);
-                checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkC0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "ERR"), Naming.GeneralStatus.Failed);
+                checkC0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkC0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0401", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkC0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0401", "ERR"), Naming.GeneralStatus.Failed);
 
-                checkC0501(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0501", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkC0501(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0501", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkC0501(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0501", "ERR"), Naming.GeneralStatus.Failed);
+                checkC0501(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0501", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkC0501(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0501", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkC0501(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0501", "ERR"), Naming.GeneralStatus.Failed);
 
-                checkD0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "D0401", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkD0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "D0401", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
-                checkD0401(models, Path.Combine(Startup.Properties["EINVTurnKeyPath"], "D0401", "ERR"), Naming.GeneralStatus.Failed);
+                checkD0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "D0401", "BAK", DateTime.Today.ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkD0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "D0401", "BAK", DateTime.Today.AddDays(-1).ToString("yyyyMMdd")), Naming.GeneralStatus.Successful);
+                checkD0401(models, Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "D0401", "ERR"), Naming.GeneralStatus.Failed);
 
             }
         }

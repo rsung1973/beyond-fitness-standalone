@@ -21,68 +21,68 @@
 
         _Resource = new JObject();
         JObject common =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Common.json")));
         common["ja"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.ja.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Common.ja.json")));
         common["en-US"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Common.en-US.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Common.en-US.json")));
         common["zh-TW"] = common;
         _Resource["Common"] = common;
 
         JObject findus =
-        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.json")));
+        JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/FindUs.json")));
         findus["ja"] =
-        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.ja.json")));
+        JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/FindUs.ja.json")));
         findus["en-US"] =
-        JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/FindUs.en-US.json")));
+        JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/FindUs.en-US.json")));
         findus["zh-TW"] = findus;
         _Resource["FindUs"] = findus;
 
         JObject home =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Home.json")));
         home["ja"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.ja.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Home.ja.json")));
         home["en-US"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Home.en-US.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Home.en-US.json")));
         home["zh-TW"] = home;
         _Resource["Home"] = home;
 
         JObject service =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Service.json")));
         service["ja"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.ja.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Service.ja.json")));
         service["en-US"] =
-            JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Service.en-US.json")));
+            JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Service.en-US.json")));
         service["zh-TW"] = service;
         _Resource["Service"] = service;
 
-        JObject bookNow = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.json")));
-        bookNow["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.ja.json")));
-        bookNow["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/BookNow.en-US.json")));
+        JObject bookNow = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/BookNow.json")));
+        bookNow["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/BookNow.ja.json")));
+        bookNow["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/BookNow.en-US.json")));
         bookNow["zh-TW"] = bookNow;
         _Resource["BookNow"] = bookNow;
 
-        JObject joinUs = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.json")));
-        joinUs["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.ja.json")));
-        joinUs["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/JoinUs.en-US.json")));
+        JObject joinUs = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/JoinUs.json")));
+        joinUs["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/JoinUs.ja.json")));
+        joinUs["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/JoinUs.en-US.json")));
         joinUs["zh-TW"] = joinUs;
         _Resource["JoinUs"] = joinUs;
 
-        JObject aboutUs = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.json")));
-        aboutUs["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.ja.json")));
-        aboutUs["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/AboutUs.en-US.json")));
+        JObject aboutUs = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/AboutUs.json")));
+        aboutUs["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/AboutUs.ja.json")));
+        aboutUs["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/AboutUs.en-US.json")));
         aboutUs["zh-TW"] = aboutUs;
         _Resource["AboutUs"] = aboutUs;
 
-        JObject beyondSession = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.json")));
-        beyondSession["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.ja.json")));
-        beyondSession["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Session.en-US.json")));
+        JObject beyondSession = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Session.json")));
+        beyondSession["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Session.ja.json")));
+        beyondSession["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Session.en-US.json")));
         beyondSession["zh-TW"] = beyondSession;
         _Resource["BeyondSession"] = beyondSession;
 
-        JObject faq = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.json")));
-        faq["ja"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.ja.json")));
-        faq["en-US"] = JObject.Parse(File.ReadAllText(Startup.MapPath("~/Official/Portfolio/Faq.en-US.json")));
+        JObject faq = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Faq.json")));
+        faq["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Faq.ja.json")));
+        faq["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Faq.en-US.json")));
         faq["zh-TW"] = faq;
         _Resource["Faq"] = faq;
     }

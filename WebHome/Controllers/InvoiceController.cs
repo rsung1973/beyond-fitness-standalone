@@ -805,7 +805,7 @@ namespace WebHome.Controllers
             //ViewResult result = (ViewResult)PrintInvoice(viewModel);
             //result.ViewName = "CanvasDrawInvoice";
             //return result;
-            String viewUrl = $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Invoice/CanvasPrintInvoice")}{Request.QueryString}";
+            String viewUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Invoice/CanvasPrintInvoice")}{Request.QueryString}";
             var converter = new HtmlConverter();
             var bytes = converter.FromUrl(viewUrl);
 
@@ -823,7 +823,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> DrawAllowanceAsync(InvoiceQueryViewModel viewModel)
         {
-            String viewUrl = $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Invoice/CanvasPrintAllowance")}{Request.QueryString}";
+            String viewUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Invoice/CanvasPrintAllowance")}{Request.QueryString}";
             var converter = new HtmlConverter();
             var bytes = converter.FromUrl(viewUrl);
 
@@ -1161,7 +1161,7 @@ namespace WebHome.Controllers
 
             if (items.Count() > 0)
             {
-                String C0701Outbound = Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0701", "SRC");
+                String C0701Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0701", "SRC");
                 if (!Directory.Exists(C0701Outbound))
                 {
                     Directory.CreateDirectory(C0701Outbound);

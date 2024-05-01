@@ -117,7 +117,7 @@ namespace WebHome.Controllers
 
         private bool validateSignature(byte[] content)
         {
-            var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Startup.Properties["ChannelSecret"]));
+            var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(WebApp.Properties["ChannelSecret"]));
             
             var computeHash = hmac.ComputeHash(content);
             var contentHash = Convert.ToBase64String(computeHash);
@@ -129,14 +129,14 @@ namespace WebHome.Controllers
         public ActionResult GetIcon(String id)
         {
             var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var path = Startup.MapPath("~/images/GitHubIcon/" + id + ".jpg");
+            var path = WebApp.MapPath("~/images/GitHubIcon/" + id + ".jpg");
 
             return new PhysicalFileResult(path, "image/png");
         }
         public ActionResult GetMapImage(String id)
         {
             var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var path = Startup.MapPath("~/images/Map/" + id + ".jpg");
+            var path = WebApp.MapPath("~/images/Map/" + id + ".jpg");
 
             return new PhysicalFileResult(path, "image/png");
         }
@@ -144,7 +144,7 @@ namespace WebHome.Controllers
         public ActionResult GetBeyondCoinMap(String id)
         {
             var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var path = Startup.MapPath($"~/images/Map/BeyondCoin{id}.jpg");
+            var path = WebApp.MapPath($"~/images/Map/BeyondCoin{id}.jpg");
 
             return new PhysicalFileResult(path, "image/png");
         }
@@ -175,7 +175,7 @@ namespace WebHome.Controllers
                 {
                     var encoding = new UTF8Encoding(false);
                     client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    client.Headers.Add("Authorization", $"Bearer {Startup.Properties["ChannelToken"]}");
+                    client.Headers.Add("Authorization", $"Bearer {WebApp.Properties["ChannelToken"]}");
 
                     var jsonData = new
                     {
@@ -191,7 +191,7 @@ namespace WebHome.Controllers
                     };
 
                     var dataItem = JsonConvert.SerializeObject(jsonData);
-                    var result = client.UploadData(Startup.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
+                    var result = client.UploadData(WebApp.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
 
                     ApplicationLogging.CreateLogger<LineEventsController>().LogInformation($"push:{dataItem},result:{(result != null ? encoding.GetString(result) : "")}");
                 }
@@ -225,7 +225,7 @@ namespace WebHome.Controllers
                 {
                     var encoding = new UTF8Encoding(false);
                     client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                    client.Headers.Add("Authorization", $"Bearer {Startup.Properties["ChannelToken"]}");
+                    client.Headers.Add("Authorization", $"Bearer {WebApp.Properties["ChannelToken"]}");
 
                     var jsonData = new
                     {
@@ -241,7 +241,7 @@ namespace WebHome.Controllers
                     };
 
                     var dataItem = JsonConvert.SerializeObject(jsonData);
-                    var result = client.UploadData(Startup.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
+                    var result = client.UploadData(WebApp.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
 
                     ApplicationLogging.CreateLogger<LineEventsController>().LogInformation($"push:{dataItem},result:{(result != null ? encoding.GetString(result) : "")}");
                 }

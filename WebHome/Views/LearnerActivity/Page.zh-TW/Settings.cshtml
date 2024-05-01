@@ -28,6 +28,9 @@
         : lang == "en-US"
             ? "en"
             : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+
 }
 
 @section MainContent
@@ -96,20 +99,26 @@
                         <span class="badge bg-beyondred-dark font-13">未認證</span>
                         <i class="fa fa-angle-right"></i>
                     </a>
-                    <a href="login-active.html">
-                        <i class="fab font-32 fa-line color-line"></i>
-                        <span class="font-500 font-16">LINE</span>
-                        <span class="font-14 mt-3 font-500 color-gray-dark let">Bound</span>
-                        <span class="badge bg-beyondred-dark font-13">未綁定</span>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
-                    <a href="#" data-menu="menu-unbound">
-                        <i class="fab font-32 fa-line color-line"></i>
-                        <span class="font-500 font-16">LINE</span>
-                        <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
-                        <span class="badge bg-beyondred-dark font-13">綁定中</span>
-                        <i class="fa fa-angle-right"></i>
-                    </a>
+                    @if (profile.UserProfileExtension.LineID == null)
+                    {
+                        <a href="login-active.html">
+                            <i class="fab font-32 fa-line color-line"></i>
+                            <span class="font-500 font-16">LINE</span>
+                            <span class="font-14 mt-3 font-500 color-gray-dark let">Bound</span>
+                            <span class="badge bg-beyondred-dark font-13">未綁定</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    }
+                    @if (profile.UserProfileExtension.LineID != null)
+                    {
+                        <a href="#" data-menu="menu-unbound">
+                            <i class="fab font-32 fa-line color-line"></i>
+                            <span class="font-500 font-16">LINE</span>
+                            <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
+                            <span class="badge bg-beyondred-dark font-13">綁定中</span>
+                            <i class="fa fa-angle-right"></i>
+                        </a>
+                    }
                     <a href="#" data-menu="update-mobilebarcode">
                         <i class="fa-solid font-18 fa-barcode bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
                         <span class="font-500 font-16">手機條碼載具設定</span>
@@ -139,14 +148,37 @@
          data-menu-height="410" data-menu-effect="menu-over">
     </div>
     <!--變更大頭照-->
-
     <div id="menu-foto-update"
          class="menu menu-box-bottom menu-box-detached rounded-m"
          data-menu-height="420"
          data-menu-effect="menu-over">
-        @{ 
+        @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/PhtoStickerItem.cshtml");
         }
     </div>
+
+    <!--手機載具設定-->
+    <div id="update-mobilebarcode" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350" data-menu-height="480"
+         data-menu-effect="menu-over">
+        @{
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateMobileBarcode.cshtml");
+        }
+    </div>
+
+
+    @if (profile.UserProfileExtension.LineID != null)
+    {
+        <!--解除Line綁定-->
+        <div id="menu-unbound"
+             class="menu menu-box-bottom menu-box-modal rounded-m"
+             data-menu-width="350"
+             data-menu-height="480"
+             data-menu-effect="menu-over">
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UnboundLine.cshtml");
+            }
+        </div>
+    }
+
 
 }

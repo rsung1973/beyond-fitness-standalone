@@ -57,21 +57,21 @@ namespace WebHome.Helper
 
                     //StringBuilder body = new StringBuilder();
                     MailMessage message = new MailMessage();
-                    message.ReplyToList.Add(Startup.Properties["WebMaster"]);
-                    message.From = new MailAddress(Startup.Properties["WebMaster"]);
+                    message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
+                    message.From = new MailAddress(WebApp.Properties["WebMaster"]);
                     message.To.Add(item.UserProfile.PID);
                     message.Subject = "Beyond-fitness會員密碼重設通知";
                     message.IsBodyHtml = true;
 
                     //body.Append("您好，請由下列連結重設您的密碼，謝謝。<br/>")
-                    //    .Append("<a href=").Append(Startup.Properties["HostDomain"]).Append(VirtualPathUtility.ToAbsolute("~/Account/ResetPass"))
+                    //    .Append("<a href=").Append(WebApp.Properties["HostDomain"]).Append(VirtualPathUtility.ToAbsolute("~/Account/ResetPass"))
                     //    .Append("/").Append(item.ResetID)
                     //    .Append(">會員重設密碼</a>");
 
                     using (WebClient client = new WebClient())
                     {
                         client.Encoding = Encoding.UTF8;
-                        message.Body = client.DownloadString((notifyUrl ?? Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Account/NotifyResetPassword")) + "?resetID=" + item.ResetID);
+                        message.Body = client.DownloadString((notifyUrl ?? WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Account/NotifyResetPassword")) + "?resetID=" + item.ResetID);
                     }
 
                     //message.Body = body.ToString();

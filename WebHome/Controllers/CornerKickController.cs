@@ -1464,7 +1464,7 @@ namespace WebHome.Controllers
             models.GetTable<ResetPassword>().InsertOnSubmit(toReset);
             models.SubmitChanges();
 
-            toReset.NotifyResetPassword(notifyUrl:$"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")}");
+            toReset.NotifyResetPassword(notifyUrl:$"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")}");
 
             return View("~/Views/Shared/JsAlert.cshtml", model: "重設密碼通知郵件已寄出!!");
 

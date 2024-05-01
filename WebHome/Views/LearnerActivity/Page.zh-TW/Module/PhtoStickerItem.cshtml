@@ -32,7 +32,9 @@
     <div class="text-center">
         <img id="image-data" src="@(profile.PictureID.HasValue
                 ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{profile.PictureID}?stretch=true"
-                : VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatar/default-mm.png"))"
+                : profile.UserProfileExtension.Gender == "M" 
+                    ? VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatar/default-mm.png")
+                    : VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatar/default-fm.png"))"
              class="avatar-rounded-circle large mt-5" width="150" height="150" />
         <div class="file-data">
             <input type="file" id="file-upload" class="upload-photostick" accept="image/*">
@@ -63,12 +65,22 @@
 <div class="content mt-5">
     <div class="input-style input-style-always-active has-borders has-icon validate-field mb-4">
         <i class="fa-solid fa-user-tag color-theme"></i>
-        <input type="name" class="form-control validate-name" id="form1ab" placeholder="冠軍王" value="@(profile.UserName)">
+        <input type="text" class="form-control validate-name" name="UserName" id="form1ab" placeholder="冠軍王" value="@(profile.UserName)" />
         <label for="form1ab" class="color-beyondred-dark text-capitalize font-700 font-16">暱稱</label>
         <i class="fa fa-times disabled invalid color-red-dark"></i>
         <i class="fa fa-check disabled valid color-green-dark"></i>
     </div>
 
-    <a href="setting.html"
-        class="btn close-menu btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定更新！</a>
+    <a href="javascript:commitUserName();"
+       class="btn close-menu btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定更新！</a>
+    <script>
+        function commitUserName() {
+            var viewModel = {
+                'UserName': $('input[name="UserName"]').val()
+            };
+            doPost('@Html.Raw(Url.Action("CommitUserName", "LearnerActivity"))', viewModel, function (data) {
+                window.location.reload();
+            });
+        }
+    </script>
 </div>

@@ -617,7 +617,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return Json(new { result = true, pdf = pdfFile != null ? VirtualPathUtility.ToAbsolute("~/" + pdfFile.Replace(Startup.Environment.WebRootPath, "")) : null });
+                    return Json(new { result = true, pdf = pdfFile != null ? VirtualPathUtility.ToAbsolute("~/" + pdfFile.Replace(WebApp.Environment.WebRootPath, "")) : null });
                 }
             }
             else
@@ -775,7 +775,7 @@ namespace WebHome.Controllers
         public ActionResult GetSampleContractPdf()
         {
             String pdfFile = Path.Combine(GlobalDefinition.ContractPdfPath, "SampleContract.pdf");
-            String viewUrl = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CourseContract/ViewSampleContract") + "?pdf=1";
+            String viewUrl = WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CourseContract/ViewSampleContract") + "?pdf=1";
             viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             return new PhysicalFileResult(pdfFile, "application/pdf");
         }

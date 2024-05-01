@@ -84,7 +84,7 @@
                                     <div class="img-post m-b-15">
                                         @{ var imgUrl = $"BlogContent/Blog/{item.BlogID}/images/Title.jpg";}
 
-                                        <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(WebHome.Startup.MapPath(imgUrl)) ? $"this.onload = null;this.src = '../{imgUrl}';" : null)" />                                        
+                                        <img class="blog-img" src="images/blog/DefaultTitle.jpg" onload="@(System.IO.File.Exists(WebHome.WebApp.MapPath(imgUrl)) ? $"this.onload = null;this.src = '../{imgUrl}';" : null)" />                                        
                                         <div class="social_share">
                                             <button class="btn btn-danger btn-icon btn-icon-mini btn-round" onclick="viewArticle(@(item.DocID));"><i class="zmdi zmdi-eye"></i></button>
                                             <button class="btn btn-danger btn-icon btn-icon-mini btn-round" onclick="editArticle(@(item.DocID));"><i class="zmdi zmdi-edit"></i></button>

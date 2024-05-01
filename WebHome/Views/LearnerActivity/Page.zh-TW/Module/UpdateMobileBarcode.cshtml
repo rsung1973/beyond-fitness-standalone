@@ -1,0 +1,74 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+}
+<div class="menu-title text-center">
+
+    <h1 class="text-center mt-4"><i class="fa-solid fa-barcode fa-3x color-beyondwhite-dark rounded-circle"></i></h1>
+
+    <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-beyond-dark pt-2">設定手機條碼<small class="ps-2 font-12 font-400 text-capitalize color-theme d-block opacity-60">Mobile Barcode Setting</small></h1>
+
+</div>
+
+<div class="content">
+
+    <p class="boxed-text-l color-theme text-start line-height-l">
+
+        發票將儲存至關貿和財政部，您可在<a href="https://www.einvoice.nat.gov.tw/accounts/signup/mw">財政部</a>申請手機載具條碼
+
+        <div class="input-style has-borders input-style-always-active has-icon validate-field mt-2">
+
+            <i class="fa-solid fa-barcode"></i>
+
+            <input type="text" class="form-control validate-text" name="CarrierNo" id="mobileBarcode" placeholder="格式：/123-ABC(共8位字元)" value="@(profile.UserProfileExtension?.CarrierNo)" />
+
+            <label for="mobileBarcode" class="color-highlight font-11 font-500 mt-1">手機條碼載具</label>
+
+            <i class="fa fa-times disabled invalid color-red-dark"></i>
+
+            <i class="fa fa-check disabled valid color-green-dark"></i>
+
+            <em>(必要輸入)</em>
+
+        </div>
+        <a href="javascript:commitCarrierNo();"
+           class="btn close-menu btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定更新</a>
+        <script>
+            function commitCarrierNo() {
+                var viewModel = {
+                    'CarrierNo': $('input[name="CarrierNo"]').val()
+                };
+                doPost('@Html.Raw(Url.Action("CommitCarrierNo", "LearnerActivity"))', viewModel, function (data) {
+                    window.location.reload();
+                });
+            }
+        </script>
+    </p>
+</div>

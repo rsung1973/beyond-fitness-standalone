@@ -48,12 +48,12 @@ namespace WebHome.Helper.MessageOperation
                     {
                         var encoding = new UTF8Encoding(false);
                         client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
-                        client.Headers.Add("Authorization", $"Bearer {Startup.Properties["ChannelToken"]}");
+                        client.Headers.Add("Authorization", $"Bearer {WebApp.Properties["ChannelToken"]}");
 
                         ApplicationLogging.LoggerFactory.CreateLogger(typeof(MessageExtensions))
                             .LogInformation($"push:{dataItem}");
 
-                        var result = client.UploadData(Startup.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
+                        var result = client.UploadData(WebApp.Properties["LinePushMessage"], encoding.GetBytes(dataItem));
 
                         ApplicationLogging.LoggerFactory.CreateLogger(typeof(MessageExtensions))
                             .LogInformation($"push:{dataItem},result:{(result != null ? encoding.GetString(result) : "")}");
@@ -77,14 +77,14 @@ namespace WebHome.Helper.MessageOperation
         //    //                new
         //    //                {
         //    //                    type =  "text",
-        //    //                    text =  $"{item.CourseContractType.TypeName} 合約內容確認並簽署\r\n👉點這邊，立即簽署合約 {Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}",
+        //    //                    text =  $"{item.CourseContractType.TypeName} 合約內容確認並簽署\r\n👉點這邊，立即簽署合約 {WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}",
         //    //                }
         //    //    }
         //    //};
 
         //    //return JObject.FromObject(jsonData);
 
-        //    String template = HttpContext.Current.Startup.MapPath("~/Resource/LineNotifyToSignContract.json");
+        //    String template = HttpContext.Current.WebApp.MapPath("~/Resource/LineNotifyToSignContract.json");
         //    JObject json = JObject.Parse(File.ReadAllText(template));
 
         //    json["to"] = item.ContractOwner.UserProfileExtension.LineID;
@@ -103,7 +103,7 @@ namespace WebHome.Helper.MessageOperation
         //    json["messages"][0]["contents"]["body"]["contents"][0]["contents"][2]["contents"][1]["text"] = $"{(item.InstallmentID.HasValue ? item.ContractInstallment.CourseContract.Sum(c => c.Lessons) : (item.Lessons ?? item.LessonPriceType?.ExpandActualLessonCount(models)))}";
         //    json["messages"][0]["contents"]["body"]["contents"][0]["contents"][3]["contents"][1]["text"] = item.ServingCoach.UserProfile.FullName();
 
-        //    String uri = $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}";
+        //    String uri = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}";
         //    json["messages"][0]["contents"]["footer"]["contents"][1]["action"]["uri"] = uri;
 
         //    return json;

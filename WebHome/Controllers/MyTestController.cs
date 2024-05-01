@@ -203,7 +203,7 @@ namespace WebHome.Controllers
         {
             return Json(new
             {
-                ReportInputError = Startup.Properties["ReportInputError"],
+                ReportInputError = WebApp.Properties["ReportInputError"],
                 ContractViewUrl = BusinessExtensionMethods.ContractViewUrl.ToString(),
                 ContractServiceViewUrl = BusinessExtensionMethods.ContractServiceViewUrl.ToString(),
             });

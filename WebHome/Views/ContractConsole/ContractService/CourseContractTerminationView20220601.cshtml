@@ -141,7 +141,7 @@
                          @if (_model.AttachmentID.HasValue)
                         {
                             <td>相關證明文件：                            
-                                <u><a href="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u>                            
+                                <u><a href="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u>                            
                             </td>
                         }
                     </tr>
@@ -387,7 +387,7 @@
                             <td colspan="3">銀行存摺封面：
                                  @if (_model.CourseContractTermination?.AccountInfo.HasValue == true)
                                 {
-                                    <img src="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.CourseContractTermination.AccountInfo.Value.EncryptHexKey() })}")" height="150px" />
+                                    <img src="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.CourseContractTermination.AccountInfo.Value.EncryptHexKey() })}")" height="150px" />
                                 }
                             </td>
                         </tr>

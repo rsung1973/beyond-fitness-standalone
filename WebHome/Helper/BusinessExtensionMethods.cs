@@ -15,12 +15,26 @@ using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 using CommonLib.Core.Utility;
 using CommonLib.DataAccess;
+using CommonLib.Core;
 //
 
 namespace WebHome.Helper
 {
     public static class BusinessExtensionMethods
     {
+        static BusinessExtensionMethods()
+        {
+            BusinessExtensionMethods.ContractViewUrl = item =>
+            {
+                return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
+            };
+
+            BusinessExtensionMethods.ContractServiceViewUrl = item =>
+            {
+                return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
+            };
+        }
+
         public static void AttendLesson(this GenericManager<BFDataContext> models, LessonTime item, UserProfile actor, Naming.QuestionnaireGroup? groupID = null)
 
         {
@@ -1981,11 +1995,6 @@ namespace WebHome.Helper
             }
         }
 
-        public static UserProfile LoadInstance(this UserProfile profile, GenericManager<BFDataContext> models)
-        {
-            return models.GetTable<UserProfile>().Where(u => u.UID == profile.UID).First();
-        }
-
         public static IQueryable<CourseContract> PromptContract(this GenericManager<BFDataContext> models)
 
         {
@@ -2246,7 +2255,7 @@ namespace WebHome.Helper
 
         public static Func<CourseContract, string> ContractViewUrl { get; set; } = item =>
             {
-                return $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContract")}?pdf=1&contractID={item.ContractID}";
+                return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContract")}?pdf=1&contractID={item.ContractID}";
             };
 
         public static String CreateContractPDF(this CourseContract item, bool createNew = false)
@@ -2262,7 +2271,7 @@ namespace WebHome.Helper
 
         public static Func<CourseContractRevision, string> ContractServiceViewUrl { get; set; } = item =>
         {
-            return $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContractAmendment")}?pdf=1&revisionID={item.RevisionID}";
+            return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CourseContract/ViewContractAmendment")}?pdf=1&revisionID={item.RevisionID}";
         };
 
         public static String CreateContractAmendmentPDF(this CourseContractRevision item, bool createNew = false)
@@ -2284,7 +2293,7 @@ namespace WebHome.Helper
             String pdfFile = Path.Combine(storePath, item.TrackCode + item.No + ".pdf");
             if (createNew == true || !File.Exists(pdfFile))
             {
-                String viewUrl = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintInvoice") + "?invoiceID=" + item.InvoiceID;
+                String viewUrl = WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintInvoice") + "?invoiceID=" + item.InvoiceID;
                 viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             }
             return pdfFile;
@@ -2298,7 +2307,7 @@ namespace WebHome.Helper
             String pdfFile = Path.Combine(storePath, item.UID + "-" + DateTime.Now.Ticks + ".pdf");
             if (!File.Exists(pdfFile))
             {
-                String viewUrl = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintInvoice") + "?uid=" + item.UID + "&t=" + DateTime.Now.Ticks;
+                String viewUrl = WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintInvoice") + "?uid=" + item.UID + "&t=" + DateTime.Now.Ticks;
                 viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             }
             return pdfFile;
@@ -2312,7 +2321,7 @@ namespace WebHome.Helper
             String pdfFile = Path.Combine(storePath, item.UID + "-Allowance-" + DateTime.Now.Ticks + ".pdf");
             if (!File.Exists(pdfFile))
             {
-                String viewUrl = Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintAllowance") + "?uid=" + item.UID + "&t=" + DateTime.Now.Ticks;
+                String viewUrl = WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/Invoice/PrintAllowance") + "?uid=" + item.UID + "&t=" + DateTime.Now.Ticks;
                 viewUrl.ConvertHtmlToPDF(pdfFile, 20);
             }
             return pdfFile;

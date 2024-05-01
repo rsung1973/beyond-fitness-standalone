@@ -70,7 +70,7 @@
                                 <form enctype="multipart/form-data" method="post">
                                     @{
                                         String previewPath = "../temp";
-                                        String fileName = _model.Attachment.PreparePreivew(WebHome.Startup.MapPath("temp"));
+                                        String fileName = _model.Attachment.PreparePreivew(WebHome.WebApp.MapPath("temp"));
                                         ViewBag.DropifyDefaultFile = fileName != null
                                               ? $"{previewPath}/{fileName}"
                                               : "images/avatar/noname.png";

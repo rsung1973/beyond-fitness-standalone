@@ -71,7 +71,7 @@ namespace WebHome.Controllers
         {
             ViewBag.BranchName = branchName = branchName.GetEfficientString();
             CoachData model = null;
-            String jsonFile = Startup.MapPath($"~/MainActivity/Portfolio/{branchName}.json");
+            String jsonFile = WebApp.MapPath($"~/MainActivity/Portfolio/{branchName}.json");
             if (System.IO.File.Exists(jsonFile))
             {
                 var jsonData = System.IO.File.ReadAllText(jsonFile);
@@ -96,7 +96,7 @@ namespace WebHome.Controllers
             // viewModel.unit = viewModel.unit ?? 60;
             // ViewBag.ViewModel = viewModel;
             // PricingData model = null;
-            // String jsonFile = Startup.MapPath($"~/MainActivity/Pricing/{viewModel.branchName}.json");
+            // String jsonFile = WebApp.MapPath($"~/MainActivity/Pricing/{viewModel.branchName}.json");
             // if (System.IO.File.Exists(jsonFile))
             // {
             //     var jsonData = System.IO.File.ReadAllText(jsonFile);
@@ -204,7 +204,7 @@ namespace WebHome.Controllers
                 viewModel.TagID = viewModel.TagID.Where(i => i.HasValue).ToArray();
             }
 
-            String blogRoot = Startup.MapPath("~/MainActivity/Blog");
+            String blogRoot = WebApp.MapPath("~/MainActivity/Blog");
             String blogPath = Path.Combine(blogRoot, blogID);
             if (Directory.Exists(blogPath))
             {
@@ -277,7 +277,7 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "請先建立文章資料" });
             }
 
-            String blogRoot = Startup.MapPath("~/MainActivity/Blog");
+            String blogRoot = WebApp.MapPath("~/MainActivity/Blog");
             String blogPath = Path.Combine(blogRoot, item.BlogID);
             blogPath.CheckStoredPath();
 
@@ -333,7 +333,7 @@ namespace WebHome.Controllers
 
             models.ExecuteCommand("delete Document where DocID = {0}", item.DocID);
 
-            String blogRoot = Startup.MapPath("~/MainActivity/Blog");
+            String blogRoot = WebApp.MapPath("~/MainActivity/Blog");
             String blogPath = Path.Combine(blogRoot, item.BlogID);
             if(Directory.Exists(blogPath))
             {

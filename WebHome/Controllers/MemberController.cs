@@ -578,7 +578,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             RegisterLesson lesson = item.RegisterLesson.Where(r => r.RegisterID == id).FirstOrDefault();
@@ -843,7 +843,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == (int?)HttpContext.GetCacheValue("EditMemberUID")).FirstOrDefault();
@@ -1336,7 +1336,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (lesson.RegisterGroupID.HasValue)
@@ -1452,7 +1452,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             //var lesson = item.RegisterLesson.OrderByDescending(r => r.RegisterID).FirstOrDefault();
@@ -1524,7 +1524,7 @@ namespace WebHome.Controllers
             UserProfile coach = await HttpContext.GetUserAsync();
             if (coach == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             ViewBag.ViewModel = viewModel;
@@ -1622,7 +1622,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             var item = models.GetTable<UserProfile>().Where(u => u.UID == id).FirstOrDefault();

@@ -360,7 +360,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             try

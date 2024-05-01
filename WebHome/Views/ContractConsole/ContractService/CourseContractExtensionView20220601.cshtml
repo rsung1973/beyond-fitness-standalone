@@ -129,7 +129,7 @@
                         <td>項目：展延</td>
                         @if (_model.AttachmentID.HasValue)
                         {
-                            <td>相關證明文件：<u><a href="@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u></td>
+                            <td>相關證明文件：<u><a href="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{Url.Action("GetResourceWithMime","Information",new { HKeyID =_model.AttachmentID.Value.EncryptHexKey() })}")" target="_blank">開啟附件</a></u></td>
                         }                       
                     </tr>    
                     <tr>

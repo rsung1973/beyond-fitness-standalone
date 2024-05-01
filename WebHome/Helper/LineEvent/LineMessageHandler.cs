@@ -41,7 +41,7 @@ namespace WebHome.Helper.LineEvent
 祝您有個美好的一天😊";
 
         private Event lineEvent;
-        private LineClient lineClient = new LineClient(Startup.Properties["ChannelToken"]);
+        private LineClient lineClient = new LineClient(WebApp.Properties["ChannelToken"]);
         private HttpContext currentContext;
 
         public LineMessageHandler(Event lineEvent,ModelSource<UserProfile> models,HttpContext context)
@@ -127,22 +127,22 @@ namespace WebHome.Helper.LineEvent
             //else 
             if (message == "個人化" || message.Contains("專屬服務") || message.Contains("會員專屬服務，查詢快速又簡單"))
             {
-                var imageUrl = $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapImage")}";
+                var imageUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapImage")}";
                 List<ImageMapAction> actions = new List<ImageMapAction>();
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(375, 0, 325, 1040)));
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/TodayLesson")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 375, 590)));
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Notice")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 590, 375, 450)));
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckBonusPointByLine")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 0, 350, 590)));
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 590, 350, 450)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(375, 0, 325, 1040)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/TodayLesson")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 375, 590)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Notice")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 590, 375, 450)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckBonusPointByLine")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 0, 350, 590)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 590, 350, 450)));
                 //actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
                 replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
             }
             else if (message.Contains("帳號串連即可獲得beyond幣") || message.Contains("帳號串連") 
                 || message.Contains("beyond幣") || message.Contains("帳號beyond幣") || message.Contains("帳號活動"))
             {
-                var imageUrl = $"{Startup.Properties["HostDomain"]}/LineEvents/GetBeyondCoinMap";
+                var imageUrl = $"{WebApp.Properties["HostDomain"]}/LineEvents/GetBeyondCoinMap";
                 List<ImageMapAction> actions = new List<ImageMapAction>();
-                actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 1040, 1040)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 1040, 1040)));
                 replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
             }
             else if (message == "check" || message == "打卡")
@@ -157,7 +157,7 @@ namespace WebHome.Helper.LineEvent
 
                     buttonsTemplate.Title = "此支裝置尚未設定過專屬服務";
                     buttonsTemplate.Text = "請點選下方更多資訊/專屬服務/帳號設定才可使用！";
-                    actions.Add(new UriTemplateAction("帳號設定", $"{Startup.Properties["HostDomain"]}{ VirtualPathUtility.ToAbsolute("~/CornerKick/Register")}?X001={ CurrentProfile.UserId}"));
+                    actions.Add(new UriTemplateAction("帳號設定", $"{WebApp.Properties["HostDomain"]}{ VirtualPathUtility.ToAbsolute("~/CornerKick/Register")}?X001={ CurrentProfile.UserId}"));
                     buttonsTemplate.Actions = actions;
                     replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
                 }
@@ -175,7 +175,7 @@ namespace WebHome.Helper.LineEvent
 
                         buttonsTemplate.Title = item.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟";
                         buttonsTemplate.Text = $"還有{checkAttendance.CheckCount}堂課沒打卡";
-                        actions.Add(new UriTemplateAction("👉立即打卡", $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}"));
+                        actions.Add(new UriTemplateAction("👉立即打卡", $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}"));
                         buttonsTemplate.Actions = actions;
                         replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
                     }
@@ -229,9 +229,9 @@ namespace WebHome.Helper.LineEvent
             //else if (textMessage.Text.ToLower() == "imagemap")
             //{
             //    var url = HttpContext.Current.Request.Url;
-            //    var imageUrl = $"{Startup.Properties["HostDomain"]}/LineEvents/GetIcon";
+            //    var imageUrl = $"{WebApp.Properties["HostDomain"]}/LineEvents/GetIcon";
             //    List<ImageMapAction> actions = new List<ImageMapAction>();
-            //    actions.Add(new UriImageMapAction($"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?lineID={CurrentProfile.UserId}", new ImageMapArea(0, 0, 520, 1040)));
+            //    actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?lineID={CurrentProfile.UserId}", new ImageMapArea(0, 0, 520, 1040)));
             //    actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
             //    replyMessage = new ImageMapMessage(imageUrl, "GitHub", new BaseSize(1040, 1040), actions);
             //}
@@ -256,7 +256,7 @@ namespace WebHome.Helper.LineEvent
 
 
             //    var richMenuId = await lineClient.CreateRichMenu(richMenu);
-            //    var image = new MemoryStream(File.ReadAllBytes(HttpContext.Current.Startup.MapPath(@"~\Images\richmenu.PNG")));
+            //    var image = new MemoryStream(File.ReadAllBytes(HttpContext.Current.WebApp.MapPath(@"~\Images\richmenu.PNG")));
             //    // Upload Image
             //    await lineClient.UploadRichMenuImage(richMenuId, image);
             //    // Link to user

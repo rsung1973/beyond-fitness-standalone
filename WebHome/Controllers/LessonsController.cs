@@ -91,7 +91,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             var priceType = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.DocumentLevelDefinition.教練PI).FirstOrDefault();
@@ -219,7 +219,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             ViewBag.ViewModel = new LessonTimeViewModel
@@ -237,7 +237,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             ViewBag.ViewModel = new LessonTimeViewModel
@@ -254,7 +254,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == id).FirstOrDefault();
@@ -446,7 +446,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             if (coach == null)
@@ -474,7 +474,7 @@ namespace WebHome.Controllers
                 {
                     this.ModelState.AddModelError("userName", "請選擇上課學員!!");
                     ViewBag.ModelState = this.ModelState;
-                    return View(Startup.Properties["ReportInputError"]);
+                    return View(WebApp.Properties["ReportInputError"]);
                 }
 
                 if (viewModel.SessionStatus.HasValue)
@@ -744,7 +744,7 @@ namespace WebHome.Controllers
             {
                 this.ModelState.AddModelError("userName", "請選擇上課學員!!");
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             priceType = models.CurrentSessionPrice(viewModel.SessionStatus.Value, viewModel.PriceID);
@@ -820,7 +820,7 @@ namespace WebHome.Controllers
             if (!this.ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             if (coach == null)
@@ -1258,7 +1258,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             var item = models.GetTable<LessonTime>().Where(t => t.LessonID == id
@@ -1467,7 +1467,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (!lessonDate.HasValue)
@@ -1495,7 +1495,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             ViewBag.ViewModel = viewModel;
@@ -1540,7 +1540,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             IQueryable<LessonTime> items = queryBookingLessons(item);
@@ -1924,7 +1924,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             IQueryable<LessonTime> items = models.GetTable<LessonTime>();
@@ -2452,7 +2452,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
@@ -2483,7 +2483,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             LessonTime item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();

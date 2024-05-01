@@ -20,11 +20,11 @@ namespace WebHome.Helper
     {
         static TaskExtensionMethods()
         {
-            C0401Outbound = Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0401", "SRC");
-            C0501Outbound = Path.Combine(Startup.Properties["EINVTurnKeyPath"], "C0501", "SRC");
-            D0401Outbound = Path.Combine(Startup.Properties["EINVTurnKeyPath"], "D0401", "SRC");
-            E0401Outbound = Path.Combine(Startup.Properties["EINVTurnKeyB2P"], "E0401", "SRC");
-            E0402Outbound = Path.Combine(Startup.Properties["EINVTurnKeyB2P"], "E0402", "SRC");
+            C0401Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0401", "SRC");
+            C0501Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "C0501", "SRC");
+            D0401Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyPath"], "D0401", "SRC");
+            E0401Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyB2P"], "E0401", "SRC");
+            E0402Outbound = Path.Combine(WebApp.Properties["EINVTurnKeyB2P"], "E0402", "SRC");
 
             if (!Directory.Exists(C0401Outbound))
             {

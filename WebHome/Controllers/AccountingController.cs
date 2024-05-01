@@ -576,7 +576,7 @@ namespace WebHome.Controllers
                 .Select(t => t.ContractID);
             var contractItems = models.GetTable<CourseContract>().Where(c => contractID.Contains(c.ContractID));
 
-            String temp = Startup.MapPath("~/temp");
+            String temp = WebApp.MapPath("~/temp");
 
             if (!Directory.Exists(temp))
             {

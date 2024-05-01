@@ -267,7 +267,7 @@ namespace WebHome.Controllers
 
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (profile.CurrentUserRole?.RoleID == (int)Naming.RoleID.Learner)
@@ -619,7 +619,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             PasswordViewModel viewModel = new PasswordViewModel
@@ -644,7 +644,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
             ViewBag.ModelState = this.ModelState;
 
@@ -686,7 +686,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
             if (!lessonDate.HasValue)
                 lessonDate = DateTime.Today.AddYears(-1);
@@ -704,7 +704,7 @@ namespace WebHome.Controllers
             UserProfile profile = await HttpContext.GetUserAsync();
             if (profile == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             var item = models.GetTable<UserProfile>().Where(u => u.UID == id).FirstOrDefault();
@@ -733,7 +733,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             //if (item == null)
             //{
-            //    return Redirect($"~{Startup.Properties["LoginUrl"]}");
+            //    return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             //}
 
             ViewBag.ViewModel = viewModel;
@@ -751,7 +751,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (ViewBag.LessonDate == null)
@@ -786,7 +786,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             RegisterViewModel model = new RegisterViewModel
@@ -808,7 +808,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (!ModelState.IsValid)
@@ -822,7 +822,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
             viewModel.PictureID = item.PictureID;
             viewModel.EMail = viewModel.EMail.GetEfficientString();

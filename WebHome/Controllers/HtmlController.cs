@@ -122,7 +122,7 @@ namespace WebHome.Controllers
 
             //if (item == null)
             //{
-            //    return Redirect($"~{Startup.Properties["LoginUrl"]}");
+            //    return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             //}
 
             viewModel.EMail = item.PID.Contains("@") ? item.PID : null;
@@ -141,7 +141,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             if (!ModelState.IsValid)
@@ -155,7 +155,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             viewModel.PictureID = item.PictureID;
@@ -356,7 +356,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             PasswordViewModel viewModel = new PasswordViewModel
@@ -381,7 +381,7 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
             ViewBag.ModelState = this.ModelState;
 

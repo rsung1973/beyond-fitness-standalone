@@ -43,12 +43,12 @@ namespace WebHome.Controllers
         {
             BusinessExtensionMethods.ContractViewUrl = item => 
             {
-                return $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
+                return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
             };
 
             BusinessExtensionMethods.ContractServiceViewUrl = item =>
             {
-                return $"{Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
+                return $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
             };
 
         }

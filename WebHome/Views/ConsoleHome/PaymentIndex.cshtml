@@ -204,7 +204,7 @@
 
     </script>
 
-    @if (false@*!String.IsNullOrEmpty(WebHome.Startup.Properties["PrintInvoiceWebAp"] + Startup.ApplicationPath)*@)
+    @if (false@*!String.IsNullOrEmpty(WebHome.WebApp.Properties["PrintInvoiceWebAp"] + WebApp.ApplicationPath)*@)
 {
 <script>
     function testPrintInvoice(invoiceID, printerIP) {
@@ -213,7 +213,7 @@
             printerIP = '192.168.1.200';
         }
 
-        $('<form>').launchDownload('@Html.Raw(WebHome.Startup.Properties["PrintInvoiceWebAp"] + Startup.ApplicationPath + Url.Action("LoadInvoiceImageByUID", "Invoice", new { _profile.UID, t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');
+        $('<form>').launchDownload('@Html.Raw(WebHome.WebApp.Properties["PrintInvoiceWebAp"] + WebApp.ApplicationPath + Url.Action("LoadInvoiceImageByUID", "Invoice", new { _profile.UID, t = DateTime.Now.Ticks }))', { 'invoiceID': invoiceID, 'printerIP': printerIP }, '_blank');
     }
 
     function testPrintAllowance(allowanceID, printerIP) {
@@ -221,7 +221,7 @@
         if (!printerIP || printerIP == '') {
             printerIP = '192.168.1.200';
         }
-        $('<form>').launchDownload('@Html.Raw(WebHome.Startup.Properties["PrintInvoiceWebAp"] + Startup.ApplicationPath + Url.Action("PrintAllowanceImageByUID", "Invoice", new { _profile.UID, t = DateTime.Now.Ticks }))', { 'allowanceID': allowanceID, 'printerIP': printerIP }, '_blank');
+        $('<form>').launchDownload('@Html.Raw(WebHome.WebApp.Properties["PrintInvoiceWebAp"] + WebApp.ApplicationPath + Url.Action("PrintAllowanceImageByUID", "Invoice", new { _profile.UID, t = DateTime.Now.Ticks }))', { 'allowanceID': allowanceID, 'printerIP': printerIP }, '_blank');
     }
 </script>
 }

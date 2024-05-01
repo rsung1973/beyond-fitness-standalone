@@ -173,7 +173,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             var changeCoach = item.AttendingCoach != viewModel.CoachID;

@@ -20,25 +20,12 @@ using WebHome.Helper;
 using CommonLib.Core.Utility;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using WebHome.Helper.Jobs;
+//using WebHome.Helper.Jobs;
 
 namespace WebHome
 {
-    public class Startup
+    public class Startup : WebApp
     {
-        public static IConfigurationSection Properties { get; private set; }
-        public static IWebHostEnvironment Environment { get; private set; }
-        public static String ApplicationPath { get; private set; } = "";
-        public static  IConfiguration GlobalConfiguration { get; private set; }
-
-        public static String MapPath(String path, bool isStatic = true)
-        {
-            return isStatic
-                ? Path.Combine(Environment.WebRootPath, path.Replace("~/", "")
-                    .TrimStart('/').Replace('/', Path.DirectorySeparatorChar))
-                : Path.Combine(Environment.ContentRootPath, path.Replace("~/", "")
-                    .TrimStart('/').Replace('/', Path.DirectorySeparatorChar));
-        }
 
         public Startup(IConfiguration configuration)
         {
@@ -48,15 +35,15 @@ namespace WebHome
             _ = new CommonLib.Core.Startup(Configuration);
             ApplicationPath = Properties["ApplicationPath"];
 
-            BusinessExtensionMethods.ContractViewUrl = item =>
-            {
-                return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
-            };
+            //BusinessExtensionMethods.ContractViewUrl = item =>
+            //{
+            //    return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContract")}?pdf=1&contractID={item.ContractID}&t={DateTime.Now.Ticks}";
+            //};
 
-            BusinessExtensionMethods.ContractServiceViewUrl = item =>
-            {
-                return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
-            };
+            //BusinessExtensionMethods.ContractServiceViewUrl = item =>
+            //{
+            //    return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
+            //};
 
         }
 
@@ -227,8 +214,6 @@ namespace WebHome
             //set it as the primary LoggerFactory to use everywhere
             ApplicationLogging.LoggerFactory = loggerFactory;
             Environment = env;
-
-            JobLauncher.StartUp();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace WebHome.Controllers
             UserProfile item = await HttpContext.GetUserAsync();
             if (item == null)
             {
-                return Redirect($"~{Startup.Properties["LoginUrl"]}");
+                return Redirect($"~{WebApp.Properties["LoginUrl"]}");
             }
 
             var model = models.GetTable<UserProfile>().Where(u => u.UID == item.UID).First();

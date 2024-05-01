@@ -1,0 +1,69 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <!--<Nullable>enable</Nullable>-->
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Library</OutputType>
+    <RootNamespace>WebHome</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.102.2" />
+    <PackageReference Include="HtmlTextWriter" Version="3.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.4" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CommonLib.Core\CommonLib.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="ABCpdf">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\ABCpdf.dll</HintPath>
+    </Reference>
+    <Reference Include="ABCPdfWrapper">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\ABCPdfWrapper.dll</HintPath>
+    </Reference>
+    <Reference Include="epos">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\epos.dll</HintPath>
+    </Reference>
+    <Reference Include="LineMessagingAPISDK">
+      <HintPath>..\WebHome\bin\Dependencies\LineMessagingAPISDK\netstandard2.0\LineMessagingAPISDK.dll</HintPath>
+    </Reference>
+    <Reference Include="MessagingToolkit.QRCode">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
+    </Reference>
+    <Reference Include="QREncrypter">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\QREncrypter.dll</HintPath>
+    </Reference>
+    <Reference Include="ThoughtWorks.QRCode">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\ThoughtWorks.QRCode.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Models\DataEntity\BF.designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>BF.dbml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Models\DataEntity\BF.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>BF.designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{3259aa49-8aa1-44d3-9025-a0b520596a8c}" />
+  </ItemGroup>
+
+</Project>

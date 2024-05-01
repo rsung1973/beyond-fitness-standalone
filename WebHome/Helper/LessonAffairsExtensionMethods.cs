@@ -64,7 +64,7 @@ namespace WebHome.Helper
                                 FeeShared = 0
                             },
                             Attended = (int)Naming.LessonStatus.準備上課,
-                            AdvisorID = Startup.Properties.GetValue<int?>("DefaultCoach"),
+                            AdvisorID = WebApp.Properties.GetValue<int?>("DefaultCoach"),
                             AttendedLessons = 0,
                             GroupingLesson = new GroupingLesson { }
                         };
@@ -230,7 +230,7 @@ namespace WebHome.Helper
                     ClassLevel = priceItem.PriceID,
                     Lessons = viewModel.Lessons ?? 0,
                     UID = id,
-                    AdvisorID = viewModel.AdvisorID ?? Startup.Properties.GetValue<int?>("DefaultCoach"),
+                    AdvisorID = viewModel.AdvisorID ?? WebApp.Properties.GetValue<int?>("DefaultCoach"),
                     Attended = (int)Naming.LessonStatus.準備上課,
                     GroupingLesson = grouping,
 					GroupingMemberCount = viewModel.UID.Length,
@@ -414,7 +414,7 @@ namespace WebHome.Helper
                                 FeeShared = 0
                             },
                             Attended = (int)Naming.LessonStatus.準備上課,
-                            AdvisorID = Startup.Properties.GetValue<int?>("DefaultCoach"),
+                            AdvisorID = WebApp.Properties.GetValue<int?>("DefaultCoach"),
                             AttendedLessons = 0,
                             GroupingLesson = new GroupingLesson { },
                         };

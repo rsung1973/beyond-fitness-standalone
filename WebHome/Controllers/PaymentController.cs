@@ -295,7 +295,7 @@ namespace WebHome.Controllers
                 }
                 else
                 {
-                    return View(Startup.Properties["ReportInputError"]);
+                    return View(WebApp.Properties["ReportInputError"]);
                 }
             }
 
@@ -547,7 +547,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             try
@@ -791,7 +791,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             try
@@ -1262,7 +1262,7 @@ namespace WebHome.Controllers
                     {
                         if(!v.Payment.PaymentAudit.AuditorID.HasValue)
                         {
-                            v.Payment.PaymentAudit.AuditorID = Startup.Properties.GetValue<int>("DefaultCoach");
+                            v.Payment.PaymentAudit.AuditorID = WebApp.Properties.GetValue<int>("DefaultCoach");
                             v.Payment.PaymentAudit.AuditDate = DateTime.Now;
                             models.SubmitChanges();
                         }
@@ -1776,7 +1776,7 @@ namespace WebHome.Controllers
             if(!ModelState.IsValid)
             {
                 ViewBag.ModelState = this.ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
 
             try
@@ -1860,7 +1860,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
             viewModel.PayoffDateTo = viewModel.PayoffDateTo.Value.AddDays(1);
             viewModel.BypassCondition = true;
@@ -2044,7 +2044,7 @@ namespace WebHome.Controllers
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
-                return View(Startup.Properties["ReportInputError"]);
+                return View(WebApp.Properties["ReportInputError"]);
             }
             viewModel.PayoffDateTo = viewModel.PayoffDateTo.Value.AddDays(1);
             viewModel.BypassCondition = true;

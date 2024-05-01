@@ -67,7 +67,7 @@ namespace WebHome.Helper
 
                     using (Bitmap img = new Bitmap(item.StoredPath))
                     {
-                        using (Bitmap m = new Bitmap(img, new Size(Startup.Properties.GetValue<int>("ResourceMaxWidth"), img.Height * Startup.Properties.GetValue<int>("ResourceMaxWidth") / img.Width)))
+                        using (Bitmap m = new Bitmap(img, new Size(WebApp.Properties.GetValue<int>("ResourceMaxWidth"), img.Height * WebApp.Properties.GetValue<int>("ResourceMaxWidth") / img.Width)))
                         {
                             m.Save(Path.Combine(previewStore, fileName), ImageFormat.Jpeg);
                         }

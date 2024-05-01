@@ -23,9 +23,9 @@
   <ItemGroup>
     <PackageReference Include="ClosedXML" Version="0.102.2" />
     <PackageReference Include="CoreHtmlToImage" Version="1.0.6" />
-    <PackageReference Include="HtmlTextWriter" Version="3.0.0" />
+    <PackageReference Include="HtmlTextWriter" Version="3.0.1" />
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.22.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
@@ -45,6 +45,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonLib.Core\CommonLib.Core.csproj" />
+    <ProjectReference Include="..\WebBase\WebBase.csproj" />
+    <ProjectReference Include="..\WebDev\WebDev.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -139,7 +141,6 @@
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\MyTest\" />
     <Folder Include="Views\SystemInfo\" />
-    <Folder Include="wwwroot\LearnerActivity\" />
   </ItemGroup>
 
   <ItemGroup>

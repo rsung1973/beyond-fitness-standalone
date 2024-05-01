@@ -372,9 +372,9 @@ namespace WebHome.Controllers
                         {
                             checkOrientation(img);
 
-                            if (img.Width > Startup.Properties.GetValue<int>("ResourceMaxWidth"))
+                            if (img.Width > WebApp.Properties.GetValue<int>("ResourceMaxWidth"))
                             {
-                                using (Bitmap m = new Bitmap(img, new Size(Startup.Properties.GetValue<int>("ResourceMaxWidth"), img.Height * Startup.Properties.GetValue<int>("ResourceMaxWidth") / img.Width)))
+                                using (Bitmap m = new Bitmap(img, new Size(WebApp.Properties.GetValue<int>("ResourceMaxWidth"), img.Height * WebApp.Properties.GetValue<int>("ResourceMaxWidth") / img.Width)))
                                 {
                                     Response.ContentType = "image/jpeg";
                                     using (FileBufferingWriteStream output = new FileBufferingWriteStream())
@@ -524,9 +524,9 @@ namespace WebHome.Controllers
 
                     StringBuilder body = new StringBuilder();
                     System.Net.Mail.MailMessage message = new System.Net.Mail.MailMessage();
-                    message.ReplyToList.Add(Startup.Properties["WebMaster"]);
+                    message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
                     message.From = new System.Net.Mail.MailAddress(email,userName);
-                    message.To.Add(Startup.Properties["WebMaster"]);
+                    message.To.Add(WebApp.Properties["WebMaster"]);
                     message.Subject = subject;
                     message.IsBodyHtml = true;
 

@@ -48,21 +48,21 @@
     void TestGmail()
     {
         MailMessage message = new MailMessage();
-        message.ReplyToList.Add(Startup.Properties["WebMaster"]);
+        message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
         message.From = new MailAddress("rsung1973@gmail.com");
         message.To.Add("rsung1973@gmail.com");
         message.Subject = "Beyond-fitness會員密碼重設通知";
         message.IsBodyHtml = true;
 
         //body.Append("您好，請由下列連結重設您的密碼，謝謝。<br/>")
-        //    .Append("<a href=").Append(Startup.Properties["HostDomain"]).Append(VirtualPathUtility.ToAbsolute("~/Account/ResetPass"))
+        //    .Append("<a href=").Append(WebApp.Properties["HostDomain"]).Append(VirtualPathUtility.ToAbsolute("~/Account/ResetPass"))
         //    .Append("/").Append(item.ResetID)
         //    .Append(">會員重設密碼</a>");
 
         using (WebClient client = new WebClient())
         {
             client.Encoding = Encoding.UTF8;
-            String url = (Startup.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")) + "?resetID=2091";
+            String url = (WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")) + "?resetID=2091";
             message.Body = client.DownloadString(url);
         }
 
