@@ -63,5 +63,29 @@ namespace CommonLib.Core.Utility
             }
         }
 
+        public static async Task<MemoryStream> GetRequestStreamAsync(this HttpRequest Request)
+        {
+            Request.Body.Position = 0;
+            MemoryStream fs = new MemoryStream();
+
+            await Request.Body.CopyToAsync(fs);
+            Request.Body.Position = 0;
+            fs.Seek(0, SeekOrigin.Begin);
+            return fs;
+        }
+
+        public static async Task<String> GetRequestBodyAsync(this HttpRequest Request)
+        {
+            Request.Body.Position = 0;
+            using (StreamReader reader = new StreamReader(Request.Body))
+            {
+                var data = await reader.ReadToEndAsync();
+                Request.Body.Position = 0;
+                return data;
+            }
+        }
+
+
+
     }
 }
