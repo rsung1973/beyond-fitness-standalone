@@ -147,6 +147,7 @@
     <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="MenuColors"
          data-menu-height="410" data-menu-effect="menu-over">
     </div>
+
     <!--變更大頭照-->
     <div id="menu-foto-update"
          class="menu menu-box-bottom menu-box-detached rounded-m"
@@ -158,8 +159,11 @@
     </div>
 
     <!--手機載具設定-->
-    <div id="update-mobilebarcode" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350" data-menu-height="480"
-         data-menu-effect="menu-over">
+    <div id="update-mobilebarcode" 
+        class="menu menu-box-bottom menu-box-modal rounded-m" 
+        data-menu-width="350" 
+        data-menu-height="480"
+        data-menu-effect="menu-over">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateMobileBarcode.cshtml");
         }
@@ -180,5 +184,27 @@
         </div>
     }
 
+    <!--忘記密碼-->
+    <div id="menu-forgot" 
+        class="menu menu-box-bottom menu-box-modal rounded-m" 
+        data-menu-width="350" 
+        data-menu-height="480"
+        data-menu-effect="menu-over">
+        @{
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ForgetPasswd.cshtml");
+        }
+    </div>
+
+
+    <!--更新Email-->
+    <div id="menu-updateEmail" 
+        class="menu menu-box-bottom menu-box-modal rounded-m" 
+        data-menu-width="350"
+        data-menu-height="520" 
+        data-menu-effect="menu-over">
+        @{
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateEmail.cshtml");
+        }
+    </div>
 
 }
