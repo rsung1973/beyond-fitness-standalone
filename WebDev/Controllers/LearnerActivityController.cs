@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 using CommonLib.DataAccess;
 
@@ -37,10 +38,11 @@ using CommonLib.Core.Utility;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace WebHome.Controllers
 {
-    [Authorize]
     public class LearnerActivityController : ActivityBaseController
     {
         public LearnerActivityController(IServiceProvider serviceProvider) : base(serviceProvider)
@@ -49,6 +51,7 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> UpdateProfileImageAsync([FromBody]LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -85,6 +88,7 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CommitUserNameAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -109,6 +113,7 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CommitCarrierNoAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -133,6 +138,33 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> CommitPasswordAsync([FromBody] PasswordViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            UserProfile item = await HttpContext.GetUserAsync();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            if (!this.CreatePassword(viewModel))
+            {
+                return Json(new { result = false, message = "密碼設定錯誤!!" });
+            }
+
+
+            item = item.LoadInstance(models);
+            item.Password = (viewModel.Password).MakePassword();
+            item.ResetPassword.Clear();
+            models.SubmitChanges();
+
+            return Json(new { result = true });
+        }
+
+        [HttpPost]
+        [Authorize]
         public async Task<ActionResult> UnbindLineAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -152,6 +184,7 @@ namespace WebHome.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult> CommitUserProfileAsync([FromBody] JsonObject viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -180,6 +213,165 @@ namespace WebHome.Controllers
             //models.SubmitChanges();
 
             return Json(new { result = true });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> ValidateEmailAsync([FromBody] LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            UserProfile item = await HttpContext.GetUserAsync();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            viewModel.Email = viewModel.Email.GetEfficientString();
+            if (viewModel.Email == null || !viewModel.Email.IsEmail())
+            {
+                return Json(new { result = false, message = "請輸入正確Email!!" });
+            }
+
+            if (models.GetTable<UserProfile>()
+                .Where(u => u.UID != item.UID)
+                .Any(u => u.PID == viewModel.Email))
+            {
+                return Json(new { result = false, message = "此Email已被註冊使用!!" });
+            }
+
+            return View("~/Views/LearnerActivity/ValidateEmail.cshtml");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> ForgetPasswordAsync([FromBody] LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            viewModel.Email = viewModel.Email.GetEfficientString();
+            if (viewModel.Email == null || !viewModel.Email.IsEmail())
+            {
+                return Json(new { result = false, message = "請輸入正確Email!!" });
+            }
+
+            if (profile.PID != viewModel.Email)
+            {
+                return Json(new { result = false, message = "您提供的電子郵件信箱資料不存在!!" });
+            }
+
+            profile = profile.LoadInstance(models);
+            profile.UserProfileExtension.PIN = BusinessExtensions.CreatePIN();
+            profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
+            models.SubmitChanges();
+
+            var viewResult = CheckView("CheckOTP");
+            return View(viewResult.ViewName, profile);
+
+        }
+
+        [Authorize]
+        public async Task<ActionResult> SendOTPAsync()
+        {
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            profile = profile.LoadInstance(models);
+            return View("~/Views/LearnerActivity/SendOTP.cshtml", profile);
+
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> ValidatePINAsync([FromBody] LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            viewModel.PIN = viewModel.PIN.GetEfficientString();
+            if (viewModel.PIN == null)
+            {
+                return Json(new { result = false, message = "請輸入動態密碼!!" });
+            }
+
+            profile = profile.LoadInstance(models);
+            if (profile.UserProfileExtension.PINExpiration < DateTime.Now)
+            {
+                return Json(new { result = false, message = "動態密碼過期!!" });
+            }
+
+            if (profile.UserProfileExtension.PIN != viewModel.PIN)
+            {
+                return Json(new { result = false, message = "動態密碼錯誤!!" });
+            }
+
+            models.ExecuteCommand("delete ResetPassword where UID = {0}", profile.UID);
+            profile.ResetPassword
+                .Add(new ResetPassword
+                {
+                    ResetID = Guid.NewGuid(),
+                });
+            models.SubmitChanges();
+
+            var viewResult = CheckView("UpdatePassword");
+            return View(viewResult.ViewName, profile);
+
+        }
+
+        public ActionResult CommitEmail()
+        {
+            if(!Request.QueryString.HasValue)
+            {
+                return NotFound();
+            }
+
+            LearnerViewModel viewModel = JsonConvert.DeserializeObject<LearnerViewModel>(Request.QueryString.Value[1..].UrlDecodeBase64String().DecryptKey());
+
+            if (viewModel.TimeTicks < DateTime.Now.Ticks)
+            {
+                return NotFound();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            viewModel.Email = viewModel.Email.GetEfficientString();
+            if (viewModel.Email == null || !viewModel.Email.IsEmail())
+            {
+                return NotFound();
+            }
+
+            if (models.GetTable<UserProfile>()
+                .Where(u => u.UID != item.UID)
+                .Any(u => u.PID == viewModel.Email))
+            {
+                return NotFound();
+            }
+
+            item.PID = viewModel.Email;
+            models.SubmitChanges();
+
+            var viewResult = CheckView("EmailAuthResult");
+            return View(viewResult.ViewName, item);
         }
 
 

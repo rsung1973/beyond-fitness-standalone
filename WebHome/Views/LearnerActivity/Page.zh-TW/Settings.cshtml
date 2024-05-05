@@ -159,11 +159,11 @@
     </div>
 
     <!--手機載具設定-->
-    <div id="update-mobilebarcode" 
-        class="menu menu-box-bottom menu-box-modal rounded-m" 
-        data-menu-width="350" 
-        data-menu-height="480"
-        data-menu-effect="menu-over">
+    <div id="update-mobilebarcode"
+         class="menu menu-box-bottom menu-box-modal rounded-m"
+         data-menu-width="350"
+         data-menu-height="480"
+         data-menu-effect="menu-over">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateMobileBarcode.cshtml");
         }
@@ -185,23 +185,37 @@
     }
 
     <!--忘記密碼-->
-    <div id="menu-forgot" 
-        class="menu menu-box-bottom menu-box-modal rounded-m" 
-        data-menu-width="350" 
-        data-menu-height="480"
-        data-menu-effect="menu-over">
+    <div id="menu-forgot"
+         class="menu menu-box-bottom menu-box-modal rounded-m"
+         data-menu-width="350"
+         data-menu-height="480"
+         data-menu-effect="menu-over">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ForgetPasswd.cshtml");
         }
     </div>
 
+    <!--otp-->
+
+    <div id="otp-check" class="menu menu-box-bottom menu-box-modal" data-menu-width="400"
+         data-menu-height="480"
+         data-menu-effect="menu-over">
+
+    </div>
+
+    <!--更新密碼-->
+
+    <div id="update-Passwd" class="menu menu-box-bottom" data-menu-width="cover"
+         data-menu-effect="menu-over">
+
+    </div>
 
     <!--更新Email-->
-    <div id="menu-updateEmail" 
-        class="menu menu-box-bottom menu-box-modal rounded-m" 
-        data-menu-width="350"
-        data-menu-height="550" 
-        data-menu-effect="menu-over">
+    <div id="menu-updateEmail"
+         class="menu menu-box-bottom menu-box-modal rounded-m"
+         data-menu-width="350"
+         data-menu-height="550"
+         data-menu-effect="menu-over">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateEmail.cshtml");
         }

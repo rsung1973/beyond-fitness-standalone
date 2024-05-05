@@ -10,5 +10,11 @@ namespace WebHome.Helper
             return models.GetTable<UserProfile>().Where(u => u.UID == profile.UID).First();
         }
 
+        public static String CreatePIN()
+        {
+            var pinCode = DateTime.Now.Ticks % 1000000;
+            return $"{(char)('A' + (pinCode % 26))}{(char)('A' + (pinCode % 1000 % 26))}-{pinCode:000000}";
+        }
+
     }
 }

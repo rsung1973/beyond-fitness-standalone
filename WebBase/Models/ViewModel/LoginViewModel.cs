@@ -191,6 +191,8 @@ namespace WebHome.Models.ViewModel
         public bool IsAdult => Birthday.HasValue && Birthday <= DateTime.Today.AddYears(-18);
         public String DataContent { get; set; }
         public String CarrierNo { get; set; }
+        public long? TimeTicks { get; set; }
+        public String PIN { get; set; }
 
     }
 
@@ -286,8 +288,6 @@ namespace WebHome.Models.ViewModel
         public int?[] AuthorizedRole { get; set; }
         public bool? HasGiftLessons { get; set; }
         public int? MonthlyGiftLessons { get; set; }
-        public String PIN { get; set; }
-
     }
 
     public class LessonTimeViewModel : QueryViewModel

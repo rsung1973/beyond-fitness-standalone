@@ -1,0 +1,90 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+
+    var profile = (UserProfile)this.Model;
+    var prefixCode = profile.UserProfileExtension.PIN.Substring(0, 3);
+
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
+
+}
+<div class="menu-title text-center">
+
+    <h1 class="text-center mt-2"><i class="fa fa-lock color-beyondwhite-dark fa-1x"></i></h1>
+
+    <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-beyond-dark pt-2">輸入動態密碼</h1>
+
+    <p class="color-white opacity-60">Check OTP</p>
+
+</div>
+
+
+
+<div class="content">
+
+    <p class="boxed-text-l color-theme text-start line-height-l px-2">
+
+        請您開啟Email信箱查看動態密碼，並於下方輸入最後6位數字
+
+    </p>
+
+    <div class="text-center mb-3 pt-3 pb-2">
+
+        <h1 class="font-30 font-700 color-theme">@(prefixCode)</h1>
+
+        <form action="">
+            <input type="hidden" name="Code" value="@(prefixCode)"/>
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
+
+        </form>
+
+    </div>
+
+    <a href="javascript:sendOTP();" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
+
+</div>
+
+<a href="javascript:validatePIN();" data-menu="update-Passwd"
+   class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定</a>

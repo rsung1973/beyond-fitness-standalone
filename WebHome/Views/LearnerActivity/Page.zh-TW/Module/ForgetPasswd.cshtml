@@ -39,14 +39,49 @@
         為確保您個人資訊的安全，系統將自動發送一封「<u class="color-beyondred-dark">動態密碼認證信</u>」至您目前註冊的電子郵件信箱。
     <div class="input-style no-borders has-icon validate-field mb-4 mt-3 px-4">
         <i class="fa fa-at"></i>
-        <input type="email" name="email" class="form-control validate-email" id="email" placeholder="name@domain.com"
+        <input type="email" name="Email" class="form-control validate-email" id="email" placeholder="name@domain.com"
             value="@(profile.PID)" readonly>
         <label for="email" class="color-highlight font-11 font-500 mt-1">E-mail</label>
         <i class="fa fa-times disabled invalid color-red-dark"></i>
         <i class="fa fa-check disabled valid color-green-dark"></i>
         <em>(必要輸入)</em>
     </div>
-    <a href="#" data-menu="otp-check"
-        class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-white  bg-beyond-dark font-500 px-3 py-2 font-16 mt-5 letter-spacing-2">發送動態密碼通知</a>
+    <a href="javascript:resetPass();" data-menu="otp-check"
+        class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-white  bg-beyond-dark font-500 px-3 py-2 font-16 mt-5 letter-spacing-2">發送動態密碼通知</a>
     </p>
+    <script>
+        function resetPass() {
+            var viewModel = {
+                'Email': $('input[name="Email"]').val()
+            };
+            doPost('@Html.Raw(Url.Action("ForgetPassword", "LearnerActivity"))', viewModel, function (data) {
+                $('#otp-check').html(data);
+            });
+        }
+
+        function validatePIN() {
+            var viewModel = {
+                'PIN': $('input[name="Code"]').serializeObject().Code.join('')
+            };
+            doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel, function (data) {
+                $('#update-Passwd').html(data);
+                $('#otp-check').removeClass('menu-active');
+                $('#update-Passwd').addClass('menu-active');
+            });
+        }
+
+        function sendOTP() {
+            var viewModel = {
+            };
+            doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
+                Swal.fire(
+                    '動態密碼已重送!',
+                    '請開啟信箱查看動態密碼 Bye!',
+                    'success'
+                );  
+            });
+        }
+
+
+    </script>
 </div>

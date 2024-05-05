@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Http;
 using CommonLib.Core.Utility;
 using System.Globalization;
 using System.Threading;
+using System.Text;
 
 namespace WebHome.Helper
 {
@@ -149,6 +150,16 @@ namespace WebHome.Helper
                 Thread.CurrentThread.CurrentUICulture = cultureInfo;
                 Thread.CurrentThread.CurrentCulture = CultureInfo.CreateSpecificCulture(cultureInfo.Name);
             }
+        }
+
+        public static String GetHtmlString(this Microsoft.AspNetCore.Html.IHtmlContent content)
+        {
+            StringBuilder builder = new StringBuilder();
+            using (StringWriter writer = new StringWriter(builder))
+            {
+                content.WriteTo(writer, System.Text.Encodings.Web.HtmlEncoder.Default);
+            }
+            return builder.ToString();
         }
     }
 }

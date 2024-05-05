@@ -39,16 +39,29 @@
     <p class="boxed-text-l color-theme text-start line-height-l px-2">
         為確保您個人資訊的安全，系統將自動發送一封「<u class="color-beyondred-dark">電子郵件認證信</u>」。<br /><br />
         請您立即開啟郵件信箱收取此「認證信」
-    <div class="input-style no-borders has-icon validate-field mb-4 mt-3 px-4">
-        <i class="fa fa-at"></i>
-        <input type="email" class="form-control validate-email" id="form1a" placeholder="@(profile.PID.IsEmail() == false ? "name@domain.com" : profile.PID)">
-        <label for="form1a" class="color-highlight font-11 font-500 mt-1">Email</label>
-        <i class="fa fa-times disabled invalid color-red-dark"></i>
-        <i class="fa fa-check disabled valid color-green-dark"></i>
-        <em>(必要輸入)</em>
-    </div>
-    <a href="#" data-menu="otp-check"
-        class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-white  bg-beyond-dark font-500 px-3 py-2 font-16 mt-5 letter-spacing-2">發送驗證通知</a>
+        <div class="input-style no-borders has-icon validate-field mb-4 mt-3 px-4">
+            <i class="fa fa-at"></i>
+            <input type="email" class="form-control validate-email" id="form1a" name="Email" value="@(profile.PID.IsEmail() ? profile.PID : null)" placeholder="@(profile.PID.IsEmail() == false ? "name@domain.com" : profile.PID)">
+            <label for="form1a" class="color-highlight font-11 font-500 mt-1">Email</label>
+            <i class="fa fa-times disabled invalid color-red-dark"></i>
+            <i class="fa fa-check disabled valid color-green-dark"></i>
+            <em>(必要輸入)</em>
+        </div>
+        <a href="javascript:validateEmail()" data-menu="otp-check"
+           class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-white  bg-beyond-dark font-500 px-3 py-2 font-16 mt-5 letter-spacing-2">發送驗證通知</a>
     </p>
-
-</div>    using CommonLib.Utility;
+    <script>
+            function validateEmail() {
+                var viewModel = {
+                    'Email': $('input[name="Email"]').val()
+                };
+                doPost('@Html.Raw(Url.Action("ValidateEmail", "LearnerActivity"))', viewModel, function (data) {
+                    Swal.fire(
+                        '驗證email已寄出!',
+                        '請檢查您的email信箱 Bye!',
+                        'success'
+                    );                    
+                });
+            }
+    </script>
+</div>

@@ -1,0 +1,63 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    LearnerViewModel _viewModel = ViewBag.ViewModel as LearnerViewModel;
+    var profile = await Context.GetUserAsync();
+    var body = await Html.PartialAsync("~/Views/LearnerActivity/Page.zh-TW/AuthEmail.cshtml");
+
+    var t = Task.Run(() => {
+        try
+        {
+            MailMessage message = new MailMessage();
+            message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
+            message.From = new MailAddress(WebApp.Properties["WebMaster"]);
+            message.To.Add(_viewModel.Email);
+            message.Subject = "Beyond-fitness會員驗證電子郵件";
+            message.IsBodyHtml = true;
+
+            message.Body = body.GetHtmlString();
+
+            using SmtpClient smtpclient = new SmtpClient(AppSettings.Default.Smtp.Host, AppSettings.Default.Smtp.Port);
+            smtpclient.EnableSsl = AppSettings.Default.Smtp.EnableSsl;
+            //smtpclient.UseDefaultCredentials = false;
+            if (AppSettings.Default.Smtp.UserName != null)
+            {
+                smtpclient.Credentials = new NetworkCredential(AppSettings.Default.Smtp.UserName, AppSettings.Default.Smtp.Password);
+            }
+            //smtpclient.Credentials = CredentialCache.DefaultNetworkCredentials;
+            smtpclient.Send(message);
+        }
+        catch (Exception ex)
+        {
+            ApplicationLogging.CreateLogger<LearnerActivityController>().LogError(ex, ex.Message);
+        }
+    });
+
+    Context.Response.ContentType = "application/json";
+    @Html.Raw((new { result = true }).JsonStringify());
+
+}
+
