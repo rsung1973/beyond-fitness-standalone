@@ -27,10 +27,10 @@
             "MemberCode": "ZP85915197",
             "BranchID": 2
         },
-        {
-            "MemberCode": "CL74347383",
-            "BranchID": 1
-        }
+        // {
+        //     "MemberCode": "CL74347383",
+        //     "BranchID": 1
+        // }
     ],
     "Traning": "Traning·",
     "TraningDesc": "研修制度",
