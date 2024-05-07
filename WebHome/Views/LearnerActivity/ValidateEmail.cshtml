@@ -35,7 +35,7 @@
             message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
             message.From = new MailAddress(WebApp.Properties["WebMaster"]);
             message.To.Add(_viewModel.Email);
-            message.Subject = "Beyond-fitness會員驗證電子郵件";
+            message.Subject = "Beyond Fitness 驗證電子郵件通知";
             message.IsBodyHtml = true;
 
             message.Body = body.GetHtmlString();

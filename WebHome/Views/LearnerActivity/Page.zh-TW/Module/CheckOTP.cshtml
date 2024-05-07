@@ -40,19 +40,42 @@
     await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
 
 }
-<div class="menu-title text-center">
 
-    <h1 class="text-center mt-2"><i class="fa fa-lock color-beyondwhite-dark fa-1x"></i></h1>
+<div class="card" data-card-height="cover" >
+    <div class="card-center">
+        <div class="menu-title text-center">
+            <h1 class="text-center mt-4"><i class="fa fa-lock color-beyondwhite-dark fa-4x"></i></h1>
+            <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-theme pt-2">輸入動態密碼</h1>
+            <p class="color-theme opacity-60">Check OTP</p>
+        </div>
 
-    <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-beyond-dark pt-2">輸入動態密碼</h1>
-
-    <p class="color-white opacity-60">Check OTP</p>
-
+        <div class="content">
+            <p class="boxed-text-l color-theme text-start line-height-l px-2">
+                請您開啟E-mail信箱或Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入6位數字
+            </p>
+            <div class="text-center mb-3 pt-3 pb-2">
+                <h1 class="font-30 font-700 color-beyondred-dark">WU-</h1>
+                <form action="">
+                    <input type="hidden" name="Code" value="@(prefixCode)" />
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                </form>
+            </div>
+            <a href="#" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
+        </div>
+        <a href="#" data-menu="setting-Passwd"
+            class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定</a>
+    </div>
 </div>
 
+<a href="#"
+    class="close-menu color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
 
-
-<div class="content">
+@* <div class="content">
 
     <p class="boxed-text-l color-theme text-start line-height-l px-2">
 
@@ -84,7 +107,4 @@
 
     <a href="javascript:sendOTP();" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
 
-</div>
-
-<a href="javascript:validatePIN();" data-menu="update-Passwd"
-   class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定</a>
+</div> *@

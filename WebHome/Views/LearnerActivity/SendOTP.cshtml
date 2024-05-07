@@ -45,7 +45,7 @@
             message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
             message.From = new MailAddress(WebApp.Properties["WebMaster"]);
             message.To.Add(profile.PID);
-            message.Subject = "Beyond-fitness會員動態密碼";
+            message.Subject = "Beyond Fitness 動態密碼密碼通知";
             message.IsBodyHtml = true;
 
             message.Body = body.GetHtmlString();

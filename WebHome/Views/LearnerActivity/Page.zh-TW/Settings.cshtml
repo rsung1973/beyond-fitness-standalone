@@ -151,8 +151,9 @@
         }
     </div>
     <!--前景調色盤-->
-    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="HighlightsItem"
-        data-menu-height="410" data-menu-effect="menu-over">
+    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" 
+        data-menu-load="HighlightsItem"
+        data-menu-height="410" data-menu-effect="menu-over">         
     </div>
     <!--背景調色盤-->
     <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="BackgroundsItem"
@@ -164,7 +165,8 @@
          class="menu menu-box-bottom menu-box-modal rounded-m"
          data-menu-width="350"
          data-menu-height="480"
-         data-menu-effect="menu-over">
+         data-menu-effect="menu-over"
+         style="height: 350px;">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdateMobileBarcode.cshtml");
         }
@@ -198,8 +200,7 @@
 
     <!--otp-->
 
-    <div id="otp-check" class="menu menu-box-bottom menu-box-modal" data-menu-width="400"
-         data-menu-height="480"
+    <div id="otp-check" class="menu menu-box-bottom menu-box-modal" data-menu-width="cover"
          data-menu-effect="menu-over">
 
     </div>
