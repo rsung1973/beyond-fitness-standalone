@@ -132,6 +132,7 @@ namespace WebHome.Properties
 
         public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList");
         public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyLog";
+        public LineAuthInfo LineAuth { get; set; } = new LineAuthInfo { };
     }
 
     public class Settings
@@ -157,5 +158,13 @@ namespace WebHome.Properties
         public String SiteKey { get; set; } = "6LdVot4jAAAAAH_ST-lvJBJLM3gdWAId2DnlLBz_";
         public String SecretKey { get; set; } = "6LdVot4jAAAAAKfJuBeP_35ZeNy7lvi0D3Pghdu1";
         public String UrlVerification { get; set; } = "https://www.google.com/recaptcha/api/siteverify";
+    }
+
+    public class LineAuthInfo
+    {
+        public string ChannelID { get; set; } = "2004831703";
+        public string ChannelSecret { get; set; } = "1b36aa193695a91d6d6c2937f78f9a02";
+        public string LineAuthUrl { get; set; } = "https://access.line.me/oauth2/v2.1/authorize";
+        public string ReturnUrl { get; set; } = "https://test.beyond-fitness.com.tw/WebHome/LineEvents/Auth";
     }
 }

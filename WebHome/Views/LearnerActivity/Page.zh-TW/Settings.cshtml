@@ -1,6 +1,7 @@
 ﻿@using System.IO
 @using System.Linq.Expressions
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -11,6 +12,7 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
+@using WebHome.Properties
 
 @{
     ModelSource<UserProfile> models;
@@ -101,7 +103,7 @@
                     </a>
                     @if (profile.UserProfileExtension.LineID == null)
                     {
-                        <a href="login-active.html">
+                        <a href="@Html.Raw($"{AppSettings.Default.LineAuth.LineAuthUrl}?response_type=code&client_id={AppSettings.Default.LineAuth.ChannelID}&redirect_uri={HttpUtility.UrlEncode(AppSettings.Default.LineAuth.ReturnUrl)}&state={Guid.NewGuid()}&scope=profile%20openid")">
                             <i class="fab font-32 fa-line color-line"></i>
                             <span class="font-500 font-16">LINE</span>
                             <span class="font-14 mt-3 font-500 color-gray-dark let">Bound</span>

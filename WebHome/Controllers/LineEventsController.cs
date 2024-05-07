@@ -28,6 +28,10 @@ using WebHome.Properties;
 using WebHome.Security.Authorization;
 using CommonLib.Core.Utility;
 using Microsoft.Extensions.Logging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using Newtonsoft.Json.Linq;
+using System.Net.Http.Headers;
+using System.Net.Http;
 
 namespace WebHome.Controllers
 {
@@ -253,6 +257,85 @@ namespace WebHome.Controllers
 
             return Content("OK!");
         }
+
+        public async Task<ActionResult> AuthAsync(UserProfileViewModel viewModel)
+        {
+            await Request.SaveAsAsync(Path.Combine(FileLogger.Logger.LogDailyPath, $"{DateTime.Now.Ticks}.txt"), true);
+            string authorizationCode = viewModel.Code.GetEfficientString();
+
+            if (authorizationCode == null)
+            {
+                return View("~/Views/Home/Login.cshtml");
+            }
+
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", AppSettings.Default.LineAuth.ChannelSecret);
+                var content = new FormUrlEncodedContent(new[]
+                {
+                    new KeyValuePair<string, string>("grant_type", "authorization_code"),
+                    new KeyValuePair<string, string>("code", authorizationCode),
+                    new KeyValuePair<string, string>("redirect_uri", AppSettings.Default.LineAuth.ReturnUrl),
+                    new KeyValuePair<string, string>("client_id", AppSettings.Default.LineAuth.ChannelID),
+                    new KeyValuePair<string, string>("client_secret", AppSettings.Default.LineAuth.ChannelSecret)
+                });
+
+                var response = await httpClient.PostAsync("https://api.line.me/oauth2/v2.1/token", content);
+                var responseContent = await response.Content.ReadAsStringAsync();
+
+                FileLogger.Logger.Debug(responseContent);
+                // 解析回應，取得存取權杖和其他資訊
+                // 這裡你可以根據回應的內容進行使用者登入驗證的邏輯
+
+                if (response.IsSuccessStatusCode && responseContent != null)
+                {
+                    JObject token = JObject.Parse(responseContent);
+                    // 登入驗證成功的處理
+                    content = new FormUrlEncodedContent(new[]
+                    {
+                        new KeyValuePair<string, string>("id_token", token["id_token"]!.ToString()),
+                        new KeyValuePair<string, string>("client_id", AppSettings.Default.LineAuth.ChannelID),
+                    });
+
+                    response = await httpClient.PostAsync("https://api.line.me/oauth2/v2.1/verify", content);
+                    responseContent = await response.Content.ReadAsStringAsync();
+
+                    FileLogger.Logger.Debug(responseContent);
+
+                    if (response.IsSuccessStatusCode && responseContent != null)
+                    {
+                        token = JObject.Parse(responseContent);
+                        var lineID = token?["sub"];
+                        if (lineID != null)
+                        {
+                            var profile = await HttpContext.GetUserAsync();
+                            if (profile != null)
+                            {
+                                profile = profile.LoadInstance(models);
+                                profile.UserProfileExtension.LineID = (string)lineID;
+                                models.SubmitChanges();
+
+                                return RedirectToAction("Settings", "LearnerActivity");
+                            }
+
+                            var user = models.GetTable<UserProfileExtension>().Where(m => m.LineID == (string)lineID!)
+                                            .FirstOrDefault()?.UserProfile;
+                            if (user != null)
+                            {
+                                return RedirectToAction("QuickLogin", "CornerKick",new { KeyID = ((String)lineID).EncryptKey() });
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    // 登入驗證失敗的處理
+                    return RedirectToAction("Login", "CornerKick");
+                }
+            }
+            return RedirectToAction("Login", "CornerKick");
+        }
+
 
     }
 }

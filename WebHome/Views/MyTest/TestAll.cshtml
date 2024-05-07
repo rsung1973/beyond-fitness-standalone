@@ -29,6 +29,8 @@
         int returnAmt = original.CalculateReturnAmount(totalPaid, out int processingFee);
         Write(returnAmt);
     }
+
+    await TestGmail();
 }
 
 @functions
@@ -45,7 +47,7 @@
         <div>@(av)</div>
     }
 
-    void TestGmail()
+    async Task TestGmail()
     {
         MailMessage message = new MailMessage();
         message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
@@ -59,12 +61,14 @@
         //    .Append("/").Append(item.ResetID)
         //    .Append(">會員重設密碼</a>");
 
-        using (WebClient client = new WebClient())
-        {
-            client.Encoding = Encoding.UTF8;
-            String url = (WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")) + "?resetID=2091";
-            message.Body = client.DownloadString(url);
-        }
+        //using (WebClient client = new WebClient())
+        //{
+        //    client.Encoding = Encoding.UTF8;
+        //    String url = (WebApp.Properties["HostDomain"] + VirtualPathUtility.ToAbsolute("~/CornerKick/NotifyResetPassword")) + "?resetID=2091";
+        //    message.Body = client.DownloadString(url);
+        //}
+
+        message.Body = (await Html.PartialAsync("~/Views/CornerKick/NotifyResetPassword.cshtml", model: "2091")).GetHtmlString();
 
         //message.Body = body.ToString();
 

@@ -478,6 +478,10 @@ namespace WebHome.Controllers
 
         public async Task<ActionResult> QuickLoginAsync(LoginViewModel viewModel, string returnUrl)
         {
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PID = viewModel.KeyID.DecryptKey();
+            }
 
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.PID == viewModel.PID
                 && u.LevelID == (int)Naming.MemberStatusDefinition.Checked).FirstOrDefault();

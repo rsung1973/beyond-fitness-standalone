@@ -193,6 +193,7 @@ namespace WebHome.Models.ViewModel
         public String CarrierNo { get; set; }
         public long? TimeTicks { get; set; }
         public String PIN { get; set; }
+        public String Code { get; set; }
 
     }
 
