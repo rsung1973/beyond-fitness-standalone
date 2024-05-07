@@ -24,8 +24,8 @@
             ? "en"
             : "ja";    
 
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
-    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+    @* await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic; *@
 }
 <div class="menu-title">
     <div class="d-flex mx-2 mx-lg-4 my-2">

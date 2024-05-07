@@ -143,21 +143,20 @@
 
 @section PopupBox
 {
-    <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m"
-         data-menu-load="BackgroundsItem" data-menu-height="310" data-menu-effect="menu-over">
-    </div>
-    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="MenuColors"
-         data-menu-height="410" data-menu-effect="menu-over">
-    </div>
-
     <!--變更大頭照-->
-    <div id="menu-foto-update"
-         class="menu menu-box-bottom menu-box-detached rounded-m"
-         data-menu-height="420"
+    <div id="menu-foto-update" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="420"
          data-menu-effect="menu-over">
         @{
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/UpdatePhotoSticker.cshtml");
         }
+    </div>
+    <!--前景調色盤-->
+    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="HighlightsItem"
+        data-menu-height="410" data-menu-effect="menu-over">
+    </div>
+    <!--背景調色盤-->
+    <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="BackgroundsItem"
+        data-menu-height="310" data-menu-effect="menu-over">
     </div>
 
     <!--手機載具設定-->
