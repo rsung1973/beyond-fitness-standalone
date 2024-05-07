@@ -21,9 +21,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    //Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
-    ViewBag.MainClass = "home";
-    ViewBag.MenuDark = false;
+
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
         ? "tw"
