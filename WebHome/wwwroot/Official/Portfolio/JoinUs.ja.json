@@ -1,30 +1,15 @@
-{
-    // "BannerSlogon": "Beyondの一員となって、<br class=\"hidden-sm-down\"/>あなたの力を発揮してください。",
-    // "BannerSlogonDesc": "人生は自己を超えて、限界に挑戦する",
-    // "InspireSlogon": "チームの一員となって",
-    // "InspireSlogonDesc": "仕事に命を吹き込もう",
-    // "OpportunityHeader": "Beyondの職種を見る",
-    // "PrivateCoach": "パーソナルトレーナー",
-    // "Therapist": "スポーツセラピスト",
-    // "Dietitian": "管理栄養士",
-    // "OpportunityCoachBannerSlogon": "私たちは<span class=\"mark-text-underline\" padding-width=\"0\" bottom-width=\"0.1\">不可能</span>に<br class=\"hidden-sm-down\" />挑戦することが<br class=\"hidden-sm-up\" />好きです。",
-    // "OpportunityCoachDesc": "Beyond Fitnessは2014年に設立され、個別の一対一のパーソナルトレーニングの開発に取り組んでいます。南京小巨蛋を起点にして以来、3つの店舗を展開し、専門知識と行動力で夢を実現してきました。共通の理念を持つパートナーや友人たちの励ましを受けながら、私たちは前進し続けています。Beyondは人を大切にすることが最高のトレーニングだと信じています。お客様の声に耳を傾け、個々に合わせたカスタマイズされたコースを設計し、Beyondのメンバーがより良い生活に向かって共に歩んでいます。",
-    // "OpportunityPowerSlogon": "自分に合ったチームを見つけて、<br class=\"hidden-md-down\" />BEYONDと共に自分自身の素晴らしい物語を始めましょう。",
-    // "OpportunityTherapistBannerSlogon": "マッサージの才能を発揮するときが来ました、<span class=\"mark-text-underline\"  padding-width=\"0\" bottom-width=\"0.1\">一緒に</span>旅立ちましょう！",
-    // "OpportunityTherapistDesc": "私たちのチームでは、マッサージ技術を活かすだけでなく、活気と革新のある企業文化を体験できます。メンバー一人ひとりの専門的成長と幸福感を大切にし、継続的なトレーニングと成長の機会を提供しています。一緒に卓越なマッサージセラピーをお客様に提供し、あなたの職業の夢を叶え、健康と喜びの環境を創りましょう。私たちのチームには欠かせない存在となり、情熱と目標を共有しましょう。",
-    // "OpportunityDietitianBannerSlogon": "共に、栄養の未来を<span class=\"mark-text-underline\"  padding-width=\"0\" bottom-width=\"0.1\">開拓しましょう</span>",
-    // "OpportunityDietitianDesc": "あなたが豊富な栄養知識と専門技術を持ち、他人の健康目標の達成を熱心にサポートしたいなら、ぜひ参加してください！卓越な栄養プログラムを共に作り上げ、人々の生活の質を向上させるチャンスがあります。専門成長のための継続的なトレーニングと成長の機会を提供します。一緒に優れた栄養相談サービスを提供し、健康な未来を実現しましょう！"
+{   
     "Message":"Message·",
-    "MessageDesc":"メッセージ",
-    "MessageSlogan":"成就自己，<br />也改變世界。",  
-    "MessageContent1": "<b>親愛的朋友：</b><br /><br />這是一封誠摯的邀請函。<br /><br />是的，我們正在尋找，能夠透過幫助他人成長、改善他人的健康狀態，並在無數人的生命之中，留下深刻印記的信念夥伴。<br /><br />Beyond是一家充滿專注、認真和歡樂氛圍的公司。在這裡，我們不僅僅是工作同事，更是彼此的支持者和朋友。我們締造一個開放、包容且充滿挑戰的工作環境，培養解決問題的能力，創造與人溝通的良好氛圍，同時也能深耕並綻放工作與生活的共同意義。<br /><br />我們真誠地邀請您加入&nbsp;BEYOND&nbsp;團隊，成為這個大家庭中不可或缺的一員。您的專業和信念將被認真重視，在這裡得到最大的發揮，同時相信您也可以在團隊中，找到自己的歸屬感。讓我們攜手並肩，共同成就更多的偉大時刻。",
-    "MessageContent2": "期待我們很快可以相見！<br /> See you soon !",
-    "MessageFrom": "Beyond 全體夥伴",
+    "MessageDesc":"訊息",
+    "MessageSlogan":"自己実現しながら<br />世界を変えていく",
+    "MessageContent1": "<b>親愛なる友人へ</b><br /><br />これはBeyondからの真心を込めた招待状です。<br /><br />我々は、大勢の方の成長をサポートし、健康状態を改善させることで、その人生に確実に足跡を残すことのできる、同じ信念を共有するパートナーを探しています。<br /><br />Beyondは集中力に満ち、真剣さ・職人魂・楽しさを備えた企業です。Beyondでは、我々は単なる同僚というだけでなく、支え合うパートナーであり、友人でもあります。Beyondは風通しの良い、包容力と挑戦に満ちた職場を、そして問題解決能力を育み、コミュニケーションの取りやすい環境を提供します。<br /><br />皆様とともに仕事と人生に共通した意味を深く掘り下げ、開花させます。皆様からのご応募をお待ちしております。",
+    "MessageContent2": "会えるのを楽しみにしています！<br /> See you soon !",
+    "MessageFrom": "Beyondの仲間たちより",
     "Voice": "Voice·",
-    "VoiceDesc": "スタッフの声",
-    "VoiceSlogan1": "「人生がより<br />素晴らしくなりました。」",
-    "VoiceSlogan2": "我們感到自豪，<br />可以讓客戶閃閃發光。",
-    "VoiceMessage":"聽聽每一位夥伴的真實心聲",
+    "VoiceDesc": "パートナーの声",
+    "VoiceSlogan1": "「人生をもっと美しく」",
+    "VoiceSlogan2": "お客様を輝かせる瞬間こそ<br />我々の誇りです",
+    "VoiceMessage":"Beyondの仲間たちの思いをご覧ください",
     "VoiceItem": [
         {
             "MemberCode": "BD56192749",
@@ -42,117 +27,120 @@
             "MemberCode": "ZP85915197",
             "BranchID": 2
         },
-        {
-            "MemberCode": "CL74347383",
-            "BranchID": 1
-        }
+        // {
+        //     "MemberCode": "CL74347383",
+        //     "BranchID": 1
+        // }
     ],
     "Traning": "Traning·",
     "TraningDesc": "研修制度",
-    "TraningMessageSlogan": "只要你帶著熱忱而來，<br />我們必能展開雙臂迎接。",
-    "TraningMessage": " 在台灣的健身市場上，許多的教練並沒有妥善的更新證照、固定教育訓練、並且遵守法規的簽立符合消費者的定型化契約，而導致這個產業時常出現許多的糾紛與潛在的風險。<br /><br />「專業教練」這個職業，應該是更具備條理、準則與價值的。而能夠真正針對專業私人教練穩定培養的機構其實非常少見。Beyond Fitness是台灣第一間真正投入其中的業者。我們的目標是將私人教練機構發展成能夠協助社會的健康企業。<br /><br />除了上述願景和投入，我們同時是非常有趣好玩，而且願意溝通互動的團隊。在工作中透過不斷學習、創造且具有挑戰的環境，而達到自我實現。我們共同內訓、考核、訓練、做公益、並共同歡笑與成長。",
+    "TraningMessageSlogan": "我々は熱意を持って来てくれたあなたを、<br />心から歓迎いたします",
+    "TraningMessage": "台湾のフィットネス・スポーツ産業では、資格を適切に更新せず、定期的な教育・トレーニングを受けず、法律に則って消費者と定型約款も締結していないトレーナーが多いのが現状です。そのためトラブルが多く、顧客は常に権利侵害のリスクを背負わされています。<br /><br />「プロフェッショナル・トレーナー」というのは、規律・基準・信念を持つ職人でなければなりません。しかし、専門的なパーソナルトレーナーを継続的に育成できる組織は、極めて少ないです。そしてBeyond Fitnessこそ、台湾で初めてこの分野に力を入れた企業です。Beyondが目指しているのは、パーソナルトレーナー組織を発展させ、世界と社会に貢献する健康優良企業を創ることです。<br /><br />Beyondは前述したようなビジョンを持ち、努力を怠らない企業であるだけでなく、明るくて楽しい、コミュニケーションと交流を厭わないチームでもあります。我々は仕事をしながら、常に学習し、チャレンジングな環境を創ることを通じて、自己実現を果たそうとしています。我々はともに社内研修・試験・トレーニングを受け、社会貢献活動に取り組み、ともに笑い、成長していきます。",
     "TraningItem":[
         {
             "ID": "Week",
-            "Name": "週內訓",
+            "Name": "週ごとの社内研修",
             "List":[
                 {
-                    "Content": "案例訓練研討",
+                    "Content": "ケーススタディ",
                 },
                 {
-                    "Content": "團練",
+                    "Content": "グループトレーニング",
                 },
                 {
-                    "Content": "運動科學討論",
+                    "Content": "スポーツ科学ディスカッション",
                 },
             ],
             "PlaceOrder": 1
         },
         {
             "ID": "Month",
-            "Name": "月內訓",
+            "Name": "月ごとの社内研修",
             "List":[
                 {
-                    "Content": "各項運動科學訓練法",
+                    "Content": "各種目の科学的トレーニング法",
                 },
                 {
-                    "Content": "實務應用與實作",
+                    "Content": "理論応用と実践",
                 }
             ],
             "PlaceOrder": 1
         },
         {
             "ID": "Season",
-            "Name": "季內訓",
+            "Name": "シーズンごとの社内研修",
             "List":[
                 {
-                    "Content": "運動心理學",
+                    "Content": "スポーツ心理学",
                 },
                 {
-                    "Content": "運動營養學",
+                    "Content": "スポーツ栄養学",
                 },
                 {
-                    "Content": "運動解剖學",
+                    "Content": "スポーツ解剖学",
                 },
                 {
-                    "Content": "物理治療",
+                    "Content": "哲学批判",
                 },
                 {
-                    "Content": "營養學",
+                    "Content": "理学療法",
+                },
+                {
+                    "Content": "栄養学",
                 }
             ],
             "PlaceOrder": 1
         },
         {
             "ID": "Testing",
-            "Name": "季考核",
+            "Name": "四半期試験",
             "List":[
                 {
-                    "Content": "學科考核（選擇、申論題）",
+                    "Content": "筆記試験（選択式、論述式）",
                 },
                 {
-                    "Content": "術科考核（各項場地、器材與體能考核）",
+                    "Content": "実技試験（各種目のトレーニング場運用・設備操作、体力評価）",
                 },
                 {
-                    "Content": "大眾運動考核",
+                    "Content": "大衆スポーツ試験",
                 }
             ],
             "PlaceOrder": 2
         },
         {
             "ID": "Year",
-            "Name": "年內訓",
+            "Name": "年ごとの内部研修",
             "List":[
                 {
-                    "Content": "生活與健康趨勢",
+                    "Content": "生活・健康トレンド",
                 },
                 {
-                    "Content": "管理與相關業界講師",
+                    "Content": "マネジメント・関連業界講師",
                 }
             ],
             "PlaceOrder": 2
         },
         {
             "ID": "Outside",
-            "Name": "移地訓練",
+            "Name": "オフサイトトレーニング",
             "List":[
                 {
-                    "Content": "團隊訓練",
+                    "Content": "チームビルディング",
                 },
                 {
-                    "Content": "團隊凝聚",
+                    "Content": "チームの求心力",
                 },
                 {
-                    "Content": "1對1訓練模擬",
+                    "Content": "一対一シミュレーショントレーニング",
                 },
                 {
-                    "Content": "大眾運動訓練",
+                    "Content": "大衆スポーツトレーニング",
                 },
                 {
-                    "Content": "障礙賽",
+                    "Content": "障害物レース",
                 },
                 {
-                    "Content": "長距離跑步",
+                    "Content": "長距離走",
                 }
             ],
             "PlaceOrder": 2
@@ -162,25 +150,25 @@
     "OpeningDesc": "求人一覧",
     "OpeningItem":[
         {
-            "JobTitle": "スポーツセラピスト",
-            "JobSlogan": "“ 我們需要你的力量，<br />一起成為健康的推手 ”",
+            "JobTitle": "スポーツマッサージ師",
+            "JobSlogan": "“あなたの力が必要です。<br />一緒に皆様の健康を守りましょう”",
             "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
         },
         {
-            "JobTitle": "トレーナー",
-            "JobSlogan": "“ 你會在這裡，找到很棒的生活態度與朋友 ”",
+            "JobTitle": "パーソナルトレーナー",
+            "JobSlogan": "“ Beyondでは，充実した生活と志を共にした友人に出会えます ”",
             "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
         },
-        {
-            "JobTitle": "管理栄養士",
-            "JobSlogan": "“ 營養不只膳食與熱量，<br />更重視整全身心健康。”",
-            "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
-        },
+        // {
+        //     "JobTitle": "栄養コンサルタント",
+        //     "JobSlogan": "“ 栄養管理というのは、食事やカロリーはもちろん、如何にして心身の健康状態を整えるのかが大切です”",
+        //     "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
+        // },
     ],
     "Talk":"Talk·",
-    "TalkDesc": "取材記事",    
+    "TalkDesc": "人物專訪", 
     "InviteMessage": "如果您也嚮往，成為一名充滿影響力的私人教練，加入我們的行列吧！",
     "OtherVoice":"Other<br />Voice·",
     "OtherVoiceDesc":"其他夥伴之聲",
-    "OtherVoiceSlogan": "還有更多故事，<br />等著與您分享。"    
+    "OtherVoiceSlogan": "還有更多故事，<br />等著與您分享。"
 }

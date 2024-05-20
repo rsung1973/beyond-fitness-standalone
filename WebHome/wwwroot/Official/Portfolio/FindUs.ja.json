@@ -2,28 +2,28 @@
     "Info": "Information·",
     "InfoDesc": "ビジネス情報",
     "WeekDays": "平日",
-    "Holiday": "休日",
+    "Holiday": "土祝日",
     "Others": "Others•",
-    "OthersDesc": "其他分店",       
+    "OthersDesc": "その他支店",                               
     "Team": "OUR TEAM",   
-    "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
+    "TeamSlogan": "健康への旅を<br class=\"hidden-sm-up\" />全力サポートいたします",            
     "MapImg": "map.svg",
     "BranchItems": [
         {
             "ID": 1,
             "CircleBg": "left",
             "SubClass": "nanjing",
-            "Name": "南京店",            
-            "NameDesc": "Nanjing", 
+            "Name": "南京店",
+            "NameDesc": "Nanjing",                    
             "Tel": "(02)2715-2733",
             "TelDial": "+886227152733",
-            "AddLong": "台北市松山区南京東路４段１７号Ｂ１",
-            "MRT":"松山新店線（グリーンライン）• MRT台北アリーナ駅出口1",
-            "MRTShort":"MRT台北アリーナ駅<b>出口1</b>",
+            "AddLong": "台北市松山区南京東路四段17号B1",
+            "MRT":"松山新店線(グリーンライン) • MRT台北アリーナ駅1番出口",
+            "MRTShort":"MRT台北アリーナ駅<b>1番</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
             "BannerImgCount": 1,  
-            "Slogan": "訓練是生活的一部分，<br class=\"hidden-md-down\" />Enjoy the little thing。",
-            "SloganMessage": "<p>我們深信著，運動不僅僅是單一活動，更是生活的精華所在。這是一種態度，是每天的一部分，是對自己的愛與呵護。</p><p class=\"hidden-lg-down\">透過訓練，我們不僅在身體上找到更好的自己，更可以在每個瞬間中尋找樂趣。這不只是一種鍛鍊，更是對生活的熱愛，對細微事物的感激。我們堅信，唯有擁有健康，才能真正獲得快樂。</p><p>Beyond提供真正專業而有系統性的訓練，讓您的運動不僅有效，更是一場充滿樂趣和新體驗的冒險。在Beyond希望每個學生都能擁有快樂與健康，並真正享受這美好的時光。因為生活中的小確幸，就蘊藏在這每一次的訓練中！</p>",
+            "Slogan": "トレーニングを生活の一部に",
+            "SloganMessage": "<p>スポーツは単なる活動ではなく、生活のエッセンスと言えるでしょう。それは一種の生活に態度であり、毎日の暮らしの一部であり、自分への愛情と労りです。</p><p class=\"hidden-lg-down\">トレーニングを通して、体の中からより良い自分を見出すだけでなく、その一瞬一瞬を楽しむこともできます。</p><p>Beyondはすべての会員に、幸せと健康をお届けし、そして心からトレーニングを楽しんでほしいと願っております。なぜなら、日常の中の小さいけれど確かな幸せは、毎回のトレーニングに潜んでいるからです！</p>",
             "DemoImgItems":[
                 {
                     "FileName": "Demo01.png"
@@ -43,43 +43,50 @@
                 {
                     "FileName": "Demo06.png"
                 }
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",            
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            ],           
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",            
             "FeatureItems":[
                 {
-                    "Content": "捷運小巨蛋1號出口，走路約1分鐘可以抵達。"
+                    "Content": "MRT台北アリーナ駅1番出口から、徒歩約1分"
                 },
                 {
-                    "Content": "位於台北小巨蛋正對面，鄰近微風百貨。"
+                    "Content": "台北アリーナの真向かいに位置し、微風広場の近くにあります"
                 }
             ],   
-            "Coaches": [
-                {
-                    "MemberCode": "HE71446932",
-                    "Name": "游念儒",                    
-                    "NameDesc": "Vic",
-                    "JobTitle": "經理",
+            "Coaches": [      
+            {
+                    "MemberCode": "CZ24609828",
+                    "Name": "黃伊婷",
+                    "NameDesc": "Doreen",
+                    "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(255.31 184.4)",
-                            "JobPosition": "translate(255.31 154.46)",
-                            "ImgXShifting": -90,
+                            "NamePosition": "translate(242.31 184.4)",
+                            "JobPosition": "translate(242.31 154.46)",
+                            "ImgXShifting": -100,
                             "ImgYShifting": -40,
                         }                        
                     ],
-                    "Slogan": "If you really want to achieve the goal, just do it.",
-                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
-                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "Slogan": "You just have to change your desires, some changes won't be the same.",
+                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+                    "Desc": "透過關心身邊的人，隨時留意他們的需求與想法並且樂於用同理心進行溝通，建立真正心與心的連結，讓彼此感受到真誠的支持和理解。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "CrossFit",
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "KBC",
+                        }, 
+                        {
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "PTAG",
                         },
                         {
                             "Name": "CPRAED",
@@ -87,22 +94,22 @@
                     ],
                     "Sports":[
                         {
-                            "Name":"basketball",
+                            "Name":"kettlebell",
                         },
                         {
-                            "Name":"soccer",
+                            "Name":"dance",
                         },
                         {
-                            "Name":"gymnastics",
+                            "Name":"tabletennis",
                         }
                     ],
-                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
-                },
+                    "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
+                },                         
                 {
                     "MemberCode": "CJ29229466",
                     "Name": "蔡恆易",
                     "NameDesc": "Henry",
-                    "JobTitle": "副理",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -143,12 +150,12 @@
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
                     "NameDesc": "Hardy",
-                    "JobTitle": "培訓經理",
+                    "JobTitle": "ヘッドコーチ",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(80.31 183.4)",
-                            "JobPosition": "translate(85.31 153.46)",
+                            "NamePosition": "translate(70.31 183.4)",
+                            "JobPosition": "translate(70.31 153.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -231,12 +238,12 @@
                     "MemberCode": "LE99124820",
                     "Name": "陳嫻蓁",
                     "NameDesc": "Lucy",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(78.61 184.4)",
-                            "JobPosition": "translate(70.61 154.46)",
+                            "NamePosition": "translate(55.61 184.4)",
+                            "JobPosition": "translate(55.61 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -40,
                         }                        
@@ -271,16 +278,15 @@
                     ],
                     "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>2003 救國團/企業瑜伽專任教練</li><li>攀登百岳#嘉明湖</li></ul>"                    
                 },
-
                 {
                     "MemberCode": "KE83515245",
                     "Name": "林哲儀",
                     "NameDesc": "Joei",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(80.09 184.4)",
+                            "NamePosition": "translate(70.09 184.4)",
                             "JobPosition": "translate(70.4 154.46)",
                             "ImgXShifting": -70,
                             "ImgYShifting": -40,
@@ -318,17 +324,17 @@
                         }
                     ],
                     "Experience": "<ul><li>2021.2022超級體能聯賽團體組決賽</li></ul>"                    
-                },
+                },       
                 {
                     "MemberCode": "NU84688353",
                     "Name": "許若宸",
                     "NameDesc": "Zoe",
-                    "JobTitle": "副理",
+                    "JobTitle": "副マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(80.61 184.4)",
-                            "JobPosition": "translate(62.52 154.46)",
+                            "NamePosition": "translate(45.61 184.4)",
+                            "JobPosition": "translate(45.52 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -362,17 +368,17 @@
                         }
                     ],
                     "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
-                },
+                },          
                 {
                     "MemberCode": "DK80697151",
                     "Name": "蔣文寶",
                     "NameDesc": "Vinson",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
                             "NamePosition": "translate(68.88 184.4)",
-                            "JobPosition": "translate(82.88 154.46)",
+                            "JobPosition": "translate(68.88 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -404,56 +410,56 @@
                     ],
                     "Experience": "<ul><li>108年全國運動會橄欖球項目金牌</li><li>2022 Beyond Fitness Thoughtfulness Award 冠軍</li></ul>"                    
                 },
-                {
-                    "MemberCode": "PA57705810",
-                    "Name": "謝宇傑",
-                    "NameDesc": "Jay",
-                    "JobTitle": "私人教練",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(75.57 184.4)",
-                            "JobPosition": "translate(63.57 154.46)",
-                            "ImgXShifting": -40,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Something you do today that you can do everything in other day.",
-                    "SloganDesc": "今天你做了別人不想做的事，以後你可以做到別人做不到的事。",
-                    "Desc": "擅長細緻入微的觀察，一旦融入事情之中，會投入超越百分之百的熱情。",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },             
-                        {
-                            "Name": "EFA",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }  
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"rowing",
-                        },
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<ul><li>全國運動會100-110年西式划船八人單槳前三名</li></ul>"                    
-                },
+                // {
+                //     "MemberCode": "PA57705810",
+                //     "Name": "謝宇傑",
+                //     "NameDesc": "Jay",
+                //     "JobTitle": "トレーナー",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-half.svg",
+                //             "NamePosition": "translate(75.57 184.4)",
+                //             "JobPosition": "translate(63.57 154.46)",
+                //             "ImgXShifting": -40,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "Something you do today that you can do everything in other day.",
+                //     "SloganDesc": "今天你做了別人不想做的事，以後你可以做到別人做不到的事。",
+                //     "Desc": "擅長細緻入微的觀察，一旦融入事情之中，會投入超越百分之百的熱情。",
+                //     "License":[
+                //         {
+                //             "Name": "NASM",
+                //         },
+                //         {
+                //             "Name": "Z-TSCA",
+                //         },             
+                //         {
+                //             "Name": "EFA",
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }  
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"rowing",
+                //         },
+                //         {
+                //             "Name":"diving",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>全國運動會100-110年西式划船八人單槳前三名</li></ul>"                    
+                // },
                 {
                     "MemberCode": "TB72554526",
                     "Name": "張書瑋",
                     "NameDesc": "Jeff",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(75.57 184.4)",
+                            "NamePosition": "translate(63.57 184.4)",
                             "JobPosition": "translate(63.57 154.46)",
                             "ImgXShifting": -45,
                             "ImgYShifting": -50,
@@ -490,11 +496,11 @@
                     "MemberCode": "VA69261948",
                     "Name": "兵逸慈",
                     "NameDesc": "Liza",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(85.06 184.4)",
+                            "NamePosition": "translate(70.06 184.4)",
                             "JobPosition": "translate(70.06 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
@@ -598,23 +604,23 @@
                 //         }                    
                 //     ]      
                 // }
-            ]                 
+            ]         
         },
         {
             "ID": 2,
-            "CircleBg": "full",
             "SubClass": "xinyianhe",
-            "Name": "信義安和店",            
+            "CircleBg": "full",
+            "Name": "信義安和店",
             "NameDesc": "Xinyi Anhe",        
             "Tel": "(02)2720-0530",
             "TelDial": "+886227200530",
-            "AddLong": "台北市大安区安和路２段８１号Ｂ１",
-            "MRT":"淡水信義線（赤いライン） • 信義安和駅出口2A",
-            "MRTShort":"MRT信義安和駅<b>出口2A</b>",
+            "AddLong": "台北市大安区安和路二段81号B1",
+            "MRT":"淡水信義線(レッドライン) • MRT信義安和駅2A出口",
+            "MRTShort":"MRT信義安和駅<b>2A</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
             "BannerImgCount": 1,  
-            "Slogan": "Beyond是家的另一個空間，<br class=\"hidden-md-down\" />讓運動圍繞著我們",
-            "SloganMessage": "<p>我們的教練不僅是專業的指導者，更像是那位鼓勵你的朋友，與你一同努力達成目標。我們的場地不僅擁有明亮的訓練空間，更有讓您回到家一般的感受。<br /><br />不管是幾歲，在這裡，你不僅能增強體力、改善平衡，提升協調性，還能追求更好的心肺功能。這些努力，將不僅讓你看見更有活力的自己，同時也會重新燃起對生活的熱情。<br /><br /></p><p class=\"hidden-lg-down\">這是一場關於健康的冒險，也是關於自我發現的旅程。無論你的年齡如何，加入我們，一同塑造充滿活力和歡笑的運動環境，與我們並肩前行，享受每個健康生活的瞬間！</p>",
+            "Slogan": "家の延長線にある空間にし、<br class=\"d-none d-lg-block d-md-block\" />どっぷりスポーツのある暮らしに浸りましょう",
+            "SloganMessage": "<p>Beyondでは、スポーツは単なるスポーツではなく、生活のコアとなる部分でもあります。職場で活躍していらっしゃる皆様のために、Beyondは洗練されたフィットネス空間を創り出しました。</p><p class=\"d-block\">ここはトレーニングの場だけではなく、仕事が終わってから赴く別天地で、心と体を調和させるための場所でもあります。この空間では、スポーツはもはや体への負担ではなく、マイホームでスポーツするような楽しい体験です。</p><p>この特別な体験を通じて、多忙な生活の中でもバランスを取り、より自信やエネルギーに満ちた自分になれます。スポーツを身近に感じ、生活の欠かせない一部にして、自分の無限の可能性を示すもう一つの空間にしましょう！</p>",
             "DemoImgItems":[
                 {
                     "FileName": "Demo01.png"
@@ -634,20 +640,18 @@
                 {
                     "FileName": "Demo06.png"
                 }
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            ],                    
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
                 {
-                    "Content": "捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。"
+                    "Content": "MRT信義安和駅2A出口から、徒歩約3分"
                 },
                 {
-                    "Content": "位於兆豐國際商業銀行安和分行斜對面"
+                    "Content": "兆豊国際商業銀行安和支店"
                 },
                 {
-                    "Content": "比鄰國際立人國中小學校區。"
+                    "Content": "立人国際中小学校キャンパス"
                 }
             ],
             "Coaches": [
@@ -655,7 +659,7 @@
                     "MemberCode": "CZ24609828",
                     "Name": "黃伊婷",
                     "NameDesc": "Doreen",
-                    "JobTitle": "經理",
+                    "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
@@ -705,12 +709,12 @@
                     "MemberCode": "FF68236586",
                     "Name": "顏廷宇",
                     "NameDesc": "Eugene",
-                    "JobTitle": "副理",
+                    "JobTitle": "副マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(62.76 184.4)",
-                            "JobPosition": "translate(72.76 154.46)",
+                            "NamePosition": "translate(55.76 184.4)",
+                            "JobPosition": "translate(55.76 154.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -50,
                         }                        
@@ -743,12 +747,12 @@
                     "MemberCode": "HT89731654",
                     "Name": "黃宇承",
                     "NameDesc": "Alan",
-                    "JobTitle": "培訓經理",
+                    "JobTitle": "ヘッドコーチ",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(98.31 183.4)",
-                            "JobPosition": "translate(95.31 153.46)",
+                            "NamePosition": "translate(75.31 183.4)",
+                            "JobPosition": "translate(75.31 153.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
                         }                        
@@ -793,7 +797,7 @@
                     "MemberCode": "SY30280433",
                     "Name": "崔宸笙",
                     "NameDesc": "Annie",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
@@ -836,66 +840,66 @@
                     ],
                     "Experience": "<ul><li>2023 奇怪自由潛水運動會STA 冠軍</li><li>2023 CMAS全國自由潛水室內錦標賽STA 亞軍</li><li>2022 Beyond Fitness Trust 亞軍</li></ul>"                    
                 },
-                {
-                    "MemberCode": "LA58787893",
-                    "Name": "黃卓瑩",
-                    "NameDesc": "Candy",
-                    "JobTitle": "私人教練",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(240.09 184.4)",
-                            "JobPosition": "translate(240.09 154.46)",
-                            "ImgXShifting": -120,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "I put fitness before business, a healthy lifestyle propels my success.",
-                    "SloganDesc": "我把健康放在事業之前，健康的生活方式推動了我的成功。",
-                    "Desc": "以直率、大方和充滿活力自居。擅長表達自己，透過熱情感染他人，同時擁有著獨特的群眾魅力，能夠在任何場合中脫穎而出。",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "FMTI",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                   
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"equestrian",
-                        },
-                        {
-                            "Name":"tennis",
-                        },
-                        {
-                            "Name":"volleyball",
-                        },
-                        {
-                            "Name":"surfing",
-                        }
-                    ],
-                    "Experience": "<ul><li>香港高雷中學排球隊</li><li>萬華運動中心私人教練</li><li>松山運動中心私人教練</li></ul>"                    
-                },
+                // {
+                //     "MemberCode": "LA58787893",
+                //     "Name": "黃卓瑩",
+                //     "NameDesc": "Candy",
+                //     "JobTitle": "トレーナー",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-right.svg",
+                //             "NamePosition": "translate(240.09 184.4)",
+                //             "JobPosition": "translate(240.09 154.46)",
+                //             "ImgXShifting": -120,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "I put fitness before business, a healthy lifestyle propels my success.",
+                //     "SloganDesc": "我把健康放在事業之前，健康的生活方式推動了我的成功。",
+                //     "Desc": "以直率、大方和充滿活力自居。擅長表達自己，透過熱情感染他人，同時擁有著獨特的群眾魅力，能夠在任何場合中脫穎而出。",
+                //     "License":[
+                //         {
+                //             "Name": "NASM",
+                //         },
+                //         {
+                //             "Name": "PTAG",
+                //         },
+                //         {
+                //             "Name": "TRX",
+                //         },
+                //         {
+                //             "Name": "FMTI",
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }                   
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"equestrian",
+                //         },
+                //         {
+                //             "Name":"tennis",
+                //         },
+                //         {
+                //             "Name":"volleyball",
+                //         },
+                //         {
+                //             "Name":"surfing",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>香港高雷中學排球隊</li><li>萬華運動中心私人教練</li><li>松山運動中心私人教練</li></ul>"                    
+                // },
                 {
                     "MemberCode": "QS10595815",
                     "Name": "邱謹瑜",
                     "NameDesc": "Grace",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(60.09 184.4)",
-                            "JobPosition": "translate(70.4 154.46)",
+                            "NamePosition": "translate(50.09 184.4)",
+                            "JobPosition": "translate(50.09 154.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
                         }                        
@@ -931,7 +935,7 @@
                     "MemberCode": "QQ80184463",
                     "Name": "黃涴資",
                     "NameDesc": "Anna",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -981,12 +985,12 @@
                     "MemberCode": "RW86165852",
                     "Name": "蘇柏銓",
                     "NameDesc": "Ryan",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(80.88 184.4)",
-                            "JobPosition": "translate(80.88 154.46)",
+                            "NamePosition": "translate(60.88 184.4)",
+                            "JobPosition": "translate(60.88 154.46)",
                             "ImgXShifting": -45,
                             "ImgYShifting": -40,
                         }                        
@@ -1022,12 +1026,12 @@
                     "MemberCode": "JE83121985",
                     "Name": "曾瀚聞",
                     "NameDesc": "Hanson",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
                             "NamePosition": "translate(50.76 184.4)",
-                            "JobPosition": "translate(78.76 154.46)",
+                            "JobPosition": "translate(50.76 154.46)",
                             "ImgXShifting": -50,
                             "ImgYShifting": -40,
                         }                        
@@ -1075,12 +1079,12 @@
                     "MemberCode": "AS8330121",
                     "Name": "謝承軒",
                     "NameDesc": "James",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
                             "NamePosition": "translate(48.57 184.4)",
-                            "JobPosition": "translate(63.57 154.46)",
+                            "JobPosition": "translate(48.57 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -40,
                         }                        
@@ -1119,11 +1123,11 @@
                     "MemberCode": "ZP85915197",
                     "Name": "陳晧宇",
                     "NameDesc": "Hogan",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(85.06 184.4)",
+                            "NamePosition": "translate(78.06 184.4)",
                             "JobPosition": "translate(78.76 154.46)",
                             "ImgXShifting": -50,
                             "ImgYShifting": -40,
@@ -1181,11 +1185,11 @@
                                 },
                                 {
                                     "Question":"學生是否因為我的協助而產生轉變？",
-                                    "Answers": "<p>讓我分享一個有趣的例子。我有一位年長的夫妻客戶，詹媽媽比較保守，有時害怕挑戰，而詹爸爸則充滿好奇心和挑戰精神。<u>我在他們生活中充當了一個支持者的角色</u>，協助他們進步。透過運動和互相鼓勵，他們不僅在身體訓練方面有所進步，還在生活中獲得了更多。 <p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"images/avatars/Hogan/Voice/q3.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>對我來說，這非常重要，因為這代表了作為專業教練的真正價值「<u>能夠成為學生生命中的一部分，並協助他們邁向更美好的未來，是一種特別的體驗</u>」。我所認為一位專業的教練應該具備的特質，這包括優秀的溝通技巧、多領域的專業知識和學科能力。一位專業的教練需要像一位多面手一樣，以專業和關懷幫助學生實現目標。這是一項有趣而充滿挑戰的工作！ </p>"
+                                    "Answers": "<p>讓我分享一個有趣的例子。我有一位年長的夫妻客戶，詹媽媽比較保守，有時害怕挑戰，而詹爸爸則充滿好奇心和挑戰精神。<u>我在他們生活中充當了一個支持者的角色</u>，協助他們進步。透過運動和互相鼓勵，他們不僅在身體訓練方面有所進步，還在生活中獲得了更多。 <p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hogan/Voice/q3.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>對我來說，這非常重要，因為這代表了作為專業教練的真正價值「<u>能夠成為學生生命中的一部分，並協助他們邁向更美好的未來，是一種特別的體驗</u>」。我所認為一位專業的教練應該具備的特質，這包括優秀的溝通技巧、多領域的專業知識和學科能力。一位專業的教練需要像一位多面手一樣，以專業和關懷幫助學生實現目標。這是一項有趣而充滿挑戰的工作！ </p>"
                                 },
                                 {
                                     "Question":"如何與學生建立深厚的信任與理解？",
-                                    "Answers": "<p>我想當建立深厚的關係和信任時，「<u>最重要的價值在於互相了解</u>」。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hogan/Voice/q4.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>一個特別令我難以忘懷的經歷是有一位學生，他從第一次踏入BEYOND開始體驗私人教練課程，對我的專業充滿信任，全盤接受的訓練規劃。在短短半年內，他不僅成功瘦身了5公斤，還不斷地提升自己的個人紀錄。這位學生因為信任我的專業，默默地按照我的指導執行，就是這樣的信任感讓我<u>感到非常有信心，也讓我感到非常有成就感</u>。<br/><br/>我認為BEYOND的核心精神是透過聆聽和溝通來引導學生實現他們的目標，而這種互動確實很重要。然而，有時候，<u>學生的信任也可以是一種強大的力量</u>，因為他們相信我們的專業，所以讓他們執行訓練規劃變得更容易。「<u>信任和溝通兩者之間有時候是互補的，而不是相互衝突的</u>」。 </p>"
+                                    "Answers": "<p>我想當建立深厚的關係和信任時，「<u>最重要的價值在於互相了解</u>」。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hogan/Voice/q4.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>一個特別令我難以忘懷的經歷是有一位學生，他從第一次踏入BEYOND開始體驗トレーナー課程，對我的專業充滿信任，全盤接受的訓練規劃。在短短半年內，他不僅成功瘦身了5公斤，還不斷地提升自己的個人紀錄。這位學生因為信任我的專業，默默地按照我的指導執行，就是這樣的信任感讓我<u>感到非常有信心，也讓我感到非常有成就感</u>。<br/><br/>我認為BEYOND的核心精神是透過聆聽和溝通來引導學生實現他們的目標，而這種互動確實很重要。然而，有時候，<u>學生的信任也可以是一種強大的力量</u>，因為他們相信我們的專業，所以讓他們執行訓練規劃變得更容易。「<u>信任和溝通兩者之間有時候是互補的，而不是相互衝突的</u>」。 </p>"
                                 },
                             ],
                             "Conclusion":"建立信任、了解學生的需求以及持續成長，將工作與生活和經驗緊密相關聯！"
@@ -1196,7 +1200,7 @@
                     "MemberCode": "PS66550899",
                     "Name": "趙昱穎",
                     "NameDesc": "Frank",
-                    "JobTitle": "運動恢復教練",
+                    "JobTitle": "セラピスト",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
@@ -1241,12 +1245,12 @@
                     "MemberCode": "UH47224211",
                     "Name": "沈威",
                     "NameDesc": "William",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
                             "NamePosition": "translate(70.31 184.4)",
-                            "JobPosition": "translate(100.31 154.46)",
+                            "JobPosition": "translate(70.31 154.46)",
                             "ImgXShifting": -30,
                             "ImgYShifting": -40,
                         }                        
@@ -1303,12 +1307,12 @@
                     "MemberCode": "KN49058997",
                     "Name": "陳冠綸",
                     "NameDesc": "Adam",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(80.76 184.4)",
-                            "JobPosition": "translate(80.76 154.46)",
+                            "NamePosition": "translate(60.76 184.4)",
+                            "JobPosition": "translate(60.76 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -40,
                         }                        
@@ -1347,11 +1351,11 @@
                     "MemberCode": "RT46615380",
                     "Name": "蔣濬先",
                     "NameDesc": "Rex",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(92.31 183.4)",
+                            "NamePosition": "translate(70.31 183.4)",
                             "JobPosition": "translate(70.31 153.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
@@ -1404,12 +1408,12 @@
                     "MemberCode": "LA73559663",
                     "Name": "何秉睿",
                     "NameDesc": "Ray",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(92.31 183.4)",
-                            "JobPosition": "translate(70.31 153.46)",
+                            "NamePosition": "translate(60.31 183.4)",
+                            "JobPosition": "translate(60.31 153.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
                         }                        
@@ -1442,7 +1446,7 @@
                     "MemberCode": "UD60058637",
                     "Name": "潘紫瑄",
                     "NameDesc": "Phoebe",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
@@ -1480,19 +1484,19 @@
         },
         {
             "ID": 3,
-            "CircleBg": "right",
             "SubClass": "zhongxiao",
-            "Name": "忠孝店",            
+            "CircleBg": "right",
+            "Name": "忠孝店",
             "NameDesc": "Zhong xiao",        
             "Tel": "(02)2776-9932",
             "TelDial": "+886227769932",
-            "AddLong": "台北市大安区大安路１段７５巷２１号１F/Ｂ１",
-            "MRT":"板南線（ブルーライン）• 忠孝復興駅出口３（地下街14号）/B1",
-            "MRTShort":"MRT忠孝復興駅<b>出口３</b>",
+            "AddLong": "台北市大安区大安路一段75巷21号1F/B1",
+            "MRT":"板南線(ブルーライン) • MRT忠孝復興駅3番（地下街14番）出口",
+            "MRTShort":"MRT忠孝復興駅<b>3番</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/PqrY1V3N2U1HW64s8",
             "BannerImgCount": 2,            
-            "Slogan": "每次的鍛鍊，<br class=\"hidden-md-down\" />都是幫助您重新找回綻放與自信。",
-            "SloganMessage": "<p class=\"hidden-lg-down\">是否常常感到自己的時間都被忙碌的家庭與工作佔據，難以找到屬於自己的寶貴時光？我們明白你的需求，在這邊我們特別設計了獨特的運動訓練。</p><p>在休閒的空檔時間，來到Beyond，將是你每天期待的時刻。我們的教練就像你的朋友一樣，將細心陪伴著你，設計各種放鬆訓練課程幫助你釋放壓力，鍛鍊身材，在短時間內不僅能夠鍛鍊身材，還能找到自己的平衡和美麗，擁有更好的身體和精神狀態。<br /><br />讓我們陪伴著你們，一同走向更加健康和美麗的未來。<br /><br /></p>",
+            "Slogan": "日々訓練を重ねていくうちに、輝きを放ち、自信を取り戻した自分を再発見するに違いありません",
+            "SloganMessage": "<p class=\"hidden-lg-down\">忙しい家庭生活と仕事に追われ、自分のための時間を確保するのが難しいと、つくづく感じていらっしゃいませんか。そんなお客様のニーズに応えるべく、特別なトレーニングメニューを考案しました。</p><p>お時間のある時にBeyondにお越しください。あなたの待ち望んでいる時間がここにあります。Beyondのトレーナーはあなたの友になります。親身になって、あなたをストレスから解放し、シェイプアップできるように、丁寧にリラックストレーニングメニューを作成します。みるみるうちに、あなたは体型を整えるだけでなく、身心のバランスが整い、魅力的になり、そして体も心もどんどん元気になっていくでしょう。<br /><br />ぜひ健康で美しくなるためのお手伝いをさせてください。<br /><br /></p>",
             "DemoImgItems":[
                 {
                     "FileName": "demo08.png"
@@ -1512,17 +1516,15 @@
                 {
                     "FileName": "demo13.png"
                 }
-            ],        
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            ],      
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",
             "FeatureItems":[
                 {
-                    "Content": "捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。"
+                    "Content": "MRT忠孝復興駅3番（地下街14番）出口から、徒歩2分"
                 },
                 {
-                    "Content": "位於頂好名店城後方大樓1F/B1"
+                    "Content": "頂好名店城の奥隣のビルの1階と地下1階"
                 }
             ],
             "Coaches": [                
@@ -1530,7 +1532,7 @@
                     "MemberCode": "FL62099639",
                     "Name": "陳詩綺",
                     "NameDesc": "Iron",
-                    "JobTitle": "經理",
+                    "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
@@ -1605,12 +1607,12 @@
                     "MemberCode": "BV7219179",
                     "Name": "劉家瑜",
                     "NameDesc": "Peter",
-                    "JobTitle": "副理",                                
+                    "JobTitle": "副マネージャー",                                
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(65.09 184.4)",
-                            "JobPosition": "translate(65.09 154.46)",
+                            "NamePosition": "translate(35.09 184.4)",
+                            "JobPosition": "translate(35.09 154.46)",
                             "ImgXShifting": -70,
                             "ImgYShifting": -30,
                         }     
@@ -1647,7 +1649,7 @@
                     "MemberCode": "KK31237994",
                     "Name": "侯炫竹",
                     "NameDesc": "Ted",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -1691,12 +1693,12 @@
                     "MemberCode": "UB83379346",
                     "Name": "宋智強",
                     "NameDesc": "Galai",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(83.61 184.4)",
-                            "JobPosition": "translate(83.61 154.46)",
+                            "NamePosition": "translate(65.61 184.4)",
+                            "JobPosition": "translate(65.61 154.46)",
                             "ImgXShifting": -70,
                             "ImgYShifting": -30,
                         }                        
@@ -1735,10 +1737,51 @@
                     "Experience": "<ul><li>保加利亞國際邀請賽-田徑</li><li>俄羅斯奧林匹克青少年-田徑</li><li>游泳教練&救生員</li></ul>"                    
                 },
                 {
+                    "MemberCode": "HE71446932",
+                    "Name": "游念儒",                    
+                    "NameDesc": "Vic",
+                    "JobTitle": "トレーナー",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(255.31 184.4)",
+                            "JobPosition": "translate(255.31 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "If you really want to achieve the goal, just do it.",
+                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                        
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"soccer",
+                        },
+                        {
+                            "Name":"gymnastics",
+                        }
+                    ],
+                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
+                },
+                {
                     "MemberCode": "HT51228765",
                     "Name": "林雅婷",
                     "NameDesc": "Arika",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
@@ -1773,12 +1816,12 @@
                     "MemberCode": "YF58789473",
                     "Name": "蔡靖綾",
                     "NameDesc": "Hannah",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(55.88 184.4)",
-                            "JobPosition": "translate(55.88 154.46)",
+                            "NamePosition": "translate(50.88 184.4)",
+                            "JobPosition": "translate(50.88 154.46)",
                             "ImgXShifting": -20,
                             "ImgYShifting": -30,
                         }                        
@@ -1814,12 +1857,12 @@
                     "MemberCode": "AP42116196",
                     "Name": "陳柏諺",
                     "NameDesc": "Robert",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(55.76 184.4)",
-                            "JobPosition": "translate(68.76 154.46)",
+                            "NamePosition": "translate(60.76 184.4)",
+                            "JobPosition": "translate(60.76 154.46)",
                             "ImgXShifting": -130,
                             "ImgYShifting": -30,
                         }                        
@@ -1861,12 +1904,12 @@
                     "MemberCode": "BS21353217",
                     "Name": "蔡承翰",
                     "NameDesc": "John",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(82.76 184.4)",
-                            "JobPosition": "translate(82.76 154.46)",
+                            "NamePosition": "translate(70.76 184.4)",
+                            "JobPosition": "translate(70.76 154.46)",
                             "ImgXShifting": -50,
                             "ImgYShifting": -20,
                         }                        
@@ -1904,20 +1947,19 @@
         },
         {
             "ID": 4,
-            "CircleBg": "half",
             "SubClass": "dongmen",
-            "Name": "東門店",            
+            "CircleBg": "half",
+            "Name": "東門店",
             "NameDesc": "Dongmen",        
             "Tel": "(02)2396-0776",
             "TelDial": "+886223960776",
-            "AddLong": "台北市大安区信義路２段２８号",
-            "MRT":"淡水信義線（赤いライン）• 東門駅出口３",
-            "MRTShort":"MRT東門駅<b>出口３</b>",
+            "AddLong": "台北市大安区信義路二段28号",
+            "MRT":"淡水信義線(レッドライン) • MRT東門駅3番出口",
+            "MRTShort":"MRT東門駅<b>3番</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/1VkxACVTrMTaFm3DA",
-            "MapURL": "images/branch/map-xinyi.png",
             "BannerImgCount": 3,  
-            "Slogan": "透過運動，<br class=\"hidden-md-up\" />看見更有活力的自已。",
-            "SloganMessage": "<p>我們的教練不僅是專業的指導者，更像是那位鼓勵你的朋友，與你一同努力達成目標。<br /><br />不管是幾歲，在這裡，你不僅能增強體力、改善平衡，提升協調性，還能追求更好的心肺功能。這些努力，將不僅讓你看見更有活力的自己，同時也會重新燃起對生活的熱情。<br /><br /></p><p class=\"hidden-md-down\">這是一場關於健康的冒險，也是關於自我發現的旅程。無論你的年齡如何，加入我們，一同塑造充滿活力和歡笑的運動環境，與我們並肩前行，享受每個健康生活的瞬間！</p>",
+            "Slogan": "スポーツを通じて、<br class=\"d-block d-lg-none d-md-block\" />より生き生きとした自分を見つけましょう",
+            "SloganMessage": "<p>Beyondのトレーナーは、単なるプロのインストラクターではなく、目標達成のために一緒に取り組んでくれる心強い友人のような存在でもあります。<br /><br />ここでは、どの年齢層でも、体力を身につけ、体のバランスを整え、協調性を高め、心肺機能を鍛えることができます。このような鍛錬は、より生き生きとした自分を見つけるとともに、人生への情熱を再燃させるでしょう。<br /><br /></p><p class=\"hidden-md-down\">トレーニングは健康をめぐる冒険であり、自分探しの旅でもあります。年齢は関係ありません。我々と一緒に活力と笑顔に満ちたスポーツ環境を創り、これからの健康生活を楽しみましょう！</p>",
             "DemoImgItems":[
                 {
                     "FileName": "demo01.png"
@@ -1940,17 +1982,15 @@
                 {
                     "FileName": "demo07.png"
                 },
-            ],                         
-            "Team": "OUR TEAM",
-            "TeamSlogan": "全力協助您<br class=\"hidden-sm-up\" />一同踏上健康之旅",
-            "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",         
+            ],   
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 22:00",        
             "FeatureItems":[
                 {
-                    "Content": "捷運東門捷運站3號出口，往中正紀念堂方向，走路約3分鐘即可抵達。"
+                    "Content": "MRT東門駅3番出口から、中正紀念堂方面に向かって徒歩約3分"
                 },
                 {
-                    "Content": "比鄰私立金甌女子高級中學。"
+                    "Content": "私立金甌女子高校の近く"
                 }
             ],
             "Coaches": [
@@ -1958,7 +1998,7 @@
                     "MemberCode": "IN34377928",
                     "Name": "黃伊涵",
                     "NameDesc": "Sabrina",
-                    "JobTitle": "經理",
+                    "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
@@ -2002,7 +2042,7 @@
                     "MemberCode": "UX92868239",
                     "Name": "李玟融",
                     "NameDesc": "Michael",
-                    "JobTitle": "副理",
+                    "JobTitle": "副マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -2043,7 +2083,7 @@
                     "MemberCode": "IK16227216",
                     "Name": "戴悟修",
                     "NameDesc": "Bryant",
-                    "JobTitle": "健康部門經理",
+                    "JobTitle": "ヘッドコーチ",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -2096,7 +2136,7 @@
                     "MemberCode": "HY495202",
                     "Name": "薛皓云",
                     "NameDesc": "Sina",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
@@ -2134,12 +2174,12 @@
                     "MemberCode": "RX14099392",
                     "Name": "洪翎容",
                     "NameDesc": "Tanya",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
                             "NamePosition": "translate(60.09 184.4)",
-                            "JobPosition": "translate(70.4 154.46)",
+                            "JobPosition": "translate(60.4 154.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
                         }                        
@@ -2180,7 +2220,7 @@
                             "Interviews":[
                                 {
                                     "Question":"是什麼原因讓你想要追求成為私人教練？",
-                                    "Answers": "<p>成為教練的契機是來自於阿嬤，我希望可以帶著她在不受傷的狀況下運動。不過，當時我對如何引導她感到困惑，這促使我考慮取得教練證照。我<u>希望不僅能更好地指導她，同時也學到如何提升自己的體能水準</u>。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/tANYA/Voice/q1.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>在成為教練之前，我其實對這份工作不太了解，只是在大學時有去其他健身房上過私人教練的課程。然而，那些經驗後來讓我發現教練這份工作需要一些<u>教學技巧</u>、<u>出色的口才</u>，以及<u>專業知識</u>。 </p>"
+                                    "Answers": "<p>成為教練的契機是來自於阿嬤，我希望可以帶著她在不受傷的狀況下運動。不過，當時我對如何引導她感到困惑，這促使我考慮取得教練證照。我<u>希望不僅能更好地指導她，同時也學到如何提升自己的體能水準</u>。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/tANYA/Voice/q1.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>在成為教練之前，我其實對這份工作不太了解，只是在大學時有去其他健身房上過私人教練課程。然而，那些經驗後來讓我發現教練這份工作需要一些<u>教學技巧</u>、<u>出色的口才</u>，以及<u>專業知識</u>。 </p>"
                                 },
                                 {
                                     "Question":"你認爲工作與職業是否有不同之處？",
@@ -2203,12 +2243,12 @@
                     "MemberCode": "WO29150316",
                     "Name": "陳柏瑋",
                     "NameDesc": "Nick",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(73.61 184.4)",
-                            "JobPosition": "translate(62.52 154.46)",
+                            "NamePosition": "translate(55.52 184.4)",
+                            "JobPosition": "translate(55.52 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -40,
                         }                        
@@ -2241,7 +2281,7 @@
                     "MemberCode": "AN96094341",
                     "Name": "何子丞",
                     "NameDesc": "Kins",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -2286,7 +2326,7 @@
                     "MemberCode": "FF91980536",
                     "Name": "沈建佑",
                     "NameDesc": "Jeffery",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
@@ -2321,11 +2361,11 @@
                     "MemberCode": "WW14600706",
                     "Name": "陳巧珍",
                     "NameDesc": "Taco",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(68.57 184.4)",
+                            "NamePosition": "translate(63.57 184.4)",
                             "JobPosition": "translate(63.57 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -50,
@@ -2365,7 +2405,7 @@
                     "MemberCode": "WF96233308",
                     "Name": "吳浩瑋",
                     "NameDesc": "Howard",
-                    "JobTitle": "私人教練",
+                    "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -2406,12 +2446,12 @@
                     "MemberCode": "MH1035328",
                     "Name": "陳寬毅",
                     "NameDesc": "Kuan",
-                    "JobTitle": "運動恢復教練",
+                    "JobTitle": "セラピスト",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(260.06 183.4)",
-                            "JobPosition": "translate(260.06 153.46)",
+                            "NamePosition": "translate(270.06 183.4)",
+                            "JobPosition": "translate(270.06 153.46)",
                             "ImgXShifting": -105,
                             "ImgYShifting": -40,
                         }                        
@@ -2463,12 +2503,12 @@
                     "MemberCode": "XJ27703577",
                     "Name": "陳芷榆",
                     "NameDesc": "Genie",
-                    "JobTitle": "行政經理",
+                    "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(58.57 184.4)",
-                            "JobPosition": "translate(58.57 154.46)",
+                            "NamePosition": "translate(40.57 184.4)",
+                            "JobPosition": "translate(40.57 154.46)",
                             "ImgXShifting": -110,
                             "ImgYShifting": -50,
                         }                        

@@ -148,22 +148,22 @@
     ],
     "Opening": "Opening·",
     "OpeningDesc": "Jobs",
-    "OpeningItem":[
-        {
-            "JobTitle": "Sports massager",
-            "JobSlogan": "“We need your strength to push for health together.”",
-            "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
-        },
+    "OpeningItem":[        
         {
             "JobTitle": "Personal trainer",
             "JobSlogan": "“You will find great friends and a lifestyle you enjoyed.”",
             "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
         },
         {
-            "JobTitle": "Nutrition consular",
-            "JobSlogan": "“Nutrition is not just about diet and calories, it is also about holistic health.”",
+            "JobTitle": "Sports massager",
+            "JobSlogan": "“We need your strength to push for health together.”",
             "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
-        },
+        },        
+        // {
+        //     "JobTitle": "Nutrition consular",
+        //     "JobSlogan": "“Nutrition is not just about diet and calories, it is also about holistic health.”",
+        //     "Link": "https://www.104.com.tw/company/1a2x6bk27x?jobsource=checkc&fbclid=IwAR0fUKUHzTgOxnUlQxbopGBDF8I_AOTz8rRhsWz_v4V9XlQYhjw2QCbzGyk#info06"
+        // },
     ],
     "Talk":"Talk·",
     "TalkDesc": "人物專訪", 
