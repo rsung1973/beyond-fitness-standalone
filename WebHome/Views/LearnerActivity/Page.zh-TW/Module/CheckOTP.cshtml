@@ -40,8 +40,7 @@
     await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
 
 }
-
-<div class="card" data-card-height="cover" >
+<div class="card" data-card-height="cover">
     <div class="card-center">
         <div class="menu-title text-center">
             <h1 class="text-center mt-4"><i class="fa fa-lock color-beyondwhite-dark fa-4x"></i></h1>
@@ -54,15 +53,15 @@
                 請您開啟E-mail信箱或Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入6位數字
             </p>
             <div class="text-center mb-3 pt-3 pb-2">
-                <h1 class="font-30 font-700 color-beyondred-dark">WU-</h1>
+                <h1 class="font-30 font-700 color-beyondred-dark">@(prefixCode)-</h1>
                 <form action="">
                     <input type="hidden" name="Code" value="@(prefixCode)" />
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="*" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
                 </form>
             </div>
             <a href="#" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
