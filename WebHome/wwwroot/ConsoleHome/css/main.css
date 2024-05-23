@@ -20328,6 +20328,17 @@ section.content {
     color: #fff !important
 }
 
+.bg-red_orange {
+    background-color: #FFC9B5 !important;
+    color: #282828;
+    border-color: #FFC9B5;
+}
+
+.bg-red_orange .content .text,
+.bg-red_orange .content .number {
+    color: #fff !important
+}
+
 .bg-pink {
     background-color: #E91E63 !important;
     color: #fff
@@ -20370,7 +20381,8 @@ section.content {
 
 .bg-tiffany {
     background-color: #6DD0CD !important;
-    color: #fff
+    color: #282828;
+    border-color: #6DD0CD;
 }
 
 .bg-tiffany .content .text,
@@ -20646,6 +20658,10 @@ section.content {
 
 .col-vivid_red {
     color: #c82727 !important
+}
+
+.col-red_orange {
+    color: #FFC9B5 !important
 }
 
 .col-red {
