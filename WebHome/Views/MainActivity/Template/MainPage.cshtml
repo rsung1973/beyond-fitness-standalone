@@ -89,6 +89,7 @@
     <!-- Web Fonts  -->
     <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
         rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap" rel="stylesheet">
     <link
         href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans+TC:wght@100&display=swap"
         rel="stylesheet">
@@ -111,7 +112,7 @@
 	<link rel="stylesheet" href="@Html.Raw($"../styles/theme-elements.css?1.2")" />
 
 	<!-- Skin CSS -->
-	<link id="skinCSS" rel="stylesheet" href="@Html.Raw($"../styles/{lang}/skin-beyond.css?1.0")" />
+	<link id="skinCSS" rel="stylesheet" href="@Html.Raw($"../styles/{lang}/skin-beyond.css?1.1")" />
 
 	<!-- Theme Custom CSS -->
 	<link rel="stylesheet" href="@Html.Raw($"../styles/custom.css?1.2")" />
@@ -276,7 +277,7 @@
                             class="text-5 text-color-secondary fst-italic font-weight-normal d-flex align-items-center justify-content-center justify-content-lg-start justify-content-md-center hidden-sm-down">
                             Links</h4>
                         <div class="row">
-                            <div class="col-6 col-lg-4 col-md-6 col-sm-6 d-flex justify-content-end justify-content-lg-start justify-content-md-end text-end text-lg-start text-md-end">
+                            <div class="col-6 col-lg-auto col-md-6 col-sm-6 d-flex justify-content-end justify-content-lg-start justify-content-md-end text-end text-lg-start text-md-end">
                                 <ul class="list list-icons list-icons-sm ps-0">
                                     <li class="ps-0 text-4"><a
                                             href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/AboutUs"))"

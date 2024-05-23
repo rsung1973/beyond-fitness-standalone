@@ -980,7 +980,7 @@ namespace WebHome.Controllers
             item.EventType = 1;
             if (viewModel.BranchID.HasValue)
             {
-                if ((int)viewModel.BranchID <= (int)Naming.BranchName.東門)
+                if ((int)viewModel.BranchID <= (int)Naming.BranchName.大直)
                 {
                     item.BranchID = (int)viewModel.BranchID;
                     item.Place = null;
