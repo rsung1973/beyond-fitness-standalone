@@ -119,14 +119,20 @@ namespace WebHome.Controllers
                                 : lang == "en"
                                     ? "en-US"
                                     : "ja";
-                        Response.Cookies.Append("cLang", (String)ViewBag.Lang);
-
-                        return null;
                     }
+
+                    Response.Cookies.Append("cLang", (String)ViewBag.Lang);
+                    return null;
+
                 }
             }
             else
             {
+                if (ViewBag.Lang != null)
+                {
+                    return null;
+                }
+
                 lang = "tw";
                 //lang = Request.Headers.AcceptLanguage.Contains("zh")
                 //                    ? "tw"

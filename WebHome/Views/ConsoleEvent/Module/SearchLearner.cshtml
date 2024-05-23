@@ -25,16 +25,19 @@
     TempData["PartialCount"] = partialCount;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+
+    String field = ViewBag.SearchField ?? "UserName";
 }
-<input type="text" id="@(_viewID)" class="form-control" name="userName" placeholder="搜尋學生..." />
+<input type="text" id="@(_viewID)" class="form-control" name="@(field)" placeholder="搜尋學生..." />
 <span class="input-group-addon cursor" onclick="var e = jQuery.Event('keypress');e.which = 13;e.keyCode = 13;$('#@(_viewID)').trigger(e);">
     <i class="zmdi zmdi-search"></i>
     <script>
         $(function () {
             $('#@(_viewID)').keypress(function (event) {
                 var event = event || window.event;
-                var userName = $(event.target).val();
+                $global.$inputTarget = $(event.target);
+                var userName = $global.$inputTarget.val();
                 var keycode = (event.keyCode ? event.keyCode : event.which);
                 if (keycode == '13') {
                     searchLearner(userName);

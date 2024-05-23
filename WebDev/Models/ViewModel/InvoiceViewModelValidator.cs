@@ -282,7 +282,31 @@ namespace WebHome.Models.ViewModel
                     return null;
                 }
             }
+            else if (_invItem.CarrierType == "3J0001")
+            {
+                if (_invItem.CarrierId1 != null)
+                {
+                    _carrier = new InvoiceCarrier
+                    {
+                        CarrierType = _invItem.CarrierType,
+                        CarrierNo = _invItem.CarrierId1,
+                        CarrierNo2 = _invItem.CarrierId1
+                    };
 
+                    return null;
+                }
+                else if (_invItem.CarrierId2 != null)
+                {
+                    _carrier = new InvoiceCarrier
+                    {
+                        CarrierType = _invItem.CarrierType,
+                        CarrierNo = _invItem.CarrierId2,
+                        CarrierNo2 = _invItem.CarrierId2
+                    };
+
+                    return null;
+                }
+            }
             return new InvoiceException("載具號碼、類別不符合共通性載具") { RequestName = "CarrierId1" };
         }
 

@@ -558,7 +558,9 @@ namespace WebHome.Models.DataEntity
                             ? item.ContractPayment.CourseContract.CourseContractType.IsGroup == true
                                 ? String.Join("/", item.ContractPayment.CourseContract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
                                 : item.ContractPayment.CourseContract.ContractOwner.FullName()
-                            : item.PaymentTransaction.PaymentContractTermination?.CourseContractTermination.CourseContractRevision.CourseContract.ContractOwner.FullName() ?? insteadOfNull;
+                            : item.PaymentTransaction.PaymentContractTermination!=null
+                                ? item.PaymentTransaction.PaymentContractTermination.CourseContractTermination.CourseContractRevision.CourseContract.ContractOwner.FullName() 
+                                : item.PaymentTransaction.UserProfile?.FullName() ?? insteadOfNull;
         }
 
         public static UserProfile Payer(this Payment item)

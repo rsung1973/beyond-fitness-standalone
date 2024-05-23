@@ -78,63 +78,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Models\MIG3_1\C0401.cs">
-      <DependentUpon>C0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\C0501.cs">
-      <DependentUpon>C0501.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\C0701.cs">
-      <DependentUpon>C0701.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\D0401.cs">
-      <DependentUpon>D0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\D0501.cs">
-      <DependentUpon>D0501.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0401.cs">
-      <DependentUpon>E0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0402.cs">
-      <DependentUpon>E0402.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0501.cs">
-      <DependentUpon>E0501.xsd</DependentUpon>
-    </Compile>
     <Compile Update="Models\Schemas\SiteMap\sitemap.cs">
       <DependentUpon>sitemap.xsd</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Models\MIG3_1\C0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\C0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\C0701.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\D0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\D0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0402.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\GenericType_3.1.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Update="Models\Schemas\SiteMap\sitemap.xsd">
       <SubType>Designer</SubType>
     </None>

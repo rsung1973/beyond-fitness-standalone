@@ -52,58 +52,9 @@
     </div>
 </div>
 <div class="row clearfix m-t-20">
-    @if (!_viewModel.SellerID.HasValue)
-    {
-        <div class="col-12">
-            <select class="form-control show-tick" name="SellerID">
-                <option value="">-- 請選擇收款場地 --</option>
-                @{
-                    ViewBag.DataItems = models.PromptRealStore();
-                    await Html.RenderPartialAsync("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);
-                }
-            </select>
-            @*<label class="material-icons help-error-text" for="BranchID">clear 請選擇收款場地</label>*@
-        </div>
+    @{ 
+        await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/Payoff.cshtml");
     }
-    <div class="col-12">
-        <select class="form-control show-tick" name="PaymentType">
-            <option value="">-- 請選擇收款方式 --</option>
-            <option value="現金">現金</option>
-            <option value="刷卡">刷卡</option>
-            <option value="轉帳">轉帳</option>
-        </select>
-    </div>
-    <div class="col-12">
-        <div class="input-group">
-            <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
-            <span class="input-group-addon">
-                <i class="zmdi zmdi-text-format"></i>
-            </span>
-        </div>
-    </div>
-
-
-</div>
-<div class="row clearfix m-t-20">
-    <div class="col-lg-12 col-md-12 col-sm-12 eInvoice-dialog">
-        <div class="input-group">
-            <input type="text" class="form-control col-red" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
-            <span class="input-group-addon">
-                <i class="zmdi zmdi-money-box"></i>
-            </span>
-        </div>
-    </div>
-    @*<div class="col-lg-4 col-md-4 col-sm-12">
-        <label class="fancy-checkbox custom-bgcolor-green">
-            <input type="checkbox">
-            <span class="col-green">加入預設</span>
-        </label>
-    </div>*@
-    <div class="col-12 eInvoice-dialog">
-        <dv>
-            <input type="hidden" name="errorMessage" />
-        </dv>
-    </div>
 </div>
 <div class="row clearfix m-t-20">
     <div class="col-12">

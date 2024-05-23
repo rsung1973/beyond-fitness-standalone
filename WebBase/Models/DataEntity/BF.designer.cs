@@ -301,9 +301,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertInvoiceAmountType(InvoiceAmountType instance);
     partial void UpdateInvoiceAmountType(InvoiceAmountType instance);
     partial void DeleteInvoiceAmountType(InvoiceAmountType instance);
-    partial void InsertPaymentTransaction(PaymentTransaction instance);
-    partial void UpdatePaymentTransaction(PaymentTransaction instance);
-    partial void DeletePaymentTransaction(PaymentTransaction instance);
     partial void InsertMerchandiseTransaction(MerchandiseTransaction instance);
     partial void UpdateMerchandiseTransaction(MerchandiseTransaction instance);
     partial void DeleteMerchandiseTransaction(MerchandiseTransaction instance);
@@ -697,6 +694,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertBlogCategoryLocale(BlogCategoryLocale instance);
     partial void UpdateBlogCategoryLocale(BlogCategoryLocale instance);
     partial void DeleteBlogCategoryLocale(BlogCategoryLocale instance);
+    partial void InsertPaymentTransaction(PaymentTransaction instance);
+    partial void UpdatePaymentTransaction(PaymentTransaction instance);
+    partial void DeletePaymentTransaction(PaymentTransaction instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -1448,14 +1448,6 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<InvoiceAmountType>();
-			}
-		}
-		
-		public System.Data.Linq.Table<PaymentTransaction> PaymentTransaction
-		{
-			get
-			{
-				return this.GetTable<PaymentTransaction>();
 			}
 		}
 		
@@ -2592,6 +2584,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<BlogCategoryLocale>();
+			}
+		}
+		
+		public System.Data.Linq.Table<PaymentTransaction> PaymentTransaction
+		{
+			get
+			{
+				return this.GetTable<PaymentTransaction>();
 			}
 		}
 		
@@ -6209,6 +6209,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<ForEmployee> _ForEmployee;
 		
+		private EntitySet<PaymentTransaction> _PaymentTransaction;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -7981,6 +7983,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_PaymentTransaction", Storage="_PaymentTransaction", ThisKey="UID", OtherKey="PayerID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=82, EmitDefaultValue=false)]
+		public EntitySet<PaymentTransaction> PaymentTransaction
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentTransaction.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PaymentTransaction;
+			}
+			set
+			{
+				this._PaymentTransaction.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -8773,6 +8794,18 @@ namespace WebHome.Models.DataEntity
 			entity.UserProfile = null;
 		}
 		
+		private void attach_PaymentTransaction(PaymentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_PaymentTransaction(PaymentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
 		private void Initialize()
 		{
 			this._UserRole = new EntitySet<UserRole>(new Action<UserRole>(this.attach_UserRole), new Action<UserRole>(this.detach_UserRole));
@@ -8835,6 +8868,7 @@ namespace WebHome.Models.DataEntity
 			this._TrialLearner = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner), new Action<TrialLearner>(this.detach_TrialLearner));
 			this._TrialLearner1 = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner1), new Action<TrialLearner>(this.detach_TrialLearner1));
 			this._ForEmployee = new EntitySet<ForEmployee>(new Action<ForEmployee>(this.attach_ForEmployee), new Action<ForEmployee>(this.detach_ForEmployee));
+			this._PaymentTransaction = new EntitySet<PaymentTransaction>(new Action<PaymentTransaction>(this.attach_PaymentTransaction), new Action<PaymentTransaction>(this.detach_PaymentTransaction));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -27756,8 +27790,6 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<LessonPriceType> _LessonPriceType;
 		
-		private EntitySet<PaymentTransaction> _PaymentTransaction;
-		
 		private EntitySet<EnterpriseCourseContract> _EnterpriseCourseContract;
 		
 		private EntitySet<LessonTime> _LessonTime;
@@ -27791,6 +27823,8 @@ namespace WebHome.Models.DataEntity
 		private EntitySet<CourseContractExtension> _CourseContractExtension1;
 		
 		private EntitySet<TrialLearner> _TrialLearner;
+		
+		private EntitySet<PaymentTransaction> _PaymentTransaction;
 		
 		private EntityRef<UserProfile> _Manager;
 		
@@ -28064,27 +28098,8 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_PaymentTransaction", Storage="_PaymentTransaction", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
-		public EntitySet<PaymentTransaction> PaymentTransaction
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._PaymentTransaction.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._PaymentTransaction;
-			}
-			set
-			{
-				this._PaymentTransaction.Assign(value);
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_EnterpriseCourseContract", Storage="_EnterpriseCourseContract", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
 		public EntitySet<EnterpriseCourseContract> EnterpriseCourseContract
 		{
 			get
@@ -28103,7 +28118,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_LessonTime", Storage="_LessonTime", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
 		public EntitySet<LessonTime> LessonTime
 		{
 			get
@@ -28122,7 +28137,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_UserEvent", Storage="_UserEvent", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
 		public EntitySet<UserEvent> UserEvent
 		{
 			get
@@ -28141,7 +28156,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CourseContractRevisionItem", Storage="_CourseContractRevisionItem", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
 		public EntitySet<CourseContractRevisionItem> CourseContractRevisionItem
 		{
 			get
@@ -28160,7 +28175,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CoachBranchMonthlyBonus", Storage="_CoachBranchMonthlyBonus", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16, EmitDefaultValue=false)]
 		public EntitySet<CoachBranchMonthlyBonus> CoachBranchMonthlyBonus
 		{
 			get
@@ -28179,7 +28194,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_LessonTimeSettlement", Storage="_LessonTimeSettlements", ThisKey="BranchID", OtherKey="CoachWorkPlace")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17, EmitDefaultValue=false)]
 		public EntitySet<LessonTimeSettlement> LessonTimeSettlements
 		{
 			get
@@ -28198,7 +28213,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_TuitionAchievement", Storage="_TuitionAchievement", ThisKey="BranchID", OtherKey="CoachWorkPlace")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18, EmitDefaultValue=false)]
 		public EntitySet<TuitionAchievement> TuitionAchievement
 		{
 			get
@@ -28217,7 +28232,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchRevenueIndicator", Storage="_MonthlyBranchRevenueIndicator", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=20, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19, EmitDefaultValue=false)]
 		public EntitySet<MonthlyBranchRevenueIndicator> MonthlyBranchRevenueIndicator
 		{
 			get
@@ -28236,7 +28251,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyBranchIndicator", Storage="_MonthlyBranchIndicator", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=21, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=20, EmitDefaultValue=false)]
 		public EntitySet<MonthlyBranchIndicator> MonthlyBranchIndicator
 		{
 			get
@@ -28255,7 +28270,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_MonthlyCoachRevenueIndicator", Storage="_MonthlyCoachRevenueIndicator", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=22, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=21, EmitDefaultValue=false)]
 		public EntitySet<MonthlyCoachRevenueIndicator> MonthlyCoachRevenueIndicator
 		{
 			get
@@ -28274,7 +28289,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_ObjectiveLessonLocation", Storage="_ObjectiveLessonLocation", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=23, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=22, EmitDefaultValue=false)]
 		public EntitySet<ObjectiveLessonLocation> ObjectiveLessonLocation
 		{
 			get
@@ -28293,7 +28308,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_BranchMonthlySummary", Storage="_BranchMonthlySummary", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=23, EmitDefaultValue=false)]
 		public EntitySet<BranchMonthlySummary> BranchMonthlySummary
 		{
 			get
@@ -28312,7 +28327,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CoachYearlyAdditionalPay", Storage="_CoachYearlyAdditionalPay", ThisKey="BranchID", OtherKey="WorkPlace")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=25, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24, EmitDefaultValue=false)]
 		public EntitySet<CoachYearlyAdditionalPay> CoachYearlyAdditionalPay
 		{
 			get
@@ -28331,7 +28346,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CoachMonthlySalary", Storage="_CoachMonthlySalary", ThisKey="BranchID", OtherKey="WorkPlace")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=25, EmitDefaultValue=false)]
 		public EntitySet<CoachMonthlySalary> CoachMonthlySalary
 		{
 			get
@@ -28350,7 +28365,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CourseContractExtension", Storage="_CourseContractExtension", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26, EmitDefaultValue=false)]
 		public EntitySet<CourseContractExtension> CourseContractExtension
 		{
 			get
@@ -28369,7 +28384,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_CourseContractExtension1", Storage="_CourseContractExtension1", ThisKey="BranchID", OtherKey="CoursePlace")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=28, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27, EmitDefaultValue=false)]
 		public EntitySet<CourseContractExtension> CourseContractExtension1
 		{
 			get
@@ -28388,7 +28403,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_TrialLearner", Storage="_TrialLearner", ThisKey="BranchID", OtherKey="BranchID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=28, EmitDefaultValue=false)]
 		public EntitySet<TrialLearner> TrialLearner
 		{
 			get
@@ -28403,6 +28418,25 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._TrialLearner.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_PaymentTransaction", Storage="_PaymentTransaction", ThisKey="BranchID", OtherKey="BranchID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29, EmitDefaultValue=false)]
+		public EntitySet<PaymentTransaction> PaymentTransaction
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentTransaction.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PaymentTransaction;
+			}
+			set
+			{
+				this._PaymentTransaction.Assign(value);
 			}
 		}
 		
@@ -28559,18 +28593,6 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		private void detach_LessonPriceType(LessonPriceType entity)
-		{
-			this.SendPropertyChanging();
-			entity.BranchStore = null;
-		}
-		
-		private void attach_PaymentTransaction(PaymentTransaction entity)
-		{
-			this.SendPropertyChanging();
-			entity.BranchStore = this;
-		}
-		
-		private void detach_PaymentTransaction(PaymentTransaction entity)
 		{
 			this.SendPropertyChanging();
 			entity.BranchStore = null;
@@ -28780,12 +28802,23 @@ namespace WebHome.Models.DataEntity
 			entity.BranchStore = null;
 		}
 		
+		private void attach_PaymentTransaction(PaymentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_PaymentTransaction(PaymentTransaction entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
 		private void Initialize()
 		{
 			this._RegisterLesson = new EntitySet<RegisterLesson>(new Action<RegisterLesson>(this.attach_RegisterLesson), new Action<RegisterLesson>(this.detach_RegisterLesson));
 			this._CoachWorkplace = new EntitySet<CoachWorkplace>(new Action<CoachWorkplace>(this.attach_CoachWorkplace), new Action<CoachWorkplace>(this.detach_CoachWorkplace));
 			this._LessonPriceType = new EntitySet<LessonPriceType>(new Action<LessonPriceType>(this.attach_LessonPriceType), new Action<LessonPriceType>(this.detach_LessonPriceType));
-			this._PaymentTransaction = new EntitySet<PaymentTransaction>(new Action<PaymentTransaction>(this.attach_PaymentTransaction), new Action<PaymentTransaction>(this.detach_PaymentTransaction));
 			this._EnterpriseCourseContract = new EntitySet<EnterpriseCourseContract>(new Action<EnterpriseCourseContract>(this.attach_EnterpriseCourseContract), new Action<EnterpriseCourseContract>(this.detach_EnterpriseCourseContract));
 			this._LessonTime = new EntitySet<LessonTime>(new Action<LessonTime>(this.attach_LessonTime), new Action<LessonTime>(this.detach_LessonTime));
 			this._UserEvent = new EntitySet<UserEvent>(new Action<UserEvent>(this.attach_UserEvent), new Action<UserEvent>(this.detach_UserEvent));
@@ -28803,6 +28836,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractExtension = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension), new Action<CourseContractExtension>(this.detach_CourseContractExtension));
 			this._CourseContractExtension1 = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension1), new Action<CourseContractExtension>(this.detach_CourseContractExtension1));
 			this._TrialLearner = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner), new Action<TrialLearner>(this.detach_TrialLearner));
+			this._PaymentTransaction = new EntitySet<PaymentTransaction>(new Action<PaymentTransaction>(this.attach_PaymentTransaction), new Action<PaymentTransaction>(this.detach_PaymentTransaction));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -37565,311 +37599,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentTransaction")]
-	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class PaymentTransaction : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PaymentID;
-		
-		private int _BranchID;
-		
-		private EntitySet<PaymentOrder> _PaymentOrder;
-		
-		private EntitySet<PaymentOnLine> _PaymentOnLine;
-		
-		private EntityRef<PaymentContractTermination> _PaymentContractTermination;
-		
-		private EntityRef<BranchStore> _BranchStore;
-		
-		private EntityRef<Payment> _Payment;
-		
-		private bool serializing;
-		
-    #region 擴充性方法定義
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPaymentIDChanging(int value);
-    partial void OnPaymentIDChanged();
-    partial void OnBranchIDChanging(int value);
-    partial void OnBranchIDChanged();
-    #endregion
-		
-		public PaymentTransaction()
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int PaymentID
-		{
-			get
-			{
-				return this._PaymentID;
-			}
-			set
-			{
-				if ((this._PaymentID != value))
-				{
-					if (this._Payment.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnPaymentIDChanging(value);
-					this.SendPropertyChanging();
-					this._PaymentID = value;
-					this.SendPropertyChanged("PaymentID");
-					this.OnPaymentIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public int BranchID
-		{
-			get
-			{
-				return this._BranchID;
-			}
-			set
-			{
-				if ((this._BranchID != value))
-				{
-					if (this._BranchStore.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnBranchIDChanging(value);
-					this.SendPropertyChanging();
-					this._BranchID = value;
-					this.SendPropertyChanged("BranchID");
-					this.OnBranchIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOrder", Storage="_PaymentOrder", ThisKey="PaymentID", OtherKey="PaymentID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3, EmitDefaultValue=false)]
-		public EntitySet<PaymentOrder> PaymentOrder
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._PaymentOrder.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._PaymentOrder;
-			}
-			set
-			{
-				this._PaymentOrder.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOnLine", Storage="_PaymentOnLine", ThisKey="PaymentID", OtherKey="PaymentID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
-		public EntitySet<PaymentOnLine> PaymentOnLine
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._PaymentOnLine.HasLoadedOrAssignedValues == false)))
-				{
-					return null;
-				}
-				return this._PaymentOnLine;
-			}
-			set
-			{
-				this._PaymentOnLine.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentContractTermination", Storage="_PaymentContractTermination", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
-		public PaymentContractTermination PaymentContractTermination
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._PaymentContractTermination.HasLoadedOrAssignedValue == false)))
-				{
-					return null;
-				}
-				return this._PaymentContractTermination.Entity;
-			}
-			set
-			{
-				PaymentContractTermination previousValue = this._PaymentContractTermination.Entity;
-				if (((previousValue != value) 
-							|| (this._PaymentContractTermination.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PaymentContractTermination.Entity = null;
-						previousValue.PaymentTransaction = null;
-					}
-					this._PaymentContractTermination.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentTransaction = this;
-					}
-					this.SendPropertyChanged("PaymentContractTermination");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_PaymentTransaction", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
-		public BranchStore BranchStore
-		{
-			get
-			{
-				return this._BranchStore.Entity;
-			}
-			set
-			{
-				BranchStore previousValue = this._BranchStore.Entity;
-				if (((previousValue != value) 
-							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._BranchStore.Entity = null;
-						previousValue.PaymentTransaction.Remove(this);
-					}
-					this._BranchStore.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentTransaction.Add(this);
-						this._BranchID = value.BranchID;
-					}
-					else
-					{
-						this._BranchID = default(int);
-					}
-					this.SendPropertyChanged("BranchStore");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_PaymentTransaction", Storage="_Payment", ThisKey="PaymentID", OtherKey="PaymentID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public Payment Payment
-		{
-			get
-			{
-				return this._Payment.Entity;
-			}
-			set
-			{
-				Payment previousValue = this._Payment.Entity;
-				if (((previousValue != value) 
-							|| (this._Payment.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Payment.Entity = null;
-						previousValue.PaymentTransaction = null;
-					}
-					this._Payment.Entity = value;
-					if ((value != null))
-					{
-						value.PaymentTransaction = this;
-						this._PaymentID = value.PaymentID;
-					}
-					else
-					{
-						this._PaymentID = default(int);
-					}
-					this.SendPropertyChanged("Payment");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_PaymentOrder(PaymentOrder entity)
-		{
-			this.SendPropertyChanging();
-			entity.PaymentTransaction = this;
-		}
-		
-		private void detach_PaymentOrder(PaymentOrder entity)
-		{
-			this.SendPropertyChanging();
-			entity.PaymentTransaction = null;
-		}
-		
-		private void attach_PaymentOnLine(PaymentOnLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.PaymentTransaction = this;
-		}
-		
-		private void detach_PaymentOnLine(PaymentOnLine entity)
-		{
-			this.SendPropertyChanging();
-			entity.PaymentTransaction = null;
-		}
-		
-		private void Initialize()
-		{
-			this._PaymentOrder = new EntitySet<PaymentOrder>(new Action<PaymentOrder>(this.attach_PaymentOrder), new Action<PaymentOrder>(this.detach_PaymentOrder));
-			this._PaymentOnLine = new EntitySet<PaymentOnLine>(new Action<PaymentOnLine>(this.attach_PaymentOnLine), new Action<PaymentOnLine>(this.detach_PaymentOnLine));
-			this._PaymentContractTermination = default(EntityRef<PaymentContractTermination>);
-			this._BranchStore = default(EntityRef<BranchStore>);
-			this._Payment = default(EntityRef<Payment>);
-			OnCreated();
-		}
-		
-		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerializing(StreamingContext context)
-		{
-			this.serializing = true;
-		}
-		
-		[global::System.Runtime.Serialization.OnSerializedAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnSerialized(StreamingContext context)
-		{
-			this.serializing = false;
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.MerchandiseTransaction")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class MerchandiseTransaction : INotifyPropertyChanging, INotifyPropertyChanged
@@ -38543,7 +38272,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOrder", Storage="_PaymentTransaction", ThisKey="PaymentID", OtherKey="PaymentID", IsForeignKey=true)]
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOrder", Storage="_PaymentTransaction", ThisKey="PaymentID", OtherKey="PaymentID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
 		public PaymentTransaction PaymentTransaction
 		{
 			get
@@ -46435,8 +46164,6 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<TuitionInstallment> _TuitionInstallment;
 		
-		private EntityRef<PaymentTransaction> _PaymentTransaction;
-		
 		private EntityRef<PaymentAudit> _PaymentAudit;
 		
 		private EntityRef<VoidPayment> _VoidPayment;
@@ -46446,6 +46173,8 @@ namespace WebHome.Models.DataEntity
 		private EntitySet<ContractTrustTrack> _ContractTrustTrack;
 		
 		private EntitySet<TuitionAchievement> _TuitionAchievement;
+		
+		private EntityRef<PaymentTransaction> _PaymentTransaction;
 		
 		private EntityRef<InvoiceAllowance> _InvoiceAllowance;
 		
@@ -46807,43 +46536,8 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_PaymentTransaction", Storage="_PaymentTransaction", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
-		public PaymentTransaction PaymentTransaction
-		{
-			get
-			{
-				if ((this.serializing 
-							&& (this._PaymentTransaction.HasLoadedOrAssignedValue == false)))
-				{
-					return null;
-				}
-				return this._PaymentTransaction.Entity;
-			}
-			set
-			{
-				PaymentTransaction previousValue = this._PaymentTransaction.Entity;
-				if (((previousValue != value) 
-							|| (this._PaymentTransaction.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._PaymentTransaction.Entity = null;
-						previousValue.Payment = null;
-					}
-					this._PaymentTransaction.Entity = value;
-					if ((value != null))
-					{
-						value.Payment = this;
-					}
-					this.SendPropertyChanged("PaymentTransaction");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_PaymentAudit", Storage="_PaymentAudit", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=14, EmitDefaultValue=false)]
 		public PaymentAudit PaymentAudit
 		{
 			get
@@ -46878,7 +46572,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_VoidPayment", Storage="_VoidPayment", ThisKey="PaymentID", OtherKey="VoidID", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15, EmitDefaultValue=false)]
 		public VoidPayment VoidPayment
 		{
 			get
@@ -46913,7 +46607,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_EnterpriseCoursePayment", Storage="_EnterpriseCoursePayment", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=16, EmitDefaultValue=false)]
 		public EnterpriseCoursePayment EnterpriseCoursePayment
 		{
 			get
@@ -46948,7 +46642,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_ContractTrustTrack", Storage="_ContractTrustTrack", ThisKey="PaymentID", OtherKey="PaymentID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=17, EmitDefaultValue=false)]
 		public EntitySet<ContractTrustTrack> ContractTrustTrack
 		{
 			get
@@ -46967,7 +46661,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_TuitionAchievement", Storage="_TuitionAchievement", ThisKey="PaymentID", OtherKey="InstallmentID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=18, EmitDefaultValue=false)]
 		public EntitySet<TuitionAchievement> TuitionAchievement
 		{
 			get
@@ -46982,6 +46676,41 @@ namespace WebHome.Models.DataEntity
 			set
 			{
 				this._TuitionAchievement.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_PaymentTransaction", Storage="_PaymentTransaction", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=19, EmitDefaultValue=false)]
+		public PaymentTransaction PaymentTransaction
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentTransaction.HasLoadedOrAssignedValue == false)))
+				{
+					return null;
+				}
+				return this._PaymentTransaction.Entity;
+			}
+			set
+			{
+				PaymentTransaction previousValue = this._PaymentTransaction.Entity;
+				if (((previousValue != value) 
+							|| (this._PaymentTransaction.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PaymentTransaction.Entity = null;
+						previousValue.Payment = null;
+					}
+					this._PaymentTransaction.Entity = value;
+					if ((value != null))
+					{
+						value.Payment = this;
+					}
+					this.SendPropertyChanged("PaymentTransaction");
+				}
 			}
 		}
 		
@@ -47169,12 +46898,12 @@ namespace WebHome.Models.DataEntity
 		{
 			this._ContractPayment = default(EntityRef<ContractPayment>);
 			this._TuitionInstallment = default(EntityRef<TuitionInstallment>);
-			this._PaymentTransaction = default(EntityRef<PaymentTransaction>);
 			this._PaymentAudit = default(EntityRef<PaymentAudit>);
 			this._VoidPayment = default(EntityRef<VoidPayment>);
 			this._EnterpriseCoursePayment = default(EntityRef<EnterpriseCoursePayment>);
 			this._ContractTrustTrack = new EntitySet<ContractTrustTrack>(new Action<ContractTrustTrack>(this.attach_ContractTrustTrack), new Action<ContractTrustTrack>(this.detach_ContractTrustTrack));
 			this._TuitionAchievement = new EntitySet<TuitionAchievement>(new Action<TuitionAchievement>(this.attach_TuitionAchievement), new Action<TuitionAchievement>(this.detach_TuitionAchievement));
+			this._PaymentTransaction = default(EntityRef<PaymentTransaction>);
 			this._InvoiceAllowance = default(EntityRef<InvoiceAllowance>);
 			this._InvoiceItem = default(EntityRef<InvoiceItem>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
@@ -79937,6 +79666,377 @@ namespace WebHome.Models.DataEntity
 		public void OnDeserializing(StreamingContext context)
 		{
 			this.Initialize();
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.PaymentTransaction")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class PaymentTransaction : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PaymentID;
+		
+		private int _BranchID;
+		
+		private System.Nullable<int> _PayerID;
+		
+		private EntitySet<PaymentOrder> _PaymentOrder;
+		
+		private EntitySet<PaymentOnLine> _PaymentOnLine;
+		
+		private EntityRef<PaymentContractTermination> _PaymentContractTermination;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<Payment> _Payment;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+		private bool serializing;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPaymentIDChanging(int value);
+    partial void OnPaymentIDChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    partial void OnPayerIDChanging(System.Nullable<int> value);
+    partial void OnPayerIDChanged();
+    #endregion
+		
+		public PaymentTransaction()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PaymentID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int PaymentID
+		{
+			get
+			{
+				return this._PaymentID;
+			}
+			set
+			{
+				if ((this._PaymentID != value))
+				{
+					if (this._Payment.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPaymentIDChanging(value);
+					this.SendPropertyChanging();
+					this._PaymentID = value;
+					this.SendPropertyChanged("PaymentID");
+					this.OnPaymentIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PayerID", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public System.Nullable<int> PayerID
+		{
+			get
+			{
+				return this._PayerID;
+			}
+			set
+			{
+				if ((this._PayerID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPayerIDChanging(value);
+					this.SendPropertyChanging();
+					this._PayerID = value;
+					this.SendPropertyChanged("PayerID");
+					this.OnPayerIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOrder", Storage="_PaymentOrder", ThisKey="PaymentID", OtherKey="PaymentID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
+		public EntitySet<PaymentOrder> PaymentOrder
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentOrder.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PaymentOrder;
+			}
+			set
+			{
+				this._PaymentOrder.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentOnLine", Storage="_PaymentOnLine", ThisKey="PaymentID", OtherKey="PaymentID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
+		public EntitySet<PaymentOnLine> PaymentOnLine
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentOnLine.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._PaymentOnLine;
+			}
+			set
+			{
+				this._PaymentOnLine.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PaymentTransaction_PaymentContractTermination", Storage="_PaymentContractTermination", ThisKey="PaymentID", OtherKey="PaymentID", IsUnique=true, IsForeignKey=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
+		public PaymentContractTermination PaymentContractTermination
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._PaymentContractTermination.HasLoadedOrAssignedValue == false)))
+				{
+					return null;
+				}
+				return this._PaymentContractTermination.Entity;
+			}
+			set
+			{
+				PaymentContractTermination previousValue = this._PaymentContractTermination.Entity;
+				if (((previousValue != value) 
+							|| (this._PaymentContractTermination.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._PaymentContractTermination.Entity = null;
+						previousValue.PaymentTransaction = null;
+					}
+					this._PaymentContractTermination.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentTransaction = this;
+					}
+					this.SendPropertyChanged("PaymentContractTermination");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_PaymentTransaction", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.PaymentTransaction.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentTransaction.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Payment_PaymentTransaction", Storage="_Payment", ThisKey="PaymentID", OtherKey="PaymentID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public Payment Payment
+		{
+			get
+			{
+				return this._Payment.Entity;
+			}
+			set
+			{
+				Payment previousValue = this._Payment.Entity;
+				if (((previousValue != value) 
+							|| (this._Payment.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Payment.Entity = null;
+						previousValue.PaymentTransaction = null;
+					}
+					this._Payment.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentTransaction = this;
+						this._PaymentID = value.PaymentID;
+					}
+					else
+					{
+						this._PaymentID = default(int);
+					}
+					this.SendPropertyChanged("Payment");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_PaymentTransaction", Storage="_UserProfile", ThisKey="PayerID", OtherKey="UID", IsForeignKey=true)]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.PaymentTransaction.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.PaymentTransaction.Add(this);
+						this._PayerID = value.UID;
+					}
+					else
+					{
+						this._PayerID = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_PaymentOrder(PaymentOrder entity)
+		{
+			this.SendPropertyChanging();
+			entity.PaymentTransaction = this;
+		}
+		
+		private void detach_PaymentOrder(PaymentOrder entity)
+		{
+			this.SendPropertyChanging();
+			entity.PaymentTransaction = null;
+		}
+		
+		private void attach_PaymentOnLine(PaymentOnLine entity)
+		{
+			this.SendPropertyChanging();
+			entity.PaymentTransaction = this;
+		}
+		
+		private void detach_PaymentOnLine(PaymentOnLine entity)
+		{
+			this.SendPropertyChanging();
+			entity.PaymentTransaction = null;
+		}
+		
+		private void Initialize()
+		{
+			this._PaymentOrder = new EntitySet<PaymentOrder>(new Action<PaymentOrder>(this.attach_PaymentOrder), new Action<PaymentOrder>(this.detach_PaymentOrder));
+			this._PaymentOnLine = new EntitySet<PaymentOnLine>(new Action<PaymentOnLine>(this.attach_PaymentOnLine), new Action<PaymentOnLine>(this.detach_PaymentOnLine));
+			this._PaymentContractTermination = default(EntityRef<PaymentContractTermination>);
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._Payment = default(EntityRef<Payment>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerializing(StreamingContext context)
+		{
+			this.serializing = true;
+		}
+		
+		[global::System.Runtime.Serialization.OnSerializedAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnSerialized(StreamingContext context)
+		{
+			this.serializing = false;
 		}
 	}
 	

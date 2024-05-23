@@ -1492,7 +1492,7 @@ namespace WebHome.Helper
             }
             catch (Exception ex)
             {
-                ApplicationLogging.CreateLogger<LessonsController>().LogError(ex, ex.Message);
+                ApplicationLogging.CreateLogger<LearnerProfileBaseController>().LogError(ex, ex.Message);
                 ModelState.AddModelError("Message", "預約未完成，請重新預約!!");
                 return null;
             }
@@ -1641,7 +1641,7 @@ namespace WebHome.Helper
             }
             catch (Exception ex)
             {
-                ApplicationLogging.CreateLogger<LessonsController>().LogError(ex, ex.Message);
+                ApplicationLogging.CreateLogger<LearnerProfileBaseController>().LogError(ex, ex.Message);
                 ModelState.AddModelError("Message", "預約未完成，請重新預約!!");
                 return null;
             }

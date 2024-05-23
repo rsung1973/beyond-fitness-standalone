@@ -43,11 +43,20 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace WebHome.Controllers
 {
+    [Authorize]
     public class LearnerActivityController : ActivityBaseController
     {
         public LearnerActivityController(IServiceProvider serviceProvider) : base(serviceProvider)
         {
 
+        }
+
+        // GET: MainActivity
+        [Authorize]
+        public ActionResult Main()
+        {
+            ViewEngineResult viewResult = CheckView("Index");
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
         }
 
         [HttpPost]

@@ -233,6 +233,13 @@ namespace WebHome.Models.ViewModel
         public bool? InvoiceNow { get; set; }
         public int?[] ProductItemID { get; set; }
         public bool? MyCarrier { get; set; }
+        [JsonIgnore]
+        public int? PayerID { get; set; }
+        public String EncPayerID
+        {
+            get => PayerID.HasValue ? PayerID.Value.EncryptKey() : null;
+            set => PayerID = (value != null ? value.DecryptKeyValue() : (int?)null);
+        }
     }
 
     public class PaymentQueryViewModel : PaymentViewModel

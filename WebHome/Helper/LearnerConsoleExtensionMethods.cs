@@ -39,23 +39,6 @@ namespace WebHome.Helper
             return items;
         }
 
-
-        public static IQueryable<UserProfile> PromptUserProfileByName(this String userName, GenericManager<BFDataContext> models, IQueryable<UserProfile> items = null)
-                
-        {
-            if (items == null)
-            {
-                items = models.GetTable<UserProfile>();
-            }
-
-            return items
-                    .Where(l => l.UserProfileExtension != null)
-                    .Where(l => l.RealName.Contains(userName)
-                        || l.Nickname.Contains(userName)
-                        || l.Phone == userName);
-
-        }
-
         public static String PreparePreivew(this Models.DataEntity.Attachment item, String previewStore)
         {
             if (item != null)

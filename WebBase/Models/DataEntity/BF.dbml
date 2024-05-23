@@ -214,6 +214,7 @@
       <Association Name="UserProfile_TrialLearner" Member="TrialLearner" ThisKey="UID" OtherKey="NormalUID" Type="TrialLearner" />
       <Association Name="UserProfile_TrialLearner1" Member="DealedTrial" Storage="_TrialLearner1" ThisKey="UID" OtherKey="AssigneeID" Type="TrialLearner" />
       <Association Name="UserProfile_ForEmployee" Member="ForEmployee" ThisKey="UID" OtherKey="UID" Type="ForEmployee" />
+      <Association Name="UserProfile_PaymentTransaction" Member="PaymentTransaction" ThisKey="UID" OtherKey="PayerID" Type="PaymentTransaction" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -967,7 +968,6 @@
       <Association Name="BranchStore_RegisterLesson" Member="RegisterLesson" ThisKey="BranchID" OtherKey="BranchID" Type="RegisterLesson" />
       <Association Name="BranchStore_CoachWorkplace" Member="CoachWorkplace" ThisKey="BranchID" OtherKey="BranchID" Type="CoachWorkplace" />
       <Association Name="BranchStore_LessonPriceType" Member="LessonPriceType" ThisKey="BranchID" OtherKey="BranchID" Type="LessonPriceType" />
-      <Association Name="BranchStore_PaymentTransaction" Member="PaymentTransaction" ThisKey="BranchID" OtherKey="BranchID" Type="PaymentTransaction" />
       <Association Name="BranchStore_EnterpriseCourseContract" Member="EnterpriseCourseContract" ThisKey="BranchID" OtherKey="BranchID" Type="EnterpriseCourseContract" />
       <Association Name="BranchStore_LessonTime" Member="LessonTime" ThisKey="BranchID" OtherKey="BranchID" Type="LessonTime" />
       <Association Name="BranchStore_UserEvent" Member="UserEvent" ThisKey="BranchID" OtherKey="BranchID" Type="UserEvent" />
@@ -985,6 +985,7 @@
       <Association Name="BranchStore_CourseContractExtension" Member="CourseContractExtension" ThisKey="BranchID" OtherKey="BranchID" Type="CourseContractExtension" />
       <Association Name="BranchStore_CourseContractExtension1" Member="CourseContractExtension1" ThisKey="BranchID" OtherKey="CoursePlace" Type="CourseContractExtension" />
       <Association Name="BranchStore_TrialLearner" Member="TrialLearner" ThisKey="BranchID" OtherKey="BranchID" Type="TrialLearner" />
+      <Association Name="BranchStore_PaymentTransaction" Member="PaymentTransaction" ThisKey="BranchID" OtherKey="BranchID" Type="PaymentTransaction" />
       <Association Name="UserProfile_BranchStore" Member="Manager" ThisKey="ManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_BranchStore1" Member="ViceManager" ThisKey="ViceManagerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="Organization_BranchStore" Member="Organization" ThisKey="BranchID" OtherKey="CompanyID" Type="Organization" IsForeignKey="true" />
@@ -1347,17 +1348,6 @@
       <Association Name="InvoiceItem_InvoiceAmountType" Member="InvoiceItem" ThisKey="InvoiceID" OtherKey="InvoiceID" Type="InvoiceItem" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.PaymentTransaction" Member="PaymentTransaction">
-    <Type Name="PaymentTransaction">
-      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="PaymentTransaction_PaymentOrder" Member="PaymentOrder" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOrder" />
-      <Association Name="PaymentTransaction_PaymentOnLine" Member="PaymentOnLine" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOnLine" />
-      <Association Name="PaymentTransaction_PaymentContractTermination" Member="PaymentContractTermination" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentContractTermination" Cardinality="One" />
-      <Association Name="BranchStore_PaymentTransaction" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
-      <Association Name="Payment_PaymentTransaction" Member="Payment" ThisKey="PaymentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.MerchandiseTransaction" Member="MerchandiseTransaction">
     <Type Name="MerchandiseTransaction">
       <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -1386,7 +1376,7 @@
       <Column Name="ProductID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="ProductCount" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="MerchandiseWindow_PaymentOrder" Member="MerchandiseWindow" ThisKey="ProductID" OtherKey="ProductID" Type="MerchandiseWindow" IsForeignKey="true" />
-      <Association Name="PaymentTransaction_PaymentOrder" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" IsForeignKey="true" />
+      <Association Name="PaymentTransaction_PaymentOrder" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.PaymentAudit" Member="PaymentAudit">
@@ -1724,12 +1714,12 @@
       <Column Name="AdjustmentAmount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Payment_ContractPayment" Member="ContractPayment" ThisKey="PaymentID" OtherKey="PaymentID" Type="ContractPayment" Cardinality="One" />
       <Association Name="Payment_TuitionInstallment" Member="TuitionInstallment" ThisKey="PaymentID" OtherKey="InstallmentID" Type="TuitionInstallment" Cardinality="One" />
-      <Association Name="Payment_PaymentTransaction" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" Cardinality="One" />
       <Association Name="Payment_PaymentAudit" Member="PaymentAudit" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentAudit" Cardinality="One" />
       <Association Name="Payment_VoidPayment" Member="VoidPayment" ThisKey="PaymentID" OtherKey="VoidID" Type="VoidPayment" Cardinality="One" />
       <Association Name="Payment_EnterpriseCoursePayment" Member="EnterpriseCoursePayment" ThisKey="PaymentID" OtherKey="PaymentID" Type="EnterpriseCoursePayment" Cardinality="One" />
       <Association Name="Payment_ContractTrustTrack" Member="ContractTrustTrack" ThisKey="PaymentID" OtherKey="PaymentID" Type="ContractTrustTrack" />
       <Association Name="Payment_TuitionAchievement" Member="TuitionAchievement" ThisKey="PaymentID" OtherKey="InstallmentID" Type="TuitionAchievement" />
+      <Association Name="Payment_PaymentTransaction" Member="PaymentTransaction" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentTransaction" Cardinality="One" />
       <Association Name="InvoiceAllowance_Payment" Member="InvoiceAllowance" ThisKey="AllowanceID" OtherKey="AllowanceID" Type="InvoiceAllowance" IsForeignKey="true" DeleteRule="SET NULL" />
       <Association Name="InvoiceItem_Payment" Member="InvoiceItem" ThisKey="InvoiceID" OtherKey="InvoiceID" Type="InvoiceItem" IsForeignKey="true" DeleteRule="CASCADE" />
       <Association Name="LevelExpression_Payment" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
@@ -3145,6 +3135,19 @@
       <Column Name="Category" Type="System.String" DbType="NVarChar(32) NOT NULL" CanBeNull="false" />
       <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="BlogCategoryDefinition_BlogCategoryLocale" Member="BlogCategoryDefinition" ThisKey="CategoryID" OtherKey="CategoryID" Type="BlogCategoryDefinition" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.PaymentTransaction" Member="PaymentTransaction">
+    <Type Name="PaymentTransaction">
+      <Column Name="PaymentID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="BranchID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PayerID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="PaymentTransaction_PaymentOrder" Member="PaymentOrder" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOrder" />
+      <Association Name="PaymentTransaction_PaymentOnLine" Member="PaymentOnLine" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentOnLine" />
+      <Association Name="PaymentTransaction_PaymentContractTermination" Member="PaymentContractTermination" ThisKey="PaymentID" OtherKey="PaymentID" Type="PaymentContractTermination" Cardinality="One" />
+      <Association Name="BranchStore_PaymentTransaction" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+      <Association Name="Payment_PaymentTransaction" Member="Payment" ThisKey="PaymentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="UserProfile_PaymentTransaction" Member="UserProfile" ThisKey="PayerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">
