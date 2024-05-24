@@ -206,16 +206,9 @@ namespace WebHome.Controllers.Base
                 ModelState.AddModelError("PaymentType", "請選擇收款方式");
             }
 
-            if (profile.IsSysAdmin() || profile.IsAssistant())
+            if (!viewModel.PayerID.HasValue)
             {
-
-            }
-            else
-            {
-                if (!viewModel.PayerID.HasValue)
-                {
-                    ModelState.AddModelError("PayerName", "請輸入學生姓名");
-                }
+                ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
             }
 
             if (!ModelState.IsValid)
@@ -339,7 +332,7 @@ namespace WebHome.Controllers.Base
             {
                 if (!viewModel.PayerID.HasValue)
                 {
-                    ModelState.AddModelError("PayerName", "請輸入學生姓名");
+                    ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
                 }
             }
 
