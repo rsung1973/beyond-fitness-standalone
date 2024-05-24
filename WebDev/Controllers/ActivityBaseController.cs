@@ -130,10 +130,16 @@ namespace WebHome.Controllers
             {
                 if (ViewBag.Lang != null)
                 {
-                    return null;
+                    lang = ViewBag.Lang == "zh-TW"
+                            ? "tw"
+                            : ViewBag.Lang == "en-US"
+                                ? "en"
+                                : "ja";
                 }
-
-                lang = "tw";
+                else
+                {
+                    lang = "tw";
+                }
                 //lang = Request.Headers.AcceptLanguage.Contains("zh")
                 //                    ? "tw"
                 //                    : Request.Headers.AcceptLanguage.Contains("en")
