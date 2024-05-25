@@ -40,6 +40,7 @@ using Newtonsoft.Json.Linq;
 using System.Text.Json.Nodes;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using LineMessagingAPISDK.Models;
 
 namespace WebHome.Controllers
 {
@@ -169,7 +170,8 @@ namespace WebHome.Controllers
             item.ResetPassword.Clear();
             models.SubmitChanges();
 
-            return Json(new { result = true });
+            var viewResult = CheckView("PasswordCommitted");
+            return View(viewResult.ViewName, item);
         }
 
         [HttpPost]
@@ -285,6 +287,33 @@ namespace WebHome.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult> ForgetPasswordPageAsync([FromBody] LearnerViewModel viewModel)
+        {
+            var result = await ForgetPasswordAsync(viewModel);
+            if(result is ViewResult)
+            {
+                return Json(new { result = true });
+            }
+            return result;
+        }
+
+        public async Task<ActionResult> CheckOTPByPageAsync()
+        {
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+            profile = profile.LoadInstance(models);
+
+            var viewResult = CheckView("CheckOTPByPage");
+            return View(viewResult.ViewName, profile);
+
+        }
+
         [Authorize]
         public async Task<ActionResult> SendOTPAsync()
         {
@@ -313,7 +342,7 @@ namespace WebHome.Controllers
             }
 
             viewModel.PIN = viewModel.PIN.GetEfficientString();
-            if (viewModel.PIN == null)
+            if (viewModel.PIN == null || viewModel.PIN.Length < 4)
             {
                 return Json(new { result = false, message = "請輸入動態密碼!!" });
             }
@@ -342,6 +371,7 @@ namespace WebHome.Controllers
 
         }
 
+        [AllowAnonymous]
         public ActionResult CommitEmail()
         {
             if(!Request.QueryString.HasValue)

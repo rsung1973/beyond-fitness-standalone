@@ -1,0 +1,129 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+
+    var profile = (UserProfile)this.Model;
+    var prefixCode = profile.UserProfileExtension.PIN.Substring(0, 3);
+
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
+
+}
+<div class="card" data-card-height="230" style="margin-bottom:-70px">
+
+    <div class="card-center text-center">
+
+        <h1 class="color-white font-600 mb-1 mt-n4 font-32">輸入動態密碼·</h1>
+
+        <p class="color-highlight">Check OTP</p>
+
+    </div>
+
+    <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    <div class="card-bg preload-img" data-src="../images/card/declaration.jpg"></div>
+
+</div>
+
+
+
+<div class="card card-style text-center">
+
+    <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+        <h1><i class="fa fa-lock color-beyondred-dark fa-4x"></i></h1>
+
+        <p class=" boxed-text-l color-theme font-18">
+
+            請您開啟Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入最後6位數字
+
+        </p>
+
+        <div class="text-center mb-3 pt-3 pb-2">
+            <h1 class="font-30 font-700 color-theme">@(prefixCode)</h1>
+            <form action="">
+                <input type="hidden" name="Code" value="@(prefixCode)" />
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
+            </form>
+        </div>
+        <a href="javascript:sendOTP();" class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
+    </div>
+</div>
+
+<a href="javascript:validatePIN();" data-menu="update-Passwd"
+   class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
+
+<a href="#"
+   class="color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
+
+<!--更新密碼-->
+
+<div id="update-Passwd" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over">
+</div>
+<script>
+    function sendOTP() {
+        var viewModel = {
+        };
+        doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
+            Swal.fire(
+                '動態密碼已重送!',
+                '請開啟信箱查看動態密碼 Bye!',
+                'success'
+            );
+        });
+    }
+
+    function validatePIN() {
+        var viewModel = {
+            'PIN': $('input[name="Code"]').serializeObject().Code.join('')
+        };
+        doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel,
+            function (data) {
+                $('#update-Passwd').html(data);
+                $('#update-Passwd').addClass('menu-active');
+            },
+            function () {
+                $('.menu-active').removeClass('menu-active');
+            });
+    }
+</script>

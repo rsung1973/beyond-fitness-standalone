@@ -1,0 +1,127 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+}
+<html lang="en">
+
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
+
+    <title>Beyond Fitness</title>
+
+    <link rel="manifest" href="../_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
+
+
+    <meta name="author" content="beyond-fitness.com.tw">
+
+    <!-- Favicon -->
+
+    <link rel="shortcut icon" href="../app/icons/favicon.ico" type="image/x-icon" />
+
+    <link rel="icon" href="../app/icons/icon-96x96.png">
+
+    <!-- Specifying a Webpage Icon for Web Clip -->
+
+    <link rel="apple-touch-icon" href="../app/icons/icon-72x72.png">
+
+    <link rel="apple-touch-icon-precomposed" href="../app/icons/icon-72x72.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../app/icons/icon-72x72.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="../app/icons/icon-96x96.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="../app/icons/icon-128x128.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../app/icons/icon-144x144.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../app/icons/icon-152x152.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="../app/icons/icon-192x192.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="../app/icons/icon-384x384.png">
+
+    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="../app/icons/icon-512x512.png">
+
+    <!-- Web Fonts  -->
+    <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
+          rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css">
+
+    <!-- SweetAlert2  -->
+    <link rel="stylesheet" type="text/css" href="../plugins/sweetalert2/sweetalert2.min.css">
+
+    <link rel="stylesheet" href="../fonts/css/fontawesome-all.min.css" type="text/css">
+
+    <link rel="stylesheet" type="text/css" href="../styles/style.css">
+
+    <link rel="stylesheet" type="text/css" href="../styles/custom.css">
+
+</head>
+
+<body class="theme-light detect-dark-mode" data-highlight="beyond">
+
+    <div id="preloader" class="color-beyondwhite-dark">
+
+        <div class="preloader-body">
+
+            <div class="cssload-float-bars-container">
+
+                <ul class="cssload-float-bars-flex-container">
+
+                    <li><span class="cssload-float-bars-loading"></span></li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="page">
+        @RenderBody()
+    </div>
+
+    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../scripts/custom.js"></script>
+
+    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
+
+    <!-- SweetAlert Plugin Js -->
+    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <script type="text/javascript">
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("~/Views/Common/JQueryHelper.cshtml");
+    }
+</body>
+
+</html>

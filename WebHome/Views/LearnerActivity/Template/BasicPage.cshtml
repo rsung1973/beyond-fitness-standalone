@@ -13,13 +13,13 @@
 @using WebHome.Models.Resources
 
 @{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    //Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
     ViewBag.MainClass = "home";
     ViewBag.MenuDark = false;
     String lang = ViewBag.Lang ?? "zh-TW";
@@ -29,153 +29,44 @@
             ? "en"
             : "ja";
 }
-<html lang="en">
 
-<head>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-
-    <title>Beyond Fitness</title>
-
-    <link rel="manifest" href="../_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
+<!-- header and footer bar go here-->
+@RenderSection("Header", false)
 
 
-    <meta name="author" content="beyond-fitness.com.tw">
+@RenderSection("FooterBar", false)
 
-    <!-- Favicon -->
+<div class="page-content">
 
-    <link rel="shortcut icon" href="../app/icons/favicon.ico" type="image/x-icon" />
+    <div class="page-title page-title-small">
 
-    <link rel="icon" href="../app/icons/icon-96x96.png">
+        <h2 class="letter-spacing-2 color-white">
+            從喜歡自己開始<small class="font-15 font-600 color-highlight d-block custom-font-secondary fst-italic">
+                Start from Liking Yourself
+            </small>
+        </h2>
 
-    <!-- Specifying a Webpage Icon for Web Clip -->
-
-    <link rel="apple-touch-icon" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="../app/icons/icon-96x96.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="../app/icons/icon-128x128.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../app/icons/icon-144x144.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../app/icons/icon-152x152.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="../app/icons/icon-192x192.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="../app/icons/icon-384x384.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="../app/icons/icon-512x512.png">
-
-    <!-- Web Fonts  -->
-    <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
-          rel="stylesheet" type="text/css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css">
-
-    <!-- SweetAlert2  -->
-    <link rel="stylesheet" type="text/css" href="../plugins/sweetalert2/sweetalert2.min.css">
-
-    <link rel="stylesheet" href="../fonts/css/fontawesome-all.min.css" type="text/css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/style.css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/custom.css">
-
-</head>
-
-<body class="theme-light detect-dark-mode" data-highlight="beyond">
-
-    <div id="preloader" class="color-beyondwhite-dark">
-
-        <div class="preloader-body">
-
-            <div class="cssload-float-bars-container">
-
-                <ul class="cssload-float-bars-flex-container">
-
-                    <li><span class="cssload-float-bars-loading"></span></li>
-
-                </ul>
-
-            </div>
-
-        </div>
+        <a href="#" data-menu="menu-main" class="bg-fade-highlight-light shadow-xl preload-img"
+           data-src="../images/avatars/garfaild.png"></a>
 
     </div>
 
-    <div id="page">
+    @RenderBody()
 
-        <!-- header and footer bar go here-->
-        @RenderSection("Header", false)
-        
+</div>
+<!-- end of page content-->
 
-        @RenderSection("FooterBar", false)
+<div id="menu-main" class="menu menu-box-left menu-box-detached rounded-m" data-menu-width="cover"
+     data-menu-load="MenuMain" data-menu-active="nav-welcome" data-menu-effect="menu-over">
 
-        <div class="page-content">
-
-            <div class="page-title page-title-small">
-
-                <h2 class="letter-spacing-2 color-white">
-                    從喜歡自己開始<small class="font-15 font-600 color-highlight d-block custom-font-secondary fst-italic">
-                        Start from Liking Yourself
-                    </small>
-                </h2>
-
-                <a href="#" data-menu="menu-main" class="bg-fade-highlight-light shadow-xl preload-img"
-                   data-src="../images/avatars/garfaild.png"></a>
-
-            </div>
-
-            @RenderBody()
-
-        </div>
-        <!-- end of page content-->
-
-        <div id="menu-main" class="menu menu-box-left menu-box-detached rounded-m" data-menu-width="cover"
-             data-menu-load="MenuMain" data-menu-active="nav-welcome" data-menu-effect="menu-over">
-
-        </div>
+</div>
 
 
 
-        <!--Go To Official Artical-->
+<!--Go To Official Artical-->
 
-        <div id="popup-official" class="menu menu-box-top" data-menu-width="cover" data-menu-load="PopupGotoOfficialArtical" data-menu-effect="menu-over">
+<div id="popup-official" class="menu menu-box-top" data-menu-width="cover" data-menu-load="PopupGotoOfficialArtical" data-menu-effect="menu-over">
 
-        </div>
+</div>
 
-        @RenderSection("PopupBox", false)
-
-
-    </div>
-
-
-
-    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
-
-    <script type="text/javascript" src="../scripts/custom.js"></script>
-
-    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
-
-    <!-- SweetAlert Plugin Js -->
-    <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
-
-    <script type="text/javascript">
-
-    </script>
-    @{
-        await Html.RenderPartialAsync("~/Views/Common/JQueryHelper.cshtml");
-    }
-</body>
-
-</html>
+@RenderSection("PopupBox", false)

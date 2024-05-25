@@ -46,7 +46,7 @@
         <i class="fa fa-check disabled valid color-green-dark"></i>
         <em>(必要輸入)</em>
     </div>
-    <a href="javascript:resetPass();" data-menu="otp-check"
+    <a href="javascript:resetPassPage();" data-menu="otp-check"
         class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-white  bg-beyond-dark font-500 px-3 py-2 font-16 mt-5 letter-spacing-2">發送動態密碼通知</a>
     </p>
     <script>
@@ -56,6 +56,15 @@
             };
             doPost('@Html.Raw(Url.Action("ForgetPassword", "LearnerActivity"))', viewModel, function (data) {
                 $('#otp-check').html(data);
+            });
+        }
+
+        function resetPassPage() {
+            var viewModel = {
+                'Email': $('input[name="MyEmail"]').val()
+            };
+            doPost('@Html.Raw(Url.Action("ForgetPasswordPage", "LearnerActivity"))', viewModel, function (data) {
+                window.location.href = '@Url.Action("CheckOTPByPage","LearnerActivity")';
             });
         }
 
@@ -78,7 +87,7 @@
                     '動態密碼已重送!',
                     '請開啟信箱查看動態密碼 Bye!',
                     'success'
-                );  
+                );
             });
         }
 
