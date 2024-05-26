@@ -18,6 +18,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
+    var profile = await Context.GetUserAsync();
 }
 
 <div class="menu-header mb-2">
@@ -41,8 +42,11 @@
     <div class="avatar">
 
         <a href="setting.html">
-            <img class="avatar-rounded-circle" src="../images/avatars/garfaild.png">
-
+            @{
+                ViewBag.ImgClass = "avatar-rounded-circle";
+                ViewBag.NoNameImg = null;
+                await Html.RenderPartialAsync("~/Views/CornerKick/Module/ProfileImage.cshtml", profile);
+            }
             <em class="badge color-beyondblue-light"><i class="fa-thin fa-pen font-20 fa-rotate-90"></i></em>
 
         </a>

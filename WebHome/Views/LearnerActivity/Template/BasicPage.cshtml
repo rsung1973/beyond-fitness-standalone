@@ -28,6 +28,8 @@
         : lang == "en-US"
             ? "en"
             : "ja";
+
+    var profile = await Context.GetUserAsync();
 }
 
 <!-- header and footer bar go here-->
@@ -46,8 +48,10 @@
             </small>
         </h2>
 
-        <a href="#" data-menu="menu-main" class="bg-fade-highlight-light shadow-xl preload-img"
-           data-src="../images/avatars/garfaild.png"></a>
+        <a href="javascript:void(0);" data-menu="menu-main" class="bg-fade-highlight-light shadow-xl preload-img"
+           data-src="@(profile.PictureID.HasValue
+                              ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
+                              : "../images/avatars/garfaild.png")"></a>
 
     </div>
 

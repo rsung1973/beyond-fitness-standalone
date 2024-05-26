@@ -24,6 +24,7 @@
             ? "en"
             : "ja";
 
+    UserProfile profile = await Context.GetUserAsync();
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 }
@@ -37,7 +38,13 @@
 
 <div class="menu-logo text-center">
     <div class="avatar">
-        <a href="setting.html"><img class="avatar-rounded-circle" src="../images/avatars/garfaild.png"> </a>
+        <a href="setting.html">
+            @{
+                ViewBag.ImgClass = "avatar-rounded-circle";
+                ViewBag.NoNameImg = null;
+                await Html.RenderPartialAsync("~/Views/CornerKick/Module/ProfileImage.cshtml", profile);
+            }
+        </a>
     </div>
     <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">劉加菲</h1>
     <p class="font-15 font-600 color-beyondred-dark d-block custom-font-secondary fst-italic">Start from Liking Yourself

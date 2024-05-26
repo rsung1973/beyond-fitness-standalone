@@ -36,6 +36,7 @@
 
     var profile = (UserProfile)this.Model;
     var body = await Html.PartialAsync("~/Views/LearnerActivity/Page.zh-TW/AuthOTP.cshtml");
+    var mailBody = body.GetHtmlString();
 
     var t = Task.Run(() =>
     {
@@ -48,7 +49,7 @@
             message.Subject = "Beyond Fitness 動態密碼密碼通知";
             message.IsBodyHtml = true;
 
-            message.Body = body.GetHtmlString();
+            message.Body = mailBody;
 
             using SmtpClient smtpclient = new SmtpClient(AppSettings.Default.Smtp.Host, AppSettings.Default.Smtp.Port);
             smtpclient.EnableSsl = AppSettings.Default.Smtp.EnableSsl;
