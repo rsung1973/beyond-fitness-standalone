@@ -241,14 +241,14 @@ namespace WebHome.Controllers
             viewModel.Email = viewModel.Email.GetEfficientString();
             if (viewModel.Email == null || !viewModel.Email.IsEmail())
             {
-                return Json(new { result = false, message = "請輸入正確Email!!" });
+                return Json(new { result = false, message = "請確認您的電子郵件格式正確！" });
             }
 
             if (models.GetTable<UserProfile>()
                 .Where(u => u.UID != item.UID)
                 .Any(u => u.PID == viewModel.Email))
             {
-                return Json(new { result = false, message = "此Email已被註冊使用!!" });
+                return Json(new { result = false, message = "此電子郵件已被註冊使用！" });
             }
 
             return View("~/Views/LearnerActivity/ValidateEmail.cshtml");

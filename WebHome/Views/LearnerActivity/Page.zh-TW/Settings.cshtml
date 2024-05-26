@@ -106,8 +106,8 @@
                         <a href="@Html.Raw($"{AppSettings.Default.LineAuth.LineAuthUrl}?response_type=code&client_id={AppSettings.Default.LineAuth.ChannelID}&redirect_uri={HttpUtility.UrlEncode(AppSettings.Default.LineAuth.ReturnUrl)}&state={Guid.NewGuid()}&scope=profile%20openid")">
                             <i class="fab font-32 fa-line color-line"></i>
                             <span class="font-500 font-16">LINE</span>
-                            <span class="font-14 mt-3 font-500 color-gray-dark let">Bound</span>
-                            <span class="badge bg-beyondred-dark font-13">未綁定</span>
+                            <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
+                            <span class="badge bg-beyondred-dark font-13">未綁定</span>                            
                             <i class="fa fa-angle-right"></i>
                         </a>
                     }
@@ -116,7 +116,7 @@
                         <a href="#" data-menu="menu-unbound">
                             <i class="fab font-32 fa-line color-line"></i>
                             <span class="font-500 font-16">LINE</span>
-                            <span class="font-14 mt-3 font-500 color-gray-dark let">Unbond</span>
+                            <span class="font-14 mt-3 font-500 color-gray-dark let">Bond</span>
                             <span class="badge bg-beyondred-dark font-13">綁定中</span>
                             <i class="fa fa-angle-right"></i>
                         </a>
