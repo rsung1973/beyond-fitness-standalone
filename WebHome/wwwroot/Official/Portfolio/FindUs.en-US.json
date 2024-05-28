@@ -1758,6 +1758,15 @@
                     "Sports":[
                         {
                             "Name":"running",
+                            
+                        },
+                        {
+                            "Name":"swimming",
+                            
+                        },
+                        {
+                            "Name":"ironman",
+                            
                         }
                     ],
                     "Experience": "<ul><li>113鐵人三項競賽</li><li>國內外馬拉松</li><li>三鐵賽事</li></ul>"                       
