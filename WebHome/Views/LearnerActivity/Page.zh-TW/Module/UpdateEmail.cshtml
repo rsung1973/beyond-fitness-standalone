@@ -57,8 +57,8 @@
                 };
                 doPost('@Html.Raw(Url.Action("ValidateEmail", "LearnerActivity"))', viewModel, function (data) {
                     Swal.fire(
-                        '系統已發送驗證電子郵件!',
-                        '請您立即開啟郵件信箱收取此「認證信」',
+                        '已發送認證信',
+                        '請您立即至郵件信箱收取此「認證信」',
                         'success'
                     );                    
                 });
