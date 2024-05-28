@@ -997,13 +997,15 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.MemberID)
                 .FirstOrDefault() ?? new UserProfile { UID = -1 };
-            _ = profile.RemainedLessonCount2024(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons,out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems);
+            _ = profile.RemainedLessonCount2024(models, out int remainedCount, out IQueryable<RegisterLesson> remainedLessons,out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems, out List<RegisterLesson> remainedPIItems);
 
             List<RegisterLesson> model = viewModel.SessionType == Naming.SessionTypeDefinition.SR
                 ? remainedSRItems 
                 : viewModel.SessionType == Naming.SessionTypeDefinition.SD
                     ? remainedSDItems
-                    : remainedPTItems;
+                    : viewModel.SessionType == Naming.SessionTypeDefinition.PI
+                        ? remainedPIItems 
+                        : remainedPTItems;
 
             return View("~/Views/ConsoleHome/CourseContract/RemainedLessonListModal2024.cshtml", model);
         }

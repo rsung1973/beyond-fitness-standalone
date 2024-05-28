@@ -1137,9 +1137,15 @@ namespace WebHome.Helper.BusinessOperation
 
         public static IQueryable<CourseContract> RemainedLessonCount2024(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount, out IQueryable<RegisterLesson> remainedItems, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems, bool onlyAttended = false)
         {
+            return profile.RemainedLessonCount2024(models, out remainedCount, out remainedItems, out remainedPTItems, out remainedSRItems, out remainedSDItems, out List<RegisterLesson> remainedPIItems, onlyAttended);
+        }
+
+        public static IQueryable<CourseContract> RemainedLessonCount2024(this UserProfile profile, GenericManager<BFDataContext> models, out int remainedCount, out IQueryable<RegisterLesson> remainedItems, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems, out List<RegisterLesson> remainedPIItems, bool onlyAttended = false)
+        {
             remainedPTItems = new List<RegisterLesson>();
             remainedSDItems = new List<RegisterLesson>();
             remainedSRItems = new List<RegisterLesson>();
+            remainedPIItems = new List<RegisterLesson>();
 
             var result = profile.RemainedLessonCount2022(models, out remainedCount, out remainedItems, out IQueryable<RegisterLesson> contractLessons, out IQueryable<RegisterLesson> individualLessons, onlyAttended);
 
@@ -1151,8 +1157,8 @@ namespace WebHome.Helper.BusinessOperation
 
             foreach (var r in contractLessonItems.Union(individualLessonItems))
             {
-                if(r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
-                    || SD.Any(s=>r.ClassLevel==s.PriceID))
+                if (r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
+                    || SD.Any(s => r.ClassLevel == s.PriceID))
                 {
                     remainedSDItems.Add(r);
                 }
@@ -1160,6 +1166,10 @@ namespace WebHome.Helper.BusinessOperation
                     || SR.Any(s => r.ClassLevel == s.PriceID))
                 {
                     remainedSRItems.Add(r);
+                }
+                else if (r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.自主訓練)
+                {
+                    remainedPIItems.Add(r);
                 }
                 else
                 {
