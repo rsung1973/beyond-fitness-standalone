@@ -39,7 +39,7 @@
 
 @{
     LessonTime item = (LessonTime)_model.EventItem;
-    if (item.TrainingBySelf == 1)
+    if (item.IsPISession())
     {
         bool needApprove = item.PreferredLessonTime != null && !item.PreferredLessonTime.ApproverID.HasValue;
         <div class="@(needApprove ? "event-name b-approve row" : "event-name b-PI row")" onclick="@Html.Raw(clickHander(item,needApprove))">
@@ -48,7 +48,12 @@
             </div>
             <div class="col-10">
                 <h6>
-                    P.I《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》@(item.RegisterLesson.UserProfile.RealName)
+                    P.I
+                    @if (item.RegisterLesson.LessonPriceType.UsageType.HasValue)
+                    {
+                        <text>《@(item.RegisterLesson.LessonPriceType?.UsageTypeDescription?.Usage)》</text>
+                    }
+                    @(item.RegisterLesson.UserProfile.RealName)
                     <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
                     @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
                 </h6>
