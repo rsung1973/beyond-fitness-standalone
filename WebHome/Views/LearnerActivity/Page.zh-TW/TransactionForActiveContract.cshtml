@@ -24,7 +24,6 @@
 
     Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
 
-    ViewBag.TransactionType = "Contract";
     ViewBag.From = "TransactionForActiveContract";
     
     String lang = ViewBag.Lang ?? "zh-TW";
@@ -186,7 +185,7 @@
                                     class="@(iconDisplay) font-24"></i></a>
                         </div>
                         <div class="align-self-center ps-3">
-                        <h5 class="font-600 font-18 mb-1 letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</h5>
+                        <h5 class="font-500 font-18 mb-1 letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</h5>
                         <b class="font-15 color-beyondred-dark fst-italic">@(item.RemainedLessonCount())</b><span
                             class="font-15 color-theme opacity-60 letter-spacing-1"> / @(item.Lessons)</span>
                             <div class="progress mt-3" style="height:2px; width:150px;">
@@ -215,7 +214,7 @@
 
     <script>
         function gotoContractInfo(keyID) {
-            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))',{'keyID':keyID});
+            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))',{'keyID':keyID, 'from': '@Html.Raw(Url.Action("TransactionForActiveContract","LearnerActivity"))'});
         }  
     </script>  
 }

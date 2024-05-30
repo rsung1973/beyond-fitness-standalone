@@ -1,0 +1,111 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var payment = this.Model;
+
+}
+<div class="row mb-2">
+    <div class="col-4 mb-2">
+        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">付款日期</p>
+    </div>
+    <div class="col-8 mb-2">
+        <p class="color-theme letter-spacing-1">@($"{(payment.PayoffDate):yyyy/MM/dd}")</p>
+    </div>
+    <div class="col-4 mb-2">
+        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">付款類型</p>
+    </div>
+    <div class="col-8 mb-2">
+        <p class="color-theme letter-spacing-1">@(payment.PaymentType)</p>
+    </div>
+    @{
+        InvoiceItem invoice = payment.InvoiceItem;
+        if (invoice != null)
+        {
+            <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票號碼</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@(invoice.TrackCode)@(invoice.No)</p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">賣方統編</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceSeller?.ReceiptNo)</p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票金額</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@($"{invoice?.InvoiceAmountType.TotalAmount:##,###,###,###}")</p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票日期</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">會員載具</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)
+                    <a href="#"
+                        class="btn btn-border rounded-xl fst-italic border-lightgray-dark color-beyondwhite-dark bg-beyond-dark px-3 py-1 font-12 mx-1">載具歸戶</a>
+                </p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">手機條碼</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)</p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">買受人統編</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@(!invoice.InvoiceBuyer.IsB2C() ? invoice.InvoiceBuyer.ReceiptNo : null)
+                </p>
+            </div>
+            <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
+            <div class="col-4 mb-2">
+                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票品項</p>
+            </div>
+            <div class="col-8 mb-2">
+                <p class="color-theme letter-spacing-1">@Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d =>
+            d.InvoiceProduct.Brief)))</p>
+            </div>
+        }
+    }
+</div>

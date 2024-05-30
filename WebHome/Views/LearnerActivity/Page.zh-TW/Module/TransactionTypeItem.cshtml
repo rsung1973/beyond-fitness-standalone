@@ -30,11 +30,11 @@
     var contract = "";
     var single = "";
     var shoppingCard = "";
-    if (ViewBag.TransactionType == "Contract")
+    if (ViewBag.From == "TransactionForActiveContract" || ViewBag.From == "TransactionForHistoryContract")
     {
         contract = "active";
     }
-    else if (ViewBag.TransactionType == "History") {
+    else if (ViewBag.From == "Single") {
         single = "active";
     } else {
         shoppingCard = "active";
@@ -49,7 +49,7 @@
                 <p class="font-500 mb-n2 mt-3 color-theme font-16">合約紀錄</p>
             </div>
         </a>
-        <a href="TransactionForHistoryContract" class="col-4">
+        <a href="TransactionForSingleSession" class="col-4">
             <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed @(single)">
                 <i class="fa fa-exchange-alt font-24 color-theme opacity-30"></i>
                 <p class="font-500 mb-n2 mt-3 color-theme font-16">單堂課程</p>

@@ -36,7 +36,9 @@
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
-    var profile = (UserProfile)this.Model;
+    var profile = await Context.GetUserAsync();
+    profile = profile.LoadInstance(models);
+
     var prefixCode = profile.UserProfileExtension.PIN.Substring(0, 3);
 
     await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);

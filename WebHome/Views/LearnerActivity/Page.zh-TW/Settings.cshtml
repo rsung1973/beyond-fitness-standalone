@@ -22,8 +22,8 @@
     _modelState = ViewContext.ModelState;
 
     Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
-    ViewBag.MainClass = "home";
-    ViewBag.MenuDark = false;
+    ViewBag.Footer = "Settings";
+
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
         ? "tw"

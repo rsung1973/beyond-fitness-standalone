@@ -1,0 +1,122 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.From = "ShoppingCar";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var _learner = profile.LoadInstance(models);
+
+}
+    @{ 
+        var transactionItems = models.GetTable<PaymentTransaction>()
+            .Where(t=>t.PayerID == profile.UID)
+            .Where(t=>models.GetTable<PaymentOrder>().Any(o=>o.PaymentID == t.PaymentID));
+
+        var items = models.GetTable<Payment>()
+                        .Where(p=>transactionItems.Any(t=>t.PaymentID == p.PaymentID))
+                        .OrderByDescending(p=>p.PaymentID)
+                        .Take(10);
+
+    }
+
+@section MainContent
+{
+
+    <div class="card header-card" data-card-height="310">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/TransactionTypeItem.cshtml");
+    }
+    
+    <!--單堂商品清單-->
+    <div class="card" style="box-shadow:none">
+        <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">購買商品·<small
+                    class="ps-2 font-14 font-400 text-capitalize">Shopping History</small></h4>
+            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-3 mb-5">
+                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+            </svg>
+            <div class="clearfix"></div>
+            @{
+                var idx=0;
+                var iconDisplay = "fa-solid fa-dumbbell";
+                foreach (var item in items)
+                {
+                    idx++;    
+                    if (idx > 1) {
+                        <div class="divider mt-4 mb-4"></div>
+                    }
+
+                    if (item.TransactionType == (int) Naming.PaymentTransactionType.運動商品)
+                    {
+                        iconDisplay = "fa-solid fa-dumbbell";
+                    } else if (item.TransactionType == (int) Naming.PaymentTransactionType.食飲品) 
+                    {
+                        iconDisplay = "fa-solid fa-utensils";
+                    } else if (item.TransactionType == (int) Naming.PaymentTransactionType.各項費用)
+                    {
+                        iconDisplay = "fa-solid fa-coins";
+                    }
+
+                    <div class="d-flex" data-menu="payment-info">
+                        <div>
+                            <a href="#" data-menu="payment-info"
+                                class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl"><i
+                                    class="@(iconDisplay) font-24"></i></a>
+                        </div>
+                        <div class="align-self-center ps-3">
+                            <h5 class="font-600 font-18 mb-1 letter-spacing-1">@((Naming.PaymentTransactionType)item.TransactionType)</h5>
+                            <span class="font-15 color-theme letter-spacing-1">NTD @($"{item.PayoffAmount:##,###,###,###}")</span>
+                        </div>
+                        <div class="align-self-center ms-auto me-3">
+                            <h5 class="mb-0 text-end font-400 font-14"><i class="fa-solid fa-location-dot pe-2"></i>@(item.PaymentTransaction.BranchStore.BranchName)</h5>
+                            <span class="color-theme d-block text-end font-12">@($"{item.PayoffDate:yyyy/MM/dd}")</span>
+                        </div>
+                        <div class="align-self-center">
+                            <i class="fa fa-angle-right color-highlight font-16"></i>
+                        </div>
+                    </div>                    
+                }
+            }            
+
+        </div>
+    </div>
+}
+
+@section PopupBox
+{
+    <div id="payment-info" class="menu menu-box-bottom menu-box-modal rounded-0" data-menu-width="cover"
+        data-menu-effect="menu-over">
+        
+    </div>
+}

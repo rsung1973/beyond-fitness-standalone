@@ -24,7 +24,7 @@
 
     Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
     ViewBag.TransactionType = "Contract";
-    ViewBag.ComeFrom = "TransactionForHistoryContract";
+    ViewBag.From = "TransactionForHistoryContract";
 
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
@@ -57,7 +57,7 @@
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/TransactionTypeItem.cshtml");
     }
     <!--合約清單-->
-    <div class="card mt-5 mb-0">
+    <div class="card mt-5 mb-0" style="box-shadow:none">
         <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
             <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">歷史合約·<small
                     class="ps-2 font-14 font-400 text-capitalize opacity-60">History Contract</small></h4>
@@ -90,7 +90,7 @@
                                     class="@(iconDisplay) font-24"></i></a>
                         </div>
                         <div class="align-self-center ps-3">
-                            <h5 class="font-600 font-18 mb-1 letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</h5>
+                            <h5 class="font-500 font-18 mb-1 letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</h5>
                             <span class="font-15 color-theme opacity-60 letter-spacing-1">@($"{item.ValidFrom:yyyy/MM/dd}")</span>
                         </div>
                         <div class="align-self-center ms-auto me-3">
@@ -111,7 +111,7 @@
     </div>
     <script>
         function gotoContractInfo(keyID) {
-            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID });
+            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForHistoryContract","LearnerActivity"))' });
         }  
     </script>
 }

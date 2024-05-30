@@ -11,7 +11,7 @@ namespace WebHome.Models.DataEntity
     {
         public static String YearsOld(this UserProfile item)
         {
-            return item.Birthday.HasValue ? (DateTime.Today.Year - item.Birthday.Value.Year).ToString()  : "--";
+            return item.Birthday.HasValue ? (DateTime.Today.Year - item.Birthday.Value.Year).ToString() : "--";
         }
 
         public static int CurrentYearsOld(this UserProfile item)
@@ -185,7 +185,7 @@ namespace WebHome.Models.DataEntity
             return items.Sum(r => r.AttendedLessonCount(onlyAttended, singleMode: true));
         }
 
-        public static int AttendedLessonCount(this CourseContract item,DateTime dateBefore, bool onlyAttended = false)
+        public static int AttendedLessonCount(this CourseContract item, DateTime dateBefore, bool onlyAttended = false)
         {
             var items = item.RegisterLessonContract.Select(c => c.RegisterLesson);
 
@@ -263,14 +263,14 @@ namespace WebHome.Models.DataEntity
 
         public static String FullName(this UserProfile item, bool mask = false)
         {
-            if(mask)
+            if (mask)
             {
                 return item.Nickname == null ? item.RealName.MaskedName() : item.RealName.MaskedName() + "(" + item.Nickname + ")";
             }
             return item.Nickname == null ? item.RealName : item.RealName + "(" + item.Nickname + ")";
         }
 
-        public static String FullNameHtml(this UserProfile profile,String css = null)
+        public static String FullNameHtml(this UserProfile profile, String css = null)
         {
             return String.Concat($"<span class='{css}'>{profile.RealName}",
                         !String.IsNullOrEmpty(profile.Nickname) ? $"<span class='small'>({profile.Nickname})</span>" : null,
@@ -327,7 +327,7 @@ namespace WebHome.Models.DataEntity
         }
 
 
-        public static String LessonLearner(this RegisterLesson lesson,String separator = "/")
+        public static String LessonLearner(this RegisterLesson lesson, String separator = "/")
         {
             if (lesson.GroupingMemberCount > 1)
             {
@@ -338,7 +338,6 @@ namespace WebHome.Models.DataEntity
                 return lesson.UserProfile.FullName();
             }
         }
-
 
         public static DateTime? Expiration(this CourseContract contract)
         {
@@ -394,7 +393,7 @@ namespace WebHome.Models.DataEntity
 
         public static String LessonTypeStatus(this int? status)
         {
-            switch(status)
+            switch (status)
             {
                 case (int)Naming.LessonPriceStatus.自主訓練:
                     return "P.I";
@@ -437,7 +436,7 @@ namespace WebHome.Models.DataEntity
                     case (int)Naming.LessonPriceStatus.教練PI:
                         return "Coach P.I";
                     case (int)Naming.LessonPriceStatus.體驗課程:
-                        return item.RegisterLesson.LessonPriceType.LessonPriceProperty.Any(p=>p.PropertyID==(int)Naming.LessonPriceFeature.BR體驗)
+                        return item.RegisterLesson.LessonPriceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.BR體驗)
                                 ? "T.S - BR"
                                 : "T.S - 檢測";
                     case (int)Naming.LessonPriceStatus.點數兌換課程:
@@ -558,8 +557,8 @@ namespace WebHome.Models.DataEntity
                             ? item.ContractPayment.CourseContract.CourseContractType.IsGroup == true
                                 ? String.Join("/", item.ContractPayment.CourseContract.CourseContractMember.Select(m => m.UserProfile).ToArray().Select(u => u.FullName()))
                                 : item.ContractPayment.CourseContract.ContractOwner.FullName()
-                            : item.PaymentTransaction.PaymentContractTermination!=null
-                                ? item.PaymentTransaction.PaymentContractTermination.CourseContractTermination.CourseContractRevision.CourseContract.ContractOwner.FullName() 
+                            : item.PaymentTransaction.PaymentContractTermination != null
+                                ? item.PaymentTransaction.PaymentContractTermination.CourseContractTermination.CourseContractRevision.CourseContract.ContractOwner.FullName()
                                 : item.PaymentTransaction.UserProfile?.FullName() ?? insteadOfNull;
         }
 
@@ -604,7 +603,7 @@ namespace WebHome.Models.DataEntity
         public static String TerminationReason(this CourseContractRevision item)
         {
             StringBuilder sb = new StringBuilder();
-            if(item.CauseForEnding.HasValue)
+            if (item.CauseForEnding.HasValue)
             {
                 sb.Append((Naming.CauseForEnding)item.CauseForEnding);
             }
@@ -659,7 +658,7 @@ namespace WebHome.Models.DataEntity
         {
             get
             {
-                return this.UserRole.Count>0 ? this.UserRole[0] : null;
+                return this.UserRole.Count > 0 ? this.UserRole[0] : null;
             }
         }
 
@@ -726,7 +725,7 @@ namespace WebHome.Models.DataEntity
             OnLine = 1,
             OnLineFeedback = 2,
             LessonPackage = 3,
-            DietaryConsult= 4,
+            DietaryConsult = 4,
             CustomCombination = 5,
             AT = 6,
             SR = 7,
@@ -767,7 +766,7 @@ namespace WebHome.Models.DataEntity
                         .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款)
                         .FirstOrDefault();
 
-                if (Description == null) 
+                if (Description == null)
                     return null;
 
                 int start = Description.IndexOf('》');
@@ -777,7 +776,7 @@ namespace WebHome.Models.DataEntity
                 }
 
                 int end = Description.IndexOf('-', start + 1);
-                if(end == -1)
+                if (end == -1)
                 {
                     end = Description.IndexOf('/', start + 1);
                 }
@@ -805,6 +804,26 @@ namespace WebHome.Models.DataEntity
                     (int)Naming.LessonPriceStatus.運動恢復課程,
                     (int)Naming.LessonPriceStatus.運動防護課程,
         };
+
+        public String SimpleSessionName
+        {
+            get
+            {
+                switch ((Naming.LessonPriceStatus?)this.Status)
+                {
+                    case Naming.LessonPriceStatus.營養課程:
+                        return "S.D";
+                    case Naming.LessonPriceStatus.運動恢復課程:
+                        return "S.R";
+                    case Naming.LessonPriceStatus.運動防護課程:
+                        return "A.T";
+                    case Naming.LessonPriceStatus.自主訓練:
+                        return "P.I";
+                    default:
+                        return "P.T";
+                }
+            }
+        }
     }
 
     public partial class RegisterLesson
@@ -988,9 +1007,9 @@ namespace WebHome.Models.DataEntity
 
     public partial class CourseContract
     {
-        public LessonPriceType CurrentPrice 
-        { 
-            get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType ;
+        public LessonPriceType CurrentPrice
+        {
+            get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType;
         }
     }
 
@@ -1003,9 +1022,9 @@ namespace WebHome.Models.DataEntity
         }
     }
 
-    public partial class ProfessionalCertificate 
+    public partial class ProfessionalCertificate
     {
-        public enum ProfessionalCertificateStatus 
+        public enum ProfessionalCertificateStatus
         {
             已下架 = 0,
             正常 = 1,
