@@ -74,7 +74,7 @@
 {
     lessonItems = lessonItems.Except(items).ToList();
     <hr />
-    foreach (var item in By(l => l.ClassTime))
+    foreach (var item in items.OrderBy(l => l.ClassTime))
     {
         <div class="event-name b-PI row" onclick="showLessonEventModal('@Html.Raw(item.LessonID.EncryptKey())',event);">
             <div class="col-2 text-center">

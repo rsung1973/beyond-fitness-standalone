@@ -18,6 +18,8 @@
 @using WebHome.Properties;
 
 @{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
@@ -26,10 +28,10 @@
 
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
-        ? "tw"
-        : lang == "en-US"
-            ? "en"
-            : "ja";
+    ? "tw"
+    : lang == "en-US"
+    ? "en"
+    : "ja";
 
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
@@ -40,70 +42,95 @@
     await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
 
 }
-<div class="card" data-card-height="cover">
-    <div class="card-center">
-        <div class="menu-title text-center">
-            <h1 class="text-center mt-4"><i class="fa fa-lock color-beyondwhite-dark fa-4x"></i></h1>
-            <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-theme pt-2">輸入動態密碼</h1>
-            <p class="color-theme opacity-60">Check OTP</p>
-        </div>
+<div class="card" data-card-height="230" style="margin-bottom:-70px">
 
-        <div class="content">
-            <p class="boxed-text-l color-theme text-start line-height-l px-2">
-                請您開啟E-mail信箱或Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入6位數字
-            </p>
-            <div class="text-center mb-3 pt-3 pb-2">
-                <h1 class="font-30 font-700 color-beyondred-dark">@(prefixCode)-</h1>
-                <form action="">
-                    <input type="hidden" name="Code" value="@(prefixCode)" />
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                    <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1">
-                </form>
-            </div>
-            <a href="#" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
+    <div class="card-center text-center">
+
+        <h1 class="color-white font-600 mb-1 mt-n4 font-32">輸入動態密碼·</h1>
+
+        <p class="color-highlight">Check OTP</p>
+
+    </div>
+
+    <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    <div class="card-bg preload-img" data-src="../images/card/declaration.jpg"></div>
+
+</div>
+
+
+
+<div class="card card-style text-center">
+
+    <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+        <h1><i class="fa fa-lock color-beyondred-dark fa-4x"></i></h1>
+
+        <p class=" boxed-text-l color-theme font-18">
+
+            請您開啟Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入最後6位數字
+
+        </p>
+
+        <div class="text-center mb-3 pt-3 pb-2">
+            <h1 class="font-30 font-700 color-theme">@(prefixCode)</h1>
+            <form action="">
+                <input type="hidden" name="Code" value="@(prefixCode)" />
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+                <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code"
+                    maxlength="1">
+            </form>
         </div>
-        <a href="#" data-menu="setting-Passwd"
-            class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">確定</a>
+        <a href="javascript:sendOTP();"
+            class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
     </div>
 </div>
 
-<a href="#"
-    class="close-menu color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
+<a href="javascript:validatePIN();" data-menu="update-Passwd"
+    class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
 
-@* <div class="content">
+<a href="Settings"
+    class="color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
 
-    <p class="boxed-text-l color-theme text-start line-height-l px-2">
+<!--更新密碼-->
 
-        請您開啟Email信箱查看動態密碼，並於下方輸入最後6位數字
+<div id="update-Passwd" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over">
+</div>
+<script>
+    function sendOTP() {
+        var viewModel = {
+        };
+        doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
+            Swal.fire(
+                '動態密碼已重送!',
+                '請開啟信箱查看動態密碼 Bye!',
+                'success'
+            );
+        });
+    }
 
-    </p>
-
-    <div class="text-center mb-3 pt-3 pb-2">
-
-        <h1 class="font-30 font-700 color-theme">@(prefixCode)</h1>
-
-        <form action="">
-            <input type="hidden" name="Code" value="@(prefixCode)"/>
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-            <input class="otp mx-1 rounded-sm text-center font-20 font-900" type="tel" placeholder="❋" name="Code" maxlength="1" />
-
-        </form>
-
-    </div>
-
-    <a href="javascript:sendOTP();" class="text-center d-block mb-4 font-12 color-blue-light font-14">是否沒有收到OTP？點此重新發送</a>
-
-</div> *@
+    function validatePIN() {
+        var viewModel = {
+            'PIN': $('input[name="Code"]').serializeObject().Code.join('')
+        };
+        doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel,
+            function (data) {
+                $('#update-Passwd').html(data);
+                $('#update-Passwd').addClass('menu-active');
+            },
+            function () {
+                $('.menu-active').removeClass('menu-active');
+            });
+    }
+</script>

@@ -1,0 +1,439 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    IFormCollection forms = this.Model as IFormCollection;
+
+    CourseContract item = null;
+    if(forms.ContainsKey("keyID"))
+    {
+        int contractID = forms["keyID"].ToString().DecryptKeyValue();
+        item = models.GetTable<CourseContract>().Where(c=>c.ContractID == contractID).FirstOrDefault();
+    }    
+
+}
+
+@section MainContent
+{
+    @if(item!=null)
+    {
+    <div class="card header-card shape-rounded" data-card-height="210">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+    </div>
+    <!--合約詳細資訊-->
+    <div class="card">
+        <div class="content" id="detail">
+            <div class="tab-controls tabs-large tabs-line">
+                <a href="#" class="font-18" data-active data-bs-toggle="collapse" data-bs-target="#info"><i
+                        class="fa-solid fa-info"></i>&nbsp;</a>
+                <a href="#" class="font-18" data-bs-toggle="collapse" data-bs-target="#payment"><i
+                        class="fa-solid fa-dollar-sign"></i>&nbsp;</a>
+                <a href="#" class="font-18" data-bs-toggle="collapse" data-bs-target="#lesson"><i
+                    class="fa-solid fa-list-check"></i>&nbsp;</a>
+            </div>
+            <div class="clearfix mb-3"></div>
+            <div data-bs-parent="#detail" class="collapse show" id="info">
+                <div class="row mt-5">
+                    <div class="col-12 col-lg-6 col-md-6">
+                        <!--合約資訊-->
+                        <div class="card mb-0">
+                            <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                                <div class="d-flex">
+                                    <h1 class="mb-0 color-theme letter-spacing-2">合約資訊·<small
+                                            class="ps-2 font-12 font-400 text-capitalize opacity-60">Contract
+                                            Info</small></h1>
+                                    <div class="ms-auto">
+                                        <a href="#"
+                                            class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-xl shadow-xl"
+                                            target="_blank">
+                                            <i class="fa-solid fa-file-pdf font-30"></i>
+                                        </a>
+                                        <span class="d-block color-theme font-12">電子合約</span>
+                                    </div>
+                                </div>
+                                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mb-4">
+                                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                </svg>
+                                <div class="row mb-2">
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約類型</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                    <p class="color-theme letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                    <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約起日</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                    <p class="color-theme letter-spacing-1">@($"{item.ValidFrom:yyyy/MM/dd}")</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約迄日</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                    <p class="color-theme letter-spacing-1">@($"{item.Expiration:yyyy/MM/dd}")</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約金額</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                    <p class="color-theme letter-spacing-1">@($"{item.TotalCost:##,###,###,###}")</p>
+                                    </div>                                 
+                                    <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40 d-lg-none d-md-none">
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">簽約分店</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                        <p class="color-theme letter-spacing-1">@(item.CourseContractExtension?.BranchStore.BranchName)</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">主簽約人</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                            <p class="color-theme letter-spacing-1">@(item.ContractLearnerName())</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">簽約顧問</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                        <p class="color-theme letter-spacing-1">@(item.ServingCoach.UserProfile.FullName())</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-md-6">
+                        <!--購買資訊-->
+                        <div class="card bg-beyondwhite-light mb-0">
+                            <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                                <h1 class="mb-0 color-beyond-dark letter-spacing-2">購買資訊·<small
+                                        class="ps-2 font-12 font-400 text-capitalize opacity-60">Purchase
+                                        Info</small></h1>
+                                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+                                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                </svg>
+                                @{
+                                    LessonPriceType priceType = item.CourseContractOrder.FirstOrDefault()?.LessonPriceType ?? item.LessonPriceType;
+                                }
+                                <div class="row mb-2">
+                                    @{
+                                        foreach (var rc in item.RegisterLessonContract.OrderBy(c=>c.Title))
+                                        {
+                                            var registerItem = rc.RegisterLesson;
+                                            var priceItem = registerItem.LessonPriceType;
+                                            if(registerItem.RegisterLessonSharing!=null
+                                                && registerItem.RegisterLessonSharing.ShareID!=registerItem.RegisterID)
+                                            {
+                                                continue;
+                                            }
+                                            <div class="col-8 mb-2">
+                                                <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                                                    @Html.Raw(rc.Title)
+                                                    @{
+                                                        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+                                                        {
+                                                            case Naming.LessonPriceStatus.營養課程:
+                                                                <text>S.D Session《一個月》</text>
+                                                                break;
+                                                            case Naming.LessonPriceStatus.運動恢復課程:
+                                                                <text>S.R Session</text>
+                                                                break;
+                                                            case Naming.LessonPriceStatus.運動防護課程:
+                                                                <text>A.T Session</text>
+                                                                break;
+                                                            case Naming.LessonPriceStatus.自主訓練:
+                                                                <text>P.I Session</text>
+                                                                break;
+                                                            default:
+                                                                <text>P.T Session</text>
+                                                                break;
+                                                        }
+                                                    } 
+                                                    <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small></p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+                                            </div>                                            
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>                
+                <div class="row my-5">
+                    @{
+                        var members = item.CourseContractMember.Select(m => m.UserProfile);
+                        if (members.Count() > 1) {
+                            int idx = 0;
+                            <div class="col-12 col-lg-6 col-md-6">
+                                <!--成員資訊-->
+                                <div class="card bg-beyondwhite-dark">
+                                    <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                                        <h1 class="mb-0 color-beyond-dark letter-spacing-2">成員資訊·<small
+                                                class="ps-2 font-12 font-400 text-capitalize opacity-60">Member
+                                                Info</small></h1>
+                                        <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+                                            <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                        </svg>
+                                        <div class="row mb-1">
+                                            @foreach (var member in members)
+                                            {
+                                                idx++;
+                                                <div class="col-4 mb-2">
+                                                    <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">成員@(idx)</p>
+                                                </div>   
+                                                <div class="col-8 mb-2">
+                                                    <p class="color-beyond-dark letter-spacing-1">@(member.RealName)（@(member.UserProfileExtension.Gender == "F" ? "女" : "男")）</p>
+                                                </div>
+                                            } 
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                                                    
+                        }
+                    }
+                    @if (item.InstallmentID.HasValue)
+                    {
+                        var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
+                        <div class="col-12 col-lg-6 col-md-6">
+                            <!--分期計畫-->
+                            <div class="card bg-beyond-dark">
+                                <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                                    <h1 class="mb-0 color-white letter-spacing-2">分期計畫·<small
+                                            class="ps-2 font-12 font-400 text-capitalize">Installment
+                                            Plan</small>
+                                    </h1>
+                                    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+                                        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                    </svg>
+                                    <div class="row mb-2">
+                                        <div class="col-7 col-lg-6 col-md-7 mb-1">
+                                            <p class="color-white font-700 font-18 mb-2 letter-spacing-1">合約編號</p>
+                                        </div>
+                                        <div class="col-5 col-lg-6 col-md-5 mb-1">
+                                            <p class="color-white font-700 font-18 mb-2 letter-spacing-1 float-end">繳款日</p>
+                                        </div>
+                                    </div>                                
+                                    <div class="row mb-2">
+                                        @foreach (var install in installment.OrderBy(c => c.ContractID))
+                                        {
+                                            <div class="col-8 col-lg-6 col-md-8 mb-2">
+                                                        <p class="color-white font-16 mb-2 letter-spacing-1">@(install.ContractNo)</p>
+                                            </div>
+                                            <div class="col-4 col-lg-6 col-md-4 mb-2">
+                                                <p class="color-beyondwhite-dark font-16 mb-2 float-end letter-spacing-1">
+                                                            @($"{(install.ContractPayment.FirstOrDefault()?.Payment.PayoffDate):yyyy/MM/dd}")
+                                                </p>
+                                            </div>                                        
+                                        }                                    
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                    
+                    }
+                </div>
+            </div>
+            <!--付款資訊-->
+            @{
+                var payment = item.ContractPayment.FirstOrDefault()?.Payment;               
+                if (payment != null) {                     
+                     <div data-bs-parent="#detail" class="collapse" id="payment">
+                        <div class="card">
+                            <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                                <div class="d-flex">
+                                    <h1 class="mb-2 color-theme letter-spacing-2">付款資訊·<small
+                                            class="ps-2 font-12 font-400 text-capitalize opacity-60">Payment
+                                            Info</small>
+                                    </h1>
+                                    <div class="ms-auto">
+                                        <a href="#" class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-xl shadow-xl"
+                                            target="_blank">
+                                            <i class="fa-solid fa-file-invoice-dollar font-30"></i>
+                                        </a>
+                                        <span class="d-block color-theme font-12">電子發票</span>
+                                    </div>
+                                </div>
+                                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mb-4">
+                                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                </svg>
+
+                                <div class="row mb-2">
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">付款日期</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                        <p class="color-theme letter-spacing-1">@($"{(payment.PayoffDate):yyyy/MM/dd}")</p>
+                                    </div>
+                                    <div class="col-4 mb-2">
+                                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">付款類型</p>
+                                    </div>
+                                    <div class="col-8 mb-2">
+                                            <p class="color-theme letter-spacing-1">@(payment.PaymentType)</p>
+                                    </div>
+                                    @{
+                                        InvoiceItem invoice = payment.InvoiceItem;
+                                        if (invoice != null) {
+                                            <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票號碼</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                <p class="color-theme letter-spacing-1">@(invoice.TrackCode)@(invoice.No)</p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">賣方統編</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                    <p class="color-theme letter-spacing-1">@(invoice?.InvoiceSeller?.ReceiptNo)</p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票金額</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                <p class="color-theme letter-spacing-1">@($"{invoice?.InvoiceAmountType.TotalAmount:##,###,###,###}")</p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票日期</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                    <p class="color-theme letter-spacing-1">@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">會員載具</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)
+                                                    <a href="#"
+                                                        class="btn btn-border rounded-xl fst-italic border-lightgray-dark color-beyondwhite-dark bg-beyond-dark px-3 py-1 font-12 mx-1">載具歸戶</a>
+                                                </p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">手機條碼</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                    <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)</p>
+                                            </div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">買受人統編</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                <p class="color-theme letter-spacing-1">@(!invoice.InvoiceBuyer.IsB2C() ? invoice.InvoiceBuyer.ReceiptNo : null)</p>
+                                            </div>
+                                            <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
+                                            <div class="col-4 mb-2">
+                                                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票品項</p>
+                                            </div>
+                                            <div class="col-8 mb-2">
+                                                <p class="color-theme letter-spacing-1">@Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief)))</p>
+                                            </div>
+                                        }
+                                    }                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }           
+            <!--上課詳細資訊-->
+            <div data-bs-parent="#detail" class="collapse" id="lesson">
+                <div class="card mb-0">
+                    <div class="content mx-4 mx-lg-5 mx-md-4 mt-5 mb-0">
+                        <div class="d-flex">
+                            <div>
+                                <h1 class="mb-2 color-theme letter-spacing-2">課程資訊·<small
+                                        class="ps-2 font-12 font-400 text-capitalize opacity-60">Lesson
+                                        Info</small>
+                                </h1>
+                            </div>
+
+                        </div>
+                        <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+                            <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                        </svg>
+                    </div>
+                    <div class="content mx-1 mx-lg-5 mx-md-4">
+                        <table class="table table-borderless text-center rounded-sm shadow-l" style="overflow: hidden;">
+                            <thead>
+                                <tr class="bg-beyond-dark">
+                                    <th scope="col" class="color-beyondwhite-dark py-3 font-16"></th>
+                                    <th scope="col" class="color-beyondwhite-dark py-3 font-16">類型</th>
+                                    <th scope="col" class="color-beyondwhite-dark py-3 font-16">日期</th>
+                                    <th scope="col" class="color-beyondwhite-dark py-3 font-16">簽到</th>
+                                    <th scope="col" class="color-beyondwhite-dark py-3 font-16">學生</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr data-menu="lesson-info">
+                                    <td class="color-theme py-3">1</td>
+                                    <td class="color-theme font-15 py-3">P.T</td>
+                                    <td class="color-theme font-15 py-3">2023/12/25</td>
+                                    <td class="color-theme font-15 py-3"><i class="fa-solid fa-check"></i></td>
+                                    <td class="color-theme font-15 py-3">劉思琳<i
+                                            class="fa fa-angle-right ps-2 color-beyondred-dark"></i></td>
+                                </tr>
+                                <tr data-menu="lesson-info">
+                                    <td class="color-theme py-3">2</td>
+                                    <td class="color-theme font-15 py-3">S.R</td>
+                                    <td class="color-theme font-15 py-3">2023/12/25</td>
+                                    <td class="color-theme font-15 py-3"><i class="fa-solid fa-check"></i></td>
+                                    <td class="color-theme font-15 py-3">劉思琳<i
+                                            class="fa fa-angle-right ps-2 color-beyondred-dark"></i></td>
+                                </tr>
+                                <tr data-menu="lesson-info">
+                                    <td class="color-theme py-3">3</td>
+                                    <td class="color-theme font-15 py-3">P.T</td>
+                                    <td class="color-theme font-15 py-3">2023/12/25</td>
+                                    <td class="color-theme font-15 py-3"></td>
+                                    <td class="color-theme font-15 py-3">宋瑞文<i
+                                            class="fa fa-angle-right ps-2 color-beyondred-dark"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="TransactionForHistoryContract" class="float-end btn color-theme bg-theme font-14"><i class="fa-solid fa-chevron-left color-beyondred-dark me-2"></i>回列表</a>
+        </div>         
+    </div>
+    }
+}
+
+@section PopupBox
+{
+   
+}
