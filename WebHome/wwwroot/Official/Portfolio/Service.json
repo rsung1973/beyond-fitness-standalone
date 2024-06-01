@@ -106,12 +106,19 @@
                     "LinkName": "保險單證明",
                 },
                 {
+                    "Name": "場館使用器材",
+                    "Desc": "Beyond提供多種適合不同訓練的器材，為學生提供安全與適合訓練設備。",
+                    "Link": "../images/service/equipment_202406.jpg",
+                    "LinkType": "IMG",
+                    "LinkName": "器材清單",
+                },
+                {
                     "Name": "信託履約保證",
-                    "Desc": "確實遵守台灣相關法規，依信託法規規定交付台新銀行（即信託業者）開立信託專戶管理，保障您的權益讓你放心在BEYOND運動。",
+                    "Desc": "確實遵守台灣相關法規，依信託法規規定交付台新銀行（即信託業者）開立信託專戶管理，保障您的權益讓你放心在Beyond運動。",
                     "Link": "../download/trust.pdf",
                     "LinkType": "PDF",
                     "LinkName": "信託聲明",
-                },
+                }
             ]
         }
 
