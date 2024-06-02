@@ -413,6 +413,73 @@ namespace WebHome.Controllers
             return View(viewResult.ViewName, item);
         }
 
+        [HttpPost]
+        public async Task<ActionResult> ShowLessonInfoAsync([FromBody] LessonTimeViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if(viewModel.KeyID!=null)
+            {
+                viewModel.LessonID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            var item = models.GetTable<LessonTime>().Where(l=>l.LessonID==viewModel.LessonID).FirstOrDefault();
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            var viewResult = CheckView("LessonInfo");
+            return View(viewResult.ViewName, item);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ShowPaymentInfoAsync([FromBody] PaymentViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.PaymentID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            var item = models.GetTable<Payment>().Where(l => l.PaymentID == viewModel.PaymentID).FirstOrDefault();
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            var viewResult = CheckView("PopupPaymentInfo");
+            return View(viewResult.ViewName, item);
+
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> SignOnAsync(LoginViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(l => l.UID == viewModel.UID).FirstOrDefault();
+            item ??= viewModel.ValiateLogin(models, ModelState);
+
+            if (item == null)
+            {
+                ViewBag.ModelState = ModelState;
+                var viewResult = CheckView("Login");
+                return View(viewResult.ViewName, item);
+            }
+
+            await HttpContext.SignOnAsync(item, viewModel.RememberMe);
+            return Main();
+
+        }
 
     }
 }

@@ -1027,7 +1027,8 @@ namespace WebHome.Controllers
                 ds.Tables.Add(table);
 
                 dataItems = items.Where(l => l.RegisterLesson.RegisterLessonContract != null)
-                                .Where(l => l.RegisterLesson.RegisterLessonContract.CourseContract.Entrusted == false);
+                                .Where(l => l.RegisterLesson.RegisterLessonContract.CourseContract.Entrusted == false
+                                            || l.RegisterLesson.RegisterLessonContract.CourseContract.CourseContractType.TrustType == (int)CourseContractType.TrustTypeDefinition.Ignore);
                 table = buildTable(dataItems);
                 table.TableName = $"{dateFrom:yyyyMM} 非信託合約上課盤點彙總表";
                 ds.Tables.Add(table);

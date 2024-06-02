@@ -60,6 +60,7 @@
       <Association Name="LevelExpression_Payment" Member="Payment" ThisKey="LevelID" OtherKey="Status" Type="Payment" />
       <Association Name="LevelExpression_TrainingPlan" Member="TrainingPlan" ThisKey="LevelID" OtherKey="PlanStatus" Type="TrainingPlan" />
       <Association Name="LevelExpression_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="LevelID" OtherKey="Status" Type="QuestionnaireRequest" />
+      <Association Name="LevelExpression_UserProfileProperty" Member="UserProfileProperty" ThisKey="LevelID" OtherKey="PropertyID" Type="UserProfileProperty" />
     </Type>
   </Table>
   <Table Name="dbo.Attachment" Member="Attachments">
@@ -215,6 +216,7 @@
       <Association Name="UserProfile_TrialLearner1" Member="DealedTrial" Storage="_TrialLearner1" ThisKey="UID" OtherKey="AssigneeID" Type="TrialLearner" />
       <Association Name="UserProfile_ForEmployee" Member="ForEmployee" ThisKey="UID" OtherKey="UID" Type="ForEmployee" />
       <Association Name="UserProfile_PaymentTransaction" Member="PaymentTransaction" ThisKey="UID" OtherKey="PayerID" Type="PaymentTransaction" />
+      <Association Name="UserProfile_UserProfileProperty" Member="UserProfileProperty" ThisKey="UID" OtherKey="UID" Type="UserProfileProperty" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -3148,6 +3150,16 @@
       <Association Name="BranchStore_PaymentTransaction" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="Payment_PaymentTransaction" Member="Payment" ThisKey="PaymentID" OtherKey="PaymentID" Type="Payment" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="UserProfile_PaymentTransaction" Member="UserProfile" ThisKey="PayerID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.UserProfileProperty" Member="UserProfileProperty">
+    <Type Name="UserProfileProperty">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="CommitmentDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Association Name="LevelExpression_UserProfileProperty" Member="LevelExpression" ThisKey="PropertyID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
+      <Association Name="UserProfile_UserProfileProperty" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

@@ -697,6 +697,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertPaymentTransaction(PaymentTransaction instance);
     partial void UpdatePaymentTransaction(PaymentTransaction instance);
     partial void DeletePaymentTransaction(PaymentTransaction instance);
+    partial void InsertUserProfileProperty(UserProfileProperty instance);
+    partial void UpdateUserProfileProperty(UserProfileProperty instance);
+    partial void DeleteUserProfileProperty(UserProfileProperty instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2595,6 +2598,14 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		public System.Data.Linq.Table<UserProfileProperty> UserProfileProperty
+		{
+			get
+			{
+				return this.GetTable<UserProfileProperty>();
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.InquireVacantNo")]
 		public ISingleResult<InquireVacantNoResult> InquireVacantNo([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SellerID", DbType="Int")] System.Nullable<int> sellerID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Year", DbType="Int")] System.Nullable<int> year, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PeriodNo", DbType="Int")] System.Nullable<int> periodNo)
 		{
@@ -3642,6 +3653,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<QuestionnaireRequest> _QuestionnaireRequest;
 		
+		private EntitySet<UserProfileProperty> _UserProfileProperty;
+		
 		private bool serializing;
 		
     #region 擴充性方法定義
@@ -4104,6 +4117,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LevelExpression_UserProfileProperty", Storage="_UserProfileProperty", ThisKey="LevelID", OtherKey="PropertyID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24, EmitDefaultValue=false)]
+		public EntitySet<UserProfileProperty> UserProfileProperty
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._UserProfileProperty.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._UserProfileProperty;
+			}
+			set
+			{
+				this._UserProfileProperty.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -4364,6 +4396,18 @@ namespace WebHome.Models.DataEntity
 			entity.LevelExpression = null;
 		}
 		
+		private void attach_UserProfileProperty(UserProfileProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.LevelExpression = this;
+		}
+		
+		private void detach_UserProfileProperty(UserProfileProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.LevelExpression = null;
+		}
+		
 		private void Initialize()
 		{
 			this._Documents = new EntitySet<Document>(new Action<Document>(this.attach_Documents), new Action<Document>(this.detach_Documents));
@@ -4386,6 +4430,7 @@ namespace WebHome.Models.DataEntity
 			this._Payment = new EntitySet<Payment>(new Action<Payment>(this.attach_Payment), new Action<Payment>(this.detach_Payment));
 			this._TrainingPlan = new EntitySet<TrainingPlan>(new Action<TrainingPlan>(this.attach_TrainingPlan), new Action<TrainingPlan>(this.detach_TrainingPlan));
 			this._QuestionnaireRequest = new EntitySet<QuestionnaireRequest>(new Action<QuestionnaireRequest>(this.attach_QuestionnaireRequest), new Action<QuestionnaireRequest>(this.detach_QuestionnaireRequest));
+			this._UserProfileProperty = new EntitySet<UserProfileProperty>(new Action<UserProfileProperty>(this.attach_UserProfileProperty), new Action<UserProfileProperty>(this.detach_UserProfileProperty));
 			OnCreated();
 		}
 		
@@ -6211,6 +6256,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<PaymentTransaction> _PaymentTransaction;
 		
+		private EntitySet<UserProfileProperty> _UserProfileProperty;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -8002,6 +8049,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserProfileProperty", Storage="_UserProfileProperty", ThisKey="UID", OtherKey="UID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=83, EmitDefaultValue=false)]
+		public EntitySet<UserProfileProperty> UserProfileProperty
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._UserProfileProperty.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._UserProfileProperty;
+			}
+			set
+			{
+				this._UserProfileProperty.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -8806,6 +8872,18 @@ namespace WebHome.Models.DataEntity
 			entity.UserProfile = null;
 		}
 		
+		private void attach_UserProfileProperty(UserProfileProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserProfileProperty(UserProfileProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
 		private void Initialize()
 		{
 			this._UserRole = new EntitySet<UserRole>(new Action<UserRole>(this.attach_UserRole), new Action<UserRole>(this.detach_UserRole));
@@ -8869,6 +8947,7 @@ namespace WebHome.Models.DataEntity
 			this._TrialLearner1 = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner1), new Action<TrialLearner>(this.detach_TrialLearner1));
 			this._ForEmployee = new EntitySet<ForEmployee>(new Action<ForEmployee>(this.attach_ForEmployee), new Action<ForEmployee>(this.detach_ForEmployee));
 			this._PaymentTransaction = new EntitySet<PaymentTransaction>(new Action<PaymentTransaction>(this.attach_PaymentTransaction), new Action<PaymentTransaction>(this.detach_PaymentTransaction));
+			this._UserProfileProperty = new EntitySet<UserProfileProperty>(new Action<UserProfileProperty>(this.attach_UserProfileProperty), new Action<UserProfileProperty>(this.detach_UserProfileProperty));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -80037,6 +80116,239 @@ namespace WebHome.Models.DataEntity
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfileProperty")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class UserProfileProperty : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private int _PropertyID;
+		
+		private System.Nullable<System.DateTime> _CommitmentDate;
+		
+		private string _Description;
+		
+		private EntityRef<LevelExpression> _LevelExpression;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnPropertyIDChanging(int value);
+    partial void OnPropertyIDChanged();
+    partial void OnCommitmentDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnCommitmentDateChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
+    #endregion
+		
+		public UserProfileProperty()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PropertyID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int PropertyID
+		{
+			get
+			{
+				return this._PropertyID;
+			}
+			set
+			{
+				if ((this._PropertyID != value))
+				{
+					if (this._LevelExpression.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPropertyIDChanging(value);
+					this.SendPropertyChanging();
+					this._PropertyID = value;
+					this.SendPropertyChanged("PropertyID");
+					this.OnPropertyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitmentDate", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public System.Nullable<System.DateTime> CommitmentDate
+		{
+			get
+			{
+				return this._CommitmentDate;
+			}
+			set
+			{
+				if ((this._CommitmentDate != value))
+				{
+					this.OnCommitmentDateChanging(value);
+					this.SendPropertyChanging();
+					this._CommitmentDate = value;
+					this.SendPropertyChanged("CommitmentDate");
+					this.OnCommitmentDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LevelExpression_UserProfileProperty", Storage="_LevelExpression", ThisKey="PropertyID", OtherKey="LevelID", IsForeignKey=true)]
+		public LevelExpression LevelExpression
+		{
+			get
+			{
+				return this._LevelExpression.Entity;
+			}
+			set
+			{
+				LevelExpression previousValue = this._LevelExpression.Entity;
+				if (((previousValue != value) 
+							|| (this._LevelExpression.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LevelExpression.Entity = null;
+						previousValue.UserProfileProperty.Remove(this);
+					}
+					this._LevelExpression.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfileProperty.Add(this);
+						this._PropertyID = value.LevelID;
+					}
+					else
+					{
+						this._PropertyID = default(int);
+					}
+					this.SendPropertyChanged("LevelExpression");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserProfileProperty", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserProfileProperty.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfileProperty.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._LevelExpression = default(EntityRef<LevelExpression>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 	

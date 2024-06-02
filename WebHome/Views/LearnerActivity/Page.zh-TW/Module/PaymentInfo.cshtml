@@ -31,7 +31,7 @@
             : "ja";
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
-    var payment = this.Model;
+    Payment payment = this.Model as Payment;
 
 }
 <div class="row mb-2">

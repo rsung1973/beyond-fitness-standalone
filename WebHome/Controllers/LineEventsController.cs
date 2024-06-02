@@ -322,7 +322,7 @@ namespace WebHome.Controllers
                                             .FirstOrDefault()?.UserProfile;
                             if (user != null)
                             {
-                                return RedirectToAction("QuickLogin", "CornerKick",new { KeyID = ((String)lineID).EncryptKey() });
+                                return RedirectToAction("SignOn", "LearnerActivity", new { KeyID = user.UID.EncryptKey() });
                             }
                         }
                     }

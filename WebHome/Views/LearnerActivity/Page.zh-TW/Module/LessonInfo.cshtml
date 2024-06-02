@@ -30,18 +30,21 @@
             ? "en"
             : "ja";
 
-    var profile = (await Context.GetUserAsync()).LoadInstance(models);
-    var lesson = this.Model;
-
+    LessonTime lesson = this.Model as LessonTime;
+    LessonPriceType priceItem = lesson?.RegisterLesson.LessonPriceType;
+    var learners = lesson.GroupingLesson.RegisterLesson.Select(r => r.UserProfile);
 }
 <div class="menu-title">
-    <h1 class="boxed-text-xl font-28 color-beyondred-light letter-spacing-5">體能訓練</h1>
-    <p class="text-center pt-3 font-18"><i class="fa-solid fa-fire-flame-curved px-2"></i>60 Min</p>
+    <h1 class="boxed-text-xl font-28 color-beyondred-light letter-spacing-5">@Html.Raw(priceItem.SessionName)</h1>
+    <p class="text-center pt-3 font-18"><i class="fa-solid fa-fire-flame-curved px-2"></i>@(priceItem.DurationInMinutes) Min</p>
 </div>
 <div class="content">
     <div class="row mb-5">
-        <div class="col-12 text-center">            
-            <img src="../images/avatars/default-fm.png" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light">
+        <div class="col-12 text-center">  
+            @foreach(var u in learners)
+            {
+            <img src="@(u.UserProfileExtension.Gender == "F" ? "../images/avatars/default-fm.png" : "../images/avatars/default-mm.png")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
+            }
         </div>
     </div>
     <div class="row mb-0">       
@@ -49,32 +52,34 @@
             <p class="color-theme font-700 font-16 letter-spacing-1 mb-2">上課學生</p>
         </div>
         <div class="col-8">
-            <p class="color-theme opacity-60 letter-spacing-1 float-end">劉思琳</p>
+            <p class="color-theme opacity-60 letter-spacing-1 float-end">
+                @Html.Raw(String.Join("/",learners.Select(u=>u.RealName)))
+            </p>
         </div>
         <div class="col-4">
             <p class="color-theme font-700 font-16 letter-spacing-1 mb-2">體能顧問</p>
         </div>
         <div class="col-8">
-            <p class="color-theme opacity-60 letter-spacing-1 float-end">李玟融 Michael Lee</p>
+            <p class="color-theme opacity-60 letter-spacing-1 float-end">@Html.Raw(lesson?.AsAttendingCoach.UserProfile.FullName())</p>
         </div>
         <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
         <div class="col-4">
             <p class="color-theme font-700 font-16 letter-spacing-1 mb-2">上課地點</p>
         </div>
         <div class="col-8">
-            <p class="color-theme opacity-60 letter-spacing-1 float-end"><i class="fa-solid fa-location-dot pe-2"></i>信義安和</p>
+            <p class="color-theme opacity-60 letter-spacing-1 float-end"><i class="fa-solid fa-location-dot pe-2"></i>@Html.Raw(lesson?.BranchStore?.BranchName)</p>
         </div>
         <div class="col-4">
             <p class="color-theme font-700 font-16 letter-spacing-1 mb-2">上課時間</p>
         </div>
         <div class="col-8">
-            <p class="color-theme opacity-60 letter-spacing-1 float-end">2024/12/25 16:00</p>
+            <p class="color-theme opacity-60 letter-spacing-1 float-end">@($"{lesson?.ClassTime:yyyy/MM/dd HH:mm}")</p>
         </div>        
         <div class="col-5">
             <p class="color-theme font-700 font-16 letter-spacing-1 mb-2">學生簽到時間</p>
         </div>
         <div class="col-7">
-            <p class="color-theme opacity-60 letter-spacing-1 float-end">2024/12/25 16:08</p>
+            <p class="color-theme opacity-60 letter-spacing-1 float-end">@($"{lesson?.LessonPlan?.CommitAttendance:yyyy/MM/dd HH:mm}")</p>
         </div>      
     </div>
     <div class="my-5"></div>

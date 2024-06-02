@@ -824,6 +824,26 @@ namespace WebHome.Models.DataEntity
                 }
             }
         }
+
+        public String SessionName
+        {
+            get
+            {
+                switch ((Naming.LessonPriceStatus?)this.Status)
+                {
+                    case Naming.LessonPriceStatus.營養課程:
+                        return "S.D Session《一個月》";
+                    case Naming.LessonPriceStatus.運動恢復課程:
+                        return "S.R Session";
+                    case Naming.LessonPriceStatus.運動防護課程:
+                        return "A.T Session";
+                    case Naming.LessonPriceStatus.自主訓練:
+                        return "P.I Session";
+                    default:
+                        return "P.T Session";
+                }
+            }
+        }
     }
 
     public partial class RegisterLesson
@@ -1051,6 +1071,14 @@ namespace WebHome.Models.DataEntity
             時間確認中 = 6,
             已約好準備體驗 = 7,
             完成體驗 = 8,
+        }
+    }
+
+    public partial class UserProfileProperty
+    {
+        public enum PropertyDefinition
+        {
+            ValidEmail = 1301,
         }
     }
 }

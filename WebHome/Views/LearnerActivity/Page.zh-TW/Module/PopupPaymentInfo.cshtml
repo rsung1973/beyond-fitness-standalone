@@ -1,0 +1,54 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+}
+<div class="menu-title">
+
+    <div class="d-flex mx-2 mx-lg-4 my-2">
+
+        <!-- <h1 class="letter-spacing-2 mb-0 color-beyondred-theme">付款資訊·<small
+
+                class="font-12 font-500 text-capitalize color-beyondred-dark d-block">Payment Info</small></h1> -->
+
+        <h1 class="mb-2 text-uppercase letter-spacing-2 d-inline">
+            付款資訊·<small class="ps-2 font-12 font-400 text-capitalize opacity-60">Payment Info</small>
+        </h1>
+
+        <a href="javascript:$('.menu-active').removeClass('menu-active');" class="close-menu color-theme">
+            <i class="fa fa-times"></i>&nbsp;
+        </a>
+
+    </div>
+
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mx-2 ps-3 mx-lg-4">
+
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+    </svg>
+
+</div>
+@{
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/PaymentInfo.cshtml");
+}
