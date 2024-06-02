@@ -34,18 +34,10 @@
             : "ja";
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
-    var _learner = profile.LoadInstance(models);
+    var _learner = profile;
 
 }
-    @{ 
-        CourseContractQueryViewModel viewModel = new CourseContractQueryViewModel
-        {
-            MemberID = _learner.UID,
-            ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
-        };
-        IQueryable<CourseContract> items = viewModel.InquireContract(models)
-            .Where(c => c.Status > (int)Naming.CourseContractStatus.已生效);
-    }
+
 
 @section MainContent
 {
@@ -59,60 +51,47 @@
     <!--合約清單-->
     <div class="card mt-5 mb-0" style="box-shadow:none">
         <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
-            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">歷史合約·<small
-                    class="ps-2 font-14 font-400 text-capitalize opacity-60">History Contract</small></h4>
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+                歷史合約·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">History Contract</small>
+            </h4>
             <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-3 mb-5">
                 <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
             </svg>
             <div class="clearfix"></div>
             @{
-                var idx=0;
-                var iconDisplay = "fa-solid fa-user";
-                foreach (var item in items.OrderByDescending(l => l.Expiration).Take(10)) 
-                {
-                    idx++;                
-                    if (item.CourseContractType.ContractCode.StartsWith("CN")) {
-                        iconDisplay = "fa-solid fa-apple-whole";
-                    } else if (item.CourseContractType.ContractCode.StartsWith("CR")) {
-                        iconDisplay = "fa-solid fa-hands";
-                    } else if (item.CourseContractType.ContractCode.StartsWith("CI")) {
-                        iconDisplay = "fa-regular fa-user";
-                    } else {
-                        iconDisplay = "fa-solid fa-user";
-                    }
-                    if (idx > 1 ) {
-                        <div class="divider mt-4 mb-4"></div>
-                    }                
-                    <div class="d-flex" onclick="javascript:gotoContractInfo('@Html.Raw(item.ContractID.EncryptKey())');">
-                        <div>
-                            <a href="javascript:gotoContractInfo('@Html.Raw(item.ContractID.EncryptKey())');"
-                                class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl"><i
-                                    class="@(iconDisplay) font-24"></i></a>
-                        </div>
-                        <div class="align-self-center ps-3">
-                            <h5 class="font-500 font-18 mb-1 letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</h5>
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">@($"{item.ValidFrom:yyyy/MM/dd}")</span>
-                        </div>
-                        <div class="align-self-center ms-auto me-3">
-                            <h5 class="mb-0 text-end font-400">@(item.Lessons)</h5>                            
-                        </div>
-                        <div class="align-self-center">
-                            <i class="fa fa-angle-right color-highlight font-16"></i>
-                        </div>
-                    </div>                
-                }   
-            }         
-
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseContractHistoryList.cshtml");
+            }
+            <p id="moreItems">
+                <a href="javascript:readMore();"
+                   class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">載入更多 ...</a>
+            </p>
             <p>
                 <a href="TransactionForActiveContract"
-                    class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">生效中合約</a>
+                   class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">生效中合約</a>
             </p>
         </div>
     </div>
     <script>
         function gotoContractInfo(keyID) {
             $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForHistoryContract","LearnerActivity"))' });
-        }  
+        }
+
+        var currentIndex = 0;
+        function readMore() {
+            var viewModel = {
+                'currentIndex': currentIndex
+            };
+            doPost('@Html.Raw(Url.Action("CourseContractHistoryList", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $(data).insertBefore($('#moreItems'));
+                    if (currentIndex < 0) {
+                        $('#moreItems').remove();
+                    }
+                },
+                function () {
+                    
+                });
+        }
     </script>
 }
 
