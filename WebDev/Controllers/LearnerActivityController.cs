@@ -481,5 +481,14 @@ namespace WebHome.Controllers
 
         }
 
+        [AllowAnonymous]
+        public ActionResult Login(LoginViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var viewResult = CheckView("Login");
+            return View(viewResult.ViewName);
+
+        }
+
     }
 }
