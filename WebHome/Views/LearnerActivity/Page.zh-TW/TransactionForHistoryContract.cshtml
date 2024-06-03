@@ -64,9 +64,11 @@
             @{
                 await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseContractHistoryList.cshtml");
             }
-            <p id="moreItems">
+            
+            <p class="text-center pb-3" id="moreItems">
                 <a href="javascript:readMore();"
-                   class="float-end btn btn-border rounded-xl fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">載入更多 ...</a>
+                    class="btn border-0 fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">Read
+                    More<i class="fa-solid fa-angles-down ps-2"></i></a>
             </p>
             <p>
                 <a href="TransactionForActiveContract"
