@@ -58,6 +58,9 @@
                 <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
             </svg>
             <div class="clearfix"></div>
+            <script>
+                var currentIndex = 0;
+            </script>
             @{
                 await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseContractHistoryList.cshtml");
             }
@@ -76,7 +79,6 @@
             $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForHistoryContract","LearnerActivity"))' });
         }
 
-        var currentIndex = 0;
         function readMore() {
             var viewModel = {
                 'currentIndex': currentIndex

@@ -153,8 +153,14 @@ namespace WebHome.Controllers
             return Redirect($"~/{(RouteData.Values["controller"] as String == "MainActivity" ? "Official" : RouteData.Values["controller"])}/{lang}/{RouteData.Values["actionName"] ?? RouteData.Values["action"]}{Request.QueryString}");
         }
 
-        public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, QueryViewModel viewModel)
+        public async Task<ActionResult> HandleUnknownActionAsync(string actionName, IFormCollection forms, QueryViewModel viewModel)
         {
+            if (Request.ContentType?.StartsWith("application/json") == true)
+            {
+                var data = await Request.GetRequestBodyAsync();
+                viewModel = JsonConvert.DeserializeObject<QueryViewModel>(data);
+            }
+
             ViewBag.ViewModel = viewModel;
 
             //string viewName = "YourViewName"; // 替换为你要检查的视图名称
