@@ -28,6 +28,10 @@
         : lang == "en-US"
             ? "en"
             : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+
+    var lessons = profile.UID.PromptLearnerLessons(models);
 }
 
 @section MainContent
@@ -71,363 +75,28 @@
             </div>
 
             <span class="font-14 color-theme opacity-70">
-                本月訓練完成率 <b class="color-beyondred-dark font-600 fst-italic">35%</b>
+                @{ 
+                    DateTime startDate = DateTime.Today.FirstDayOfMonth();
+                    var thisMonthLessons = lessons.Where(l => l.ClassTime >= startDate)
+                                            .Where(l => l.ClassTime < startDate.AddMonths(1));
+                    var completeLessons = thisMonthLessons.Where(l => l.LessonAttendance != null);
+                }
+                本月訓練完成率 <b class="color-beyondred-dark font-600 fst-italic">@(thisMonthLessons.Any() ? completeLessons.Count()*100/thisMonthLessons.Count() : 0 )%</b>
             </span>
 
         </div>
 
-
-
         <div class="content mb-2 mx-lg-auto mx-md-auto">
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex" href="#course-1">
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Kuan/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">打拳時可能肘伸過多肩胛前引過少胛前引過少測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/02/02 16:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark show" id="course-1" onclick="javasciprt:gotoCourseSR();">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                腰活動度、腕肘臂肌群、肩鎖骨帶
-
-                            </p>
-
-                            <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1">
-                                Read
-
-                                More
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex collapsed" href="#course-2">
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Michael/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">最近要上新的舞蹈課測試測試測試測試測試測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/02/02 15:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark" id="course-2" onclick="javasciprt:gotoCoursePT();">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                基礎肌力D13
-
-                            </p>
-
-                            <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1">
-                                Read
-
-                                More
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex collapsed" href="#course-3">
-
-                    <!-- <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Michael/Cover-xs.png" width="50" height="50"
-
-                            class="rounded-circle preload-img mx-1">
-
-                        <span class="align-self-center letter-spacing-1 ps-1">太硬了啦</span>
-
-                        <i class="fa fa-angle-down font-14 ps-3 pe-2 align-self-center"></i>
-
-                    </div>
-
-                    <div class="ms-auto float-end py-0 py-lg-2 py-md-2 px-2">
-
-                        <span class="font-12 color-gray-dark">2024/01/31 17:00</span>
-
-                    </div> -->
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Frank/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">太硬了啦測試測試測試測試測試測試測試測試測試測試測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/01/31 15:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark" id="course-3" onclick="javasciprt:gotoCourseSR();">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                訓練後緩解
-
-                            </p>
-
-                            <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1">
-                                Read
-
-                                More
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex collapsed" href="#course-4">
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Kuan/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">拳擊＋跳舞雙重加壓身體ＱＱ測試測試測試測試測試測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/01/26 15:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark" id="course-4" onclick="javasciprt:gotoCourseSR();">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                髖旋前後活動度、肩肘關節肌群
-
-                            </p>
-
-                            <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1">
-                                Read
-
-                                More
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex collapsed" href="#course-5">
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Michael/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">久違深蹲低行程測試測試測試測試測試測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/01/26 14:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark" id="course-5" onclick="javasciprt:gotoCoursePT();">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                基礎肌力Ｄ12
-
-                            </p>
-
-                            <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1"
-                                    onclick="javasciprt:gotoSessionInfo();">
-                                Read
-
-                                More
-                            </button>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="list-group list-custom-large2x list-icon py-2">
-
-                <a data-bs-toggle="collapse" class="no-effect px-2 d-flex collapsed" href="#course-6">
-
-                    <div class="align-self-center">
-
-                        <img src="../images/empty.png" data-src="../images/avatars/Bryant/Cover-xs.png" width="50" height="50"
-                             class="rounded-circle preload-img mx-1">
-
-                    </div>
-
-                    <div class="align-self-center w-100 ps-1">
-
-                        <span class="align-self-center letter-spacing-1">Fitlo營養諮詢測試測試測試測試測試測試測試測試測試測試測試</span>
-
-                        <p class="font-12 color-dark opacity-80">2024/01/26 10:00</p>
-
-                    </div>
-
-                    <div class="align-self-center float-end">
-
-                        <i class="fa fa-angle-down"></i>
-
-                    </div>
-
-                </a>
-
-                <div class="collapse mt-0 bg-beyond-dark" id="course-6">
-
-                    <div class="d-inline-flex ms-auto">
-
-                        <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1">
-
-                        <div class="d-block mb-2">
-
-                            <p class="color-highlight mt-3 mb-2">
-
-                                過年後控制飲食
-
-                            </p>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-
-            <p class="text-center pb-3">
-
-                <a href="#"
+            <script>
+                var currentIndex = 0;
+            </script>
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/LessonItemList.cshtml");
+            }
+
+            <p id="moreItems" class="text-center pb-3">
+
+                <a href="javascript:readMore();"
                    class="btn border-0 fst-italic border-lightgray-dark color-theme bg-theme px-3 py-1 font-14 mt-5">
                     Read
 
@@ -451,14 +120,16 @@
             <p class="boxed-text-xl color-white">Your Exclusive Team</p>
 
 
+            @{
+                foreach (var coach in profile.LearnerCoachProperty.Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach).Select(p=>p.ServingCoach))
+                {
+                    <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{coach.UserProfile.PictureID}?stretch=true")" class="rounded-circle mb-2 mt-2" width="100" height="100" />
 
-            <img src="../images/avatars/Michael/Cover-sm.jpg" class="rounded-circle mb-2 mt-2" width="100" height="100">
+                    <h4 class="mb-n1 color-beyondwhite-dark">@Html.Raw(coach.UserProfile.Nickname)</h4>
 
-            <h4 class="mb-n1 color-beyondwhite-dark">Michael</h4>
-
-            <p class="mb-3 font-14 mt-1 color-beyondwhite-light">主教練</p>
-
-
+                    <p class="mb-3 font-14 mt-1 color-beyondwhite-light">主教練</p>
+                }
+            }
 
             <div class="d-flex justify-content-center">
 
@@ -484,21 +155,45 @@
 
                 </div>
 
-                <div class="m-auto m-lg-5 m-md-5">
+                @{
+                    foreach (var coach in profile.LearnerFitnessAdvisor.Select(f => f.ServingCoach))
+                    {
+                        <div class="m-auto m-lg-5 m-md-5">
 
-                    <img src="../images/avatars/Bryant/Cover-xs.png" class="rounded-circle mb-2 mt-2" alt="img" width="50"
-                         height="50">
+                            <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{coach.UserProfile.PictureID}?stretch=true")" class="rounded-circle mb-2 mt-2" alt="img" width="50"
+                                 height="50">
 
-                    <h4 class="mb-n2 font-14 color-beyondwhite-dark">Bryant</h4>
+                            <h4 class="mb-n2 font-14 color-beyondwhite-dark">@Html.Raw(coach.UserProfile.Nickname)</h4>
 
-                    <p class="mb-0 font-12 mt-1 color-beyondwhite-light">私人教練</p>
+                            <p class="mb-0 font-12 mt-1 color-beyondwhite-light">私人教練</p>
 
-                </div>
+                        </div>
+                    }
+                }
 
             </div>
 
         </div>
 
     </div>
+    <script>
+
+        function readMore() {
+            var viewModel = {
+                'currentIndex': currentIndex
+            };
+            doPost('@Html.Raw(Url.Action("LessonItemList", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $(data).insertBefore($('#moreItems'));
+                    if (currentIndex < 0) {
+                        $('#moreItems').remove();
+                    }
+                },
+                function () {
+
+                });
+        }
+
+    </script>
 
 }
