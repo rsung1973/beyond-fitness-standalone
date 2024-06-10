@@ -53,7 +53,6 @@ namespace WebHome.Controllers
         }
 
         // GET: MainActivity
-        [Authorize]
         public ActionResult Main()
         {
             ViewEngineResult viewResult = CheckView("Index");
@@ -61,7 +60,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> UpdateProfileImageAsync([FromBody]LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -98,7 +96,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> CommitUserNameAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -123,7 +120,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> CommitCarrierNoAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -148,7 +144,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> CommitPasswordAsync([FromBody] PasswordViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -175,7 +170,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> UnbindLineAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -195,7 +189,6 @@ namespace WebHome.Controllers
 
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> CommitUserProfileAsync([FromBody] JsonObject viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -227,7 +220,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> ValidateEmailAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -255,7 +247,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> ForgetPasswordAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -288,7 +279,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> ForgetPasswordPageAsync([FromBody] LearnerViewModel viewModel)
         {
             var result = await ForgetPasswordAsync(viewModel);
@@ -314,7 +304,6 @@ namespace WebHome.Controllers
 
         }
 
-        [Authorize]
         public async Task<ActionResult> SendOTPAsync()
         {
             UserProfile profile = await HttpContext.GetUserAsync();
@@ -330,7 +319,6 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult> ValidatePINAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -455,6 +443,18 @@ namespace WebHome.Controllers
             var viewResult = CheckView("PopupPaymentInfo");
             return View(viewResult.ViewName, item);
 
+        }
+
+        public async Task<ActionResult> CalendarAsync(DailyBookingQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            viewModel.DateFrom ??= DateTime.Today.FirstDayOfMonth();
+            viewModel.DateTo = viewModel.DateFrom.Value.AddMonths(1);
+
+            var profile = await HttpContext.GetUserAsync();
+            viewModel.KeyID = profile.UID.EncryptKey();
+            var viewResult = CheckView("Calendar");
+            return View(viewResult.ViewName, profile);
         }
 
         [AllowAnonymous]

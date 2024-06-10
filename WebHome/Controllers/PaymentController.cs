@@ -586,7 +586,7 @@ namespace WebHome.Controllers
                 preparePayment(viewModel, profile, item);
 
                 models.SubmitChanges();
-                models.AttendLesson(lesson.LessonTime.First(), profile);
+                //models.AttendLesson(lesson.LessonTime.First(), profile);
 
                 if (invoice.InvoiceCarrier != null && viewModel.MyCarrier == true)
                 {

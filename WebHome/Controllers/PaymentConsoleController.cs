@@ -400,10 +400,10 @@ namespace WebHome.Controllers
 
                 models.SubmitChanges();
 
-                if (timeItem.IsPISession())
-                {
-                    models.AttendLesson(timeItem, profile);
-                }
+                //if (timeItem.IsPISession())
+                //{
+                //    models.AttendLesson(timeItem, profile);
+                //}
 
                 if (invoice.InvoiceCarrier != null && viewModel.MyCarrier == true)
                 {

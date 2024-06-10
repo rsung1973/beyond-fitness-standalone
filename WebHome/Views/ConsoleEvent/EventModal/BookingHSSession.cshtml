@@ -22,7 +22,7 @@
     BookingLessonPageModel _pageModel = (BookingLessonPageModel)ViewBag.PageModel;
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (UserProfile)this.Model;
     _viewModel = (CalendarEventViewModel)ViewBag.ViewModel;
     _profile = await Context.GetUserAsync();
@@ -77,13 +77,14 @@
 
     if (price != null)
     {
+        var bookable = _model.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID);
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" name="RegisterID" value="" disabled="@(_currentDisabled)" data-version="@((int)Naming.ContractVersion.Ver2022)"
-                               onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
+                            <input type="checkbox" name="RegisterID" value="" disabled="@(!bookable || _currentDisabled)" data-version="@((int)Naming.ContractVersion.Ver2022)"
+                                   onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
                             <span></span>
                         </label>
                     </div>
@@ -100,16 +101,20 @@
                             </span>
                         </div>
                     </div>
+                    @if (!bookable)
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>你不是所屬教練，你沒有認領學生</p>
+                    }
                 </div>
             </div>
         </li>
     }
 }
 @foreach (var item in contractLessons
-    .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
-        || r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程
-        || r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程)
-    .OrderBy(r => r.RegisterLessonContract.ContractID))
+   .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程
+       || r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+       || r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程)
+   .OrderBy(r => r.RegisterLessonContract.ContractID))
 {
     var contract = item.RegisterLessonContract.CourseContract;
     if (contract != null)
@@ -131,7 +136,8 @@
         @*var payoffStatus = contract.TotalCost / contract.Lessons * (bookingCount + 1) <= totalPaid;*@
         var payoffStatus = totalPaid > 0;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
-        bool bookable = validContract && payoffStatus && !revisionStatus && !_currentDisabled;
+        bool bookable = validContract && payoffStatus && !revisionStatus && !_currentDisabled
+                            && _model.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID);
         if (bookable)
         {
             if (contract.InstallmentID.HasValue)
@@ -148,15 +154,15 @@
         }
 
         @*if(bookable)
-        {
-            _pageModel.HasChoice = true;
-        }*@
+            {
+                _pageModel.HasChoice = true;
+            }*@
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))"  name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.ForDietary ? "option.virtual-store" : "")"/>
+                            <input type="checkbox" id="PTSession@(item.RegisterID)" disabled="@(!(bookable && !_currentDisabled))" name="RegisterID" value="@(item.RegisterID)" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.一般課程)');" data-version="@(contract.CourseContractExtension.Version)" data-location="@(item.LessonPriceType.ForDietary ? "option.virtual-store" : "")" />
                             <span></span>
                         </label>
                     </div>
@@ -168,7 +174,7 @@
                         </a>
                         <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                         <div class="msg">
-                            @switch(item.LessonPriceType.Status)
+                            @switch (item.LessonPriceType.Status)
                             {
                                 case (int)Naming.LessonPriceStatus.營養課程:
                                     <text>@(item.RegisterLessonContract.Title)S.D Session</text>
@@ -203,6 +209,10 @@
                     {
                         <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>合約服務申請進行中</p>
                     }
+                    @if (!item.UserProfile.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID))
+                    {
+                        <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>你不是所屬教練，你沒有認領學生</p>
+                    }
                 </div>
             </div>
         </li>
@@ -211,15 +221,15 @@
 
 
 @foreach (var item in lessons
-   .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
-   .Where(r => models.GetTable<LessonPriceProperty>()
-       .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程
-            || p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程
-            || p.PropertyID == (int)Naming.LessonPriceFeature.運動防護課程)
-       .Any(p => p.PriceID == r.ClassLevel)))
+  .Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+  .Where(r => models.GetTable<LessonPriceProperty>()
+      .Where(p => p.PropertyID == (int)Naming.LessonPriceFeature.營養課程
+           || p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程
+           || p.PropertyID == (int)Naming.LessonPriceFeature.運動防護課程)
+      .Any(p => p.PriceID == r.ClassLevel)))
 {
     var remainedCount = item.RemainedLessonCount();
-    bool bookable = remainedCount > 0;
+    bool bookable = remainedCount > 0 && _model.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID);
     if (bookable)
     {
         _pageModel.HasChoice = true && !_currentDisabled;
@@ -239,11 +249,15 @@
                     <a class="m-r-10">@(item.LessonPriceType.SimpleDescription)</a>
                     <small class="float-right text-muted"><time>@(remainedCount)/@(item.Lessons)</time></small>
                 </div>
-                @if(item.Expiration.HasValue)
+                @if (item.Expiration.HasValue)
                 {
                     <p class="msg col-blue">
                         <i class="zmdi zmdi-alarm-check"></i> 課程迄日：@($"{item.Expiration:yyyy/MM/dd}")
                     </p>
+                }
+                @if (!item.UserProfile.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID))
+                {
+                    <p class="msg col-red"><i class="zmdi zmdi-info-outline"></i>你不是所屬教練，你沒有認領學生</p>
                 }
             </div>
         </div>
