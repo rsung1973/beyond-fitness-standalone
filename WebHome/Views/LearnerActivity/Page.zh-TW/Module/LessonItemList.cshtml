@@ -42,7 +42,7 @@
 
                 <div class="align-self-center w-100 ps-1">
 
-                    <span class="align-self-center letter-spacing-1">@Html.Raw(item.LessonPlan?.Remark)</span>
+                    <span class="align-self-center letter-spacing-1">@Html.Raw(item.LessonPlan?.Remark ?? "自主訓練日，創造自己的挑戰")</span>
 
                     <p class="font-12 color-dark opacity-80">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</p>
 
@@ -58,7 +58,8 @@
                     <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1" />
                     <div class="d-block mb-2">
                         <p class="color-highlight mt-3 mb-2">
-                            @Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis)
+                            @Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ??
+                                 "重點稍後揭曉，一起加油達標")
                         </p>
 
                         <button class="text-decoration-underline fst-italic font-12 float-start letter-spacing-1">

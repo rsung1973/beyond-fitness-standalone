@@ -190,17 +190,15 @@
                         @foreach (var item in PTItems)
                         {
                             <div class="clearfix"></div>
-                            <a id="@($"lesson{item.LessonID}")" href="course-PT.html" class="d-flex my-5">
-                                <div class="align-self-start ms-3 me-3">
-                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis)</h5>
-                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
+                            <a id="@($"lesson{item.LessonID}")" href="course-PT.html" class="d-flex my-5">                                
+                                <div class="align-self-start ms-3 me-auto">
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>                                                                                                            
+                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>                                                                                                     
                                 </div>
-                                <div class="align-self-center ms-auto me-3">
-                                    <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
-                                        <i class="fa-solid fa-location-dot pe-2"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)
-                                    </h5>
+                                <div class="align-self-center me-1">
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>  
                                 </div>
-                                <div class="align-self-center">
+                                <div class="align-self-center">                                    
                                     <i class="fa fa-angle-right color-white opacity-20"></i>
                                 </div>
                             </a>
@@ -231,17 +229,14 @@
                         {
                             <div class="clearfix"></div>
                             <a id="@($"lesson{item.LessonID}")" href="course-SR.html" class="d-flex my-5">
-                                <div class="align-self-start ms-3 me-3">
-                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "訓練重點空")</h5>
+                                <div class="align-self-start ms-3 me-auto">
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
                                     <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
                                 </div>
-                                <div class="align-self-center ms-auto me-3">
-                                    <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
-                                        <i class="fa-solid fa-location-dot pe-2"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)
-                                    </h5>
+                                <div class="align-self-center me-1">
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>  
                                 </div>
-
-                                <div class="align-self-center">
+                                <div class="align-self-center">                                    
                                     <i class="fa fa-angle-right color-white opacity-20"></i>
                                 </div>
                             </a>
@@ -273,16 +268,14 @@
                         {
                             <div class="clearfix"></div>
                             <a id="@($"lesson{item.LessonID}")" href="course-SR.html" class="d-flex my-5">
-                                <div class="align-self-start ms-3 me-3">
-                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis)</h5>
-                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
+                               <div class="align-self-start ms-3 me-auto">
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
+                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>                                    
                                 </div>
-                                <div class="align-self-center ms-auto me-3">
-                                    <h5 class="mb-0 text-end font-400 font-13 color-beyondwhite-dark">
-                                        <i class="fa-solid fa-location-dot pe-2"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)
-                                    </h5>
+                                <div class="align-self-center me-1">
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>  
                                 </div>
-                                <div class="align-self-center">
+                                <div class="align-self-center">                                    
                                     <i class="fa fa-angle-right color-white opacity-20"></i>
                                 </div>
                             </a>
