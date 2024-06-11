@@ -2,13 +2,14 @@
 
 @using System.IO
 @using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using CommonLib.Utility
 
 @using Newtonsoft.Json
 @{
@@ -18,25 +19,25 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
+    var availableItems = models.GetTable<BlogArticle>().Where(b => !b.NotAfter.HasValue || b.NotAfter >= DateTime.Today);
+
+    var item = availableItems.OrderByDescending(a => a.DocID).FirstOrDefault();
 }
 
 <h1 class="text-center mt-5 mb-1 color-beyondred-dark letter-spacing-2">News·</h1>
 
 <h4 class="text-center font-400 font-15 letter-spacing-2">最新文章</h4>
 
+<img src="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/MainActivity/Blog/{item.BlogID}/images/Title.jpg")}")" class="img-fluid mt-5 mx-auto">
 
-
-<img src="https://www.beyond-fitness.com.tw/BlogContent/blog/20240321/images/Cover.jpg" class="img-fluid mt-5 mx-auto">
-
-<h1 class="boxed-text-l text-start mt-5 text-uppercase color-dark font-700">關於老年人防跌倒，你知道多少？</h1>
+<h1 class="boxed-text-l text-start mt-5 text-uppercase color-dark font-700">@Html.Raw(item.Title)</h1>
 
 <p class="boxed-text-l color-dark opacity-80 line-height-l text-start mt-4 font-16">
 
-    老年人防跌倒的關鍵，了解原因及如何透過運動，讓親愛的長者遠離風險，享受穩健的生活，保持健康活力！
+    @Html.Raw(item.Subtitle)
 
 </p>
 
 
-
-<a href="https://www.beyond-fitness.com.tw/Official/tw/BlogSingle?X8g68mQU6rV6CEpIAeW1f_nnYnrR4cSi" target="_blank"
+<a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank"
    class="close-menu btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">離開此頁面閱讀文章</a>

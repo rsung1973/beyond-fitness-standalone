@@ -20,12 +20,13 @@
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (CourseContract)this.Model;
+    DateTime reviewDate = _model.ValidFrom.Value.AddDays(-4);
 }
 <table class="table">
     <tbody> 
         <tr>
             <td>
-                <h6 class="m-b-0"><b>Beyond Fitness產品及服務特約條款</b><span></h6>
+                <h6 class="m-b-0"><b>Beyond Fitness產品及服務特約條款</b></h6>
                 <hr />
                 <b>本合約業經體育局府體產字第1113003319號公文審定通過</b><br/>
                 本場館為超越體能顧問有限公司(以下簡稱「本公司」或「BF」)所提供經營管理並提供各項體能/健康顧問服務，本公司之代表人為黃政浩，本公司之其他資訊如下：
@@ -50,7 +51,7 @@
                 <b>電子簽章之效力</b><br />
                 本公司服務項目之所有合約係採電子文件，依電子簽章法相關規範。<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;學員於使用本公司服務前，應詳細閱讀本合約及其他BEYOND FITNESS雲端學員管理系統及官方網站公布之服務相關條款，並有至少 3
-                日之審閱期，本合約已於<u> @(_model.ValidFrom.Value.Year) </u>年<u> @($"{_model.ValidFrom:MM}") </u>月<u> @($"{_model.ValidFrom:dd}") </u>日交由學員 <u>@(_model.ContractOwner.RealName)</u> 審閱。<br />
+                日之審閱期，本合約已於<u> @(reviewDate.Year) </u>年<u> @($"{reviewDate:MM}") </u>月<u> @($"{reviewDate:dd}") </u>日交由學員 <u>@(_model.ContractOwner.RealName)</u> 審閱。<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;學員瞭解，學員於本公司網站或APP系統中勾選「我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約」之選項之前，或於此文案後繼續點擊進行下一步驟時，學員先需於合理審閱期間內，詳閱本合約書的所有條款。<br />
                 &nbsp;&nbsp;&nbsp;&nbsp;學員願意完全遵守本合約書與使用本公司系統、其產品及服務相關之管理規章、規則；若學員無法遵守BEYOND
                 FITNESS雲端學員管理系統、本公司服務、其產品及服務條款內容、或對條款內容全部或部分不同意時，學員請勿使用本公司相關服務。

@@ -303,6 +303,11 @@ namespace WebHome.Controllers
                 //return RedirectToAction("Index");
             }
 
+            var days = (DateTime.Today - item.ValidFrom.Value).TotalDays;
+            item.ValidFrom = DateTime.Today;
+            item.Expiration = item.Expiration.Value.AddDays(days);
+            models.SubmitChanges();
+
             result.ViewName = "~/Views/ConsoleHome/SignCourseContract.cshtml";
             return result;
         }

@@ -737,6 +737,12 @@ namespace WebHome.Controllers
             }
 
             ViewBag.DataItem = item;
+
+            var days = (DateTime.Today - item.ValidFrom.Value).TotalDays;
+            item.ValidFrom = DateTime.Today;
+            item.Expiration = item.Expiration.Value.AddDays(days);
+            models.SubmitChanges();
+
             return View("~/Views/CornerKick/SignCourseContract.cshtml", profile.LoadInstance(models));
         }
 
