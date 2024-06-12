@@ -47,7 +47,7 @@
 <section id="main"
     class="parallax section section-parallax section-center section-no-background section-text-dark border-0 mt-0 mb-0 py-0">
     <div class="container">
-        <div class="row py-5 justify-content-center">
+        <div class="branch-container">
             @{
                 dynamic branches = findUsAll.BranchItems;
                 if (branches != null)
@@ -57,23 +57,21 @@
                     for (int i = 0; i < item.Length; i++)
                     {
                         String branchName = item[i].SubClass;
-                         <div class="col-6 col-lg-3 col-md-3 col-sm-6 py-2">
-                            <div class="card bg-color-dark custom-shape-card @Html.Raw(item[i].CircleBg)"
-                                onclick="javascript:gotoPage('@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))', null)">
-                                <div class="card-body px-2 d-flex align-items-center justify-content-center">
-                                    <div class="text-color-dark">
-                                        <p class="text-3-4 text-center my-0 text-capitalize">@Html.Raw(item[i].NameDesc)</p>
-                                        <h3 class="font-weight-bold mb-2 appear-animation" data-appear-animation="maskUp"
-                                            data-appear-animation-delay="250">
-                                            @Html.Raw(item[i].Name)</h3>
-                                        <div class="divider divider-tertiary divider-small divider-xxs divider-small-center">
-                                            <hr class="my-0" style="width: 50px; height: 3px;">
-                                        </div>
-                                        <p class="text-center my-0 font-weight-medium"><a class="text-color-dark">Go!</a></p>
+                        <div class="card bg-color-dark custom-shape-card @Html.Raw(item[i].CircleBg)"
+                            onclick="javascript:gotoPage('@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/BranchInfo?Branch={branchName}"))', null)">
+                            <div class="card-body px-2 d-flex align-items-center justify-content-center">
+                                <div class="text-color-dark">
+                                    <p class="text-3-4 text-center my-0 text-capitalize">@Html.Raw(item[i].NameDesc)</p>
+                                    <h3 class="font-weight-bold mb-2 appear-animation" data-appear-animation="maskUp"
+                                        data-appear-animation-delay="250">
+                                        @Html.Raw(item[i].Name)</h3>
+                                    <div class="divider divider-tertiary divider-small divider-xxs divider-small-center">
+                                        <hr class="my-0" style="width: 50px; height: 3px;">
                                     </div>
-                                </div>                               
+                                    <p class="text-center my-0 font-weight-medium"><a class="text-color-dark">Go!</a></p>
+                                </div>
                             </div>
-                        </div>                        
+                        </div>
                     }
                 }
             }                        
