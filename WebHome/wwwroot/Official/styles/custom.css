@@ -665,6 +665,7 @@ u {
   /*東門*/
   /*忠孝*/
   /*信義安和*/
+  /*大直*/
 }
 @media (max-width: 990px) and (min-width: 768px) {
   .findus .banner h1 {
@@ -797,7 +798,48 @@ u {
     background-image: url("../images/banner/nanjing-sm.jpg") !important;
   }
 }
-.findus .custom-shape-card {
+.findus .banner .dazhi-1 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/dazhi-lg.jpg");
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .dazhi-1 {
+    background-image: url("../images/banner/dazhi-sm.jpg") !important;
+  }
+}
+.findus .branch-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  justify-items: center;
+  /* iPad橫板&直板 */
+  /* iPad直板 */
+  /* 手機版 */
+  /* iPad portrait mode: 3 cards on top, 2 cards below */
+  /* iPad直板 */
+}
+@media (max-width: 1199px) and (min-width: 990px) {
+  .findus .branch-container {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.56rem;
+  }
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .findus .branch-container {
+    grid-template-columns: repeat(auto-fit, minmax(135px, 1fr));
+    gap: 0.32rem;
+  }
+}
+@media (max-width: 767px) {
+  .findus .branch-container {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+.findus .branch-container .custom-shape-card {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -806,24 +848,39 @@ u {
   border-bottom-left-radius: 100% 60%;
   border-bottom-right-radius: 100% 60%;
   border-width: 0;
-  min-height: 200px;
+  min-width: 200px;
+  width: 200px;
+  /* iPad直板 */
+  /* 手機版 */
 }
-.findus .custom-shape-card:hover {
+.findus .branch-container .custom-shape-card:hover {
   cursor: pointer;
 }
-.findus .custom-shape-card.left {
+.findus .branch-container .custom-shape-card.left {
   background-image: url("../images/shape/gold-left.png");
 }
-.findus .custom-shape-card.right {
+.findus .branch-container .custom-shape-card.right {
   background-image: url("../images/shape/gold-right.png");
 }
-.findus .custom-shape-card.half {
+.findus .branch-container .custom-shape-card.half {
   border-top-left-radius: 100% 0%;
   border-bottom-left-radius: 100% 0%;
   background-image: url("../images/shape/gold-half.png");
 }
-.findus .custom-shape-card.full {
+.findus .branch-container .custom-shape-card.full {
   background-image: url("../images/shape/gold-full.svg");
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .findus .branch-container .custom-shape-card {
+    min-width: 130px;
+    width: 130px;
+  }
+}
+@media (max-width: 767px) {
+  .findus .branch-container .custom-shape-card {
+    min-width: 150px;
+    width: 150px;
+  }
 }
 .findus .slogan-img {
   width: 60%;
@@ -877,6 +934,15 @@ u {
 @media (max-width: 767px) {
   .findus .slogan-img.nanjing {
     content: url("../images/handwriting/nanjing-slogan-sm.svg");
+  }
+}
+.findus .slogan-img.dazhi {
+  content: url("../images/handwriting/dazhi-slogan-lg.svg");
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .slogan-img.dazhi {
+    content: url("../images/handwriting/dazhi-slogan-sm.svg");
   }
 }
 .findus .slogan {
@@ -1384,6 +1450,15 @@ u {
     background-image: url("../images/avatars/Cami/Voice/banner-sm.jpg");
   }
 }
+.voice .interviewee-background.Kuan {
+  background-image: url("../images/avatars/Kuan/Voice/banner-lg.jpg");
+  /* iPad&手機版 */
+}
+@media (max-width: 768px) {
+  .voice .interviewee-background.Kuan {
+    background-image: url("../images/avatars/Kuan/Voice/banner-sm.jpg");
+  }
+}
 @media (max-width: 990px) and (min-width: 768px) {
   .voice .interviewee-background {
     height: 800px;
@@ -1511,6 +1586,15 @@ u {
 @media (max-width: 767px) {
   .voice .demo-img .Cami {
     content: url("../images/avatars/Cami/Voice/demo-sm.jpg") !important;
+  }
+}
+.voice .demo-img .Kuan {
+  content: url("../images/avatars/Kuan/Voice/demo-lg.png");
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .voice .demo-img .Kuan {
+    content: url("../images/avatars/Kuan/Voice/demo-sm.jpg") !important;
   }
 }
 
