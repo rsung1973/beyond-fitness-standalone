@@ -104,48 +104,7 @@
                         }
                     ],
                     "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
-                },                         
-                {
-                    "MemberCode": "CJ29229466",
-                    "Name": "蔡恆易",
-                    "NameDesc": "Henry",
-                    "JobTitle": "トレーナー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(242.76 184.4)",
-                            "JobPosition": "translate(242.76 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "The only difference between elites and normal is that elites are great at basic skills than others.",
-                    "SloganDesc": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功。",
-                    "Desc": "熱愛多樣戶外運動，透過運動分享各式各樣的經歷的同時能激勵他人嘗試新事物，開拓不同的選擇，並一同體驗多元生活。",
-                    "License":[
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                          
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"basketball",
-                        },
-                        {
-                            "Name":"swimming",
-                        }
-                    ],
-                    "Experience": "<ul><li>功能性訓練企業團課教練（教學正確運動方式和和提升心肺適能）</li><li>內湖假日籃球聯賽C組冠軍</li><li>2023 Nike Workshop Trainer</li></ul>"                    
-                },
+                },                                         
                 {
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
@@ -154,8 +113,8 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(70.31 183.4)",
-                            "JobPosition": "translate(70.31 153.46)",
+                            "NamePosition": "translate(65.31 183.4)",
+                            "JobPosition": "translate(65.31 153.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -242,8 +201,8 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(55.61 184.4)",
-                            "JobPosition": "translate(55.61 154.46)",
+                            "NamePosition": "translate(50.61 184.4)",
+                            "JobPosition": "translate(50.61 154.46)",
                             "ImgXShifting": -80,
                             "ImgYShifting": -40,
                         }                        
@@ -286,7 +245,7 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(70.09 184.4)",
+                            "NamePosition": "translate(80.09 184.4)",
                             "JobPosition": "translate(70.4 154.46)",
                             "ImgXShifting": -70,
                             "ImgYShifting": -40,
@@ -333,7 +292,7 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(45.61 184.4)",
+                            "NamePosition": "translate(45.52 184.4)",
                             "JobPosition": "translate(45.52 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
@@ -414,7 +373,7 @@
                 //     "MemberCode": "PA57705810",
                 //     "Name": "謝宇傑",
                 //     "NameDesc": "Jay",
-                //     "JobTitle": "トレーナー",
+                //     "JobTitle": "私人教練",
                 //     "CoverInfo":[
                 //         {
                 //             "Shape": "avatar-half.svg",
@@ -500,7 +459,7 @@
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(70.06 184.4)",
+                            "NamePosition": "translate(100.06 184.4)",
                             "JobPosition": "translate(70.06 154.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
@@ -792,54 +751,7 @@
                         }
                     ],
                     "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
-                },
-                {
-                    "MemberCode": "SY30280433",
-                    "Name": "崔宸笙",
-                    "NameDesc": "Annie",
-                    "JobTitle": "トレーナー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(63.61 184.4)",
-                            "JobPosition": "translate(63.61 154.46)",
-                            "ImgXShifting": -85,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Practice makes perfect.",
-                    "SloganDesc": "保持忠於你的本質。",
-                    "Desc": "看到身邊的人時，總是能夠細心觀察並共情感受他們的情緒和需求，使我成為很好的傾聽者，並同時注重細節關心他人的感受。",
-                    "License":[
-                        {
-                            "Name": "PADI",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "EXOS",
-                        },                        
-                        {
-                            "Name": "Monster",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                      
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"diving",
-                        },
-                        {
-                            "Name":"golf",
-                        },
-                        {
-                            "Name":"swimming",
-                        }
-                    ],
-                    "Experience": "<ul><li>2023 奇怪自由潛水運動會STA 冠軍</li><li>2023 CMAS全國自由潛水室內錦標賽STA 亞軍</li><li>2022 Beyond Fitness Trust 亞軍</li></ul>"                    
-                },
+                },                
                 // {
                 //     "MemberCode": "LA58787893",
                 //     "Name": "黃卓瑩",
@@ -930,57 +842,7 @@
                         }
                     ],
                     "Experience": "<ul><li>前亞運划船選手</li><li>全運會划船項目銀牌</li></ul>"                    
-                },
-                {
-                    "MemberCode": "QQ80184463",
-                    "Name": "黃涴資",
-                    "NameDesc": "Anna",
-                    "JobTitle": "トレーナー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(78.61 184.4)",
-                            "JobPosition": "translate(78.61 154.46)",
-                            "ImgXShifting": -65,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "There are no shortcuts to any place worth going.",
-                    "SloganDesc": "There are no shortcuts to any place worth going.",
-                    "Desc": "一個充滿活力、熱情、喜愛運動、勇於嘗試的女孩並且喜歡用快樂的方式讓身體進步！",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                   
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"dance",
-                        },
-                        {
-                            "Name":"badminton",
-                        },
-                        {
-                            "Name":"running",
-                        },
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"climbing",
-                        },
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<ul><li>快樂寶貝幼兒體能教練</li><li>一起動ezdon 團課教練</li><li>百岳攀登#雪山主峰#雪山東峰</li></ul>"                    
-                },
+                },                
                 {
                     "MemberCode": "RW86165852",
                     "Name": "蘇柏銓",
@@ -2506,7 +2368,42 @@
                         }
 
                     ],
-                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>"                    
+                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>",
+                    "Voice": [
+                        {
+                            "Date": "2024.06.22",
+                            "AboutDefCoach": "恢復教練如何保持無限好奇心與熱情？",
+                            "BriefPosition": "left",
+                            "BriefColor": "text-color-light",
+                            "NameColor": "text-color-secondary",
+                            "BriefInfo": "於2022年加入Beyond 就讀企業管理學系。曾擔任大同運動中心運動按摩教練、Beyond 月內訓與培訓講師，現擔任 Beyond Fitness 恢復教練",
+                            "TalkSlogan": "充滿好奇心探險家",
+                            "TalkMessage": "Kuan認為透過戶外運動，可以深刻理解身體恢復的重要性。希望透過恢復教練的角色，幫助學生通過運達成無拘無束、靈活自如的生活。<br/><br/>你也來試看看成為一名恢復按摩的探險家吧！",
+                            "Interviews":[
+                                {
+                                    "Question":"是什麼吸引你投身運動恢復按摩這個領域？",
+                                    "Answers": "<p>我認為「<u>擁有無拘無束、靈活自如地使用自己的身體來過日常生活、探索這個世界是一件很美好的事情</u>」。 </p><p>因為熱愛戶外登山、自由潛水與鐵人三項等，藉由這些運動的過程中讓我不斷地重新思考和調整生活步調，也讓我深刻體會到身體恢復的重要性。因此，作為一名恢復教練希望能夠成為協助學生透過運動恢復按摩幫助學生調節身體壓力，實現他們的運動目標。 </p>"
+                                },
+                                {
+                                    "Question":"你認爲運動恢復按摩與一般按摩相比有何區別？",
+                                    "Answers": "<p>作為一名的運動恢復教練需要「深入了解人體動作的產生和姿勢的維持」。我們會從解剖學和肌動學的角度來分析學生的生活型態和運動需求，透過運動按摩、伸展手法和動作訓練來調整身體張力，達到身體平衡。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Kuan/Voice/q2.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>相對於傳統按摩則可能依據經絡、穴位等概念，有一定操作步驟，但未必適合有特定運動目標的學生。因此，我們會針對每位學生的狀態和需求，設計適合的課程內容。 </p>"
+                                },
+                                {
+                                    "Question":"分享如何處理與面對學生恢復按摩時的挑戰！",
+                                    "Answers": "<p>大多數學生在描述身體問題時，往往難以用精確的言語表達他們的不適，這使得我們無法在第一時間確定問題的根源。 </p><p>透過<u>手感觸摸、評估檢測</u>，以及<u>引導學生覺察身體感受並表達出來</u>。在剛開始時，會先從手法練習入手，感知肌肉、骨頭和關節特徵，並持續進修專業知識，通過與他人交流來深化專業認知。這樣能更精確地找到問題並聚焦處理，透過適合的放鬆手法提高學生的感受。</p>"
+                                },
+                                {
+                                    "Question":"在運動恢復按摩工作中最重要的技能？",
+                                    "Answers": "<p>「<u>持續保持好奇心和學習熱情</u>」，就像給我前進的引擎加滿燃料！好奇心驅使我像探險家一樣深入了解學生的狀態，感受和思考運動訓練的影響，觀察身體在日常生活中的變化，就像在探索一個充滿奧秘的奇妙世界。</p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Kuan/Voice/q4.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>例如，在伸展時感受肌肉牽拉同時訓練時思考動作串聯及力量傳遞。這些都能幫助我在生活中的每個場景中提取對恢復放鬆的相關想法並應用於專業上。</p>"
+                                },
+                                {
+                                    "Question":"如何幫助新進夥伴融入Beyond的職人精神？",
+                                    "Answers": "<p>在 Beyond，我們強調「不只是把事情做完，而是把事情做好」。這需要深入思考每個行動背後的原因。「心態設定是關鍵」，你的內在動機會引導你用不同視角看待任務，並找到最佳解決方案。</p><p>工作氛圍注重團隊合作，鼓勵分享和反饋。當遇到難題時，資深教練和主管們會一起討論並找出解決辦法。對新進夥伴，我建議保持開放的心態，多向他人學習，積極參與團隊活動，這樣能更快融入文化並快速成長。</p>"
+                                },
+                            ],
+                            "Conclusion":"像探險家一樣在這充滿奧秘的世界中尋找答案，讓生活與工作隨時保持好奇心與熱情！"
+                        }                    
+                    ]    
                 },
                 {
                     "MemberCode": "XJ27703577",
@@ -2710,9 +2607,9 @@
                     "JobTitle": "副マネージャー",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(78.61 184.4)",
-                            "JobPosition": "translate(78.61 154.46)",
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(45.61 184.4)",
+                            "JobPosition": "translate(45.61 154.46)",
                             "ImgXShifting": -65,
                             "ImgYShifting": -40,
                         }                        
@@ -2760,10 +2657,10 @@
                     "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(63.61 184.4)",
-                            "JobPosition": "translate(63.61 154.46)",
-                            "ImgXShifting": -85,
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(73.61 184.4)",
+                            "JobPosition": "translate(73.61 154.46)",
+                            "ImgXShifting": -65,
                             "ImgYShifting": -40,
                         }                        
                     ],
@@ -2807,7 +2704,7 @@
                     "JobTitle": "トレーナー",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-full.svg",
+                            "Shape": "avatar-half.svg",
                             "NamePosition": "translate(242.76 184.4)",
                             "JobPosition": "translate(242.76 154.46)",
                             "ImgXShifting": -90,
@@ -2848,9 +2745,9 @@
                     "JobTitle": "ヘッドコーチ",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(80.31 183.4)",
-                            "JobPosition": "translate(85.31 153.46)",
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(55.31 183.4)",
+                            "JobPosition": "translate(55.31 153.46)",
                             "ImgXShifting": -40,
                             "ImgYShifting": -40,
                         }                        
@@ -2936,9 +2833,9 @@
                     "JobTitle": "ヘッドコーチ",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(98.31 183.4)",
-                            "JobPosition": "translate(95.31 153.46)",
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(60.31 183.4)",
+                            "JobPosition": "translate(60.31 153.46)",
                             "ImgXShifting": -60,
                             "ImgYShifting": -40,
                         }                        
@@ -2986,10 +2883,10 @@
                     "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-half.svg",
+                            "Shape": "avatar-left.svg",
                             "NamePosition": "translate(58.57 184.4)",
                             "JobPosition": "translate(58.57 154.46)",
-                            "ImgXShifting": -110,
+                            "ImgXShifting": -80,
                             "ImgYShifting": -50,
                         }                        
                     ],
