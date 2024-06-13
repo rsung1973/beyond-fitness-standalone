@@ -337,8 +337,15 @@
                                 <div class="d-flex align-items-start">
                                     <img width="25" src="../images/icons/clock.svg" alt="BeyondFitness|分店地址" class="mt-1" />
                                     <p class="mb-1 mb-0 ps-2 line-height-7">
-                                        @Html.Raw(findUsAll.WeekDays)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
-                                        @Html.Raw(findUsAll.Holiday)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoHolidayTime)
+                                        @{
+                                            if (!String.IsNullOrEmpty((String)branch.InfoWeekDaysTime)) 
+                                            {
+                                                @Html.Raw(findUsAll.WeekDays)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoWeekDaysTime)<br />
+                                                @Html.Raw(findUsAll.Holiday)<span class="text-color-tertiary px-3 px-lg-2">/</span>@Html.Raw(branch.InfoHolidayTime)
+                                            } else {
+                                                <text>Coming Soon</text>
+                                            }
+                                        }
                                     </p>
                                 </div>
                             </div>
@@ -398,7 +405,7 @@
                                 for (int i = 0; i < item2.Length; i++)
                                 {
                                     String branchName = item2[i].SubClass;
-                                    <div class="col-12 col-xl-4 col-lg-4 col-md-4 mt-2 px-5 px-xl-0 px-lg-5 px-md-4 pb-3 pb-lg-0 pb-md-0">
+                                    <div class="col-12 col-xl-4 col-lg-4 col-md-4 mt-2 px-5 px-xl-0 px-lg-5 px-md-4 pb-5">
                                         <div class="featured-boxes featured-boxes-style-7 text-start text-lg-start text-md-center">
                                             <div class="box-content">
                                                 <h4 class="font-weight-semi-bold mb-1">@Html.Raw(item2[i].Name)</h4>

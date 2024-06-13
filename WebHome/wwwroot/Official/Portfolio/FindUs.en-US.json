@@ -56,87 +56,55 @@
             ],   
             "Coaches": [
                 {
-                    "MemberCode": "HE71446932",
-                    "Name": "游念儒",                    
-                    "NameDesc": "Vic",
+                    "MemberCode": "CZ24609828",
+                    "Name": "黃伊婷",
+                    "NameDesc": "Doreen",
                     "JobTitle": "Manager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(255.31 184.4)",
-                            "JobPosition": "translate(255.31 154.46)",
-                            "ImgXShifting": -90,
+                            "NamePosition": "translate(242.31 184.4)",
+                            "JobPosition": "translate(242.31 154.46)",
+                            "ImgXShifting": -100,
                             "ImgYShifting": -40,
                         }                        
                     ],
-                    "Slogan": "If you really want to achieve the goal, just do it.",
-                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
-                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "Slogan": "You just have to change your desires, some changes won't be the same.",
+                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+                    "Desc": "透過關心身邊的人，隨時留意他們的需求與想法並且樂於用同理心進行溝通，建立真正心與心的連結，讓彼此感受到真誠的支持和理解。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "CrossFit",
+                            "Name": "TRX",
                         },
                         {
-                            "Name": "CPRAED",
-                        }                        
-                    ],
-                    "Sports":[
+                            "Name": "KBC",
+                        }, 
                         {
-                            "Name":"basketball",
+                            "Name": "Z-TSCA",
                         },
-                        {
-                            "Name":"soccer",
-                        },
-                        {
-                            "Name":"gymnastics",
-                        }
-                    ],
-                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
-                },                
-                {
-                    "MemberCode": "CJ29229466",
-                    "Name": "蔡恆易",
-                    "NameDesc": "Henry",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(242.76 184.4)",
-                            "JobPosition": "translate(242.76 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "The only difference between elites and normal is that elites are great at basic skills than others.",
-                    "SloganDesc": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功。",
-                    "Desc": "熱愛多樣戶外運動，透過運動分享各式各樣的經歷的同時能激勵他人嘗試新事物，開拓不同的選擇，並一同體驗多元生活。",
-                    "License":[
                         {
                             "Name": "PTAG",
                         },
                         {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
                             "Name": "CPRAED",
-                        }                          
+                        }                        
                     ],
                     "Sports":[
                         {
-                            "Name":"basketball",
+                            "Name":"kettlebell",
                         },
                         {
-                            "Name":"swimming",
+                            "Name":"dance",
+                        },
+                        {
+                            "Name":"tabletennis",
                         }
                     ],
-                    "Experience": "<ul><li>功能性訓練企業團課教練（教學正確運動方式和和提升心肺適能）</li><li>內湖假日籃球聯賽C組冠軍</li><li>2023 Nike Workshop Trainer</li></ul>"                    
-                },
+                    "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
+                },                                
                 {
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
@@ -783,54 +751,7 @@
                         }
                     ],
                     "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
-                },
-                {
-                    "MemberCode": "SY30280433",
-                    "Name": "崔宸笙",
-                    "NameDesc": "Annie",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(63.61 184.4)",
-                            "JobPosition": "translate(63.61 154.46)",
-                            "ImgXShifting": -85,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Practice makes perfect.",
-                    "SloganDesc": "保持忠於你的本質。",
-                    "Desc": "看到身邊的人時，總是能夠細心觀察並共情感受他們的情緒和需求，使我成為很好的傾聽者，並同時注重細節關心他人的感受。",
-                    "License":[
-                        {
-                            "Name": "PADI",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "EXOS",
-                        },                        
-                        {
-                            "Name": "Monster",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                      
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"diving",
-                        },
-                        {
-                            "Name":"golf",
-                        },
-                        {
-                            "Name":"swimming",
-                        }
-                    ],
-                    "Experience": "<ul><li>2023 奇怪自由潛水運動會STA 冠軍</li><li>2023 CMAS全國自由潛水室內錦標賽STA 亞軍</li><li>2022 Beyond Fitness Trust 亞軍</li></ul>"                    
-                },
+                },               
                 // {
                 //     "MemberCode": "LA58787893",
                 //     "Name": "黃卓瑩",
@@ -921,57 +842,7 @@
                         }
                     ],
                     "Experience": "<ul><li>前亞運划船選手</li><li>全運會划船項目銀牌</li></ul>"                    
-                },
-                {
-                    "MemberCode": "QQ80184463",
-                    "Name": "黃涴資",
-                    "NameDesc": "Anna",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(78.61 184.4)",
-                            "JobPosition": "translate(78.61 154.46)",
-                            "ImgXShifting": -65,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "There are no shortcuts to any place worth going.",
-                    "SloganDesc": "There are no shortcuts to any place worth going.",
-                    "Desc": "一個充滿活力、熱情、喜愛運動、勇於嘗試的女孩並且喜歡用快樂的方式讓身體進步！",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                   
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"dance",
-                        },
-                        {
-                            "Name":"badminton",
-                        },
-                        {
-                            "Name":"running",
-                        },
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"climbing",
-                        },
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<ul><li>快樂寶貝幼兒體能教練</li><li>一起動ezdon 團課教練</li><li>百岳攀登#雪山主峰#雪山東峰</li></ul>"                    
-                },
+                },               
                 {
                     "MemberCode": "RW86165852",
                     "Name": "蘇柏銓",
@@ -1902,6 +1773,47 @@
                     ],
                     "Experience": "<ul><li>2015半馬賽事</li><li>2016 10K跑步</li><li>2023 3200m長泳</li></ul>"                    
                 },
+                {
+                    "MemberCode": "HE71446932",
+                    "Name": "游念儒",                    
+                    "NameDesc": "Vic",
+                    "JobTitle": "Coach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(255.31 184.4)",
+                            "JobPosition": "translate(255.31 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "If you really want to achieve the goal, just do it.",
+                    "SloganDesc": "做任何事沒有能不能，只有想不想，如果真的想達成某個目標，那就全力以赴吧！",
+                    "Desc": "平易近人謹言慎行，內斂卻不缺乏熱情。熱愛透過文字和攝影讓深刻地觀察和體驗生活，也喜歡用它們分享自己的視角和感受。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                        
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"soccer",
+                        },
+                        {
+                            "Name":"gymnastics",
+                        }
+                    ],
+                    "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
+                },             
             ]
         },
         {
@@ -2458,7 +2370,42 @@
                         }
 
                     ],
-                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>"                    
+                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>",
+                    "Voice": [
+                        {
+                            "Date": "2024.06.22",
+                            "AboutDefCoach": "恢復教練如何保持無限好奇心與熱情？",
+                            "BriefPosition": "left",
+                            "BriefColor": "text-color-light",
+                            "NameColor": "text-color-secondary",
+                            "BriefInfo": "於2022年加入Beyond 就讀企業管理學系。曾擔任大同運動中心運動按摩教練、Beyond 月內訓與培訓講師，現擔任 Beyond Fitness 恢復教練",
+                            "TalkSlogan": "充滿好奇心探險家",
+                            "TalkMessage": "Kuan認為透過戶外運動，可以深刻理解身體恢復的重要性。希望透過恢復教練的角色，幫助學生通過運達成無拘無束、靈活自如的生活。<br/><br/>你也來試看看成為一名恢復按摩的探險家吧！",
+                            "Interviews":[
+                                {
+                                    "Question":"是什麼吸引你投身運動恢復按摩這個領域？",
+                                    "Answers": "<p>我認為「<u>擁有無拘無束、靈活自如地使用自己的身體來過日常生活、探索這個世界是一件很美好的事情</u>」。 </p><p>因為熱愛戶外登山、自由潛水與鐵人三項等，藉由這些運動的過程中讓我不斷地重新思考和調整生活步調，也讓我深刻體會到身體恢復的重要性。因此，作為一名恢復教練希望能夠成為協助學生透過運動恢復按摩幫助學生調節身體壓力，實現他們的運動目標。 </p>"
+                                },
+                                {
+                                    "Question":"你認爲運動恢復按摩與一般按摩相比有何區別？",
+                                    "Answers": "<p>作為一名的運動恢復教練需要「深入了解人體動作的產生和姿勢的維持」。我們會從解剖學和肌動學的角度來分析學生的生活型態和運動需求，透過運動按摩、伸展手法和動作訓練來調整身體張力，達到身體平衡。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Kuan/Voice/q2.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>相對於傳統按摩則可能依據經絡、穴位等概念，有一定操作步驟，但未必適合有特定運動目標的學生。因此，我們會針對每位學生的狀態和需求，設計適合的課程內容。 </p>"
+                                },
+                                {
+                                    "Question":"分享如何處理與面對學生恢復按摩時的挑戰！",
+                                    "Answers": "<p>大多數學生在描述身體問題時，往往難以用精確的言語表達他們的不適，這使得我們無法在第一時間確定問題的根源。 </p><p>透過<u>手感觸摸、評估檢測</u>，以及<u>引導學生覺察身體感受並表達出來</u>。在剛開始時，會先從手法練習入手，感知肌肉、骨頭和關節特徵，並持續進修專業知識，通過與他人交流來深化專業認知。這樣能更精確地找到問題並聚焦處理，透過適合的放鬆手法提高學生的感受。</p>"
+                                },
+                                {
+                                    "Question":"在運動恢復按摩工作中最重要的技能？",
+                                    "Answers": "<p>「<u>持續保持好奇心和學習熱情</u>」，就像給我前進的引擎加滿燃料！好奇心驅使我像探險家一樣深入了解學生的狀態，感受和思考運動訓練的影響，觀察身體在日常生活中的變化，就像在探索一個充滿奧秘的奇妙世界。</p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Kuan/Voice/q4.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>例如，在伸展時感受肌肉牽拉同時訓練時思考動作串聯及力量傳遞。這些都能幫助我在生活中的每個場景中提取對恢復放鬆的相關想法並應用於專業上。</p>"
+                                },
+                                {
+                                    "Question":"如何幫助新進夥伴融入Beyond的職人精神？",
+                                    "Answers": "<p>在 Beyond，我們強調「不只是把事情做完，而是把事情做好」。這需要深入思考每個行動背後的原因。「心態設定是關鍵」，你的內在動機會引導你用不同視角看待任務，並找到最佳解決方案。</p><p>工作氛圍注重團隊合作，鼓勵分享和反饋。當遇到難題時，資深教練和主管們會一起討論並找出解決辦法。對新進夥伴，我建議保持開放的心態，多向他人學習，積極參與團隊活動，這樣能更快融入文化並快速成長。</p>"
+                                },
+                            ],
+                            "Conclusion":"像探險家一樣在這充滿奧秘的世界中尋找答案，讓生活與工作隨時保持好奇心與熱情！"
+                        }                    
+                    ]                       
                 },
                 {
                     "MemberCode": "XJ27703577",
@@ -2558,6 +2505,419 @@
                         }
                     ],
                     "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li>"                    
+                },
+            ]
+        },
+         {
+            "ID": 5,
+            "SubClass": "dazhi",
+            "CircleBg": "half",
+            "Name": "Dazhi",
+            "NameDesc": "Branch",        
+            "Tel": "(02)8502-5218",
+            "TelDial": "+8868502-5218",
+            "AddLong": "6F., No. 192, Jingye 1st Rd., Zhongshan Dist., Taipei City, Taiwan",
+            "AddSeciton":"Zhongshan Dist., Taipei City, Taiwan",
+            "AddShort": "6F., No. 192, Jingye 1st Rd.",
+            "MRT":"Brown line (Muzha) • MRT Jiannan Rd. station Exit 2",
+            "MRTShort":"MRT Jiannan Rd. Exit<b>2</b>",
+            "GoogleMap": "https://maps.app.goo.gl/se2aJjfsTjZtn8H67",
+            "BannerImgCount": 1,  
+            "Slogan": "Start your journey to health and confidence with Beyond by your side!",
+            "SloganMessage": "<p>Dear friends, <br/><br />Beyond Fitness Dazhi Grand Opening Soon.We will then guide you through some suitable sports activities and develop a personalized training plan based on your experience.<br/><br/>Beyond Fitness invites you to come <br class=\"d-none d-lg-block d-md-block\"/>and experience our sincerity and warm expectations.</p>",
+            "DemoImgItems":[
+                {
+                    "FileName": "demo01.png"
+                },
+                {
+                    "FileName": "demo02.png"
+                },
+                {
+                    "FileName": "demo03.png"
+                },
+                {
+                    "FileName": "demo04.png"
+                },
+                {
+                    "FileName": "demo05.png"
+                },
+                {
+                    "FileName": "demo06.png"
+                },
+                {
+                    "FileName": "demo07.png"
+                },
+            ],           
+            "FeatureItems":[
+                {
+                    "Content": "Exit 2 of MRT Jiannan Rd."
+                },
+                {
+                    "Content": "Dazhi Denwell"
+                },
+                {
+                    "Content": "Near Miramar Cinemas"
+                }
+            ],
+            "Coaches": [
+                {
+                    "MemberCode": "IN34377928",
+                    "Name": "黃伊涵",
+                    "NameDesc": "Sabrina",
+                    "JobTitle": "Manager",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(60.31 184.4)",
+                            "JobPosition": "translate(60.31 154.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -30,
+                        }                        
+                    ],
+                    "Slogan": "The value of life is determined by oneself.",
+                    "SloganDesc": "「我」的價值由我自己決定！",
+                    "Desc": "我相信，溫柔的關懷和細心的傾聽能在人際關係中建立深厚聯繫，讓每個人感受到被重視和支持。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "KBC",
+                        },
+                        {
+                            "Name": "EXOS",
+                        },
+                        {
+                            "Name": "PTAG",
+                        }, 
+                        {
+                            "Name": "CPRAED"
+                        }                         
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"dance",
+                        },
+                        {
+                            "Name":"hiking",
+                        }
+                    ],
+                    "Experience": "<ul><li>印尼第二高火山林賈尼火山</li><li>友尚及茂世公司尾牙舞蹈老師</li><li>Lexus Model</li></ul>"                    
+                },     
+                {
+                    "MemberCode": "QQ80184463",
+                    "Name": "黃涴資",
+                    "NameDesc": "Anna",
+                    "JobTitle": "Vice Manager",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(40.61 184.4)",
+                            "JobPosition": "translate(40.61 154.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "There are no shortcuts to any place worth going.",
+                    "SloganDesc": "There are no shortcuts to any place worth going.",
+                    "Desc": "一個充滿活力、熱情、喜愛運動、勇於嘗試的女孩並且喜歡用快樂的方式讓身體進步！",
+                    "License":[
+                        {
+                            "Name": "NASM",
+                        },
+                        {
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                   
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"dance",
+                        },
+                        {
+                            "Name":"badminton",
+                        },
+                        {
+                            "Name":"running",
+                        },
+                        {
+                            "Name":"hiking",
+                        },
+                        {
+                            "Name":"climbing",
+                        },
+                        {
+                            "Name":"diving",
+                        }
+                    ],
+                    "Experience": "<ul><li>快樂寶貝幼兒體能教練</li><li>一起動ezdon 團課教練</li><li>百岳攀登#雪山主峰#雪山東峰</li></ul>"                    
+                },    
+                {
+                    "MemberCode": "SY30280433",
+                    "Name": "崔宸笙",
+                    "NameDesc": "Annie",
+                    "JobTitle": "Coach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(73.61 184.4)",
+                            "JobPosition": "translate(73.61 154.46)",
+                            "ImgXShifting": -65,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Practice makes perfect.",
+                    "SloganDesc": "保持忠於你的本質。",
+                    "Desc": "看到身邊的人時，總是能夠細心觀察並共情感受他們的情緒和需求，使我成為很好的傾聽者，並同時注重細節關心他人的感受。",
+                    "License":[
+                        {
+                            "Name": "PADI",
+                        },
+                        {
+                            "Name": "PTAG",
+                        },
+                        {
+                            "Name": "EXOS",
+                        },                        
+                        {
+                            "Name": "Monster",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                      
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"diving",
+                        },
+                        {
+                            "Name":"golf",
+                        },
+                        {
+                            "Name":"swimming",
+                        }
+                    ],
+                    "Experience": "<ul><li>2023 奇怪自由潛水運動會STA 冠軍</li><li>2023 CMAS全國自由潛水室內錦標賽STA 亞軍</li><li>2022 Beyond Fitness Trust 亞軍</li></ul>"                    
+                },    
+                {
+                    "MemberCode": "CJ29229466",
+                    "Name": "蔡恆易",
+                    "NameDesc": "Henry",
+                    "JobTitle": "Coach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(242.76 184.4)",
+                            "JobPosition": "translate(242.76 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "The only difference between elites and normal is that elites are great at basic skills than others.",
+                    "SloganDesc": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功。",
+                    "Desc": "熱愛多樣戶外運動，透過運動分享各式各樣的經歷的同時能激勵他人嘗試新事物，開拓不同的選擇，並一同體驗多元生活。",
+                    "License":[
+                        {
+                            "Name": "PTAG",
+                        },
+                        {
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                          
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"swimming",
+                        }
+                    ],
+                    "Experience": "<ul><li>功能性訓練企業團課教練（教學正確運動方式和和提升心肺適能）</li><li>內湖假日籃球聯賽C組冠軍</li><li>2023 Nike Workshop Trainer</li></ul>"                    
+                },                   
+                {
+                    "MemberCode": "BD56192749",
+                    "Name": "曹育翔",
+                    "NameDesc": "Hardy",
+                    "JobTitle": "Headcoach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-half.svg",
+                            "NamePosition": "translate(50.31 183.4)",
+                            "JobPosition": "translate(50.31 153.46)",
+                            "ImgXShifting": -40,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "Elites are great at basic skills than other people.",
+                    "SloganDesc": "Elites are great at basic skills than other people.",
+                    "Desc": "因為持續不斷的堅持，讓人們以為你天生如此。",
+                    "License":[
+                        {
+                            "Name": "NASM",
+                        },
+                        {
+                            "Name": "EXOS",
+                        },
+                        {
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "IPTFA",
+                        },
+                        {
+                            "Name": "CMAS",
+                        },
+                        {
+                            "Name": "RTS",
+                        },
+                        {
+                            "Name": "PTAG",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }  
+
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"dumbbel",
+                        },
+                        {
+                            "Name":"diving",
+                        },
+                        {
+                            "Name":"bodybuilding",
+                        }
+                    ],
+                    "Experience": "<ul><li>極限健身中心資深私人教練</li><li>健身工廠私人教練</li><li>波恩體能顧問店經理</li><li>Beyond Fitness南京店副理</li><li>Beyond Fitness教育培訓首席教官</li></ul>",
+                    "Voice": [
+                        {
+                            "Date": "2023.10.12",
+                            "AboutDefCoach": "關於如何成為一名出色的私人教練？",
+                            "BriefPosition": "right",
+                            "BriefColor": "text-color-dark",
+                            "NameColor": "text-color-dark",
+                            "BriefInfo": "於2018年加入Beyond<br>就讀國立臺灣師範大學運動科學研究所。曾任多家健身房私人教練與波恩體能顧問店經理、Beyond Fitness南京店副理，現擔任Beyond Fitness教育培訓首席教官",
+                            "TalkSlogan": "成為出色的教練之前",
+                            "TalkMessage": "Hardy認為想要成為出色的教練，可以先嘗試釐清「工作與職業有什麼不一樣？」。我想這是很多人在職涯生活中，都不曾細想過的問題。<br/><br/>Hardy覺得只要嘗試自我對話後，就有可能在其中找到使命感。有了使命感，面對工作的態度和方式，也會產生很大的差異。對於想要成為一名出色的教練，是很好的心理預備。",
+                            "Interviews":[
+                                {
+                                    "Question":"一份專業的職業和工作，有什麼不一樣嗎？",
+                                    "Answers": "<p><u>嗯，對於我來說，教練這個工作讓我覺得是份匠人的職業，而不只是在完成一項工作成為一名教練</u>。<br /><br />從教練的角度來看，若只將其視為一份工作，容易局限於「<u>我應該達到什麽目標，學到什麽技巧，只要滿足外在環境或自身需求，我就是一名合格的教練。</u>」然而，當我們將教練職業視為一種專業使命，我們自然會深入探索「<u>我應該擁有哪些特質和價值觀，才能成為一位卓越的教練。</u>」<br /><br />這種心態轉變雖然讓我們在短期內看不出顯著差異，但長遠來看，卻能在我們的表現和影響力上帶來截然不同的成就。</p>"
+                                },
+                                {
+                                    "Question":"系統化訓練是否會變成僵固性無法差異化訓練？",
+                                    "Answers": "<p>在Beyond的訓練系統中，是將教科書、證照、研習相關知識，經由加工，融入我們的Beyond training system（BTS），<u>目的是更貼近實務面訓練，減少理論與實務間的距離</u>。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hardy/Voice/q2.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>另外還更加強調教練軟實力的相關內訓，以及跨部門協作的能力，目的都是讓每一位學生，都能享有最完善的服務。另外Beyond的定期月內訓，會將其融入適合的TA族群並活化與應用，同時合併不同的案例分享進行個人化的調整，所以<u>系統化科學訓練並不是僵固性的訓練而是加強個人化訓練的一個加分效果</u>。 </p>"
+                                },
+                                {
+                                    "Question":"分享如何幫助學生建立健康習慣？",
+                                    "Answers": "<p>我認為<u>透過運動</u>是一個極為有效的途徑。運動不僅提供了身體健康的益處，同時也有助於提升日常生活品質。對我來說，<u>運動讓我充滿好奇心，並鼓勵我探索生活的更多可能性</u>。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hardy/Voice/q3.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>更重要的是，運動可以同時訓練到一個人的<u>生理、心理和社交溝通能力</u>。無論學生的目標是短期或長期，每一次的訓練都是一個機會，讓他們練習和挑戰這些能力。當學生按照教練的規劃持續執行，經驗豐富的教練會自然而然地帶給他們深刻的感受，從中建立運動的習慣。這種<u>深層的連結和成就感，往往是鞏固學生對健康習慣的信心的關鍵因素</u>。 </p>"
+                                },
+                                {
+                                    "Question":"如何激發身周遭的人可以變得更好？",
+                                    "Answers": "<p>具體來講，我們首先得以身作則，就是<u>通過自己的行為和示範來激勵他人</u>。 </p><img class=\"float-start float-lg-end float-md-end pe-2 pe-lg-0 pe-md-0 ps-lg-5 ps-md-5 pb-5 pb-lg-3 pb-md-3 qa-img\" src=\"../images/avatars/Hardy/Voice/q4.jpg\" alt=\"BeyondFitness|夥伴之聲\"><p>我們也可以引導團隊產生積極的正向影響，這樣能促使整體團隊一起進步和發展。還有，別忘了<u>尊重每個人的想法和行為</u>，因為改變是每個人自己的選擇，沒法被強加。儘管改變需要時間，但如果每個人都一點一滴地變得更好，工作環境和整體團隊的氛圍都會漸漸變得更加正面，這會助長整體發展的趨勢。 </p>"
+                                },
+                            ],
+                            "Conclusion":"認識自己的特質與價值觀，將健康和運動視為一項使命融入教練的專業中，使工作變得更有意義，更充滿影響力"
+                        }                    
+                    ]
+                },
+                {
+                    "MemberCode": "HT89731654",
+                    "Name": "黃宇承",
+                    "NameDesc": "Alan",
+                    "JobTitle": "Headcoach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-full.svg",
+                            "NamePosition": "translate(60.31 183.4)",
+                            "JobPosition": "translate(60.31 153.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -40,
+                        }                        
+                    ],
+                    "Slogan": "If you are doing your best,you will not have to worry about failure.",
+                    "SloganDesc": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
+                    "Desc": "散發正能量，熱情洋溢，如陽光般溫暖，我深信成功源自持之以恆，沒有奇蹟，只有不懈的累積。",
+                    "License":[
+                        {
+                            "Name": "PTAG",
+                        },
+                        {
+                            "Name": "EXOS",
+                        },                        
+                        {
+                            "Name": "TRX",
+                        },
+                        {
+                            "Name": "Monster",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                          
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"rowing",
+                        },
+                        {
+                            "Name":"golf",
+                        },
+                        {
+                            "Name":"swimming",
+                        },
+                        {
+                            "Name":"soccer",
+                        }
+                    ],
+                    "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
+                },
+                {
+                    "MemberCode": "XJ27703577",
+                    "Name": "陳芷榆",
+                    "NameDesc": "Genie",
+                    "JobTitle": "Manager",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(65.57 184.4)",
+                            "JobPosition": "translate(65.57 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -50,
+                        }                        
+                    ],
+                    "Slogan": "Life's joy is in simplicity, not in endless wants.",
+                    "SloganDesc": "生命中最美好的，往往是已擁有的小事，而不是忙碌一生的追求和慾望。",
+                    "Desc": "以親和友善的性格融入每個相處的瞬間，細緻入微地注重細節，並堅守著遵守規則，做應該做的事。",
+                    "License":[ 
+                        {
+                            "Name": "CPRAED"
+                        }
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"basketball",
+                        },
+                        {
+                            "Name":"hiking",
+                        },
+                        {
+                            "Name":"ironman",
+                        },
+                        {
+                            "Name":"running",
+                        }
+
+                    ],
+                    "Experience": "<ul><li>2021 Challenge Taiwan 113接力 跑步21K</li><li>2019 北濱 75K</li></ul>"                    
                 },
             ]
         }

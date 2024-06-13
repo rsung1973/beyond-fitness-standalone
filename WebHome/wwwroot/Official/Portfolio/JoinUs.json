@@ -12,6 +12,10 @@
     "VoiceMessage":"聽聽每一位夥伴的真實心聲",
     "VoiceItem": [
         {
+            "MemberCode": "MH1035328",
+            "BranchID": 4
+        },
+        {
             "MemberCode": "BD56192749",
             "BranchID": 1
         },
