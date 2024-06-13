@@ -1081,4 +1081,17 @@ namespace WebHome.Models.DataEntity
             ValidEmail = 1301,
         }
     }
+
+    public partial class TrainingStage
+    {
+        public enum StageDefinition
+        {
+            Basic = 1,
+            Athletic = 2,
+            Strength = 3,
+            Cardio = 4,
+            Recover = 5,
+        }
+    }
+
 }

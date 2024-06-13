@@ -1,0 +1,59 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    int lessonID = -1;
+    if(_viewModel.KeyID!=null)
+    {
+        lessonID = _viewModel.DecryptKeyValue();
+    }
+
+    var item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
+    if (item != null)
+    {
+        if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程)
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSR.cshtml", item);
+        }
+        else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程)
+        {
+        }
+        else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSD.cshtml", item);
+        }
+        else if (item.IsPTSession())
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CoursePT.cshtml", item);
+        }
+        else if (item.IsPISession())
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CoursePT.cshtml", item);
+        }
+        else if (item.IsTrialLesson())
+        {
+        }
+        else if (item.IsSTSession())
+        {
+        }
+    }
+}
+

@@ -53,7 +53,7 @@
                 </div>
 
             </a>
-            <div class="collapse mt-0 bg-beyond-dark @(idx==0 && currentIndex==0 ? "show" : null)" id="@(courseID)" onclick="javasciprt:gotoCoursePT();">
+            <div class="collapse mt-0 bg-beyond-dark @(idx==0 && currentIndex==0 ? "show" : null)" id="@(courseID)" onclick="javasciprt:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');">
                 <div class="d-inline-flex ms-auto">
                     <img src="../images/empty.png" width="50" height="50" class="rounded-circle preload-img mx-1" />
                     <div class="d-block mb-2">

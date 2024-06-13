@@ -28,6 +28,9 @@
         : lang == "en-US"
             ? "en"
             : "ja";
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    LessonTime _model = this.Model as LessonTime;
 }
 
 @section MainContent
@@ -44,12 +47,12 @@
 
     <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">體能訓練</h1>
 
-    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>60 Min</p>
+    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>@(_model.DurationInMinutes) Min</p>
 
 
 
     <img style="margin-bottom:-80px" src="../images/icons/session/trx.svg"
-         class="mx-auto over-card bg-transparent" width="200">
+         class="mx-auto over-card bg-transparent" width="200" />
 
     <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
 

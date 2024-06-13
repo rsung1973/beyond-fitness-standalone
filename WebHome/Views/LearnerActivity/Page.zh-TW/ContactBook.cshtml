@@ -136,6 +136,10 @@
                 });
         }
 
+        function gotoCourse(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))',{'keyID':keyID, 'from': '@Html.Raw(Url.Action("ContactBook","LearnerActivity"))'});
+        }
+
     </script>
 
 }
