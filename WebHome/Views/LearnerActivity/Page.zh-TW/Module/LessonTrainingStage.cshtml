@@ -56,15 +56,6 @@
                 : "#";
     }
     <a href="@Html.Raw(showContent)" class="d-flex mb-4 px-4 px-lg-5 px-md-5">
-
-        <!-- <div class="align-self-center">
-
-                                    <span class="icon icon-xl bg-beyond-dark rounded-s color-white me-3"><img
-
-                                            src="../images/icons/session/jointadjustment.svg" width="40" class="mx-2 py-2"></span>
-
-                                </div> -->
-
         <div class="align-self-center w-100">
             <h5 class="letter-spacing-2 color-white">
                 @Html.Raw(stage.Stage)<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">@($"{(TrainingStage.StageDefinition)stage.StageID}")</small>
@@ -74,7 +65,7 @@
                 @{ 
                     var percent = Math.Round((trainingStage?.TotalMinutes ?? 0) * 100 / total);
                 }
-                <div class="progress-bar border-0 bg-stage1 text-start ps-2 rounded-s" role="progressbar" style="width: @($"{percent}%")"
+                <div class="progress-bar border-0 bg-stage@(stage.StageID) text-start ps-2 rounded-s" role="progressbar" style="width: @($"{percent}%")"
                      aria-valuenow="@(percent)" aria-valuemin="0" aria-valuemax="100">
 
                 </div>
