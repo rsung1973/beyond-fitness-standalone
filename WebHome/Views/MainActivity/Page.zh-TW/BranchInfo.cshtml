@@ -447,7 +447,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-12">
-                <img src="../images/home/beyond-map-sm-20240220.svg" alt="BeyondFitness|分店一覽" data-icon
+                <img src="../images/home/beyond-map-sm_20240611.svg" alt="BeyondFitness|分店一覽" data-icon
                         data-plugin-options="{'onlySVG': true, 'animated': false, 'delay': 0, 'fadeIn': false}" />
             </div>
         </div>
@@ -470,7 +470,7 @@
                         //游標移到後背景變色					
                         if (event.target.tagName == 'rect') {
                             event.target.style.fill = '#fff';
-                            var text = event.target.parentElement.querySelectorAll('path');
+                            var text = event.target.parentElement.querySelectorAll('tspan');
                             for (i = 0; i < text.length; i++) {
                                 text[i].style.fill = '#282828';
                             }
@@ -481,7 +481,7 @@
                         //游標移到後背景變色
                         if (event.target.tagName == 'rect') {
                             event.target.style.fill = '#282828';
-                            var text = event.target.parentElement.querySelectorAll('path');
+                            var text = event.target.parentElement.querySelectorAll('tspan');
                             for (i = 0; i < text.length; i++) {
                                 text[i].style.fill = '#fff';
                             }
