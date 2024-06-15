@@ -32,22 +32,25 @@
     ? "en"
     : "ja";
 
-    LessonTime _model = (LessonTime)this.Model;
+    Object[] _model = (Object[])this.Model;
 }
 @{
     var learner = await Context.GetUserAsync();
-    var plan = _model.AssertTrainingPlan(models, UID: learner.UID);
-    var execution = plan.TrainingExecution;
-    TrainingStage stage = (TrainingStage)ViewBag.TrainingStage;
+    LessonTime lesson = (LessonTime)_model[0];
+    TrainingExecution training = (TrainingExecution)_model[1];
+    decimal total = (decimal)_model[3];
+    TrainingStage stage = (TrainingStage)_model[2];
     var items = models.GetTable<TrainingItem>()
-            .Where(t => t.ExecutionID == execution.ExecutionID)
+            .Where(t => t.ExecutionID == training.ExecutionID)
             .Where(t => t.TrainingType.TrainingStageItem.StageID == stage.StageID)
             .OrderBy(t => t.Sequence);
+
+    TrainingExecutionStage trainingStage = training.TrainingExecutionStage.Where(x => x.StageID == stage.StageID).FirstOrDefault();
 
 }
 <div class="col-12 col-lg-6 col-md-6">
 
-    <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
+    <a href="javascript:showContent('@Html.Raw((new { training.ExecutionID, stage.StageID }).JsonStringify().EncryptKey())');" class="d-flex mb-4 px-4 px-lg-5 px-md-5">
 
         <!-- <div class="align-self-center">
 
@@ -66,7 +69,7 @@
             <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
 
                 <div class="progress-bar border-0 bg-stage1 text-start ps-2 rounded-s" role="progressbar" style="width: 8%"
-                     aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
+                     aria-valuenow="@(Math.Round((trainingStage?.TotalMinutes ?? 0) * 100 / total))" aria-valuemin="0" aria-valuemax="100">
 
                 </div>
 
@@ -83,8 +86,10 @@
                 </div>
 
                 <div class="col-6 text-end">
-
-                    <p class="mb-n1 font-13 color-white opacity-70">05:15</p>
+                    @{
+                        var totalSeconds = (int)(trainingStage?.TotalMinutes * 60 ?? 0);
+                     }
+                    <p class="mb-n1 font-13 color-white opacity-70">@($"{totalSeconds / 60:00}"):@($"{totalSeconds % 60:00}")</p>
 
                 </div>
 

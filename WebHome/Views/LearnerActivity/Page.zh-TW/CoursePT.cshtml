@@ -31,6 +31,8 @@
 
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
     LessonTime _model = this.Model as LessonTime;
+    TrainingExecution _training = _model.TrainingPlan.Select(p => p.TrainingExecution).FirstOrDefault();
+    var total = _training.TrainingExecutionStage.Sum(t => t.TotalMinutes) ?? 1;
 }
 
 @section MainContent
@@ -85,134 +87,19 @@
 
             <div class="collapse" id="collapse-lesson">
                 <div class="row">
-                    <div class="col-12 col-lg-6 col-md-6">
-                        <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
-                            <div class="align-self-center w-100">
-                                <h5 class="letter-spacing-2 color-white">基本<small
-                                        class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Basic</small>
-                                </h5>
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-                                    <div class="progress-bar border-0 bg-stage1 text-start ps-2 rounded-s"
-                                        role="progressbar" style="width: 8%" aria-valuenow="10" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-6 text-start">
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <p class="mb-n1 font-13 color-white opacity-70">05:15</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12 col-lg-6 col-md-6">
-                        <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
-                            <div class="align-self-center w-100">
-                                <h5 class="letter-spacing-2 color-white">運動技巧<small
-                                        class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Athletic</small>
-                                </h5>
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-                                    <div class="progress-bar border-0 bg-stage2 text-start ps-2 rounded-s"
-                                        role="progressbar" style="width: 25%" aria-valuenow="17" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-6 text-start">
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <p class="mb-n1 font-13 color-white opacity-70">10:21</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12 col-lg-6 col-md-6">
-                        <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
-                            <div class="align-self-center w-100">
-                                <h5 class="letter-spacing-2 color-white">肌力<small
-                                        class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic">Strength</small>
-                                </h5>
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-                                    <div class="progress-bar border-0 bg-stage3 text-start ps-2 rounded-s"
-                                        role="progressbar" style="width: 35%" aria-valuenow="17" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-6 text-start">
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <p class="mb-n1 font-13 color-white opacity-70">10:40</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12 col-lg-6 col-md-6">
-                        <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
-                            <div class="align-self-center w-100">
-                                <h5 class="letter-spacing-2 color-white">心肺<small
-                                        class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Cardio</small>
-                                </h5>
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-                                    <div class="progress-bar border-0 bg-stage4 text-start ps-2 rounded-s"
-                                        role="progressbar" style="width: 15%" aria-valuenow="10" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-6 text-start">
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <p class="mb-n1 font-13 color-white opacity-70">15:00</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-12 col-lg-6 col-md-6">
-                        <a href="#" class="d-flex mb-4 px-4 px-lg-5 px-md-5" data-menu="course-content">
-                            <div class="align-self-center w-100">
-                                <h5 class="letter-spacing-2 color-white">恢復<small
-                                        class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Recover</small>
-                                </h5>
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-                                    <div class="progress-bar border-0 bg-stage5 text-start ps-2 rounded-s"
-                                        role="progressbar" style="width: 5%" aria-valuenow="10" aria-valuemin="0"
-                                        aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="row mb-0">
-                                    <div class="col-6 text-start">
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <p class="mb-n1 font-13 color-white opacity-70">05:00</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
-
+                    @foreach (var stage in models.GetTable<TrainingStage>())
+                    {
+                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/LessonTrainingStage.cshtml", new Object[] { _model, _training, stage, total });
+                    }
                 </div>
             </div>
 
             <p class="text-center pb-3">
                 <a data-bs-toggle="collapse" href="#collapse-lesson"
-                    class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-3 py-1 font-14 mt-5">展開上課詳細資訊
-                    <i class="fa-solid fa-angles-up ps-2"></i></a>
+                   class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-3 py-1 font-14 mt-5">
+                    展開上課詳細資訊
+                    <i class="fa-solid fa-angles-up ps-2"></i>
+                </a>
             </p>
         </div>
 
@@ -231,8 +118,9 @@
             </div>
             <p class="text-center pt-2">
                 <a href="survey-class-startstyle.html"
-                    class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">Now Feedback<i
-                        class="fa-solid fa-chevron-right ps-2"></i></a>
+                   class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">
+                    Now Feedback<i class="fa-solid fa-chevron-right ps-2"></i>
+                </a>
             </p>
         </div>
     </div>
@@ -265,5 +153,29 @@
             </div>
         </div>
     </div>
+    <script>
+        function showContent(keyID) {
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupCourseContent", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#course-content').html(data);
+                    $('#course-content').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+    </script>
 
+}
+
+@section PopupBox
+{
+    <div id="course-content"
+         class="menu menu-box-top bg-beyond-dark"
+         data-menu-height="cover"
+         data-menu-width="cover">
+    </div>
 }

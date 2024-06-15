@@ -20,6 +20,7 @@
     _modelState = ViewContext.ModelState;
 
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    var learner = await Context.GetUserAsync();
     int lessonID = -1;
     if(_viewModel.KeyID!=null)
     {
@@ -29,6 +30,7 @@
     var item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
     if (item != null)
     {
+        var plan = item.AssertTrainingPlan(models, UID: learner.UID);
         if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程)
         {
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSR.cshtml", item);
