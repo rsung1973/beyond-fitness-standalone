@@ -66,7 +66,6 @@
                                 </div> -->
 
         <div class="align-self-center w-100">
-
             <h5 class="letter-spacing-2 color-white">
                 @Html.Raw(stage.Stage)<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">@($"{(TrainingStage.StageDefinition)stage.StageID}")</small>
             </h5>
@@ -79,31 +78,20 @@
                      aria-valuenow="@(percent)" aria-valuemin="0" aria-valuemax="100">
 
                 </div>
-
             </div>
-
             <div class="row mb-0">
-
                 <div class="col-6 text-start">
-
                     <span class="mb-n1 font-12 opacity-40 color-white">
                         Read More <i class="fa-solid fa-chevron-right pe-3"></i>
                     </span>
-
                 </div>
-
                 <div class="col-6 text-end">
                     @{
                         var totalSeconds = (int)(trainingStage?.TotalMinutes * 60 ?? 0);
                      }
                     <p class="mb-n1 font-13 color-white opacity-70">@($"{totalSeconds / 60:00}"):@($"{totalSeconds % 60:00}")</p>
-
                 </div>
-
             </div>
-
         </div>
-
     </a>
-
 </div>
