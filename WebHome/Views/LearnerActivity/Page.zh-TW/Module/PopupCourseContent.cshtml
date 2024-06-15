@@ -40,18 +40,36 @@
 
     TrainingExecution training = models.GetTable<TrainingExecution>().Where(t => t.ExecutionID == keyValues.ExecutionID).FirstOrDefault();
     var stageItems = models.GetTable<TrainingStage>().ToArray();
-    int nextStageID = ((keyValues.StageID-1 ?? 0) + 1) % stageItems.Length + 1;
-    var nextStage = models.GetTable<TrainingExecutionStage>()
+    var executionItems = models.GetTable<TrainingExecutionStage>()
                                 .Where(t => t.ExecutionID == keyValues.ExecutionID)
                                 .Where(t => t.TotalMinutes > 0)
-                                .Where(t => t.StageID >= nextStageID)
                                 .OrderBy(t => t.StageID)
-                                .FirstOrDefault();
+                                .ToList();
+    var currentStage = executionItems.Where(t => t.StageID == keyValues.StageID).First();
+    var nextIdx = (executionItems.IndexOf(currentStage) + 1) % executionItems.Count;
+    var nextStage = executionItems[nextIdx];
 
     var items = models.GetTable<TrainingItem>()
             .Where(t => t.ExecutionID == keyValues.ExecutionID)
             .Where(t => t.TrainingType.TrainingStageItem.StageID == keyValues.StageID)
-            .OrderBy(t => t.Sequence);
+            .OrderBy(t => t.Sequence)
+            .ToList();
+
+    List<List<TrainingItem>> groupItems = new List<List<TrainingItem>>();
+    List<TrainingItem> currentItems = null;
+    foreach (var it in items)
+    {
+        if (currentItems == null)
+        {
+            currentItems = new List<TrainingItem>();
+            groupItems.Add(currentItems);
+        }
+        currentItems.Add(it);
+        if (it.TrainingType.BreakMark == true)
+        {
+            currentItems = null;
+        }
+    }
 
     var item = items.FirstOrDefault();
 
@@ -81,121 +99,26 @@
 <div class="content">
 
     <div class="row">
-        @foreach (var it in items)
+        @foreach (var group in groupItems)
         {
-            item = it;
+            breakItem = group.Where(t => t.TrainingType.BreakMark == true).FirstOrDefault();
             <div class="col-12 col-lg-12 col-md-12">
 
                 <div class="card card-style bg-white">
-                    @if (item.TrainingType.BreakMark != true)
-                    {
-                        <div class="content px-2 me-1 pb-3">
+                    <div class="content px-2 me-1 pb-3">
+                        @foreach (var it in group)
+                        {
+                            item = it;
+                            BuildTrainingItem(item);
+                        }
+                    </div>
 
-                            <div class="d-flex ps-1">
-
-                                <div>
-
-                                    <!--大項類別-->
-
-                                    <p class="mb-1 mt-n1 font-500 font-13 color-highlight letter-spacing-1">@Html.Raw(item.TrainingType.BodyParts)</p>
-
-                                    <!--主動作名稱-->
-
-                                    <h2 class="font-700 letter-spacing-1 color-beyond-dark">@Html.Raw(item.Description)</h2>
-
-                                </div>
-
-                                <!--重複組數-->
-                                @if (item.GoalTurns != null)
-                                {
-                                    <div class="ms-auto">
-
-                                        <a class="icon icon-xs bg-beyondwhite-dark rounded-m px-3 py-2 font-14">
-                                            <b class="color-beyond-dark">@(item.GoalTurns)</b>
-                                        </a>
-
-                                        <b class="d-block color-beyond-dark font-12 font-400">Repeat</b>
-
-                                    </div>
-                                }
-                            </div>
-
-                            <div class="d-flex pt-2">
-
-                                @foreach (var aid in item.TrainingItemAids)
-                                {
-                                    <a class="chip chip-small bg-gray-light">
-
-                                        <i class="fa fa-check bg-green-dark"></i>
-
-                                        <strong class="color-black font-400 text-capitalize font-13">@Html.Raw(aid.TrainingAids.ItemName)</strong>
-
-                                    </a>
-                                }
-                            </div>
-
-                            <!--備註-->
-
-                            <p class="ps-1 color-beyond-dark opacity-80">
-
-                                @Html.Raw(item.Remark)
-
-                            </p>
-
-                            <!--休息時間-->
-                            @if (item.BreakIntervalInSecond != null)
-                            {
-                                <div class="text-center">
-                                    <b class="color-beyondred-dark text-capitalize fst-italic">休息<u class="px-2">@(item.BreakIntervalInSecond)</u>秒</b>
-                                </div>
-                            }
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="content px-2 me-1 pb-3">
-
-                            <div class="d-flex ps-1">
-
-                                <div>
-                                    <!--大項類別-->
-                                    <p class="mb-1 mt-n1 font-500 font-13 color-highlight letter-spacing-1"></p>
-                                    <!--主動作名稱-->
-                                    <h2 class="font-700 letter-spacing-1 color-beyond-dark">
-                                    </h2>
-                                </div>
-                            </div>
-                            <!--備註-->
-                            <p class="ps-1 color-beyond-dark opacity-80">
-                                @Html.Raw(item.Remark)
-                            </p>
-
-                            <!--休息時間-->
-                            @if (item.BreakIntervalInSecond != null || item.Repeats!=null)
-                            {
-                                <div class="text-center">
-                                    <b class="color-beyondred-dark text-capitalize fst-italic">
-                                        @if (item.BreakIntervalInSecond != null)
-                                        {
-                                            <text>休息 @(item.BreakIntervalInSecond) <u class="px-2">@(item.BreakIntervalInSecond)</u>秒</text>
-                                        }
-                                        @if (item.BreakIntervalInSecond != null && item.Repeats != null)
-                                        {
-                                            <text> / </text>
-                                        }
-                                        @if (item.Repeats != null)
-                                        {
-                                            <text>Repeat * @(item.Repeats)</text>
-                                        }
-                                    </b>
-                                </div>
-                            }
-                        </div>
-                    }
                 </div>
 
             </div>
         }
+
+
     </div>
 
 
@@ -222,3 +145,88 @@
        class="close-menu text-capitalize font-700 text-center p-3 w-100 d-block font-14 py-5 color-white opacity-50">關閉視窗，狠心離開</a>
 
 </div>
+
+@functions
+{    
+    TrainingItem breakItem = null;
+
+    void BuildTrainingItem(TrainingItem item)
+    {
+        if (item.TrainingType.BreakMark != true)
+        {
+            <div class="d-flex ps-1">
+
+                <div>
+
+                    <!--大項類別-->
+
+                    <p class="mb-1 mt-n1 font-500 font-13 color-highlight letter-spacing-1">@Html.Raw(item.TrainingType.BodyParts)</p>
+
+                    <!--主動作名稱-->
+
+                    <h2 class="font-700 letter-spacing-1 color-beyond-dark">@Html.Raw(item.Description)</h2>
+
+                </div>
+
+                <!--重複組數-->
+                <div class="ms-auto">
+
+                    <a class="icon icon-xs bg-beyondwhite-dark rounded-m px-3 py-2 font-14">
+                        <b class="color-beyond-dark">@(breakItem?.Repeats ?? "1")</b>
+                    </a>
+
+                    <b class="d-block color-beyond-dark font-12 font-400">Repeat</b>
+
+                </div>
+            </div>
+
+            <div class="d-flex pt-2">
+
+                @foreach (var aid in item.TrainingItemAids)
+                {
+                    <a class="chip chip-small bg-gray-light">
+
+                        <i class="fa fa-check bg-green-dark"></i>
+
+                        <strong class="color-black font-400 text-capitalize font-13">@Html.Raw(aid.TrainingAids.ItemName)</strong>
+
+                    </a>
+                }
+            </div>
+
+            <!--次數強度-->
+
+            <p class="ps-1 color-beyond-dark">
+                @if (item.GoalStrength != null)
+                {
+                    @(item.GoalStrength)
+                }
+                @if (item.GoalTurns != null && item.GoalStrength != null)
+                {
+                    <text>X</text>
+                }
+                @if (item.GoalTurns != null)
+                {
+                    @(item.GoalTurns)
+                }
+            </p>
+
+            <div class="divider mt-2 mb-4"></div>
+
+            <!--備註-->
+
+            <p class="ps-1 color-beyond-dark opacity-80">
+
+                @Html.Raw(item.Remark)
+
+            </p>
+        }
+        else
+        {
+            <!--休息時間-->
+            <div class="text-center">
+                <b class="color-beyondred-dark text-capitalize fst-italic">休息<u class="px-2">@(breakItem.BreakIntervalInSecond)</u>秒</b>
+            </div>
+        }
+    }
+}
