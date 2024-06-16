@@ -190,7 +190,7 @@
                         @foreach (var item in PTItems)
                         {
                             <div class="clearfix"></div>
-                            <a id="@($"lesson{item.LessonID}")" href="javasciprt:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">                                
+                            <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">                                
                                 <div class="align-self-start ms-3 me-auto">
                                     <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>                                                                                                            
                                     <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>                                                                                                     
@@ -228,7 +228,7 @@
                         @foreach (var item in PIItems)
                         {
                             <div class="clearfix"></div>
-                            <a id="@($"lesson{item.LessonID}")" href="javasciprt:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
+                            <a id="@($"lesson{item.LessonID}")" href="gotoCourse:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
                                 <div class="align-self-start ms-3 me-auto">
                                     <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
                                     <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
