@@ -41,8 +41,8 @@
                     <div class="list_tb tb2">
                         <div class="list_tr">
                             <div class="list_td hd">S.R/S.D Session堂數</div>
-                            <div class="list_td rt">                                
-                                @($"{_salary?.PTAttendanceCount + (_salary?.TSAttendanceCount??0/2):##,###,###,###}")
+                            <div class="list_td rt">
+                                @($"{_salary?.PTAttendanceCount + (_salary?.TSAttendanceCount ?? 0)/2:##,###,###,###}")
                             </div>
                         </div>
                     </div>
