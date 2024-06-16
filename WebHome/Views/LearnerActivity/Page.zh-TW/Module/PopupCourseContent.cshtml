@@ -99,10 +99,26 @@
                         <div class="row">
                             @foreach (var it in group)
                             {
+                                if (it == breakItem)
+                                {
+                                    continue;
+                                }
                                 item = it;
                                 BuildTrainingItem(item);
                             }
                         </div>
+                        @if (breakItem != null)
+                        {
+                            if (!String.IsNullOrEmpty(breakItem.BreakIntervalInSecond))
+                            {
+                                <!--休息時間-->
+                                <div class="text-center">
+                                    <b class="color-beyondred-dark text-capitalize fst-italic">
+                                        休息<u class="px-2">@(breakItem.BreakIntervalInSecond)</u>秒
+                                    </b>
+                                </div>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -135,65 +151,50 @@
     void BuildTrainingItem(TrainingItem item)
     {                
         <div class="col-12 col-lg-6 col-md-6 mb-5">
-            @if (item.TrainingType.BreakMark != true)
-            {       
-                <div class="d-flex ps-1">
-                    <div>
-                        <!--大項類別-->
-                        <p class="mb-1 mt-n1 font-500 font-13 color-highlight letter-spacing-1">@Html.Raw(item.TrainingType.BodyParts)</p>
-                        <!--主動作名稱-->
-                        <h2 class="font-700 letter-spacing-1 color-beyond-dark">@Html.Raw(item.Description)</h2>
-                    </div>
-                    <!--重複組數-->
-                    <div class="ms-auto">
-                        <a class="icon icon-xs bg-beyondwhite-dark rounded-m px-3 py-2 font-14">
-                            <b class="color-beyond-dark">@(breakItem?.Repeats ?? "1")</b>
-                        </a>
-                        <b class="d-block color-beyond-dark font-12 font-400">Repeat</b>
-                    </div>
+            <div class="d-flex ps-1">
+                <div>
+                    <!--大項類別-->
+                    <p class="mb-1 mt-n1 font-500 font-13 color-highlight letter-spacing-1">@Html.Raw(item.TrainingType.BodyParts)</p>
+                    <!--主動作名稱-->
+                    <h2 class="font-700 letter-spacing-1 color-beyond-dark">@Html.Raw(item.Description)</h2>
                 </div>
-                <div class="d-flex pt-2">
-                    @foreach (var aid in item.TrainingItemAids)
-                    {
-                        <a class="chip chip-small bg-gray-light">
-                            <i class="fa fa-check bg-green-dark"></i>
-                            <strong class="color-black font-400 text-capitalize font-13">@Html.Raw(aid.TrainingAids.ItemName)</strong>
-                        </a>
-                    }
+                <!--重複組數-->
+                <div class="ms-auto">
+                    <a class="icon icon-xs bg-beyondwhite-dark rounded-m px-3 py-2 font-14">
+                        <b class="color-beyond-dark">@(breakItem?.Repeats ?? "1")</b>
+                    </a>
+                    <b class="d-block color-beyond-dark font-12 font-400">Repeat</b>
                 </div>
-                <!--次數強度-->
-                <p class="ps-1 color-beyond-dark mb-2">
-                    @if (item.GoalStrength != null)
-                    {
-                        @(item.GoalStrength)
-                    }
-                    @if (item.GoalTurns != null && item.GoalStrength != null)
-                    {
-                        <text>X</text>
-                    }
-                    @if (item.GoalTurns != null)
-                    {
-                        @(item.GoalTurns)
-                    }
-                </p>
-                <!--備註-->
-                @if (!String.IsNullOrEmpty(item.Remark))
+            </div>
+            <div class="d-flex pt-2">
+                @foreach (var aid in item.TrainingItemAids)
                 {
-                    <div class="divider mt-1 mb-2"></div>
-                    <p class="ps-1 color-beyond-dark opacity-80 mb-0">@Html.Raw(item.Remark)</p>
+                    <a class="chip chip-small bg-gray-light">
+                        <i class="fa fa-check bg-green-dark"></i>
+                        <strong class="color-black font-400 text-capitalize font-13">@Html.Raw(aid.TrainingAids.ItemName)</strong>
+                    </a>
                 }
-                                
-            }
-            else
+            </div>
+            <!--次數強度-->
+            <p class="ps-1 color-beyond-dark mb-2">
+                @if (item.GoalStrength != null)
+                {
+                    @(item.GoalStrength)
+                }
+                @if (item.GoalTurns != null && item.GoalStrength != null)
+                {
+                    <text>X</text>
+                }
+                @if (item.GoalTurns != null)
+                {
+                    @(item.GoalTurns)
+                }
+            </p>
+            <!--備註-->
+            @if (!String.IsNullOrEmpty(item.Remark))
             {
-               if (!String.IsNullOrEmpty(breakItem.BreakIntervalInSecond)) 
-               {
-                <!--休息時間-->
-                <div class="text-center">
-                    <b class="color-beyondred-dark text-capitalize fst-italic">休息<u
-                            class="px-2">@(breakItem.BreakIntervalInSecond)</u>秒</b>
-                </div>
-                } 
+                <div class="divider mt-1 mb-2"></div>
+                <p class="ps-1 color-beyond-dark opacity-80 mb-0">@Html.Raw(item.Remark)</p>
             }
         </div>
     }
