@@ -59,8 +59,9 @@
     <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
         <div class="content">
             <div class="row text-center px-4">
-                <h3 class="color-white letter-spacing-1">後腳抬高蹲 / 核心 / 全身性</h3>
-                <span class="color-white opacity-30 fst-italic letter-spacing-1">Michael Lee</span>
+                <h3 class="color-white letter-spacing-1">@(_training.Emphasis ?? "重點稍後揭曉，一起加油達標")</h3>
+                <span
+                    class="color-white opacity-30 fst-italic letter-spacing-1">@(_model.AsAttendingCoach.UserProfile.Nickname)</span>
             </div>
 
             <div class="collapse show" id="collapse-healthy">
