@@ -75,5 +75,5 @@
 
 <script>
     function closeMenu() {
-        const activeMenu = document.querySelectorAll('.menu-active');        for (let i = 0; i < activeMenu.length; i++) { activeMenu[i].classList.remove('menu-active'); }        for (let i = 0; i < wrappers.length; i++) { wrappers[i].style.transform = "translateX(-" + 0 + "px)" }    }
+        const activeMenu = document.querySelectorAll('.menu-active');        for (let i = 0; i < activeMenu.length; i++) { activeMenu[i].classList.remove('menu-active'); }        var wrappers = document.querySelectorAll('.header, #footer-bar, .page-content');        for (let i = 0; i < wrappers.length; i++) { wrappers[i].style.transform = "translateX(-" + 0 + "px)" }    }
 </script>
