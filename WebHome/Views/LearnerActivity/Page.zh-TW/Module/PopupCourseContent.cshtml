@@ -93,18 +93,29 @@
         @foreach (var group in groupItems)
         {
             breakItem = group.Where(t => t.TrainingType.BreakMark == true).FirstOrDefault();
+            String repeatDisplay = "ms-auto d-block d-lg-none d-md-none";  
+            var i = 0;      
             <div class="col-12 col-lg-12 col-md-12">
                 <div class="card card-style bg-white">
                     <div class="content px-2 me-1 pb-3">
                         <div class="row">
                             @foreach (var it in group)
-                            {
+                            {                                
                                 if (it == breakItem)
                                 {
                                     continue;
                                 }
                                 item = it;
-                                BuildTrainingItem(item);
+                                i++;
+                                if (i == 2)
+                                {
+                                    repeatDisplay = "ms-auto d-none d-lg-block d-md-block";
+                                } 
+                                else if (i > 2) {
+                                    repeatDisplay = "ms-auto d-none";
+                                }
+
+                                BuildTrainingItem(item, repeatDisplay);
                             }
                         </div>
                         @if (breakItem != null)
@@ -148,7 +159,7 @@
 @functions
 {    
     TrainingItem breakItem = null;
-    void BuildTrainingItem(TrainingItem item)
+    void BuildTrainingItem(TrainingItem item, String repeatDisplay)
     {                
         <div class="col-12 col-lg-6 col-md-6 mb-5">
             <div class="d-flex ps-1">
@@ -159,7 +170,7 @@
                     <h2 class="font-700 letter-spacing-1 color-beyond-dark">@Html.Raw(item.Description)</h2>
                 </div>
                 <!--重複組數-->
-                <div class="ms-auto">
+                <div class="@(repeatDisplay)">
                     <a class="icon icon-xs bg-beyondwhite-dark rounded-m px-3 py-2 font-14">
                         <b class="color-beyond-dark">@(breakItem?.Repeats ?? "1")</b>
                     </a>
