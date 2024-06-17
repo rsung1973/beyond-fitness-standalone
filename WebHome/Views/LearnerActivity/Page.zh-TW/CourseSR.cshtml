@@ -28,328 +28,265 @@
         : lang == "en-US"
             ? "en"
             : "ja";
+
+    LessonTime _model = this.Model as LessonTime;
+
 }
 
 @section MainContent
 {
-            <div class="card header-card shape-rounded" data-card-height="310">
+    <div class="card header-card shape-rounded" data-card-height="310">
 
-                <div class="card-overlay bg-beyond-dark opacity-95"></div>
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
 
-                <!-- <div class="card-overlay dark-mode-tint"></div> -->
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    </div>
+
+
+
+    <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">運動恢復</h1>
+
+    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>40 Min</p>
+
+
+
+    <img style="margin-bottom:-80px" src="../images/icons/session/joint.svg"
+         class="mx-auto over-card bg-transparent" width="200">
+
+    <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
+
+        <div class="content">
+
+            <div class="row text-center px-4">
+
+                <h3 class="color-white letter-spacing-1">肩胛胸廓、左髖肌群、擴筋膜張肌</h3>
+
+                <span class="color-white opacity-30 fst-italic letter-spacing-1">Kuan Chen</span>
 
             </div>
 
+            <div class="row text-center">
 
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
 
-            <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">運動恢復</h1>
+                    <p class="mb-1 font-14 color-beyondred-dark">攝取水分c.c</p>
 
-            <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>40 Min</p>
+                    <h1 class="color-white">1800</h1>
 
-    
+                </div>
 
-            <img style="margin-bottom:-80px" src="../images/icons/session/joint.svg"
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
 
-                class="mx-auto over-card bg-transparent" width="200">
+                    <p class="mb-1 font-14 color-beyondred-dark">睡眠時間<small class="font-11">hh:mm</small></p>
 
-            <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
+                    <h1 class="color-white">08:05</h1>
 
-                <div class="content">
+                </div>
 
-                    <div class="row text-center px-4">
+                <div class="col-6 col-lg-3 col-md-3">
 
-                        <h3 class="color-white letter-spacing-1">肩胛胸廓、左髖肌群、擴筋膜張肌</h3>
+                    <p class="mb-1 font-14 color-beyondred-dark">生理疲勞</p>
 
-                        <span class="color-white opacity-30 fst-italic letter-spacing-1">Kuan Chen</span>
+                    <h1 class="color-white">5</h1>
 
-                    </div>
+                </div>
 
-                    <div class="row text-center">
+                <div class="col-6 col-lg-3 col-md-3 mb-2">
 
-                        <div class="col-6 col-lg-3 col-md-3 mb-2">
+                    <p class="mb-1 font-14 color-beyondred-dark">心理壓力</p>
 
-                            <p class="mb-1 font-14 color-beyondred-dark">攝取水分c.c</p>
+                    <h1 class="color-white">5</h1>
 
-                            <h1 class="color-white">1800</h1>
+                </div>
 
-                        </div>
+            </div>
 
-                        <div class="col-6 col-lg-3 col-md-3 mb-2">
+            <div class="collapse" id="collapse-lesson">
 
-                            <p class="mb-1 font-14 color-beyondred-dark">睡眠時間<small class="font-11">hh:mm</small></p>
+                <a href="#" class="d-flex mb-4 px-4" data-menu="course-content">
 
-                            <h1 class="color-white">08:05</h1>
+                    <!-- <div class="align-self-center">
 
-                        </div>
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white me-3"><img
 
-                        <div class="col-6 col-lg-3 col-md-3">
+                                src="../images/icons/session/jointadjustment.svg" width="40" class="mx-2 py-2"></span>
 
-                            <p class="mb-1 font-14 color-beyondred-dark">生理疲勞</p>
+                    </div> -->
 
-                            <h1 class="color-white">5</h1>
+                    <div class="align-self-center w-100">
 
-                        </div>
+                        <h5 class="letter-spacing-2 color-white">基本<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Basic</small></h5>
 
-                        <div class="col-6 col-lg-3 col-md-3 mb-2">
+                        <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
 
-                            <p class="mb-1 font-14 color-beyondred-dark">心理壓力</p>
-
-                            <h1 class="color-white">5</h1>
-
-                        </div>
-
-                    </div>
-
-                    <div class="collapse" id="collapse-lesson">
-
-                        <a href="#" class="d-flex mb-4 px-4" data-menu="course-content">
-
-                            <!-- <div class="align-self-center">
-
-                                <span class="icon icon-xl bg-beyond-dark rounded-s color-white me-3"><img
-
-                                        src="../images/icons/session/jointadjustment.svg" width="40" class="mx-2 py-2"></span>
-
-                            </div> -->
-
-                            <div class="align-self-center w-100">
-
-                                <h5 class="letter-spacing-2 color-white">基本<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Basic</small></h5>
-
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-
-                                    <div class="progress-bar border-0 bg-stage1 text-start ps-2 rounded-s" role="progressbar"
-
-                                        style="width: 8%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-0">
-
-                                    <div class="col-6 text-start">
-
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-
-                                    </div>
-
-                                    <div class="col-6 text-end">
-
-                                        <p class="mb-n1 font-13 color-white opacity-70">05:15</p>
-
-                                    </div>
-
-                                </div>
+                            <div class="progress-bar border-0 bg-stage1 text-start ps-2 rounded-s" role="progressbar"
+                                 style="width: 8%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 
                             </div>
 
-                        </a>
+                        </div>
 
-                    
+                        <div class="row mb-0">
 
-                        <a href="#" class="d-flex mb-4 px-4" data-menu="course-content">
+                            <div class="col-6 text-start">
 
-                            <!-- <div class="align-self-center">
-
-                                <span class="icon icon-xl bg-beyond-dark rounded-s color-white me-3"><img
-
-                                        src="../images/icons/session/yoga.svg" width="40" class="mx-2 py-2"></span>
-
-                            </div> -->
-
-                            <div class="align-self-center w-100">
-
-                                <h5 class="letter-spacing-2 color-white">恢復<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Recover</small></h5>
-
-                                <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
-
-                                    <div class="progress-bar border-0 bg-stage5 text-start ps-2 rounded-s" role="progressbar"
-
-                                        style="width: 5%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
-
-                                    </div>
-
-                                </div>
-
-                                <div class="row mb-0">
-
-                                    <div class="col-6 text-start">
-
-                                        <span class="mb-n1 font-12 opacity-40 color-white">Read More <i
-
-                                                class="fa-solid fa-chevron-right pe-3"></i></span>
-
-                                    </div>
-
-                                    <div class="col-6 text-end">
-
-                                        <p class="mb-n1 font-13 color-white opacity-70">05:00</p>
-
-                                    </div>
-
-                                </div>
+                                <span class="mb-n1 font-12 opacity-40 color-white">
+                                    Read More <i class="fa-solid fa-chevron-right pe-3"></i>
+                                </span>
 
                             </div>
 
-                        </a>   
+                            <div class="col-6 text-end">
 
-                    </div>      
+                                <p class="mb-n1 font-13 color-white opacity-70">05:15</p>
 
-                    
-
-                    <p class="text-center pb-3">
-
-                        <a data-bs-toggle="collapse" href="#collapse-lesson"
-
-                            class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-3 py-1 font-14 mt-5">展開詳細資訊
-
-                            <i class="fa-solid fa-angles-up ps-2"></i></a>
-
-                    </p>
-
-                </div>
-
-            </div>
-
-    
-
-            <div class="card card-style bg-beyond-dark">
-
-                <div class="content">
-
-                    <h2 class="text-center mb-1 letter-spacing-2 color-white">恢復感受</h2>
-
-                    <p class="text-center font-12 mb-4 color-beyondwhite-dark">How you feel about our services</p>
-
-                    <div class="d-flex">
-
-                        <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('1');">
-
-                            <h1 class="font-40">😍</h1>
-
-                            <!-- <strong class="font-14 opacity-70 color-theme">很喜歡</strong> -->
-
-                        </div>
-
-                        <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('2');">
-
-                            <h1 class="font-40">😃</h1>
-
-                            <!-- <strong class="font-14 opacity-70 color-theme">喜歡</strong> -->
-
-                        </div>
-
-                        <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('3');">
-
-                            <h1 class="font-40">😐</h1>
-
-                            <!-- <strong class="font-14 opacity-70 color-theme">普通</strong> -->
-
-                        </div>
-
-                        <div class="m-auto m-lg-4 m-md-3 text-center feelbutton active" onclick="javascript:gotoRank('4');">
-
-                            <h1 class="font-40">😮‍💨</h1>
-
-                            <!-- <strong class="font-14 opacity-70 color-theme">不喜歡</strong> -->
-
-                        </div>
-
-                        <div class="m-auto m-lg-4 m-md-3 text-center feelbutton active" onclick="javascript:gotoRank('5');">
-
-                            <h1 class="font-40">😰</h1>
-
-                            <!-- <strong class="font-14 opacity-70 color-theme">不滿意</strong> -->
+                            </div>
 
                         </div>
 
                     </div>
 
-                    <p class="text-center pt-4">
+                </a>
 
-                        <a href="#" class="font-500 px-3 py-2 font-13 mt-5 fst-italic letter-spacing-2 opacity-80 color-white">More
 
-                            Feedback
 
-                            <i class="fa-solid fa-chevron-right opacity-80 color-white pe-3"></i>
+                <a href="#" class="d-flex mb-4 px-4" data-menu="course-content">
 
-                        </a>
+                    <!-- <div class="align-self-center">
 
-                    </p>
+                        <span class="icon icon-xl bg-beyond-dark rounded-s color-white me-3"><img
 
-                </div>
+                                src="../images/icons/session/yoga.svg" width="40" class="mx-2 py-2"></span>
 
-            </div>
+                    </div> -->
 
-            <!--切換上下堂課-->
+                    <div class="align-self-center w-100">
 
-            <div class="row text-center mt-2 mb-0">
+                        <h5 class="letter-spacing-2 color-white">恢復<small class="font-400 font-12 letter-spacing-1 opacity-80 fst-italic px-1">Recover</small></h5>
 
-                <div class="col-12 col-lg-5 col-md-5 col-md-5 mt-2 mt-lg-2 mt-md-2" onclick="javasciprt:gotoCoursePT();">
+                        <div class="progress mt-2 mb-1 rounded-s" style="height:5px;">
 
-                    <div class="row d-flex justify-content-center">
+                            <div class="progress-bar border-0 bg-stage5 text-start ps-2 rounded-s" role="progressbar"
+                                 style="width: 5%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">
 
-                        <div class="col-auto">
-
-                            <i class="fa-solid fa-chevron-left color-beyondred-dark"></i>
+                            </div>
 
                         </div>
 
-                        <div class="col-10 text-start letter-spacing-1 font-15">
+                        <div class="row mb-0">
 
-                            <b class="color-theme font-400">上一堂</b><b class="color-theme font-400 ms-3">Previous Session</b>
+                            <div class="col-6 text-start">
 
-                            <!-- <div class="mt-1 color-white">
+                                <span class="mb-n1 font-12 opacity-40 color-white">
+                                    Read More <i class="fa-solid fa-chevron-right pe-3"></i>
+                                </span>
 
-                                                                基礎肌力D12
+                            </div>
 
-                                                            </div> -->
+                            <div class="col-6 text-end">
 
-                        </div>
+                                <p class="mb-n1 font-13 color-white opacity-70">05:00</p>
 
-                    </div>
-
-                </div>
-
-                <div class="col-2 d-none d-lg-block d-md-block">
-
-                    <svg class="mb-4 hidden-sm-down" width="15" height="50">
-
-                        <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width="2"></line>
-
-                    </svg>
-
-                </div>
-
-                <div class="col-12 col-lg-5 col-md-5 mt-2 mt-lg-2 mt-md-2">
-
-                    <div class="row d-flex justify-content-center" onclick="javasciprt:gotoCourseSD();">
-
-                        <div class="col-10 text-end letter-spacing-1 font-15">
-
-                            <b class="color-theme font-400">下一堂</b><b class="color-theme font-400 ms-3">Next Session</b>
-
-                            <!-- <div class="mt-1 color-white">
-
-                                                                腰活動度、腕肘臂肌群、肩鎖骨帶
-
-                                                            </div> -->
-
-                        </div>
-
-                        <div class="col-auto">
-
-                            <i class="fa-solid fa-chevron-right color-beyondred-dark"></i>
+                            </div>
 
                         </div>
 
                     </div>
 
+                </a>
+
+            </div>
+
+
+
+            <p class="text-center pb-3">
+
+                <a data-bs-toggle="collapse" href="#collapse-lesson"
+                   class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-3 py-1 font-14 mt-5">
+                    展開詳細資訊
+
+                    <i class="fa-solid fa-angles-up ps-2"></i>
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card card-style bg-beyond-dark">
+
+        <div class="content">
+
+            <h2 class="text-center mb-1 letter-spacing-2 color-white">恢復感受</h2>
+
+            <p class="text-center font-12 mb-4 color-beyondwhite-dark">How you feel about our services</p>
+
+            <div class="d-flex">
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('1');">
+
+                    <h1 class="font-40">😍</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">很喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('2');">
+
+                    <h1 class="font-40">😃</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto text-center feelbutton active" onclick="javascript:gotoRank('3');">
+
+                    <h1 class="font-40">😐</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">普通</strong> -->
+
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton active" onclick="javascript:gotoRank('4');">
+
+                    <h1 class="font-40">😮‍💨</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">不喜歡</strong> -->
+
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton active" onclick="javascript:gotoRank('5');">
+
+                    <h1 class="font-40">😰</h1>
+
+                    <!-- <strong class="font-14 opacity-70 color-theme">不滿意</strong> -->
+
                 </div>
 
             </div>
+
+            <p class="text-center pt-4">
+
+                <a href="#" class="font-500 px-3 py-2 font-13 mt-5 fst-italic letter-spacing-2 opacity-80 color-white">
+                    More
+
+                    Feedback
+
+                    <i class="fa-solid fa-chevron-right opacity-80 color-white pe-3"></i>
+
+                </a>
+
+            </p>
+
+        </div>
+
+    </div>
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/LessonItemIndication.cshtml", _model);
+    }
 
 }

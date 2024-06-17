@@ -51,7 +51,7 @@
 <div class="col-12 col-lg-6 col-md-6">
     @{ 
 
-        var showContent = trainingStage.TotalMinutes > 0
+        var showContent = trainingStage?.TotalMinutes > 0
                 ? $"javascript:showContent('{(new { training.ExecutionID, stage.StageID }).JsonStringify().EncryptKey()}');"
                 : "#";
     }

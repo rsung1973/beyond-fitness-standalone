@@ -1,0 +1,88 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+    ? "tw"
+    : lang == "en-US"
+    ? "en"
+    : "ja";
+
+    LessonTime _model = this.Model as LessonTime;
+
+    var profile = await Context.GetUserAsync();
+}
+@{
+    var lessons = profile.UID.PromptLearnerLessons(models)
+                .Where(l => l.LessonAttendance != null);
+
+    var lastItem = lessons.Where(l => l.ClassTime < _model.ClassTime)
+                    .OrderByDescending(l => l.ClassTime)
+                    .FirstOrDefault();
+
+    var nextItem = lessons.Where(l => l.ClassTime > _model.ClassTime)
+            .OrderBy(l => l.ClassTime)
+            .FirstOrDefault();
+}
+<!--切換上下堂課-->
+<div class="row text-center mt-2 mb-0">
+    <div class="col-12 col-lg-5 col-md-5 col-md-5 mt-2 mt-lg-2 mt-md-2">
+        @if (lastItem != null)
+        {
+            <div class="row d-flex justify-content-center" onclick="javascript:gotoCourse('@Html.Raw(lastItem.LessonID.EncryptKey())');">
+                <div class="col-auto">
+                    <i class="fa-solid fa-chevron-left color-beyondred-dark"></i>
+                </div>
+                <div class="col-10 text-start letter-spacing-1 font-15">
+                    <b class="color-theme font-400">上一堂</b><b class="color-theme font-400 ms-3">Previous Session</b>
+                </div>
+            </div>
+        }
+    </div>
+    <div class="col-2 d-none d-lg-block d-md-block">
+        <svg class="mb-4 hidden-sm-down" width="15" height="50">
+            <line x1="5" x2="5" y1="1" y2="100%" stroke="#dfd1b7" stroke-width="2"></line>
+        </svg>
+    </div>
+    <div class="col-12 col-lg-5 col-md-5 mt-2 mt-lg-2 mt-md-2">
+        @if (nextItem != null)
+        {
+            <div class="row d-flex justify-content-center" onclick="javascript:gotoCourse('@Html.Raw(nextItem.LessonID.EncryptKey())');">
+                <div class="col-10 text-end letter-spacing-1 font-15">
+                    <b class="color-theme font-400">下一堂</b><b class="color-theme font-400 ms-3">Next Session</b>
+                </div>
+                <div class="col-auto">
+                    <i class="fa-solid fa-chevron-right color-beyondred-dark"></i>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    function gotoCourse(keyID) {
+        $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("ContactBook","LearnerActivity"))' });
+    }
+</script>
