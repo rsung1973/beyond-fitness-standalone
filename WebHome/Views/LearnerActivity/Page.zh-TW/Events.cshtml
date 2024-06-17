@@ -1,0 +1,81 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.From = "Evnet";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+
+}
+
+@section MainContent
+{
+    <div class="card header-card" data-card-height="310">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+    </div>
+    <!--快訊類型-->
+    <div class="content mt-5">
+        <div class="row mb-0">
+            <a href="event-checkin.html" class="col-4">
+                <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed">
+                    <i class="fa fa-user-check font-24 color-theme opacity-30"></i>
+                    <em class="badge bg-beyond-dark opacity-30">6</em>
+                    <p class="font-500 mb-n2 mt-3 color-theme font-16">任務通知</p>
+                </div>
+
+            </a>
+            <a href="event-contract.html" class="col-4">
+                <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed active">
+                    <i class="fa-solid fa-file-signature font-24 color-theme opacity-30"></i>
+                    <em class="badge bg-beyond-dark opacity-30">4</em>
+                    <p class="font-500 mb-n2 mt-3 color-theme font-16">合約服務</p>
+                </div>
+            </a>
+            <a href="event-system.html" class="col-4">
+                <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed">
+                    <i class="fa-solid fa-bullhorn font-24 color-theme opacity-30"></i>
+                    <em class="badge bg-beyond-dark opacity-30">1</em>
+                    <p class="font-500 mb-n2 mt-3 color-theme font-16">貼心提醒</p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!--訊息內容-->
+    <div class="card" style="box-shadow:none">
+        <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+        </div>
+    </div>
+}
+
+@section PopupBox
+{
+    
+}

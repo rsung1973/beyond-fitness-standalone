@@ -29,6 +29,7 @@
             : "ja";
     var settingsActive = "";
     var contactBookActive = "";
+    var eventsActive = "";
     if (ViewBag.From == "Settings")
     {
         settingsActive = "active-nav";
@@ -37,6 +38,11 @@
     if (ViewBag.From == "ContactBook")
     {
         contactBookActive = "active-nav";
+    }
+
+    if (ViewBag.From == "Events")
+    {
+        eventsActive = "active-nav";
     }
 }
 
@@ -65,7 +71,7 @@
         <a href="Index"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務牆</span></a>
         <a href="ContactBook" class="@(contactBookActive)"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
 
-        <a href="event-checkin.html">
+        <a href="Events" class="@(eventsActive)">
             <i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em>
         </a>
 
