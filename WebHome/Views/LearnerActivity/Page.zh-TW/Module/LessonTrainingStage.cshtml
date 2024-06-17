@@ -38,7 +38,7 @@
     var learner = await Context.GetUserAsync();
     LessonTime lesson = (LessonTime)_model[0];
     TrainingExecution training = (TrainingExecution)_model[1];
-    decimal total = (decimal)_model[3];
+    decimal total = Math.Max((decimal)_model[3], 1);
     TrainingStage stage = (TrainingStage)_model[2];
     var items = models.GetTable<TrainingItem>()
             .Where(t => t.ExecutionID == training.ExecutionID)
