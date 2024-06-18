@@ -85,6 +85,12 @@
         faq["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Faq.en-US.json")));
         faq["zh-TW"] = faq;
         _Resource["Faq"] = faq;
+
+        JObject policy = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Policy.json")));
+        policy["ja"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Policy.ja.json")));
+        policy["en-US"] = JObject.Parse(File.ReadAllText(WebApp.MapPath("~/Official/Portfolio/Policy.en-US.json")));
+        policy["zh-TW"] = policy;
+        _Resource["Policy"] = policy;
     }
 
     static JObject _Resource;

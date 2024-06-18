@@ -2358,6 +2358,10 @@ u {
 }
 
 /*隱私權政策*/
+.policy {
+  /*切換Tab*/
+  /*條款顯示*/
+}
 .policy .banner {
   /*Banner背景照片*/
 }
@@ -2374,14 +2378,65 @@ u {
     height: 50vh;
   }
 }
-.policy .price-table {
-  content: url("../images/price/202306-lg.png");
+.policy .terms-container {
+  background: #282828;
   /* 手機版 */
 }
 @media (max-width: 767px) {
-  .policy .price-table {
-    content: url("../images/price/202306-sm.png");
+  .policy .terms-container {
+    background: #FFF;
   }
+}
+.policy .tabs-vertical {
+  border-top: 0px !important;
+}
+.policy .tabs.tabs-custom .nav-tabs {
+  justify-content: center;
+  border: 0;
+  margin-bottom: 10px;
+}
+.policy .tabs.tabs-custom .nav-tabs > li {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link,
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link:hover,
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link:focus {
+  padding: 25px 30px;
+  background: #3E3E3E;
+  border: 0;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link.active,
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link:hover.active,
+.policy .tabs.tabs-custom .nav-tabs > li .nav-link:focus.active {
+  background: #EBD7BF;
+  color: #282828;
+}
+.policy .tabs.tabs-custom .tab-content {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+}
+.policy p {
+  color: #969696;
+  line-height: 1.5;
+  font-size: 1em;
+}
+.policy p a {
+  color: #8DA4CF !important;
+}
+.policy ul {
+  color: #969696 !important;
+}
+.policy ul li {
+  line-height: 1.5;
 }
 
 /*標準Section內使用*/

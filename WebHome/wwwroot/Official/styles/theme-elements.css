@@ -169,6 +169,31 @@ Theme Version:	@@version
 .accordion.accordion-modern-status.accordion-modern2-status-borders > .card .card-header a {
   background: transparent !important;
 }
+.accordion.accordion-modern-status.accordion-modern3-status-borders > .card {
+  border: 1px solid rgba(0, 0, 0, 0.25) !important;
+  /* 手機版 */
+}
+.accordion.accordion-modern-status.accordion-modern3-status-borders > .card .card-header {
+  background: transparent !important;
+}
+.accordion.accordion-modern-status.accordion-modern3-status-borders > .card .card-header a {
+  background: transparent !important;
+}
+.accordion.accordion-modern-status.accordion-modern3-status-borders > .card.card-custom {
+  border-radius: 20px;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .accordion.accordion-modern-status.accordion-modern3-status-borders > .card.card-custom {
+    border-radius: 0;
+  }
+}
+@media (max-width: 767px) {
+  .accordion.accordion-modern-status.accordion-modern3-status-borders > .card {
+    border: 0px !important;
+    border-bottom: 1px solid #f8f4eb !important;
+  }
+}
 .accordion.accordion-modern-status.accordion-modern-status-arrow > .card .card-header a:after {
   transform: translate3d(0, -50%, 0) rotate(180deg);
   font-family: "Font Awesome 6 Free";
@@ -189,6 +214,18 @@ Theme Version:	@@version
 .accordion.accordion-modern-status.accordion-modern2-status-arrow > .card .card-header a.collapsed:after {
   transform: translate3d(0, -50%, 0) rotate(270deg);
   color: rgba(0, 0, 0, 0.25);
+}
+.accordion.accordion-modern-status.accordion-modern3-status-arrow > .card .card-header a:after {
+  transform: translate3d(0, -50%, 0) rotate(0deg);
+  font-family: "Font Awesome 6 Free";
+  content: "\f107";
+  font-weight: 800;
+  font-size: 12px;
+  color: #E76751;
+}
+.accordion.accordion-modern-status.accordion-modern3-status-arrow > .card .card-header a.collapsed:after {
+  transform: translate3d(0, -50%, 0) rotate(270deg);
+  color: #E76751;
 }
 .accordion.accordion-modern-grey-scale-1 .card:first-of-type, .accordion.accordion-modern-grey-scale-1 .card:not(:first-of-type):not(:last-of-type), .accordion.accordion-modern-grey-scale-1 .card:last-of-type {
   border-color: #EDEDED;

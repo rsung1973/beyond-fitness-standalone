@@ -10,22 +10,34 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
+@using CommonLib.Utility
 
 @{
-    ModelSource<UserProfile> models;
-    ModelStateDictionary _modelState;
+   ModelSource<UserProfile> models;
+   ModelStateDictionary _modelState;
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
-    _modelState = ViewContext.ModelState;
-    ViewBag.Personal = true;
+   models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+   _modelState = ViewContext.ModelState;
+   ViewBag.MainClass = "policy";
+   ViewBag.MenuDark = true;
 
-    Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+   Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
 
    await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
    dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-   dynamic commonAll = globalResource["Common"][ViewBag.Lang ?? "zh-TW"] as dynamic;
+   String lang = ViewBag.Lang ?? "zh-TW";
+   String langPath = lang == "zh-TW"
+      ? "tw"
+      : lang == "en-US"
+      ? "en"
+      : "ja";
 
+    dynamic policyAll = globalResource["Policy"][lang] as dynamic;
+    dynamic policies = policyAll.Items;
+    JArray policy = policies as JArray;
+    dynamic[] item = policy.ToArray();
 }
 
 @section CustomHeader {
@@ -34,65 +46,103 @@
 
 }
 
-<section class="section section-no-background border-0 mt-0 mb-0 pt-0 section-policy">
-   <div class="container container-xxl-custom">
-      <div class="row">
-         <div class="row mt-5">
-            <div class="col">
-               <div class="row">
-                  <div class="col-sm-12 col-md-4 col-lg-4">
-                     <div class="tabs tabs-vertical tabs-right tabs-navigation tabs-navigation-simple hidden-sm-down">
-                        <ul class="nav nav-tabs col-sm-3">
-                           <li class="nav-item">
-                              <a class="nav-link active text-color-grey" href="#privacyPolicy"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.PrivacyPolicy)</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link text-color-grey" href="#cookiePolicy"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.CookiePolicy)</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link text-color-grey" href="#termcondition"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.Terms)</a>
-                           </li>
-                        </ul>
-                     </div>
-                     <div class="tabs tabs-bottom tabs-center tabs-simple hidden-sm-up">
-                        <ul class="nav nav-tabs">
-                           <li class="nav-item">
-                              <a class="nav-link active text-color-grey" href="#privacyPolicy"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.PrivacyPolicy)</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link text-color-grey" href="#cookiePolicy"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.CookiePolicy)</a>
-                           </li>
-                           <li class="nav-item">
-                              <a class="nav-link text-color-grey" href="#termcondition"
-                                 data-bs-toggle="tab">@Html.Raw(commonAll.Terms)</a>
-                           </li>
-                        </ul>
-                     </div>
-                  </div>
-                  <div class="col-sm-12 col-md-8 col-lg-8 ps-5">
-                     <div class="tab-pane tab-pane-navigation active" id="privacyPolicy">
-                        @Html.Raw(commonAll.PrivacyPolicyContent)
-                     </div>
-                     <div class="tab-pane tab-pane-navigation" id="cookiePolicy">
-                        @Html.Raw(commonAll.CookiePolicyContent)
-                     </div>
-                     <div class="tab-pane tab-pane-navigation" id="termcondition">
-                        @Html.Raw(commonAll.TermsContent)
-                     </div>
-                  </div>
-               </div>
-            </div>
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100">
+      <div class="row align-items-center pt-5 h-100 text-center">
+         <div class="col-12">
          </div>
       </div>
    </div>
 </section>
-
-
+<!--條款內容-->
+<div class="container bg-color-dark container-xl-custom container-xl-custom py-5 my-5" id="main">
+   <div class="row">
+      <!--Tab切換-->
+      <div class="col-12 col-lg-auto col-md-12 order-2 order-lg-1 order-md-2 mt-5 mt-lg-1 mt-md-5">
+         <div class="mx-5 mx-lg-0 mx-md-5">
+            <div class="tabs tabs-vertical tabs-custom">
+               <ul class="nav nav-tabs">
+                  @{
+                     for (int i = 0; i < item.Length; i++)
+                     {
+                        <li class="nav-item mb-3">
+                           <a class="nav-link @(i==0 ? "active" : "")" href="@Html.Raw($"#{item[i].ID}")" data-bs-toggle="tab"onclick="javascript:scrollToTop();">@Html.Raw(item[i].TabName)</a>
+                        </li>
+                     }
+                  }
+               </ul>
+            </div>
+         </div>
+      </div>
+      <!--條款-->
+      <div class="col-12 col-lg-8 col-md-12 px-0 order-1 order-lg-2 order-md-1">
+         @{
+            for (int i = 0; i < item.Length; i++)
+            {
+               <div class="tab-pane tab-pane-navigation @(i==0 ? "active" : "")" id="@Html.Raw(item[i].ID)">
+                  <div class="row px-5 pb-5 pb-lg-0 pb-md-0">
+								<div class="col-12">
+                           <h2 class="text-color-tertiary font-weight-normal mb-2 text-uppercase">
+										@Html.Raw(item[i].NameDesc) 
+									</h2>
+									<span class="text-3-4 font-weight-medium title-tag-ls d-block ">@Html.Raw(item[i].TabName)</span>
+									<div class="divider divider-tertiary divider-small divider-xxs py-4">
+										<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>									
+								</div>
+                  </div>
+                  <div class="row px-0 px-lg-5 px-md-5">
+                     <div class="terms-container py-5 py-lg-2 py-md-5">                     
+                     @{
+                        dynamic terms = item[i].Terms;
+                        JArray term = terms as JArray;
+                        dynamic[] content = term.ToArray();
+                        for (int j = 0; j < content.Length; j++)
+                        {
+                           <div class="col-12 my-0 my-lg-3 my-md-3">
+                                 <div
+                                    class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow">
+                                    <div class="card card-custom">
+                                       <div class="card-header" id="@Html.Raw($"heading{item[i].ID}Terms{j}")">
+                                          <h4 class="card-title m-0">
+                                             <a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+                                                data-bs-toggle="collapse" data-bs-target="#@Html.Raw($"{item[i].ID}Terms{j}")"
+                                                aria-controls="@Html.Raw($"{item[i].ID}Terms{j}")">
+                                                <div class="d-inline-flex ps-3">
+                                                   <i class="fa-solid fa-plus text-color-tertiary pe-2 align-self-center"></i><span
+                                                      class="beyond-toggle-title">@(content[j].Title)</span>
+                                                </div>
+                                             </a>
+                                          </h4>
+                                       </div>
+                                       <div id="@Html.Raw($"{item[i].ID}Terms{j}")" class="collapse @(j==0 ? "show" : "")"
+                                          aria-labelledby="@Html.Raw($"heading{item[i].ID}Terms{j}")"
+                                          data-bs-parent="@Html.Raw($"heading{item[i].ID}Terms{j}")">
+                                          <div class="card-body py-2 px-4 mx-4">
+                                             @Html.Raw(content[j].Content)
+                                          </div>
+                                       </div>
+                                    </div>
+                                 </div>
+                           </div>                           
+                        }
+                     }
+                     </div>
+                  </div>
+               </div>               
+            }
+         }         
+      </div>
+   </div>
+</div>
 @section TailPageJavaScriptInclude {
-
+   <script>
+      function scrollToTop() {
+         // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
+         $([document.documentElement, document.body]).animate({
+            scrollTop: $("#main").offset().top
+         }, 2000);
+      }
+   </script>
 }
