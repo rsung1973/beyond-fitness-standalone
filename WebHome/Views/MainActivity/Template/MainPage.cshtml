@@ -172,7 +172,7 @@
             </div>
             <div class="gdpr-bar-actions">
                 <a 
-                    class="text-3 text-decoration-none">@Html.Raw(commonAll.PrivacyPolicy)</a>
+                    class="text-3 text-decoration-none" href="@(VirtualPathUtility.ToAbsolute($"~/Official/{langPath}/Policy"))">@Html.Raw(commonAll.PrivacyPolicy)</a>
                 <a href="#" onclick="javascript:commitGDPR();"
                     class="gdpr-agree-trigger text-decoration-none btn btn-default">@Html.Raw(commonAll.Agree)</a>
                 <script>
