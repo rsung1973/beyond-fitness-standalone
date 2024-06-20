@@ -23,23 +23,19 @@
 
     var item = availableItems.OrderByDescending(a => a.DocID).FirstOrDefault();
 }
-<div class="menu-header mb-2">
+<div class="menu-title">
     <a href="#" class="close-menu border-right-0 text-end pe-3 mt-3"><i class="fa font-30 color-theme fa-times"></i></a>
 </div>
-<h1 class="text-center mt-5 mb-1 color-beyondred-dark letter-spacing-2">News·</h1>
 
-<h4 class="text-center font-400 font-15 letter-spacing-2">最新文章</h4>
+<div class="content">
+    <h1 class="text-center mt-5 mb-1 color-beyondred-dark letter-spacing-2">News·</h1>
+    <h4 class="text-center font-400 font-15 letter-spacing-2">最新文章</h4>
+    <img src="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/MainActivity/Blog/{item.BlogID}/images/Title.jpg")}")"
+        class="img-fluid mt-5 mx-auto">
+    <h1 class="boxed-text-l text-start mt-5 text-uppercase color-dark font-700">@Html.Raw(item.Title)</h1>
+    <p class="boxed-text-l color-dark opacity-80 line-height-l text-start mt-4 font-16">@Html.Raw(item.Subtitle)</p>
+    <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"
+        target="_blank"
+        class="close-menu btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">離開此頁面閱讀文章</a>
 
-<img src="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/MainActivity/Blog/{item.BlogID}/images/Title.jpg")}")" class="img-fluid mt-5 mx-auto">
-
-<h1 class="boxed-text-l text-start mt-5 text-uppercase color-dark font-700">@Html.Raw(item.Title)</h1>
-
-<p class="boxed-text-l color-dark opacity-80 line-height-l text-start mt-4 font-16">
-
-    @Html.Raw(item.Subtitle)
-
-</p>
-
-
-<a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank"
-   class="close-menu btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">離開此頁面閱讀文章</a>
+</div>
