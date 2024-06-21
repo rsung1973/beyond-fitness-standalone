@@ -12,6 +12,10 @@
     "VoiceMessage":"Beyondの仲間たちの思いをご覧ください",
     "VoiceItem": [
         {
+            "MemberCode": "MH1035328",
+            "BranchID": 4
+        },        
+        {
             "MemberCode": "BD56192749",
             "BranchID": 1
         },
