@@ -52431,6 +52431,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _ControllerName;
 		
+		private string _PopupContent;
+		
 		private EntitySet<UserEvent> _UserEvent;
 		
 		private bool serializing;
@@ -52451,6 +52453,8 @@ namespace WebHome.Models.DataEntity
     partial void OnActionNameChanged();
     partial void OnControllerNameChanging(string value);
     partial void OnControllerNameChanged();
+    partial void OnPopupContentChanging(string value);
+    partial void OnPopupContentChanged();
     #endregion
 		
 		public SystemEventBulletin()
@@ -52542,7 +52546,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionName", DbType="NVarChar(32)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ActionName", DbType="NVarChar(64)")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
 		public string ActionName
 		{
@@ -52563,7 +52567,7 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ControllerName", DbType="NVarChar(256)")]
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ControllerName", DbType="NVarChar(32)")]
 		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
 		public string ControllerName
 		{
@@ -52584,8 +52588,29 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PopupContent", DbType="NVarChar(64)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7)]
+		public string PopupContent
+		{
+			get
+			{
+				return this._PopupContent;
+			}
+			set
+			{
+				if ((this._PopupContent != value))
+				{
+					this.OnPopupContentChanging(value);
+					this.SendPropertyChanging();
+					this._PopupContent = value;
+					this.SendPropertyChanged("PopupContent");
+					this.OnPopupContentChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="SystemEventBulletin_UserEvent", Storage="_UserEvent", ThisKey="EventID", OtherKey="SystemEventID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=8, EmitDefaultValue=false)]
 		public EntitySet<UserEvent> UserEvent
 		{
 			get

@@ -89,6 +89,10 @@ namespace WebHome.Models.Timeline
 
     }
 
+    public class SystemBulletinEvent : TimelineEvent
+    {
+        public IQueryable<SystemEventBulletin> BulletinEventList { get; set; }
+    }
 
 
 }

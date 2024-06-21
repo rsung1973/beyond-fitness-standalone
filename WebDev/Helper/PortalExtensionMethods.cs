@@ -311,7 +311,23 @@ namespace WebHome.Helper
         }
 
         public static SimpleAnnouncementEvent CheckCurrentAnnouncementEvent(this UserProfile profile, GenericManager<BFDataContext> models, bool includeAfterToday = false)
+        {
+            IQueryable<UserEvent> items = PromptEffectiveSystemEvent(profile, models);
 
+            var item = items.FirstOrDefault();
+            if (item != null)
+            {
+                return new SimpleAnnouncementEvent
+                {
+                    Announcement = item,
+                    Profile = profile,
+                };
+            }
+
+            return null;
+        }
+
+        public static IQueryable<UserEvent> PromptEffectiveSystemEvent(this UserProfile profile, GenericManager<BFDataContext> models)
         {
             var items = models.GetTable<UserEvent>()
                     .Where(v => v.UID == profile.UID)
@@ -320,13 +336,25 @@ namespace WebHome.Helper
                                     .Where(s => s.StartDate <= DateTime.Today)
                                     .Where(s => s.EndDate > DateTime.Today)
                                 /*.Where(s => s.EventID == (int)SystemEventBulletin.BulletinEventType.系統公告)*/, v => v.SystemEventID, b => b.EventID, (v, b) => v);
+            return items;
+        }
 
-            var item = items.FirstOrDefault();
-            if (item != null)
+        public static SystemBulletinEvent PromptEffectiveSystemBulletin(this UserProfile profile, GenericManager<BFDataContext> models)
+        {
+
+            var committedItems = models.GetTable<UserEvent>()
+                    .Where(v => v.UID == profile.UID)
+                    .Where(v => v.UserEventCommitment != null);
+
+            var items = models.GetTable<SystemEventBulletin>()
+                                    .Where(s => s.StartDate <= DateTime.Today)
+                                    .Where(s => s.EndDate > DateTime.Today)
+                                    .Where(s => !committedItems.Any(v => v.SystemEventID == s.EventID));
+            if (items.Any())
             {
-                return new SimpleAnnouncementEvent
+                return new SystemBulletinEvent
                 {
-                    Announcement = item,
+                    BulletinEventList = items,
                     Profile = profile,
                 };
             }

@@ -1,0 +1,195 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Models.Timeline
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Page.zh-TW/EventTemplate.cshtml";
+    ViewBag.From = "Events";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    ViewBag.EventCatelog = 1;
+}
+
+@section EventList
+{
+    <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+        合約提醒通知·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Contract</small>
+    </h4>
+
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-3 mb-5">
+
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+    </svg>
+
+    <div class="clearfix"></div>
+
+    @{
+        List<TimelineEvent> events = (List<TimelineEvent>)ViewBag.UserNotice;
+        PromptContractEvent promptContractEvent = (PromptContractEvent)events.Where(v => v is PromptContractEvent).FirstOrDefault();
+    }
+
+    @foreach (var item in promptContractEvent?.ContractList)
+    {
+        <div class="d-flex" onclick="showPrompt('@Html.Raw(item.ContractID.EncryptKey())');">
+
+            <div>
+
+                <a class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl"><i class="fa-solid fa-user font-24"></i></a>
+
+            </div>
+
+            <div class="align-self-center ps-3">
+
+                <h5 class="font-600 font-17 mb-1 letter-spacing-1">合約到期通知</h5>
+
+                <span class="font-15 color-theme letter-spacing-1">到期日 - </span><b class="color-beyondred-dark fst-italic">@($"{item.Expiration:yyyy/MM/dd}")</b>
+
+            </div>
+
+            <div class="align-self-center ms-auto me-3">
+            </div>
+
+            <div class="align-self-center">
+                <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
+            </div>
+
+        </div>
+
+        <div class="divider mt-4 mb-4"></div>
+    }
+    @{
+        PromptPayoffDueEvent promptPayoffDueEvent = (PromptPayoffDueEvent)events.Where(v => v is PromptPayoffDueEvent).FirstOrDefault();
+    }
+    @foreach (var item in promptPayoffDueEvent?.ContractList)
+    {
+        <div class="d-flex" onclick="showPayoffDue('@Html.Raw(item.ContractID.EncryptKey())');">
+
+            <div>
+
+                <a class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl"><i class="fa-solid fa-user-group font-24"></i></a>
+
+            </div>
+
+            <div class="align-self-center ps-3">
+
+                <h5 class="font-600 font-17 mb-1 letter-spacing-1">合約繳款通知</h5>
+
+                <span class="font-15 color-theme letter-spacing-1">到期日 - </span><b class="color-beyondred-dark fst-italic">@($"{item.PayoffDue:yyyy/MM/dd}")</b>
+
+            </div>
+
+            <div class="align-self-center ms-auto me-3">
+
+            </div>
+
+            <div class="align-self-center">
+
+                <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
+
+            </div>
+
+        </div>
+
+        <div class="divider mt-4 mb-4"></div>
+
+    }
+
+
+
+    <div class="d-flex" onclick="javascript:gotoOTP();">
+
+        <div>
+
+            <a href="event-contract-signOTP.html"
+               class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl"><i class="fa-solid fa-apple-whole font-24"></i></a>
+
+        </div>
+
+        <div class="align-self-center ps-3">
+
+            <h5 class="font-600 font-17 mb-1 letter-spacing-1">合約簽約通知</h5>
+
+            <span class="font-15 color-theme letter-spacing-1">1對1複合式顧問課程 - </span><b class="color-beyondred-dark fst-italic">50堂</b>
+
+        </div>
+
+        <div class="align-self-center ms-auto me-3">
+
+
+
+        </div>
+
+        <div class="align-self-center">
+
+            <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
+
+        </div>
+
+    </div>
+
+    <script>
+        function showPrompt(keyID) {
+            if (keyID == null || keyID == '') {
+                return;
+            }
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupContractPrompt", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#menu-warning').html(data);
+                    $('#menu-warning').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+
+        function showPayoffDue(keyID) {
+            if (keyID == null || keyID == '') {
+                return;
+            }
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupContractPayoffDue", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#menu-warning').html(data);
+                    $('#menu-warning').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+
+    </script>
+}
+

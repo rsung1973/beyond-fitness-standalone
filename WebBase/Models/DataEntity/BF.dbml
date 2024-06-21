@@ -1949,8 +1949,9 @@
       <Column Name="Title" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="ActionName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-      <Column Name="ControllerName" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+		<Column Name="ActionName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+		<Column Name="ControllerName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+		<Column Name="PopupContent" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="SystemEventBulletin_UserEvent" Member="UserEvent" ThisKey="EventID" OtherKey="SystemEventID" Type="UserEvent" />
     </Type>
   </Table>

@@ -1,0 +1,82 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Models.Timeline
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Page.zh-TW/EventTemplate.cshtml";
+    ViewBag.From = "Events";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    ViewBag.EventCatelog = 2;
+}
+
+@section EventList
+{
+    <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+        訊息通知·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Message</small>
+    </h4>
+
+    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-3 mb-5">
+
+        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+    </svg>
+
+    <div class="clearfix"></div>
+    @{
+        List<TimelineEvent> events = (List<TimelineEvent>)ViewBag.UserNotice;
+        SystemBulletinEvent eventItem = (SystemBulletinEvent)events.Where(v => v is SystemBulletinEvent).FirstOrDefault();
+        IQueryable<SystemEventBulletin> items = ((SystemBulletinEvent)eventItem)?.BulletinEventList;
+
+        if (items != null)
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/SystemEventList.cshtml", items);
+        }
+
+    }
+    <script>
+        function showContent(keyID) {
+            if (keyID == null || keyID == '') {
+                return;
+            }
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupEventContent", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#menu-notify').html(data);
+                    $('#menu-notify').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+    </script>
+}
+

@@ -8,6 +8,9 @@ using CommonLib.Utility;
 using CommonLib.Logger;
 using CommonLib.Core.Utility;
 using WebHome.Helper.Jobs;
+using System.Net;
+using System.Text;
+using System.Web;
 
 namespace TestConsole
 {
@@ -32,20 +35,55 @@ namespace TestConsole
             //(new CheckInvoiceDispatch()).DoJob();
             //test08();
 
-            System.Diagnostics.Debugger.Launch();
-            if(args.Length > 0 && int.TryParse(args[0],out int periodID))
+            //System.Diagnostics.Debugger.Launch();
+            //if(args.Length > 0 && int.TryParse(args[0],out int periodID))
+            //{
+            //    using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            //    {
+            //        var item = models.GetTable<MonthlyIndicator>().Where(m => m.PeriodID == periodID).FirstOrDefault();
+            //        if (item != null)
+            //        {
+            //            item.UpdateMonthlyAchievement(models);
+            //        }
+            //    }
+            //}
+
+            test12();
+
+        }
+
+        private static void test12()
+        {
+            String urlPattern = "https://maps.google.com/maps/api/geocode/json?sensor=false&address={0}&key=AIzaSyDKXwfddYcgXgjFtAkXt4Iigh0KFe-HfsM&language=zh-TW";
+
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
-                using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+                var items = models.GetTable<UserProfile>().Where(u => u.Address != null)
+                                .Join(models.GetTable<UserProfileExtension>()
+                                    .Where(t => t.AdministrativeArea != null)
+                                    .Where(t => t.GeoCode == null),
+                                    u => u.UID, t => t.UID, (u, t) => u);
+                using (WebClient client = new WebClient())
                 {
-                    var item = models.GetTable<MonthlyIndicator>().Where(m => m.PeriodID == periodID).FirstOrDefault();
-                    if (item != null)
+                    var encoding = new UTF8Encoding(false);
+                    client.Headers.Add(HttpRequestHeader.ContentType, "application/json");
+                    client.Encoding = encoding;
+
+                    foreach (var item in items)
                     {
-                        item.UpdateMonthlyAchievement(models);
+                        String url = String.Format(urlPattern, HttpUtility.UrlEncode($"{item.UserProfileExtension.AdministrativeArea}{item.Address}"));
+                        FileLogger.Logger.Info(url);
+                        var result = client.DownloadString(url);
+                        item.UserProfileExtension.GeoCode = result;
+                        models.SubmitChanges();
+                        FileLogger.Logger.Info(result);
+                        Thread.Sleep(50);
                     }
                 }
             }
-
         }
+
+
 
         private static void test06()
         {
