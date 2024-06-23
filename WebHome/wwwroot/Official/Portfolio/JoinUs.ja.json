@@ -12,8 +12,16 @@
     "VoiceMessage":"Beyondの仲間たちの思いをご覧ください",
     "VoiceItem": [
         {
+            "MemberCode": "MH1035328",
+            "BranchID": 4
+        },        
+        {
             "MemberCode": "BD56192749",
             "BranchID": 1
+        },
+        {
+            "MemberCode": "ZP85915197",
+            "BranchID": 2
         },
         {
             "MemberCode": "FL62099639",
@@ -22,11 +30,7 @@
         {
             "MemberCode": "RX14099392",
             "BranchID": 4
-        },
-        {
-            "MemberCode": "ZP85915197",
-            "BranchID": 2
-        },
+        }
         // {
         //     "MemberCode": "CL74347383",
         //     "BranchID": 1
