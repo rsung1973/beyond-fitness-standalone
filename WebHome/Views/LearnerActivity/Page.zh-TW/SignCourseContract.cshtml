@@ -1,0 +1,311 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+    ? "tw"
+    : lang == "en-US"
+    ? "en"
+    : "ja";
+
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+
+    var profile = await Context.GetUserAsync();
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    int? contractID = null;
+
+    if (_viewModel?.KeyID != null)
+    {
+        contractID = _viewModel.DecryptKeyValue();
+    }
+
+    var contract = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
+
+}
+@if (contract != null)
+{
+    var item = contract;
+    <div class="card" data-card-height="230" style="margin-bottom:-70px">
+
+        <div class="card-center text-center">
+
+            <h1 class="color-beyondwhite-light font-600 mb-2 mt-n4 font-32">檢視合約內容·</h1>
+
+            <p class="color-highlight">Contract Overview - Step 1 of 3</p>
+
+        </div>
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+        <div class="card-bg preload-img" data-src="../images/card/declaration.jpg"></div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-12 col-lg-6 col-md-6 pe-lg-0 pe-md-0">
+
+            <!--合約資訊-->
+
+            <div class="card card-style bg-white">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+                    <div class="d-flex">
+
+                        <div>
+
+                            <h1 class="mb-2 color-beyond-dark">合約資料·</h1>
+
+                            <p class="font-500 color-beyond-dark opacity-40 mt-n3 letter-spacing-1">Contract Info</p>
+
+                        </div>
+
+                    </div>
+
+                    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+
+                        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                    </svg>
+
+                    <div class="row">
+
+                        <div class="col-12">
+
+                            <div class="row mb-2">
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart0.cshtml", item);
+                                }
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-6 col-md-6 ps-lg-0 ps-md-0">
+
+            <!--購買資訊-->
+
+            <div class="card card-style bg-beyondwhite-light">
+
+                <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+                    <div class="d-flex">
+
+                        <div>
+
+                            <h1 class="mb-2 color-beyond-dark">購買資訊·</h1>
+
+                            <p class="font-500 color-beyond-dark opacity-40 mt-n3 letter-spacing-1">Purchase Info</p>
+
+                        </div>
+
+                    </div>
+
+                    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+
+                        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                    </svg>
+
+
+
+                    <div class="row mb-2">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart1.cshtml", item);
+                        }
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        @if (item.CourseContractMember.Count() > 1)
+        {
+            <div class="col-12 col-lg-6 col-md-6 ps-lg-0 ps-md-0">
+
+                <!--成員資訊-->
+
+                <div class="card card-style bg-beyondwhite-dark">
+
+                    <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+                        <div class="d-flex">
+
+                            <div>
+
+                                <h1 class="mb-2 color-beyond-dark">成員資訊·</h1>
+
+                                <p class="font-500 color-beyond-dark opacity-40 mt-n3 letter-spacing-1">Member Info</p>
+
+                            </div>
+
+                        </div>
+
+                        <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+
+                            <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                        </svg>
+
+
+
+                        <div class="row">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart2.cshtml", item);
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+        @if (item.InstallmentID.HasValue)
+        {
+            <div class="col-12 col-lg-6 col-md-6 pe-lg-0 pe-md-0">
+
+                <!--分期計畫-->
+
+                <div class="card card-style bg-beyond-dark">
+
+                    <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+                        <div class="d-flex">
+
+                            <div>
+
+                                <h1 class="mb-2 color-white">分期計畫·</h1>
+
+                                <p class="font-500 color-white opacity-40 mt-n3 letter-spacing-1">Installment Plan</p>
+
+                            </div>
+
+                        </div>
+
+                        <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+
+                            <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                        </svg>
+
+                        <div class="row mb-0">
+
+                            <div class="col-7 col-lg-6 col-md-7 mb-1">
+
+                                <p class="color-white font-700">合約編號</p>
+
+                            </div>
+
+                            <div class="col-5 col-lg-6 col-md-5 mb-1">
+
+                                <p class="color-white font-700">繳款期限</p>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            @{
+                                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart3.cshtml", item);
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+
+    </div>
+
+    <a href="javascript:gotoSignTerms();"
+       class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
+
+    <div class="my-5 px-4">
+
+        <div class="d-flex mt-4">
+
+            <div class="me-auto">
+
+                <i class="fa fa-check-circle color-gray-dark font-28"></i>
+
+            </div>
+
+            <div class="m-auto">
+
+                <i class="fa fa-circle color-gray-dark font-28"></i>
+
+            </div>
+
+            <div class="m-auto">
+
+                <i class="fa fa-circle color-gray-dark font-28"></i>
+
+            </div>
+
+        </div>
+
+        <div class="divider mx-4" style="margin-top:-18px"></div>
+
+    </div>
+
+    <a href="javascript:closeOTP();"
+       class="close-menu color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
+
+    <script>
+
+        function closeOTP() {
+            window.location.href = 'ContractEvents';
+        }
+
+        function gotoSignTerms() {
+            var viewModel = {
+                'KeyID': '@Html.Raw(item.ContractID.EncryptKey())'
+            };
+            $('').launchDownload('SignCourseContractTerms',viewModel);
+        }
+
+    </script>
+
+}

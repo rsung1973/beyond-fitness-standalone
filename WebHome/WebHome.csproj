@@ -101,6 +101,13 @@
     <None Include="Views\Shared\Materialize\ReportInputError.cshtml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\LearnerActivity\Page.zh-TW\Module\CheckOTP - Copy.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 <ItemGroup>
 <EmbeddedResource Update="Models\Resources\NamingItem2023.resx">
       <Generator>MSBuild:Compile</Generator>

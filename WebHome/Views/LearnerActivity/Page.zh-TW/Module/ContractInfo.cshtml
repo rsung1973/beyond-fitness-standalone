@@ -94,50 +94,9 @@
                                         <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
                                     </svg>
                                     <div class="row mb-2">
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約類型</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@(item.CourseContractType.TypeName.CutString('-'))</p>
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約起日</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@($"{item.ValidFrom:yyyy/MM/dd}")</p>
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約迄日</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@($"{item.Expiration:yyyy/MM/dd}")</p>
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約金額</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@($"{item.TotalCost:##,###,###,###}")</p>
-                                        </div>
-                                        <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40 d-lg-none d-md-none">
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">簽約分店</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@(item.CourseContractExtension?.BranchStore.BranchName)</p>
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">主簽約人</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@(item.ContractLearnerName())</p>
-                                        </div>
-                                        <div class="col-4 mb-2">
-                                            <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">簽約顧問</p>
-                                        </div>
-                                        <div class="col-8 mb-2">
-                                            <p class="color-theme letter-spacing-1">@(item.ServingCoach.UserProfile.FullName())</p>
-                                        </div>
+                                        @{ 
+                                            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart0.cshtml", item);
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -158,40 +117,19 @@
                                     @{
                                         LessonPriceType priceType = item.CourseContractOrder.FirstOrDefault()?.LessonPriceType ?? item.LessonPriceType;
                                     }
-                                    <div class="row mb-2">
-                                        @{
-                                            foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
-                                            {
-                                                var registerItem = rc.RegisterLesson;
-                                                var priceItem = registerItem.LessonPriceType;
-                                                if (registerItem.RegisterLessonSharing != null
-                                                    && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
-                                                {
-                                                    continue;
-                                                }
-                                                <div class="col-8 mb-2">
-                                                    <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
-                                                        @Html.Raw(rc.Title)
-                                                        @Html.Raw(priceItem.SessionName)
-                                                        <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
-                                                    </p>
-                                                </div>
-                                                <div class="col-4 mb-2">
-                                                    <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
-                                                </div>
-                                            }
-                                        }
-                                    </div>
+                                <div class="row mb-2">
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart1.cshtml", item);
+                                    }
+                                </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row my-5">
                         @{
-                            var members = item.CourseContractMember.Select(m => m.UserProfile);
-                            if (members.Count() > 1)
+                            if (item.CourseContractMember.Count() >1)
                             {
-                                int idx = 0;
                                 <div class="col-12 col-lg-6 col-md-6">
                                     <!--成員資訊-->
                                     <div class="card bg-beyondwhite-dark">
@@ -206,15 +144,8 @@
                                                 <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
                                             </svg>
                                             <div class="row mb-1">
-                                                @foreach (var member in members)
-                                                {
-                                                    idx++;
-                                                    <div class="col-4 mb-2">
-                                                        <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">成員@(idx)</p>
-                                                    </div>
-                                                    <div class="col-8 mb-2">
-                                                        <p class="color-beyond-dark letter-spacing-1">@(member.RealName)（@(member.UserProfileExtension.Gender == "F" ? "女" : "男")）</p>
-                                                    </div>
+                                                @{
+                                                    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart2.cshtml", item);
                                                 }
                                             </div>
                                         </div>
@@ -224,7 +155,6 @@
                         }
                         @if (item.InstallmentID.HasValue)
                         {
-                            var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
                             <div class="col-12 col-lg-6 col-md-6">
                                 <!--分期計畫-->
                                 <div class="card bg-beyond-dark">
@@ -247,16 +177,8 @@
                                             </div>
                                         </div>
                                         <div class="row mb-2">
-                                            @foreach (var install in installment.OrderBy(c => c.ContractID))
-                                            {
-                                                <div class="col-8 col-lg-6 col-md-8 mb-2">
-                                                    <p class="color-white font-16 mb-2 letter-spacing-1">@(install.ContractNo)</p>
-                                                </div>
-                                                <div class="col-4 col-lg-6 col-md-4 mb-2">
-                                                    <p class="color-beyondwhite-dark font-16 mb-2 float-end letter-spacing-1">
-                                                        @($"{(install.ContractPayment.FirstOrDefault()?.Payment.PayoffDate):yyyy/MM/dd}")
-                                                    </p>
-                                                </div>
+                                            @{
+                                                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart3.cshtml", item);
                                             }
                                         </div>
                                     </div>

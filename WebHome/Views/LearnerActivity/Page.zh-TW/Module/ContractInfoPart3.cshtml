@@ -1,0 +1,46 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    CourseContract item = this.Model as CourseContract;
+    var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
+}
+@foreach (var install in installment.OrderBy(c => c.ContractID))
+{
+    <div class="col-8 col-lg-6 col-md-8 mb-2">
+        <p class="color-white font-16 mb-2 letter-spacing-1">@(install.ContractNo)</p>
+    </div>
+    <div class="col-4 col-lg-6 col-md-4 mb-2">
+        <p class="color-beyondwhite-dark font-16 mb-2 float-end letter-spacing-1">
+            @($"{(install.ContractPayment.FirstOrDefault()?.Payment.PayoffDate):yyyy/MM/dd}")
+        </p>
+    </div>
+}

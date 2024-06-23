@@ -1,0 +1,56 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    CourseContract item = this.Model as CourseContract;
+}
+@{
+    foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
+    {
+        var registerItem = rc.RegisterLesson;
+        var priceItem = registerItem.LessonPriceType;
+        if (registerItem.RegisterLessonSharing != null
+            && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
+        {
+            continue;
+        }
+        <div class="col-8 mb-2">
+            <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                @Html.Raw(rc.Title)
+                @Html.Raw(priceItem.SessionName)
+                <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
+            </p>
+        </div>
+        <div class="col-4 mb-2">
+            <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+        </div>
+    }
+}

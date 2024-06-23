@@ -36,18 +36,28 @@
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    int? contractID = -1;
+
+    if (_viewModel?.KeyID != null)
+    {
+        contractID = _viewModel.DecryptKeyValue();
+    }
+
 }
 @section ValidatePIN
 {
     <script>
 
         function closeOTP() {
-            window.location.href = 'Settings';
+            window.location.href = 'ContractEvents';
         }
 
         function validatePIN() {
             var viewModel = {
-                'PIN': $('input[name="Code"]').serializeObject().Code.join('')
+                'KeyID': '@Html.Raw(contractID.Value.EncryptKey())',
+                'PIN': $('input[name="Code"]').serializeObject().Code.join(''),
+                'UrlAction': 'SignCourseContract'
             };
             doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel,
                 function (data) {

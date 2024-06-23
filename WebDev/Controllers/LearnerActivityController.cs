@@ -268,11 +268,6 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "您提供的電子郵件信箱資料不存在!!" });
             }
 
-            profile = profile.LoadInstance(models);
-            profile.UserProfileExtension.PIN = BusinessExtensions.CreatePIN();
-            profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
-            models.SubmitChanges();
-
             var viewResult = CheckView("CheckOTP");
             return View(viewResult.ViewName, profile);
 
@@ -346,15 +341,26 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "動態密碼錯誤!!" });
             }
 
-            models.ExecuteCommand("delete ResetPassword where UID = {0}", profile.UID);
-            profile.ResetPassword
-                .Add(new ResetPassword
-                {
-                    ResetID = Guid.NewGuid(),
-                });
-            models.SubmitChanges();
+            ViewEngineResult viewResult;
 
-            var viewResult = CheckView("UpdatePassword");
+            switch(viewModel.UrlAction)
+            {
+                case "SignCourseContract":
+                    viewResult = CheckView("NextStep");
+                    break;
+
+                default:
+                    models.ExecuteCommand("delete ResetPassword where UID = {0}", profile.UID);
+                    profile.ResetPassword
+                        .Add(new ResetPassword
+                        {
+                            ResetID = Guid.NewGuid(),
+                        });
+                    models.SubmitChanges();
+                    viewResult = CheckView("UpdatePassword");
+                    break;
+            }
+
             return View(viewResult.ViewName, profile);
 
         }
