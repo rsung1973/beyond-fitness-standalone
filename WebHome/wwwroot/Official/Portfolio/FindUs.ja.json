@@ -663,45 +663,7 @@
                         }
                     ],
                     "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
-                },
-                {
-                    "MemberCode": "FF68236586",
-                    "Name": "顏廷宇",
-                    "NameDesc": "Eugene",
-                    "JobTitle": "副マネージャー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(55.76 184.4)",
-                            "JobPosition": "translate(55.76 154.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -50,
-                        }                        
-                    ],
-                    "Slogan": "Rest at the end, Not in the middle.",
-                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
-                    "Desc": "擅長於觀察、邏輯分析和推理能力能夠深入理解事物。在處理挑戰時，既大膽又細心，這讓我能夠全面而深入地處理各種情境。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                         
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"softball",
-                        }
-                    ],
-                    "Experience": "<ul><li>2008 總統盃壘球大專校隊組 第四名</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍</li><li>2023 全國大專校友盃壘球賽 第五名</li></ul>"                    
-                },
+                },                
                 {
                     "MemberCode": "HT89731654",
                     "Name": "黃宇承",
@@ -985,7 +947,7 @@
                     "MemberCode": "ZP85915197",
                     "Name": "陳晧宇",
                     "NameDesc": "Hogan",
-                    "JobTitle": "トレーナー",
+                    "JobTitle": "副マネージャー",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -1865,49 +1827,43 @@
                 }
             ],
             "Coaches": [
-                {
-                    "MemberCode": "IN34377928",
-                    "Name": "黃伊涵",
-                    "NameDesc": "Sabrina",
+{
+                    "MemberCode": "FF68236586",
+                    "Name": "顏廷宇",
+                    "NameDesc": "Eugene",
                     "JobTitle": "マネージャー",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(60.31 184.4)",
-                            "JobPosition": "translate(60.31 154.46)",
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(65.76 184.4)",
+                            "JobPosition": "translate(65.76 154.46)",
                             "ImgXShifting": -60,
-                            "ImgYShifting": -30,
+                            "ImgYShifting": -50,
                         }                        
                     ],
-                    "Slogan": "The value of life is determined by oneself.",
-                    "SloganDesc": "「我」的價值由我自己決定！",
-                    "Desc": "我相信，溫柔的關懷和細心的傾聽能在人際關係中建立深厚聯繫，讓每個人感受到被重視和支持。",
+                    "Slogan": "Rest at the end, Not in the middle.",
+                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
+                    "Desc": "擅長於觀察、邏輯分析和推理能力能夠深入理解事物。在處理挑戰時，既大膽又細心，這讓我能夠全面而深入地處理各種情境。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "KBC",
+                            "Name": "Z-TSCA",
                         },
                         {
-                            "Name": "EXOS",
+                            "Name": "CrossFit",
                         },
                         {
-                            "Name": "PTAG",
-                        }, 
-                        {
-                            "Name": "CPRAED"
+                            "Name": "CPRAED",
                         }                         
                     ],
                     "Sports":[
                         {
-                            "Name":"dance",
-                        },
-                        {
-                            "Name":"hiking",
+                            "Name":"softball",
                         }
                     ],
-                    "Experience": "<ul><li>印尼第二高火山林賈尼火山</li><li>友尚及茂世公司尾牙舞蹈老師</li><li>Lexus Model</li></ul>"                    
+                    "Experience": "<ul><li>2008 總統盃壘球大專校隊組 第四名</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍</li><li>2023 全國大專校友盃壘球賽 第五名</li></ul>"                    
                 },
                 {
                     "MemberCode": "UX92868239",
@@ -2509,7 +2465,7 @@
         {
             "ID": 5,
             "SubClass": "dazhi",
-            "CircleBg": "half",
+            "CircleBg": "left",
             "Name": "大直店",
             "NameDesc": "Dazhi",        
             "Tel": "(02)8502-5218",

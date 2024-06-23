@@ -20,20 +20,16 @@
             "BranchID": 1
         },
         {
+            "MemberCode": "ZP85915197",
+            "BranchID": 2
+        },
+        {
             "MemberCode": "FL62099639",
             "BranchID": 3
         },
         {
             "MemberCode": "RX14099392",
             "BranchID": 4
-        },
-        {
-            "MemberCode": "ZP85915197",
-            "BranchID": 2
-        },
-        {
-            "MemberCode": "CL74347383",
-            "BranchID": 1
         }
     ],
     "Traning": "Traning·",
