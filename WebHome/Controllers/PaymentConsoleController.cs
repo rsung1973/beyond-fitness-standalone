@@ -252,7 +252,8 @@ namespace WebHome.Controllers
             }
 
             viewModel.PayoffAmount = lesson.LessonPriceType.ListPrice;
-            viewModel.CarrierId1 = lesson.UserProfile.UserProfileExtension?.CarrierNo;
+            //viewModel.CarrierId1 = lesson.UserProfile.UserProfileExtension?.CarrierNo;
+            viewModel.PayerID = lesson.UID;
             return View("~/Views/PaymentConsole/Module/EditPaymentForPI2020.cshtml");
         }
 
@@ -327,6 +328,12 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
             }
 
+            if (!viewModel.PayerID.HasValue)
+            {
+                viewModel.PayerID = lesson?.UID;
+            }
+            CheckBuyerInvoiceCarrier(viewModel);
+
             viewModel.ItemNo = new string[] { "01" };
             viewModel.Brief = new string[] { $"{timeItem.RegisterLesson.LessonPriceType.SimpleDescription}訓練費用" };
             viewModel.CostAmount = new int?[] { viewModel.PayoffAmount };
@@ -334,16 +341,8 @@ namespace WebHome.Controllers
             viewModel.Piece = new int?[] { 1 };
             viewModel.ItemRemark = new string[] { null };
             viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
-            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
             viewModel.TransactionType =  (int)Naming.PaymentTransactionType.自主訓練;
 
-            if (viewModel.CarrierId1 != null)
-            {
-                if (viewModel.CarrierType == null)
-                {
-                    viewModel.CarrierType = "3J0002";
-                }
-            }
 
             var invoice = checkInvoiceNo(viewModel);
 
@@ -442,6 +441,12 @@ namespace WebHome.Controllers
                 viewModel.SellerID = contract.CourseContractExtension.BranchID;
             }
 
+            if (!viewModel.PayerID.HasValue)
+            {
+                viewModel.PayerID = contract?.OwnerID;
+            }
+            CheckBuyerInvoiceCarrier(viewModel);
+
             if (!viewModel.PayoffDate.HasValue)
             {
                 ModelState.AddModelError("PayoffDate", "請選擇收款日期!!");
@@ -461,16 +466,7 @@ namespace WebHome.Controllers
             viewModel.Piece = new int?[] { 1 };
             viewModel.ItemRemark = new string[] { $"合約{contract?.ContractNo()}終止手續費" };
             viewModel.InvoiceType = Naming.InvoiceTypeDefinition.一般稅額計算之電子發票;
-            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
             viewModel.TransactionType = (int)Naming.PaymentTransactionType.終止手續費;
-
-            if (viewModel.CarrierId1 != null)
-            {
-                if (viewModel.CarrierType == null)
-                {
-                    viewModel.CarrierType = "3J0002";
-                }
-            }
 
             var invoice = checkInvoiceNo(viewModel);
 

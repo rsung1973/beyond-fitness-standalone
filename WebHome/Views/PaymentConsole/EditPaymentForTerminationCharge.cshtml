@@ -65,6 +65,7 @@
                             var contract = models.GetUnpaidTerminationCharge()
                                 .Where(r => r.ContractID == _viewModel.ContractID)
                                 .FirstOrDefault();
+                            _viewModel.PayerID = contract?.OwnerID;
 
                             await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/EditPaymentForTerminationCharge.cshtml", contract);
                         }

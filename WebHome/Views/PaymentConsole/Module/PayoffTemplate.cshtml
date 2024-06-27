@@ -1,0 +1,110 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    Payment _model;
+    PaymentViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = this.Model as Payment;
+    _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+}
+@{
+    UserProfile _profile = await Context.GetUserAsync();
+    var payer = models.GetTable<UserProfile>().Where(u => u.UID == _viewModel.PayerID).FirstOrDefault();
+}
+@if (_viewModel.SellerID.HasValue)
+{
+    <input type="hidden" name="SellerID" value="@(_viewModel.SellerID)" />
+}
+else
+{
+    <div class="col-12">
+        <select class="form-control show-tick" name="SellerID">
+            <option value="">-- 請選擇收款場地 --</option>
+            @{
+                ViewBag.DataItems = models.PromptRealStore();
+                await Html.RenderPartialAsync("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: -1);
+            }
+        </select>
+        @*<label class="material-icons help-error-text" for="BranchID">clear 請選擇收款場地</label>*@
+    </div>
+}
+@RenderSection("PaymentType")
+<div class="col-12">
+    <div class="input-group">
+        @{
+            ViewBag.SearchAction = Url.Action("SearchPayer", "LearnerProfile");
+            ViewBag.SearchField = "PayerName";
+            await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+        }
+    </div>
+</div>
+@if (payer != null)
+{
+    <script>
+        $(function () {
+            $global.viewModel.EncPayerID = '@Html.Raw(payer.UID.EncryptKey())';
+            $('input[name="PayerName"]').val('@Html.Raw(payer.RealName)');
+            $('input[name="CarrierId1"]').val('@Html.Raw(payer.UserProfileExtension.CarrierNo ?? ("BYND-" + payer.MemberCode))');
+            $('select[name="CarrierType"]').selectpicker('val', '@Html.Raw(payer.UserProfileExtension.CarrierType ?? "3J0001")');
+            selectCarrier();
+        });
+    </script>
+}
+<div class="col-12">
+    <div class="input-group">
+        <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
+        <span class="input-group-addon">
+            <i class="zmdi zmdi-text-format"></i>
+        </span>
+    </div>
+</div>
+<div class="col-12">
+    <select class="form-control show-tick" name="CarrierType" onchange="selectCarrier();">
+        <option value="">-- 請選擇載具 --</option>
+        <option value="3J0001">會員載具</option>
+        <option value="3J0002">手機載具</option>
+        <option value="ReceiptNo">買受人公司統編</option>
+        <!-- <option value="1">紙本</option> -->
+    </select>
+    <script>
+        function selectCarrier() {
+            $('.eInvoice-dialog').css('display', 'block');
+            if ($('[name="CarrierType"]').val() != '3J0002') {
+                $('.eInvoice-dialog').css('display', 'none');
+            }
+        }
+    </script>
+</div>
+<div class="col-lg-8 col-md-8 col-sm-12 eInvoice-dialog">
+    <div class="input-group">
+        <input type="text" class="form-control col-red" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
+        <span class="input-group-addon">
+            <i class="zmdi zmdi-money-box"></i>
+        </span>
+    </div>
+</div>
+<div class="col-lg-4 col-md-4 col-sm-12 eInvoice-dialog">
+    <label class="fancy-checkbox custom-bgcolor-green">
+        <input type="checkbox" name="MyCarrier" value="True" />
+        <span class="col-green">加入預設</span>
+    </label>
+</div>
+<div class="col-12">
+    <dv>
+        <input type="hidden" name="errorMessage" />
+    </dv>
+</div>

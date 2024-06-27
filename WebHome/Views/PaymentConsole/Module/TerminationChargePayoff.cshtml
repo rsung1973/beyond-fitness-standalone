@@ -21,6 +21,8 @@
     _modelState = ViewContext.ModelState;
     _model = this.Model as Payment;
     _viewModel = (PaymentViewModel)ViewBag.ViewModel;
+    UserProfile _profile = await Context.GetUserAsync();
+
 }
 @section PaymentType
 {
@@ -28,7 +30,7 @@
         <select class="form-control show-tick" name="PaymentType">
             <option value="">-- 請選擇收款方式 --</option>
             <option value="現金">現金</option>
-            <option value="刷卡">刷卡</option>
+            @*<option value="刷卡">刷卡</option>*@
             <option value="轉帳">轉帳</option>
         </select>
     </div>

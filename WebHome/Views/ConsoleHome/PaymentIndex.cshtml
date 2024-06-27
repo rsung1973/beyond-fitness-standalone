@@ -193,7 +193,11 @@
         var event = event || window.event;
         testPrintInvoice(invoiceID, printerIP);
         $(event.target).after('<span class="list-group-item">已列印</span>').remove();
-    }
+        }
+
+        function getInvoicePdf(viewModel) {
+            $('').launchDownload('https://egui.uxifs.com/eivohub/IndividualProcess/GetInvoicePDF', viewModel, '_blank');
+        }
 
     function printAllowance(allowanceID, printerIP) {
         var event = event || window.event;

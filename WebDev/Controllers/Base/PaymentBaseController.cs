@@ -23,6 +23,7 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
+using System.Diagnostics.Contracts;
 
 namespace WebHome.Controllers.Base
 {
@@ -184,20 +185,7 @@ namespace WebHome.Controllers.Base
                 ModelState.AddModelError("errorMessage", "請選擇收款日期");
             }
 
-            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
-            viewModel.CarrierType = viewModel.CarrierType.GetEfficientString();
-            viewModel.BuyerReceiptNo = viewModel.BuyerReceiptNo.GetEfficientString();
-            if (viewModel.CarrierId1 != null)
-            {
-                if (viewModel.BuyerReceiptNo != null)
-                {
-                    ModelState.AddModelError("CarrierId1", "買受人統編與載具請擇一輸入");
-                }
-                else if (viewModel.CarrierType == null)
-                {
-                    ModelState.AddModelError("CarrierType", "請選擇發票載具類型");
-                }
-            }
+            CheckBuyerInvoiceCarrier(viewModel);
 
             var invoice = checkInvoiceNo(viewModel);
 
@@ -209,11 +197,6 @@ namespace WebHome.Controllers.Base
             if (String.IsNullOrEmpty(viewModel.PaymentType))
             {
                 ModelState.AddModelError("PaymentType", "請選擇收款方式");
-            }
-
-            if (!viewModel.PayerID.HasValue)
-            {
-                ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
             }
 
             if (!ModelState.IsValid)
@@ -285,6 +268,42 @@ namespace WebHome.Controllers.Base
             }
         }
 
+        protected void CheckBuyerInvoiceCarrier(PaymentViewModel viewModel)
+        {
+            var payer = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.PayerID).FirstOrDefault();
+            if (payer == null)
+            {
+                ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
+            }
+
+            viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
+            viewModel.CarrierType = viewModel.CarrierType.GetEfficientString();
+            viewModel.BuyerReceiptNo = viewModel.BuyerReceiptNo.GetEfficientString();
+            if (viewModel.BuyerReceiptNo != null)
+            {
+                if (viewModel.CarrierType != "ReceiptNo")
+                {
+                    ModelState.AddModelError("CarrierType", "請選擇買受人公司統編");
+                }
+                else 
+                {
+                    viewModel.CarrierType = null;
+                }
+            }
+            else if (viewModel.CarrierType == "ReceiptNo")
+            {
+                ModelState.AddModelError("BuyerReceiptNo", "請輸入買受人統編");
+            }
+            else if (viewModel.CarrierType == null)
+            {
+                ModelState.AddModelError("CarrierType", "請選擇發票載具類型");
+            }
+            else if (viewModel.CarrierType == "3J0001")
+            {
+                viewModel.CarrierId1 = $"BYND-{payer?.MemberCode}";
+            }
+        }
+
         public async Task<ActionResult> CommitPaymentForCustomAsync(PaymentViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -334,17 +353,7 @@ namespace WebHome.Controllers.Base
                 ModelState.AddModelError("PayoffAmount", "請輸入收款金額!!");
             }
 
-            if (profile.IsSysAdmin() || profile.IsAssistant())
-            {
-
-            }
-            else
-            {
-                if (!viewModel.PayerID.HasValue)
-                {
-                    ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
-                }
-            }
+            CheckBuyerInvoiceCarrier(viewModel);
 
             if (!ModelState.IsValid)
             {

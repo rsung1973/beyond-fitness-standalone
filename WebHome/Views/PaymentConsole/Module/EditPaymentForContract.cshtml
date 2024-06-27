@@ -78,7 +78,7 @@
     </table>
 </div>
 <div class="row clearfix m-t-20">
-    <div class="col-12">
+    @*<div class="col-12">
         <select class="form-control show-tick" name="PaymentType">
             <option value="">-- 請選擇收款方式 --</option>
             @if (_profile.IsAuthorizedSysAdmin() || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager()
@@ -96,17 +96,16 @@
                 }
             }
         </select>
-    </div>
-    <div class="col-12">
+    </div>*@
+    @*<div class="col-12">
         <div class="input-group">
             <input type="text" class="form-control" name="BuyerReceiptNo" placeholder="買受人統編" />
             <span class="input-group-addon">
                 <i class="zmdi zmdi-text-format"></i>
             </span>
         </div>
-        @*<label class="material-icons help-error-text" for="BuyerReceiptNo">clear 請輸入買受人統編</label>*@
-    </div>
-    @if (_profile.IsSysAdmin())
+    </div>*@
+    @if (false @*_profile.IsSysAdmin()*@)
     {
         <div class="col-12">
             <select class="form-control show-tick" name="InvoiceType">
@@ -218,11 +217,11 @@
         <input type="hidden" name="CustomBrief" value="@Html.Raw(false)" />
     }
 
-    <div class="col-12">
+    @*<div class="col-12">
         <div>
             <input type="hidden" name="errorMessage" />
         </div>
-    </div>
+    </div>*@
 
     @*<div class="col-12">
             <div class="input-group">
@@ -234,25 +233,28 @@
         </div>*@
 </div>
 <div class="row clearfix m-t-20">
-    <div class="col-12 eInvoice-dialog">
-        <div class="input-group">
-            <input type="text" class="form-control" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
-            <span class="input-group-addon">
-                <i class="zmdi zmdi-money-box"></i>
-            </span>
+    @*<div class="col-12 eInvoice-dialog">
+            <div class="input-group">
+                <input type="text" class="form-control" name="CarrierId1" placeholder="手機載具條碼，例：/17T448Q" value="@(_viewModel.CarrierId1)" />
+                <span class="input-group-addon">
+                    <i class="zmdi zmdi-money-box"></i>
+                </span>
+            </div>
         </div>
-    </div>
-    <div class="col-12 p-l-20">
-        <label class="fancy-checkbox custom-bgcolor-green">
-            <input type="checkbox" name="MyCarrier" value="True" />
-            <span class="col-green">加入預設</span>
-        </label>
-    </div>
-    <div class="col-12 eInvoice-dialog">
-        <dv>
-            <input type="hidden" name="errorMessage" />
-        </dv>
-    </div>
+        <div class="col-12 p-l-20">
+            <label class="fancy-checkbox custom-bgcolor-green">
+                <input type="checkbox" name="MyCarrier" value="True" />
+                <span class="col-green">加入預設</span>
+            </label>
+        </div>
+        <div class="col-12 eInvoice-dialog">
+            <dv>
+                <input type="hidden" name="errorMessage" />
+            </dv>
+        </div>*@
+    @{
+        await Html.RenderPartialAsync("~/Views/PaymentConsole/Module/CourseContractPayoff.cshtml");
+    }
 </div>
 <div class="row clearfix m-t-20">
     <div class="col-12">

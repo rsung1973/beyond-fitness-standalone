@@ -33,24 +33,96 @@
     CourseContract item = this.Model as CourseContract;
 }
 @{
-    foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
+    if (item.RegisterLessonContract.Any())
     {
-        var registerItem = rc.RegisterLesson;
-        var priceItem = registerItem.LessonPriceType;
-        if (registerItem.RegisterLessonSharing != null
-            && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
+        foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
         {
-            continue;
+            var registerItem = rc.RegisterLesson;
+            var priceItem = registerItem.LessonPriceType;
+            if (registerItem.RegisterLessonSharing != null
+                && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
+            {
+                continue;
+            }
+            <div class="col-8 mb-2">
+                <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                    @Html.Raw(rc.Title)
+                    @Html.Raw(priceItem.SessionName)
+                    <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
+                </p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+            </div>
         }
+    }
+    else if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
+                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
+                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
+                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF)
+    {
+        var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
+        List<CourseContractOrder> lessonItems = installment.Any()
+            ? installment.SelectMany(c => c.CourseContractOrder).ToList()
+            : item.CourseContractOrder.ToList();
+
+        foreach (var g in lessonItems.GroupBy(l => l.PriceID)
+            .OrderBy(v => v.First().SeqNo))
+        {
+            var order = g.First();
+            var priceItem = order.LessonPriceType;
+
+            <div class="col-8 mb-2">
+                <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                    @($"{(order.SeqNo > 0 ? "加購" : null)}")
+                    @{
+                        BuildLessonOrder(priceItem);
+                    }
+                    @(priceItem.DurationInMinutes)Min
+                </p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="float-end color-beyondred-dark">@(g.Sum(o=>o.Lessons))</p>
+            </div>
+        }
+
+    }
+    else
+    {
+        var priceItem = item.LessonPriceType;
         <div class="col-8 mb-2">
             <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
-                @Html.Raw(rc.Title)
                 @Html.Raw(priceItem.SessionName)
                 <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
             </p>
         </div>
         <div class="col-4 mb-2">
-            <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+            <p class="float-end color-beyondred-dark">@(item.Lessons)</p>
         </div>
+    }
+}
+@functions
+{
+    void BuildLessonOrder(LessonPriceType priceItem)
+    {
+        switch ((Naming.LessonPriceStatus?)priceItem.Status)
+        {
+            case Naming.LessonPriceStatus.營養課程:
+                <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動恢復課程:
+                <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.運動防護課程:
+                <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+            case Naming.LessonPriceStatus.自主訓練:
+                <text>P.I Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+
+            default:
+                <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                break;
+        }
     }
 }

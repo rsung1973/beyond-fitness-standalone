@@ -8,6 +8,7 @@
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
+@using CommonLib.Utility 
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
 @{
@@ -174,9 +175,9 @@
                 clearErrors();
                 delete $global.viewModel.RegisterID;
                 var $formData = $('input,select,textarea').serializeObject();
-                $formData = $.extend({}, $global.viewModel, $formData);
+                $formData = $.extend(@Html.Raw((new { _viewModel.PaymentID }).JsonStringify()), $global.viewModel, $formData);
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForSession","PaymentConsole",new { _viewModel.PaymentID }))', $formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForSession","PaymentConsole"))', $formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

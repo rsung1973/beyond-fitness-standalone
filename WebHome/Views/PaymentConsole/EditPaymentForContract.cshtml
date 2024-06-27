@@ -61,9 +61,8 @@
                     <div class="body">
                         @{
                             ViewContext.ViewData["DataItem"] = _item;
-                            Write(await Component.InvokeAsync<EditPaymentForContractViewComponent>(new PaymentViewModel { ContractID = _item.ContractID, PayoffAmount = _item.TotalCost, CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo }));
+                            Write(await Component.InvokeAsync<EditPaymentForContractViewComponent>(new PaymentViewModel { ContractID = _item.ContractID, PayoffAmount = _item.TotalCost, /*CarrierId1 = _item.ContractOwner.UserProfileExtension?.CarrierNo,*/ SellerID = _item.CourseContractExtension.BranchID, PayerID = _item.OwnerID }));
                         }
-                        <input type="hidden" name="SellerID" value="@(_item.CourseContractExtension.BranchID)" />
                         <button type="button" class="subscribe btn btn-primary btn-block" onclick="commitPayoff();">確定，不後悔</button>
                         @*<button type="reset" class="btn btn-danger btn-round btn-simple waves-effect quit" onclick="quitPayoff();">不, 重新輸入</button>*@
                     </div>

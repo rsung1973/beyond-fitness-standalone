@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CancelInvoiceRoot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CompanyBan" type="xs:string" minOccurs="1" maxOccurs="1" />
+        <xs:element name="CancelInvoice" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CancelInvoiceNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CancelDataNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="InvoiceDate" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BuyerId" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SellerId" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CancelDate" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CancelTime" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CancelReason" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ReturnTaxDocumentNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Remark" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="LineNo" type="xs:int" minOccurs="0" nillable="true" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

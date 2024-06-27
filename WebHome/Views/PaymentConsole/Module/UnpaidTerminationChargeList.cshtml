@@ -132,8 +132,9 @@
                 delete $global.viewModel.RegisterID;
                 var $formData = $('input,select,textarea').serializeObject();
                 $formData = $.extend({}, $global.viewModel, $formData);
+                $formData.PaymentID = @(_viewModel.PaymentID ?? -1);
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForTerminationCharge","PaymentConsole",new { _viewModel.PaymentID }))', $formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForTerminationCharge","PaymentConsole"))', $formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="B2CAllowanceCancellation"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+>
+  <xs:element name="CancelAllowanceRoot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CancelAllowance" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CancelAllowanceNumber" type="xs:string" />
+              <xs:element name="BuyerId" type="xs:string" />
+              <xs:element name="SellerId" type="xs:string" />
+              <xs:element name="AllowanceDate" type="xs:string" />
+              <xs:element name="CancelReason" type="xs:string" />
+              <xs:element name="CancelDate" type="xs:string" />
+              <xs:element name="CancelTime" type="xs:string" />
+              <xs:element name="Remark" type="xs:string" />
+              <xs:element name="LineNo" type="xs:int" minOccurs="0" nillable="true" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

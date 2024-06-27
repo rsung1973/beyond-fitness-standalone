@@ -45,8 +45,15 @@
             if (result.isConfirmed) {
                 clearErrors();
                 var formData = $('input,select,textarea').serializeObject();
+                formData = {
+                    ...formData,
+                    'KeyID': '@Html.Raw((_viewModel.ContractID ?? -1).EncryptKey())',
+                    'TransactionType': @((int)Naming.PaymentTransactionType.體能顧問費),
+                    'PayoffAmount': @(_viewModel.PayoffAmount ?? 0),
+                    'alertError': false
+                };
                 showLoading();
-                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment",new { _viewModel.ContractID,TransactionType = (int)Naming.PaymentTransactionType.體能顧問費, _viewModel.PayoffAmount, alertError = false }))', formData, function (data) {
+                $.post('@Html.Raw(Url.Action("CommitPaymentForContract","Payment"))', formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {
                         if (data.result) {

@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="B2CAllowance"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified"
+>
+  <xs:element name="AllowanceRoot">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Allowance" minOccurs="1" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="AllowanceNumber" type="xs:string" />
+              <xs:element name="DataNumber" type="xs:string" />
+              <xs:element name="AllowanceDate">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="10"/>
+                    <xs:pattern value="[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="GoogleId" type="xs:string" />
+              <xs:element name="SellerId" type="xs:string" />
+              <xs:element name="SellerName" type="xs:string" />
+              <xs:element name="BuyerId" type="xs:string" />
+              <xs:element name="BuyerName" type="xs:string" />
+              <xs:element name="AllowanceType" type="xs:unsignedByte" />
+              <xs:element name="AllowanceItem" maxOccurs="unbounded" minOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="OriginalInvoiceDate" >
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:maxLength value="10"/>
+                          <xs:pattern value="[0-9][0-9][0-9][0-9]/[0-9][0-9]/[0-9][0-9]"/>
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="OriginalInvoiceNumber" type="xs:string" />
+                    <xs:element name="OriginalDataNumber" type="xs:string" />
+                    <xs:element name="OriginalSequenceNumber" type="xs:short" minOccurs="0" nillable="true" />
+                    <xs:element name="Item" type="xs:string" />
+                    <xs:element name="OriginalDescription" type="xs:string" />
+                    <xs:element name="Quantity" type="xs:decimal" />
+                    <xs:element name="Unit" type="xs:string" />
+                    <xs:element name="UnitPrice" type="xs:decimal" />
+                    <xs:element name="Amount" type="xs:decimal" />
+                    <xs:element name="Tax" type="xs:decimal" />
+                    <xs:element name="AllowanceSequenceNumber" type="xs:short" />
+                    <xs:element name="TaxType" type="xs:unsignedByte" />
+                    <xs:element name="Remark" type="xs:string" minOccurs="0" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="TaxAmount" type="xs:decimal" />
+              <xs:element name="TotalAmount" type="xs:decimal"/>
+              <xs:element name="Currency" type="xs:string" />
+              <xs:element name="Contact" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Name" type="xs:string"/>
+                    <xs:element name="Address" type="xs:string"/>
+                    <xs:element name="TEL" type="xs:string"/>
+                    <xs:element name="Email" type="xs:string" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="LineNo" type="xs:int" minOccurs="0" nillable="true" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

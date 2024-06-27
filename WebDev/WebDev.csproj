@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <Folder Include="bin\Debug\net8.0\" />
+    <Folder Include="Models\EIVO\" />
     <Folder Include="Views\" />
   </ItemGroup>
 
