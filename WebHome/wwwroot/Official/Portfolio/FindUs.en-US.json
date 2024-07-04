@@ -45,7 +45,7 @@
                 }
             ],           
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",
+            "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
                 {
                     "Content": "Exit 1 of MRT Taipei Arena"
@@ -601,7 +601,7 @@
                 }
             ],              
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",
+            "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
                 {
                     "Content": "Exit 2A of the MRT Xinyi Anhe"
@@ -1342,7 +1342,7 @@
                 }
             ],        
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",
+            "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
                 {
                     "Content": "Exit 3 (B14) of MRT Zhongxiao Fuxing"
@@ -1819,7 +1819,7 @@
                 },
             ],  
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",        
+            "InfoHolidayTime": "08:00 - 19:00",        
             "FeatureItems":[
                 {
                     "Content": "Exit 3 of MRT Dongmen"

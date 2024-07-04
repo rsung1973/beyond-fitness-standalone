@@ -21,31 +21,34 @@
             "MRT":"松山新店線(綠線) • 台北小巨蛋站1號出口",
             "MRTShort":"捷運小巨蛋<b>1號</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 3,  
             "Slogan": "訓練是生活的一部分，<br class=\"hidden-md-down\" />Enjoy the little thing。",
             "SloganMessage": "<p>我們深信著，運動不僅僅是單一活動，更是生活的精華所在。這是一種態度，是每天的一部分，是對自己的愛與呵護。</p><p class=\"hidden-lg-down\">透過訓練，我們不僅在身體上找到更好的自己，更可以在每個瞬間中尋找樂趣。這不只是一種鍛鍊，更是對生活的熱愛，對細微事物的感激。我們堅信，唯有擁有健康，才能真正獲得快樂。</p><p>Beyond提供真正專業而有系統性的訓練，讓您的運動不僅有效，更是一場充滿樂趣和新體驗的冒險。在Beyond希望每個學生都能擁有快樂與健康，並真正享受這美好的時光。因為生活中的小確幸，就蘊藏在這每一次的訓練中！</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo07.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo08.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo09.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo10.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo11.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo12.png"
+                },
+                {
+                    "FileName": "Demo13.png"
                 }
             ],           
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",            
+            "InfoHolidayTime": "AM 08:00- PM 19:00",            
             "FeatureItems":[
                 {
                     "Content": "捷運小巨蛋1號出口，走路約1分鐘可以抵達。"
@@ -601,7 +604,7 @@
                 }
             ],                    
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoHolidayTime": "AM 08:00- PM 19:00",
             "FeatureItems":[
                 {
                     "Content": "捷運信義安和捷運站2A號出口，走路約3分鐘即可抵達。"
@@ -1342,7 +1345,7 @@
                 }
             ],      
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",
+            "InfoHolidayTime": "AM 08:00- PM 19:00",
             "FeatureItems":[
                 {
                     "Content": "捷運忠孝復興站3號(地下街14號)出口，走路2分鐘即可抵達。"
@@ -1817,7 +1820,7 @@
                 },
             ],   
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
-            "InfoHolidayTime": "AM 08:00- PM 22:00",          
+            "InfoHolidayTime": "AM 08:00- PM 19:00",          
             "FeatureItems":[
                 {
                     "Content": "捷運東門捷運站3號出口，往中正紀念堂方向，走路約3分鐘即可抵達。"

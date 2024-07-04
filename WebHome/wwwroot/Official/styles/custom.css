@@ -787,7 +787,7 @@ u {
 }
 .findus .banner .nanjing-1 {
   /* 預設的背景圖片 */
-  background-image: url("../images/banner/nanjing-lg.jpg");
+  background-image: url("../images/banner/nanjing-lg-1.jpg");
   background-size: cover;
   background-position: bottom center;
   height: 100vh;
@@ -795,7 +795,33 @@ u {
 }
 @media (max-width: 767px) {
   .findus .banner .nanjing-1 {
-    background-image: url("../images/banner/nanjing-sm.jpg") !important;
+    background-image: url("../images/banner/nanjing-sm-1.jpg") !important;
+  }
+}
+.findus .banner .nanjing-2 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/nanjing-lg-2.jpg");
+  background-size: cover;
+  background-position: bottom center;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .nanjing-2 {
+    background-image: url("../images/banner/nanjing-sm-2.jpg") !important;
+  }
+}
+.findus .banner .nanjing-3 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/nanjing-lg-3.jpg");
+  background-size: cover;
+  background-position: bottom center;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .nanjing-3 {
+    background-image: url("../images/banner/nanjing-sm-3.jpg") !important;
   }
 }
 .findus .banner .dazhi-1 {
@@ -1015,8 +1041,9 @@ u {
   }
 }
 .findus .slogan.container-background.nanjing {
-  background-image: url("../images/slogan/nanjing-lg.jpg");
+  background-image: url("../images/slogan/nanjing-lg-1.jpg");
   /* PC */
+  /* iPad橫板 */
   /* iPad直板 */
   /* 手機 */
 }
@@ -1025,15 +1052,20 @@ u {
     height: 900px;
   }
 }
+@media (max-width: 1199px) and (min-width: 991px) {
+  .findus .slogan.container-background.nanjing {
+    background-image: url("../images/slogan/nanjing-md-1.jpg");
+  }
+}
 @media (max-width: 990px) and (min-width: 768px) {
   .findus .slogan.container-background.nanjing {
-    background-image: url("../images/slogan/nanjing-sm.jpg");
+    background-image: url("../images/slogan/nanjing-sm-1.jpg");
     height: 1200px;
   }
 }
 @media (max-width: 767px) {
   .findus .slogan.container-background.nanjing {
-    background-image: url("../images/slogan/nanjing-sm.jpg");
+    background-image: url("../images/slogan/nanjing-sm-1.jpg");
     height: 800px;
   }
 }

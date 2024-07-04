@@ -45,7 +45,7 @@
                 }
             ],           
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",            
+            "InfoHolidayTime": "08:00 - 19:00",            
             "FeatureItems":[
                 {
                     "Content": "MRT台北アリーナ駅1番出口から、徒歩約1分"
@@ -601,7 +601,7 @@
                 }
             ],                    
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",
+            "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
                 {
                     "Content": "MRT信義安和駅2A出口から、徒歩約3分"
@@ -1342,7 +1342,7 @@
                 }
             ],      
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",
+            "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
                 {
                     "Content": "MRT忠孝復興駅3番（地下街14番）出口から、徒歩2分"
@@ -1817,7 +1817,7 @@
                 },
             ],   
             "InfoWeekDaysTime": "09:00 - 22:30",
-            "InfoHolidayTime": "08:00 - 22:00",        
+            "InfoHolidayTime": "08:00 - 19:00",        
             "FeatureItems":[
                 {
                     "Content": "MRT東門駅3番出口から、中正紀念堂方面に向かって徒歩約3分"
