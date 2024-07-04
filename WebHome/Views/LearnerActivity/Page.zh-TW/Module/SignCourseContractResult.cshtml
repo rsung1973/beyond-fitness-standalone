@@ -1,0 +1,65 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    CourseContract _model = this.Model as CourseContract;
+}
+<div class="card" data-card-height="cover">
+
+    <div class="card-center text-center mx-2">
+
+        <div class="row">
+
+            <div class="col-12">
+
+                <i class="fa fa-check-circle color-highlight fa-5x"></i>
+
+                <h1 class="pt-4 font-26 mb-0">Thank you</h1>
+
+                <p class="boxed-text-l">
+
+                    盡情享受您的上課時光!
+
+                </p>
+
+            </div>
+
+        </div>
+
+        <a href="javascript:gotoContractInfo('@Html.Raw(_model.ContractID.EncryptKey())');"
+           class="close-menu btn border-lightgray-dark color-beyond-dark bg-white font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看合約資訊</a>
+
+        <a href="TransactionForActiveContract"
+           class="close-menu btn border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看購買紀錄</a>
+
+    </div>
+
+</div>

@@ -62,8 +62,11 @@
     if (eventItem != null)
     {
         events.Add(eventItem);
-        contractCount += ((PromptSignContractEvent)eventItem).ContractList.Count();
-
+        var _item = (PromptSignContractEvent)eventItem;
+        int count = _item.ContractList.Where(c => !c.InstallmentID.HasValue).Count()
+                        + _item.ContractList.Where(c => c.InstallmentID.HasValue)
+                            .GroupBy(c => c.InstallmentID).Count(); 
+        contractCount += count;
     }
 
     eventItem = profile.CheckSignContractServiceEvent(models);
@@ -83,7 +86,7 @@
     <!--快訊類型-->
     <div class="content mt-5">
         <div class="row mb-0">
-            <a href="event-checkin.html" class="col-4">
+            <a href="Events" class="col-4">
                 <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed @(ViewBag.EventCatelog == 0 ? "active" : null)">
                     <i class="fa fa-user-check font-24 color-theme opacity-30"></i>
                     <em class="badge bg-beyond-dark opacity-30">6</em>

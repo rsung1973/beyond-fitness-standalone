@@ -65,6 +65,9 @@ namespace WebHome.Models.ViewModel
         public bool? Booking { get; set; }
         public bool? Cancel { get; set; }
         public bool? Agree { get; set; }
+        public bool? HasViewedDetails { get; set; }
+        public bool? PersonalData { get; set; }
+        public bool? Understood { get; set; }
         public bool? GDPRAgree { get; set; }
         public String PriceName { get; set; }
         public int? InstallmentID { get; set; }

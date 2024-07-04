@@ -95,7 +95,7 @@
                 var $formData = $('input,select,textarea').serializeObject();
                 $formData = $.extend({}, $global.viewModel, $formData);
                 $formData.PaymentID = @(_viewModel.PaymentID ?? -1);
-                showLoading(_viewModel.PaymentID);
+                showLoading();
                 $.post('@Html.Raw(Url.Action("CommitPaymentForCustom","PaymentConsole"))', $formData, function (data) {
                     hideLoading();
                     if ($.isPlainObject(data)) {

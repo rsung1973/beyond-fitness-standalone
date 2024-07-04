@@ -41,6 +41,8 @@ using System.Text.Json.Nodes;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using LineMessagingAPISDK.Models;
+using WebHome.Helper.MessageOperation;
+using WebHome.Helper.BusinessOperation;
 
 namespace WebHome.Controllers
 {
@@ -503,6 +505,159 @@ namespace WebHome.Controllers
             ViewBag.Message = message;
             return Login(viewModel);
         }
+
+
+        public async Task<ActionResult> ConfirmSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+            ViewEngineResult viewResult = null;
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意BF隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Booking != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第8條服務預約之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Extension != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.HasViewedDetails != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意產品及服務特約條款");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.GDPRAgree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意個人資料告知事項暨同意書");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.PersonalData != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意提供各項個人資料");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Understood != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並充分知悉和同意本告知暨同意書之內容");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
+            if (viewModel.SignerPIN == null)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            if (item.InstallmentID.HasValue)
+            {
+                foreach (var c in models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID))
+                {
+                    var contract = await CommitSignatureAsync(viewModel, signatureViewModel, c);
+                    if (contract == null)
+                    {
+                        ModelState.AddModelError("Message", ModelState.ErrorMessage());
+                        ViewBag.AlertError = true;
+                        ViewBag.ModelState = this.ModelState;
+                        return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+                    }
+                }
+            }
+            else
+            {
+                item = await CommitSignatureAsync(viewModel, signatureViewModel, item);
+                if (item == null)
+                {
+                    ModelState.AddModelError("Message", ModelState.ErrorMessage());
+                    ViewBag.AlertError = true;
+                    ViewBag.ModelState = this.ModelState;
+                    return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+                }
+            }
+
+            String jsonData = await RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyToContractPayment.cshtml", item);
+            jsonData.PushLineMessage();
+
+            viewResult = CheckView("SignCourseContractResult");
+            return View(viewResult.ViewName, item);
+        }
+
+        private async Task<CourseContract> CommitSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel, CourseContract item)
+        {
+            var profile = await HttpContext.GetUserAsync();
+
+            for (int i = 0; i < (signatureViewModel.SignatureCount ?? 1); i++)
+            {
+                String signatureName = $"{signatureViewModel.SignatureName}{i:#}";
+                var sigItem = models.GetTable<CourseContractSignature>()
+                    .Where(s => s.ContractID == item.ContractID)
+                    .Where(s => s.UID == profile.UID)
+                    .Where(s => s.SignatureName == signatureName)
+                    .FirstOrDefault();
+
+                if (sigItem == null)
+                {
+                    sigItem = new CourseContractSignature
+                    {
+                        ContractID = item.ContractID,
+                        UID = profile.UID,
+                        SignatureName = signatureName,
+                    };
+                    models.GetTable<CourseContractSignature>().InsertOnSubmit(sigItem);
+                }
+
+                sigItem.Signature = signatureViewModel.Signature;
+                models.SubmitChanges();
+            }
+
+            if (item.CourseContractRevision != null)
+            {
+                return await viewModel.ConfirmContractServiceSignatureAsync(this, item.CourseContractRevision);
+            }
+            else
+            {
+                return await viewModel.ConfirmContractSignatureAsync(this, item);
+            }
+        }
+
 
     }
 }

@@ -268,10 +268,10 @@ namespace WebHome.Controllers.Base
             }
         }
 
-        protected void CheckBuyerInvoiceCarrier(PaymentViewModel viewModel)
+        protected void CheckBuyerInvoiceCarrier(PaymentViewModel viewModel,bool forcePayer = true)
         {
             var payer = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.PayerID).FirstOrDefault();
-            if (payer == null)
+            if (payer == null && forcePayer)
             {
                 ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
             }
@@ -300,7 +300,14 @@ namespace WebHome.Controllers.Base
             }
             else if (viewModel.CarrierType == "3J0001")
             {
-                viewModel.CarrierId1 = $"BYND-{payer?.MemberCode}";
+                if (payer == null && !forcePayer)
+                {
+                    ModelState.AddModelError("PayerName", "請輸入買受人（學生）");
+                }
+                else
+                {
+                    viewModel.CarrierId1 = $"BYND-{payer?.MemberCode}";
+                }
             }
         }
 
@@ -353,7 +360,7 @@ namespace WebHome.Controllers.Base
                 ModelState.AddModelError("PayoffAmount", "請輸入收款金額!!");
             }
 
-            CheckBuyerInvoiceCarrier(viewModel);
+            CheckBuyerInvoiceCarrier(viewModel, false);
 
             if (!ModelState.IsValid)
             {

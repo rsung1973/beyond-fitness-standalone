@@ -47,12 +47,15 @@
     <!-- Web Fonts  -->
     <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet" type="text/css">
 
-    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css"
+    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css" />
     <!-- SweetAlert2  -->
     <link rel="stylesheet" type="text/css" href="../plugins/sweetalert2/sweetalert2.min.css">
     <link rel="stylesheet" href="../fonts/css/fontawesome-all.min.css" type="text/css">
     <link rel="stylesheet" type="text/css" href="../styles/style.css">
     <link rel="stylesheet" type="text/css" href="../styles/custom.css">
+    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
+    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
+    @RenderSection("CustomHeader", false)
 </head>
 
 <body class="theme-light detect-dark-mode" data-highlight="beyond">
@@ -72,10 +75,7 @@
 
     @RenderSection("PopupBox", false)
 
-    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
     <script type="text/javascript" src="../scripts/custom.js"></script>
-    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
-
     <!-- SweetAlert Plugin Js -->
     <script src="../plugins/sweetalert2/sweetalert2.min.js"></script>
     <script type="text/javascript">

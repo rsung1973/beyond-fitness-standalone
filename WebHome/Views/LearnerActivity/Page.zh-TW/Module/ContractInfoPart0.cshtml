@@ -53,8 +53,22 @@
 <div class="col-4 mb-2">
     <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">合約金額</p>
 </div>
+@{
+    var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
+    int? totalLessons, totalCost;
+    if (item.InstallmentID.HasValue)
+    {
+        totalLessons = installment.Sum(c => c.Lessons);
+        totalCost = installment.Sum(c => c.TotalCost);
+    }
+    else
+    {
+        totalLessons = item.Lessons;
+        totalCost = item.TotalCost;
+    }
+}
 <div class="col-8 mb-2">
-    <p class="color-theme letter-spacing-1">@($"{item.TotalCost:##,###,###,###}")</p>
+    <p class="color-theme letter-spacing-1">@($"{totalCost:##,###,###,###}")</p>
 </div>
 <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40 d-lg-none d-md-none">
 </div>

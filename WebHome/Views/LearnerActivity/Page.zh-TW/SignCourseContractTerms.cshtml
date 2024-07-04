@@ -106,7 +106,7 @@
 
                     <div class="form-check icon-check mx-1 py-2 border border-lightgray-dark rounded-xl">
 
-                        <input class="form-check-input" type="checkbox" value="Y" id="checkTerms">
+                        <input class="form-check-input" typeof="checkbox" onclick="return false;" name="HasViewedDetails" value="true" type="checkbox" id="checkTerms" />
 
                         <label class="form-check-label font-15 ms-n1 bg- mx-1 my-2" for="checkTerms">
                             <a href="#"
@@ -125,7 +125,7 @@
 
                     <div class="form-check icon-check mx-1 py-2 border border-lightgray-dark rounded-xl">
 
-                        <input class="form-check-input" type="checkbox" value="Y" id="checkCollectionAgreement">
+                        <input class="form-check-input" type="checkbox" onclick="return false;" name="GDPRAgree" value="true" id="checkCollectionAgreement" />
 
                         <label class="form-check-label font-15 ms-n1 bg- mx-1 my-2" for="checkCollectionAgreement">
                             <a href="#"
@@ -146,7 +146,7 @@
 
             <div class="form-check icon-check">
 
-                <input class="form-check-input" type="checkbox" value="" id="cancle">
+                <input class="form-check-input" type="checkbox" name="Booking" value="true" id="cancle">
 
                 <label class="form-check-label font-15 ms-n1 color-theme" for="cancle">預約/取消：我已閱讀並同意第8條服務預約之規定。</label>
 
@@ -160,7 +160,7 @@
 
             <div class="form-check icon-check">
 
-                <input class="form-check-input" type="checkbox" value="" id="extend">
+                <input class="form-check-input" type="checkbox" name="Extension" value="true" id="extend">
 
                 <label class="form-check-label font-15 ms-n1 color-theme" for="extend">展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</label>
 
@@ -174,7 +174,7 @@
 
             <div class="form-check icon-check">
 
-                <input class="form-check-input" type="checkbox" value="" id="agree">
+                <input class="form-check-input" type="checkbox" name="Agree" value="true" id="agree" />
 
                 <label class="form-check-label font-15 ms-n1 color-theme"
                        for="agree">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</label>
@@ -189,7 +189,7 @@
 
             <div class="form-check icon-check">
 
-                <input class="form-check-input" type="checkbox" value="" id="provided">
+                <input class="form-check-input" type="checkbox" name="PersonalData" value="true" id="provided">
 
                 <label class="form-check-label font-15 ms-n1 color-theme" for="provided">
                     台端得自由選擇是否提供各項個人資料，惟若選擇不提供時，台端 <u>@Html.Raw(profile.RealName)</u>
@@ -207,7 +207,7 @@
 
             <div class="form-check icon-check">
 
-                <input class="form-check-input" type="checkbox" value="" id="agree2">
+                <input class="form-check-input" type="checkbox" name="Understood" value="true" id="agree2">
 
                 <label class="form-check-label font-15 ms-n1 color-theme"
                        for="agree2">就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</label>
@@ -222,7 +222,7 @@
 
     </div>
 
-    <a href="javascript:gotoSignTerms();"
+    <a href="#" data-menu="contract-sign"
        class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
 
     <div class="my-5 px-4">
@@ -263,19 +263,147 @@
             window.location.href = 'ContractEvents';
         }
 
-        function gotoSignTerms() {
+        @*function gotoSignTerms() {
             var viewModel = {
                 'KeyID': '@Html.Raw(item.ContractID.EncryptKey())'
             };
             $('').launchDownload('SignCourseContractTerms',viewModel);
+        }*@
+
+        $(function () {
+            $("#terms").scroll(function () {
+
+                var $this = $(this),
+
+                    viewH = $(this).height(),//可見高度
+
+                    contentH = $(this).get(0).scrollHeight,//內容高度
+
+                    scrollTop = $(this).scrollTop();//滾動高度
+
+                // if(contentH - viewH - scrollTop <= 100) {
+
+
+
+                if (scrollTop / (contentH - viewH) >= 0.95) { //到達底部100px時,Radio checked
+
+                    $('#checkTerms').prop('checked', true);
+
+                } else {
+
+                    $('#checkTerms').prop('checked', false);
+
+                }
+
+            });
+
+            $("#collectionAgreement").scroll(function () {
+
+                var $this = $(this),
+
+                    viewH = $(this).height(),//可見高度
+
+                    contentH = $(this).get(0).scrollHeight,//內容高度
+
+                    scrollTop = $(this).scrollTop();//滾動高度
+
+                // if(contentH - viewH - scrollTop <= 100) {
+
+
+
+                if (scrollTop / (contentH - viewH) >= 0.95) { //到達底部100px時,Radio checked
+
+                    $('#checkCollectionAgreement').prop('checked', true);
+
+                } else {
+
+                    $('#checkCollectionAgreement').prop('checked', false);
+
+                }
+
+            });
+        });
+
+        function scrollContractTermsBottom() {
+
+            $("#terms").animate({
+
+                scrollTop: $("#terms").get(0).scrollHeight
+
+            }, 800);
+
         }
 
+        function scrollCollectionAgreementBottom() {
+
+            $("#collectionAgreement").animate({
+
+                scrollTop: $("#collectionAgreement").get(0).scrollHeight
+
+            }, 800);
+
+        }
+
+        $(function () {
+
+            $("#signature").empty();
+
+            $("#signature").jSignature({
+
+                width: '100%',
+
+                height: 250,
+
+                'UndoButton': true,
+
+                'sizeRatio': 2
+
+            });
+
+            //點擊重新簽名
+
+            $(".btn-cancel").on('click', function (event) {
+
+                $("#signature").jSignature('reset');
+
+            });
+        });
+
+
+        function confirmSignature() {
+
+            if ($("#signature").jSignature('getData', 'native').length < 1) {
+                alert('請在上方簽上您的正楷大名!!');
+                return;
+            }
+
+            var viewModel = $('input,select,textArea').serializeObject();
+            viewModel.Signature = $("#signature").jSignature("getData");
+            viewModel.SignatureName = 'Signature';
+            viewModel.SignatureCount = 1;
+            viewModel.KeyID = '@Html.Raw(contract.ContractID.EncryptKey())';
+
+            clearErrors();
+            doPost('@Html.Raw(Url.Action("ConfirmSignature", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#contract-sign-result').html(data);
+                    $('#contract-sign-result').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+
+        function gotoContractInfo(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForActiveContract", "LearnerActivity"))' });
+        }
     </script>
+
 
     @section PopupBox
     {
         <!-- 合約-條款 -->
-
         <div id="contract-terms" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350"
              data-menu-height="600" data-menu-effect="menu-over">
 
@@ -1138,10 +1266,271 @@
 
             </div>
 
-            <a href="#"
+            <a href="javascript:$('[name=\'Booking\']').prop('checked',true);"
                class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">我同意</a>
 
         </div>
+
+        <!-- 合約-條款 -->
+        <div id="personaldata-collection-agreement" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350"
+             data-menu-height="600" data-menu-effect="menu-over">
+
+            <div class="menu-title text-center">
+
+                <h1 class="text-center pt-1 text-uppercase font-700 color-theme pt-4">個人資料<br />告知事項暨同意書·</h1>
+
+                <p class="color-theme opacity-30 opacity-70 mt-1 font-12">Personal Data Collection Agreement·</p>
+
+            </div>
+
+            <div class="content">
+
+                <div class="divider"></div>
+
+                <div class="scroll-container terms" id="collectionAgreement">
+
+                    <div class="content pb-3">
+
+                        <p class="color-beyond-dark opacity-70">
+
+                            Beyond Fitness
+
+                            即超越體能顧問有限公司（下稱「BF」）<b><u>基於建立、維繫和履行與台端間體能顧問服務(包含但不限於私人教練、運動防護、運動恢復、營養諮詢等服務以及課程履約保證)之需要</u></b>，而蒐集、處理、利用及國際傳輸台端之各項個人及往來等資料，<b>BF將尊重台端隱私權益，依誠實信用原則及正當合理方法而為之</b>。茲依個人資料保護法第8、9、19、20、54條規定，並參照法務部頒佈之「個人資料保護法之特定目的及個人資料之類別」，謹告知下列事項：
+
+                        </p>
+
+                        <ol type="a color-beyond-dark opacity-70">
+
+                            <li>
+
+                                <b>集個人資料之特定目的<br />為BF之企業營運管理、委託他人處理相關事務及其他法令所准許或要求之目的；包括下列項目：</b><br />063依法定義務所進行者、069契約、類似契約或其他法律關係事務、090客戶管理與服務、116場所進出安全管理、143
+
+                                運動休閒業務、157調查、統計與研究分析、158 學員資料管理 、181其他經營合於營業登記項目或組織章程所定之業務。
+
+                            </li>
+
+                            <li>
+
+                                <b>蒐集個人資料之類別<br />以BF所實際蒐集者為準；包括下列項目：</b>
+
+                                <ol>
+
+                                    <li>識別類C001至C003，例如姓名、地址、相片、電話、行動、電郵、金融帳戶、身分證正面影本等。</li>
+
+                                    <li>特徵類C011至014，例如年齡、性別、生日、身高、體重、血型、煙酒習慣、個性等特徵描述。</li>
+
+                                    <li>家庭情形C021及C024，例如婚姻、家庭成員間之關係、其他社會關係等。</li>
+
+                                    <li>社會情況C033至C035、C039至C041，例如工作許可、居留證明、休閒活動及興趣、意外事故等。</li>
+
+                                    <li>受僱情形C061,CO62,CO64及C066，例如過去及現行之受僱情形、工作經驗、職業疾病、安全、意外紀錄等。</li>
+
+                                    <li>健康與其他C111，例如體檢報告、診斷紀錄等。</li>
+
+                                    <li>其他資訊C132，例如無法歸類之電子郵件等。</li>
+
+                                </ol>
+
+                            </li>
+
+                            <li>
+
+                                <b>利用個人資料之期間、地區、對象及方式</b>
+
+                                <ol>
+
+                                    <li>期間：與BF間權利義務關係之約定或法定存續期間及其後5年，以較長者為準。</li>
+
+                                    <li>對象：BF、受BF委託處理事務者、與BF有業務往來者、政府機關、司法機關及其他有法定調查權之機關。</li>
+
+                                    <li>地區：上述利用對象之國內及國外所在地。</li>
+
+                                    <li>方式：符合個人資料保護相關法令，以電話、傳真、電子郵件、紙本或其他自動化或非自動化之適當方式。</li>
+
+                                </ol>
+
+                            </li>
+
+                            <li>
+
+                                <b>就自己之個人資料，台端得依法行使下列權利：</b>
+
+                                <ol>
+
+                                    <li>查詢或請求閱覽或請求製給複製本。惟依法BF得酌收必要費用；</li>
+
+                                    <li>請求補充或更正，惟應為適當之釋明；及</li>
+
+                                    <li>請求停止
+
+                                    <li>
+
+                                        <b>BF向台端預收之部分費用，依法令規定須交付銀行（即信託業者）開立信託專戶管理，以辦理履約保證，以保障學員權益。故學員同意BF得於管理學員信託專戶之目的內，永久保存學員之真實姓名、連絡電話、聯絡地址及身分證字號等資訊。</b>
+
+                                    </li>
+
+                                    <li>蒐集、處理、利用及請求刪除。但該資料係BF依法令或與台端間之合約，為執行職務或業務所必須者，或經台端書面同意者 不在此限。</li>
+
+                                    <li>台端若擬行使上述任一權利，須檢附證明以書面提出請求，BF將即於法定期限內回覆處理決定。</li>
+
+                                </ol>
+
+                            </li>
+
+                        </ol>
+
+                    </div>
+
+                </div>
+
+                <div class="text-center mt-3 mx-2">
+
+                    <a href="javascript:scrollCollectionAgreementBottom();"
+                       class="btn color-theme font-500 rounded-xl px-4 px-lg-5 px-md-5 font-15">
+                        <i class="fa-solid fa-circle-arrow-down pe-2"></i>請閱讀到最下方
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+            <a href="#"
+               class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-4 fst-italic letter-spacing-2">我同意</a>
+
+        </div>
+
+        <!-- 合約簽名通知-簽名 -->
+
+        <div id="contract-sign" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over">
+
+            <div class="card" data-card-height="230" style="margin-bottom:-70px">
+
+                <div class="card-center text-center">
+
+                    <h1 class="color-white font-600 mb-1 mt-n4 font-32">親手簽名·</h1>
+
+                    <p class="color-highlight">Put your signature - Step 3 of 3</p>
+
+                </div>
+
+                <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+                <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+                <div class="card-bg preload-img" data-src="../images/card/declaration.jpg"></div>
+
+            </div>
+
+            <div class="card card-style">
+
+                <div class="content pb-3">
+
+                    <div class="d-flex px-3 py-2">
+
+                        <div class="me-auto">
+
+                            <h4 class="font-600">請在下方簽上您的正楷大名</h4>
+
+                        </div>
+
+                        <div class="ms-auto">
+
+                            <i data-feather="edit-2" data-feather-line="1" data-feather-size="38" data-feather-color="red-dark"
+                               data-feather-bg="red-fade-light">
+
+                            </i>
+
+                        </div>
+
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div id="signatureparent">
+
+                        <div id="signature"></div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="row">
+
+                <div class="col-6">
+
+                    <a href="#"
+                       class="btn btn-full btn-cancel border-lightgray-dark color-beyond-dark bg-white font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">Clear</a>
+
+                </div>
+
+                <div class="col-6">
+
+                    <a href="javascript:confirmSignature();" 
+                       class="btn btn-full border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">Finish!</a>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="my-5 px-4">
+
+                <div class="d-flex mt-4">
+
+                    <div class="me-auto">
+
+                        <i class="fa fa-check-circle color-green-dark font-28"></i>
+
+                    </div>
+
+                    <div class="m-auto">
+
+                        <i class="fa fa-check-circle color-green-dark font-28"></i>
+
+                    </div>
+
+                    <div class="m-auto">
+
+                        <i class="fa fa-check-circle color-gray-dark font-28"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="divider mx-4" style="margin-top:-18px"></div>
+
+            </div>
+
+            <a href="#"
+               class="close-menu color-red-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
+
+        </div>
+
+        <!-- 合約簽名通知-結果頁 -->
+
+        <div id="contract-sign-result" class="menu menu-box-modal" data-menu-width="cover" data-menu-effect="menu-over">
+
+        </div>
+
+        <!-- jSignature Plugin Js -->
+        <script src="../plugins/jSignature/jSignature.js"></script>
+
+        <script src="../plugins/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+
+        <script src="../plugins/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+
+        <script src="../plugins/jSignature/plugins/jSignature.UndoButton.js"></script>
+
+        <script src="../plugins/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
+
     }
 
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
 }
