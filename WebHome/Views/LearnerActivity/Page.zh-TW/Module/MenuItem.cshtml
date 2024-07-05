@@ -38,14 +38,10 @@
 
 <div class="menu-logo text-center">
     <div class="avatar">
-        <a href="setting.html">
-            @{
-                ViewBag.ImgClass = "avatar-rounded-circle";
-                ViewBag.NoNameImg = null;
-                await Html.RenderPartialAsync("~/Views/CornerKick/Module/ProfileImage.cshtml", profile);
-            }
-        </a>
-    </div>
+        <a href="Settings"><img class="avatar-rounded-circle bg-beyond-dark shadow-xl preload-img" data-src="@(profile.PictureID.HasValue
+                              ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
+                              : "../images/avatars/default-fxs.png")"> </a>
+    </div>    
     <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">@Html.Raw(profile.RealName)</h1>
     <p class="font-15 font-600 color-beyondred-dark d-block custom-font-secondary fst-italic">Start from Liking Yourself
     </p>
@@ -53,21 +49,24 @@
 
 <div class="menu-items mb-4 text-center">
     <a id="nav-welcome" href="Index">
-        <span class="font-20 ps-0 color-white">任務牆</span>
+        <span class="font-20 ps-0 color-white">任務集點</span>
     </a>
-    <a id="nav-book" href="ContactBook">
+    <a id="nav-strategy" href="#">
+        <span class="font-20 ps-0 color-white">玩家攻略</span>
+    </a>
+    <a id="nav-contactbook" href="ContactBook">
         <span class="font-20 ps-0 color-white">運動日誌</span>
-    </a>
-    <a id="nav-event" href="event-checkin.html">
+    </a>  
+    <a id="nav-event" href="Events">
         <span class="font-20 ps-0 color-white">動態快訊</span>
     </a>
     <a id="nav-trasaction" href="TransactionForActiveContract">
         <span class="font-20 ps-0 color-white">交易管家</span>
     </a>
-    <a id="nav-trasaction" href="#" data-menu="popup-official">
+    <a id="nav-articale" href="#" data-menu="popup-official">
         <span class="font-20 ps-0 color-white">精選文章</span>
     </a>
-    <a id="nav-trasaction" href="Settings">
+    <a id="nav-settings" href="Settings">
         <span class="font-20 ps-0 color-white">喜好設定</span>
     </a>
     <a id="nav-descript" href="profile.html">

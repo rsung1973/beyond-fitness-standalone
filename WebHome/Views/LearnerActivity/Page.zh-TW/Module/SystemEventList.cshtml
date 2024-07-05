@@ -47,14 +47,15 @@
     <div class="d-flex" onclick="showContent('@Html.Raw(contentKey)');">
         @if (item.ActionName != null && File.Exists(actionPath = WebApp.MapPath(item.ActionName)))
         {
+            <div>
+                <a class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">🔆</i></a>
+            </div>
             @Html.Raw(File.ReadAllText(actionPath));
         }
         else
         {
             <div>
-                <a class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl">
-                    <i class="fa-solid fa-wrench font-24"></i>
-                </a>
+                <a class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">🔆</i></a>
             </div>
             <div class="align-self-center ps-3">
                 <h5 class="font-600 font-17 mb-2 letter-spacing-1">系統公告</h5>
@@ -63,15 +64,15 @@
                 </span>
                 <span class="color-theme d-block text-end font-13 mt-2 opacity-40">@($"{item.StartDate:yyyy/MM/dd}")</span>
             </div>
-        }
-        @if (contentKey != null)
-        {
-            <div class="align-self-center ms-auto me-3">
-            </div>
-            <div class="align-self-center">
-                <i class="fa fa-angle-right color-highlight font-16"></i>
-            </div>
-        }
+        }        
+        <div class="align-self-center ms-auto me-3">
+        </div>
+        <div class="align-self-center">
+            @if (contentKey != null)
+            {
+                <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
+            }
+        </div>        
     </div>
     <div class="divider mt-4 mb-4"></div>
 }

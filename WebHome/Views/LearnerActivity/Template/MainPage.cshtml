@@ -67,16 +67,11 @@
 
 @section FooterBar
 {
-    <div id="footer-bar" class="footer-bar-2">
-        <a href="Index"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務牆</span></a>
+    <div id="footer-bar" class="footer-bar-2">        
+        <a href="Index"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務集點</span></a>
+        <a href="#"><i class="fa-solid fa-dice mb-2"></i><span class="font-12">玩家攻略</span></a>
+        <a href="Events" class="@(eventsActive)"><i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em></a>
         <a href="ContactBook" class="@(contactBookActive)"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
-
-        <a href="Events" class="@(eventsActive)">
-            <i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em>
-        </a>
-
-        <a href="#" data-menu="PopupGotoOfficialArtical"><i class="fa-solid fa-newspaper mb-2"></i><span
-                class="font-12">精選文章</span></a>
         <a href="Settings" class="@(settingsActive)"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
     </div>
 }
