@@ -39,13 +39,20 @@
     var profile = await Context.GetUserAsync();
     profile = profile.LoadInstance(models);
 
-    profile.UserProfileExtension.PIN = BusinessExtensions.CreatePIN();
-    profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
-    models.SubmitChanges();
+    if(IsSectionDefined("PrepareOTP"))
+    {
+        @RenderSection("PrepareOTP")
+    }
+    else
+    {
+        profile.UserProfileExtension.PIN = BusinessExtensions.CreatePIN();
+        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
+        models.SubmitChanges();
+
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
+    }
 
     var prefixCode = profile.UserProfileExtension.PIN.Substring(0, 3);
-
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
 
 }
 <div class="card" data-card-height="230" style="margin-bottom:-70px">

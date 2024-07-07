@@ -44,7 +44,23 @@
         contractID = _viewModel.DecryptKeyValue();
     }
 
+    var item = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
+    if (item != null)
+    {
+        var profile = await Context.GetUserAsync();
+        profile = profile.LoadInstance(models);
+        profile.UserProfileExtension.PIN = item.CourseContractExtension.SignerPIN;
+        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
+        models.SubmitChanges();
+    }
+
 }
+
+@section PrepareOTP
+{
+
+}
+
 @section ValidatePIN
 {
     <script>

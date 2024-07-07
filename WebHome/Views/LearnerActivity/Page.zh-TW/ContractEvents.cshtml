@@ -125,6 +125,23 @@
         {
             foreach (var item in promptSignContractEvent.ContractList)
             {
+                var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
+                int? totalLessons, totalCost;
+                if (item.InstallmentID.HasValue)
+                {
+                    if(item.Installment.HasValue)
+                    {
+                        continue;
+                    }
+                    totalLessons = installment.Sum(c => c.Lessons);
+                    totalCost = installment.Sum(c => c.TotalCost);
+                }
+                else
+                {
+                    totalLessons = item.Lessons;
+                    totalCost = item.TotalCost;
+                }
+
                 <div class="d-flex" onclick="signContract('@Html.Raw(item.ContractID.EncryptKey())');">
                     <div>
                         <a class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">📜</i></a>
@@ -133,7 +150,7 @@
                     <div class="align-self-center ps-3">
                         <h5 class="font-600 font-17 mb-1 letter-spacing-1">合約簽約通知</h5>
                         <span class="font-15 color-theme letter-spacing-1">@Html.Raw(item.CourseContractType.TypeName.CutString('-')) -
-                        </span><b class="color-beyondred-dark fst-italic">@(item.Lessons)堂</b>
+                        </span><b class="color-beyondred-dark fst-italic">@(totalLessons)堂</b>
                     </div>
                     <div class="align-self-center ms-auto me-3">
                     </div>

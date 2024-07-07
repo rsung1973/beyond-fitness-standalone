@@ -16,7 +16,6 @@ namespace WebHome
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            JobLauncher.StartUp();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
