@@ -33,48 +33,15 @@
             : "ja";
 
     var profile = await Context.GetUserAsync();
+
     List<TimelineEvent> events = new List<TimelineEvent>();
     ViewBag.UserNotice = events;
 
-    TimelineEvent eventItem = profile.PromptEffectiveSystemBulletin(models);
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BuildEventItems.cshtml");
+
+    int contractCount = (int)ViewContext.HttpContext.Items["ContractEventCount"];
+    SystemBulletinEvent eventItem = (SystemBulletinEvent)events.Where(v => v is SystemBulletinEvent).FirstOrDefault();
     IQueryable<SystemEventBulletin> items = ((SystemBulletinEvent)eventItem)?.BulletinEventList;
-    if (eventItem != null)
-    {
-        events.Add(eventItem);
-    }
-
-    eventItem = profile.CheckPromptContractEvent(models);
-    int contractCount = 0;
-    if (eventItem != null)
-    {
-        events.Add(eventItem);
-        contractCount += ((PromptContractEvent)eventItem).ContractList.Count();
-    }
-
-    eventItem = profile.CheckPayoffDueEvent(models);
-    if (eventItem != null)
-    {
-        events.Add(eventItem);
-        contractCount += ((PromptPayoffDueEvent)eventItem).ContractList.Count();
-    }
-
-    eventItem = profile.CheckSignContractEvent(models);
-    if (eventItem != null)
-    {
-        events.Add(eventItem);
-        var _item = (PromptSignContractEvent)eventItem;
-        int count = _item.ContractList.Where(c => !c.InstallmentID.HasValue).Count()
-                        + _item.ContractList.Where(c => c.InstallmentID.HasValue)
-                            .GroupBy(c => c.InstallmentID).Count(); 
-        contractCount += count;
-    }
-
-    eventItem = profile.CheckSignContractServiceEvent(models);
-    if (eventItem != null)
-    {
-        events.Add(eventItem);
-        contractCount += ((PromptSignContractServiceEvent)eventItem).ContractList.Count();
-    }
 
 }
 
@@ -86,10 +53,16 @@
     <!--快訊類型-->
     <div class="content mt-5">
         <div class="row mb-0">
+            @{ 
+                SelfAssessmentEvent assessmentEvents = (SelfAssessmentEvent)events.Where(v => v is SelfAssessmentEvent && !(v is FeedbackSurveyEvent)).FirstOrDefault();
+                FeedbackSurveyEvent surveyEvents = (FeedbackSurveyEvent)events.Where(v => v is FeedbackSurveyEvent).FirstOrDefault();
+                int eventCount = (assessmentEvents?.LessonList.Count() ?? 0)
+                    + (surveyEvents?.LessonList.Count() ?? 0);
+            }
             <a href="Events" class="col-4">
                 <div class="card card-style text-center py-3 mx-0 mb-0 newsfeed @(ViewBag.EventCatelog == 0 ? "active" : null)">
                     <i class="fa fa-user-check font-24 color-theme opacity-30"></i>
-                    <em class="badge bg-beyond-dark opacity-30">6</em>
+                    <em class="badge bg-beyond-dark opacity-30">@(eventCount)</em>
                     <p class="font-500 mb-n2 mt-3 color-theme font-16">任務通知</p>
                 </div>
 

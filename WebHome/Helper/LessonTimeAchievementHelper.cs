@@ -114,11 +114,7 @@ namespace WebHome.Helper
         public IQueryable<V_Tuition> HSSession => LessonItems
             .Where(t => BusinessConsoleExtensions.HSSessionScope.Contains(t.PriceStatus));
 
-        public IQueryable<V_Tuition> ContractPTSession => LessonItems
-                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus));
-
-        public IQueryable<V_Tuition> EnterprisePTSession => LessonItems
-                    .Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus));
+        public IQueryable<V_Tuition> ContractPTSession => LessonItems.SessionScopeForComleteLesson(models);
 
         public IQueryable<V_Tuition> FilterByWholeOne(IQueryable<V_Tuition> items)
         {

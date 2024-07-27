@@ -11,7 +11,13 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
-
+@functions
+{
+    LessonSelfAssessment GetItem(IQueryable<LessonSelfAssessment> assessments, String assessment)
+    {
+        return assessments.Where(a => a.Assessment == assessment).FirstOrDefault();
+    }
+}
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -33,6 +39,16 @@
     LessonTime _model = this.Model as LessonTime;
     TrainingExecution _training = _model.TrainingPlan.Select(p => p.TrainingExecution).FirstOrDefault();
     var total = _training.TrainingExecutionStage.Sum(t => t.TotalMinutes) ?? 1;
+
+    var profile = await Context.GetUserAsync();
+
+    var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
+                        .FirstOrDefault()?.RegisterID;
+
+    var assessment = models.GetTable<LessonSelfAssessment>()
+            .Where(s => s.LessonID == _model.LessonID)
+            .Where(s => s.RegisterID == registerID);
+
 }
 
 @section MainContent
@@ -51,8 +67,6 @@
 
     <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>@(_model.DurationInMinutes) Min</p>
 
-
-
     <img style="margin-bottom:-80px" src="../images/icons/session/trx.svg"
          class="mx-auto over-card bg-transparent" width="200" />
 
@@ -60,27 +74,29 @@
         <div class="content">
             <div class="row text-center px-4">
                 <h3 class="color-white letter-spacing-1">@(_training.Emphasis ?? "重點稍後揭曉，一起加油達標")</h3>
-                <span
-                    class="color-white opacity-30 fst-italic letter-spacing-1">@(_model.AsAttendingCoach.UserProfile.Nickname)</span>
+                <span class="color-white opacity-30 fst-italic letter-spacing-1">@(_model.AsAttendingCoach.UserProfile.Nickname)</span>
             </div>
 
             <div class="collapse show" id="collapse-healthy">
                 <div class="row text-center">
                     <div class="col-6 col-lg-3 col-md-3 mb-2">
                         <p class="mb-1 font-14 color-beyondred-dark">攝取水分c.c</p>
-                        <h1 class="color-white">1800</h1>
+                        <h1 class="color-white">@($"{GetItem(assessment, "WaterIntake")?.Score:0.}")</h1>
                     </div>
+                    @{ 
+                        var duration = TimeSpan.FromHours((double)(GetItem(assessment, "SleepDuration")?.Score ?? 0));
+                    }
                     <div class="col-6 col-lg-3 col-md-3 mb-2">
                         <p class="mb-1 font-14 color-beyondred-dark">睡眠時間<small class="font-11">hh:mm</small></p>
-                        <h1 class="color-white">08:05</h1>
+                        <h1 class="color-white">@($"{duration.Hours:00}"):@($"{duration.Minutes:00}")</h1>
                     </div>
                     <div class="col-6 col-lg-3 col-md-3">
                         <p class="mb-1 font-14 color-beyondred-dark">生理疲勞</p>
-                        <h1 class="color-white">5</h1>
+                        <h1 class="color-white">@($"{GetItem(assessment, "FatigueIndex")?.Score:.}")</h1>
                     </div>
                     <div class="col-6 col-lg-3 col-md-3 mb-2">
                         <p class="mb-1 font-14 color-beyondred-dark">心理壓力</p>
-                        <h1 class="color-white">5</h1>
+                        <h1 class="color-white">@($"{GetItem(assessment, "StressIndex")?.Score:.}")</h1>
                     </div>
                 </div>
                 <div class="divider mt-4 bg-beyondwhite-dark opacity-10"></div>
@@ -97,7 +113,7 @@
 
             <p class="text-center pb-3">
                 <a data-bs-toggle="collapse" href="#collapse-lesson"
-                    class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-4 py-2 font-14 mt-5">
+                   class="btn btn-border rounded-xl fst-italic border-beyondwhite-dark color-beyondwhite-dark bg-transparent px-4 py-2 font-14 mt-5">
                     展開上課詳細資訊
                     <i class="fa-solid fa-angles-up ps-2"></i>
                 </a>
@@ -105,27 +121,10 @@
         </div>
 
     </div>
-    <div class="card card-style bg-beyond-dark">
-        <div class="content mx-lg-auto mx-md-auto">
-            <h2 class="text-center mb-1 letter-spacing-2 color-white">訓練感受</h2>
-            <p class="text-center font-12 mb-4 color-white opacity-40">How you feel about our services</p>
-            <p class="text-center font-30" onclick="javascript:gotoRank('1');">
-                <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
-                <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
-                <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
-                <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
-            </p>
-            <div class="d-flex ">
-            </div>
-            <p class="text-center pt-2">
-                <a href="survey-class-startstyle.html"
-                   class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">
-                    Now Feedback<i class="fa-solid fa-chevron-right ps-2"></i>
-                </a>
-            </p>
-        </div>
-    </div>
     @{ 
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseFeedback.cshtml", _model);
+    }
+    @{
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/LessonItemIndication.cshtml", _model);
     }
     <script>

@@ -1,0 +1,99 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    GameLevel _model = (GameLevel)this.Model;
+    ViewBag.CurrentLevel = _model;
+
+    Player currentPlayer = ViewBag.Player as Player;
+    var profile = currentPlayer?.UserProfile;
+
+    PromotionAppraisalDataModel appraisal = (PromotionAppraisalDataModel)ViewBag.Appraisal;
+    if ((GameLevel)appraisal.PromotionLevel == _model)
+    {
+        ViewBag.PrepareMission = true;
+    }
+
+    ViewBag.ShowMission = true;
+
+}
+
+<div class="strategy mt-5 mx-2">
+
+    <svg width="0" height="0">
+
+        <defs>
+
+            <clipPath id="left-clip" clipPathUnits="objectBoundingBox">
+
+                <path d="M 0,0 H 0.5 A 0.5,0.5 0 0 1 0.5,1 H 0 V 0 Z" />
+
+            </clipPath>
+
+            <clipPath id="right-clip" clipPathUnits="objectBoundingBox">
+
+                <path d="M 0.5,0 A 0.5,0.5 0 0 1 0.5,1" />
+
+            </clipPath>
+
+            <clipPath id="left-clip-mobile" clipPathUnits="objectBoundingBox">
+
+                <path d="M 0,0 H 0.4 A 0.5,0.5 0 0 1 0.4,1 H 0 V 0 Z" />
+
+            </clipPath>
+
+            <clipPath id="right-clip-mobile" clipPathUnits="objectBoundingBox">
+
+                <path d="M 0.4,0 A 0.5,0.5 0 0 1 0.4,1" />
+
+            </clipPath>
+
+        </defs>
+
+    </svg>
+
+    <div class="card">
+
+        <div class="level">
+            Level @(_model.LevelCode)
+            @if (currentPlayer?.PlayerLevel == _model.LevelID)
+            {
+                <span>(本季等級)</span>
+            }
+        </div>
+
+        <div class="conditions">
+
+            @RenderSection("Condition")
+
+        </div>
+
+    </div>
+
+</div>

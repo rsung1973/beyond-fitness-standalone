@@ -362,6 +362,74 @@ namespace WebHome.Helper
             return null;
         }
 
+        public static SelfAssessmentEvent PromptSelfAssessment(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current = null)
+        {
+
+            var lessons = models.GetTable<RegisterLesson>()
+                    .Where(r=> BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(r.LessonPriceType.Status))
+                    .Where(r => r.UID == profile.UID);
+            IQueryable<LessonTime> lessonItems = models.GetTable<LessonTime>();
+
+            if (current != null)
+            {
+                lessonItems = lessonItems.Where(l => l.ClassTime >= current.StartDate)
+                                .Where(l => l.ClassTime < current.EndExclusiveDate);
+            }
+
+            lessonItems = models.PromptLearnerLessons(lessons, lessonItems);
+
+            var feedbackItems = models.GetTable<LessonFeedBack>()
+                .Where(f => f.CommitAssessment.HasValue)
+                .Join(lessons, f => f.RegisterID, r => r.RegisterID, (f, r) => f);
+
+            var items = lessonItems.Where(l => !feedbackItems.Any(f => f.LessonID == l.LessonID));
+
+            if (items.Any())
+            {
+                return new SelfAssessmentEvent
+                {
+                    LessonList = items,
+                    Profile = profile,
+                };
+            }
+
+            return null;
+        }
+
+        public static FeedbackSurveyEvent PromptFeedbackSurvey(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current = null)
+        {
+
+            var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID);
+            IQueryable<LessonTime> lessonItems =
+                models.GetTable<LessonTime>()
+                    .Where(l => l.LessonAttendance != null);
+
+            if (current != null)
+            {
+                lessonItems = lessonItems.Where(l => l.ClassTime >= current.StartDate)
+                                .Where(l => l.ClassTime < current.EndExclusiveDate);
+            }
+
+            lessonItems = models.PromptLearnerLessons(lessons, lessonItems);
+
+            var serveyItems = models.GetTable<LessonFeedBack>()
+                .Where(f => f.FeedBackDate.HasValue)
+                .Join(lessons, f => f.RegisterID, r => r.RegisterID, (f, r) => f);
+
+            var items = lessonItems.Where(l => !serveyItems.Any(f => f.LessonID == l.LessonID));
+
+            if (items.Any())
+            {
+                return new FeedbackSurveyEvent
+                {
+                    LessonList = items,
+                    Profile = profile,
+                };
+            }
+
+            return null;
+        }
+
         public static ExpiringContractEvent CheckExpiringContractEvent(this UserProfile profile, GenericManager<BFDataContext> models, bool includeAfterToday = false)
             
         {

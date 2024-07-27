@@ -889,4 +889,18 @@ namespace WebHome.Models.ViewModel
         public int? UID { get; set; }
     }
 
+    public partial class DataTableColumn
+    {
+        public String Name { get; set; }
+        public String Value { get; set; }
+    }
+
+    public partial class DataTableQueryViewModel : QueryViewModel
+    {
+        public String TableName { get; set; }
+        public DataTableColumn[] KeyItem { get; set; }
+        public DataTableColumn[] DataItem { get; set; }
+        //public KeyValuePair<String,Object>[] DataItem { get; set; }
+    }
+
 }

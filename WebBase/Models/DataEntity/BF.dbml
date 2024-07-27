@@ -61,6 +61,7 @@
       <Association Name="LevelExpression_TrainingPlan" Member="TrainingPlan" ThisKey="LevelID" OtherKey="PlanStatus" Type="TrainingPlan" />
       <Association Name="LevelExpression_QuestionnaireRequest" Member="QuestionnaireRequest" ThisKey="LevelID" OtherKey="Status" Type="QuestionnaireRequest" />
       <Association Name="LevelExpression_UserProfileProperty" Member="UserProfileProperty" ThisKey="LevelID" OtherKey="PropertyID" Type="UserProfileProperty" />
+      <Association Name="LevelExpression_FeedbackSurveyType" Member="FeedbackSurveyType" ThisKey="LevelID" OtherKey="ClassType" Type="FeedbackSurveyType" />
     </Type>
   </Table>
   <Table Name="dbo.Attachment" Member="Attachments">
@@ -217,6 +218,8 @@
       <Association Name="UserProfile_ForEmployee" Member="ForEmployee" ThisKey="UID" OtherKey="UID" Type="ForEmployee" />
       <Association Name="UserProfile_PaymentTransaction" Member="PaymentTransaction" ThisKey="UID" OtherKey="PayerID" Type="PaymentTransaction" />
       <Association Name="UserProfile_UserProfileProperty" Member="UserProfileProperty" ThisKey="UID" OtherKey="UID" Type="UserProfileProperty" />
+      <Association Name="UserProfile_Player" Member="Player" ThisKey="UID" OtherKey="UID" Type="Player" />
+      <Association Name="UserProfile_BonusDepositAccount" Member="BonusDepositAccount" ThisKey="UID" OtherKey="UID" Type="BonusDepositAccount" Cardinality="One" />
       <Association Name="Attachment_UserProfile" Member="Attachment" ThisKey="PictureID" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="LevelExpression_UserProfile" Member="LevelExpression" ThisKey="LevelID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfile" Member="UserProfile1" ThisKey="Creator" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -527,6 +530,10 @@
       <Column Name="Remark" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
       <Column Name="RemarkDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CommitAssessment" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="LessonFeedBack_LessonFeedbackSurvey" Member="LessonFeedbackSurvey" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedbackSurvey" />
+      <Association Name="LessonFeedBack_LessonSelfAssessment" Member="LessonSelfAssessment" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonSelfAssessment" />
+      <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonMissionBonus" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonMissionBonus" />
       <Association Name="LevelExpression_LessonFeedBack" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="RegisterLesson_LessonFeedBack" Member="RegisterLesson" ThisKey="RegisterID" OtherKey="RegisterID" Type="RegisterLesson" IsForeignKey="true" />
       <Association Name="LessonTime_LessonFeedBack" Member="LessonTime" ThisKey="LessonID" OtherKey="LessonID" Type="LessonTime" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
@@ -616,6 +623,7 @@
       <Association Name="BonusAwardingItem_LearnerAward" Member="LearnerAward" ThisKey="ItemID" OtherKey="ItemID" Type="LearnerAward" />
       <Association Name="BonusAwardingItem_BonusAwardingLesson" Member="BonusAwardingLesson" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingLesson" Cardinality="One" />
       <Association Name="BonusAwardingItem_BonusAwardingIndication" Member="BonusAwardingIndication" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingIndication" Cardinality="One" />
+      <Association Name="BonusAwardingItem_AwardingItemCategory" Member="AwardingItemCategory" ThisKey="ItemID" OtherKey="ItemID" Type="AwardingItemCategory" />
     </Type>
   </Table>
   <Table Name="dbo.LearnerAward" Member="LearnerAward">
@@ -628,6 +636,7 @@
       <Association Name="LearnerAward_BonusExchange" Member="BonusExchange" ThisKey="AwardID" OtherKey="AwardID" Type="BonusExchange" />
       <Association Name="LearnerAward_AwardingLessonGift" Member="AwardingLessonGift" ThisKey="AwardID" OtherKey="AwardID" Type="AwardingLessonGift" Cardinality="One" />
       <Association Name="LearnerAward_AwardingLesson" Member="AwardingLesson" ThisKey="AwardID" OtherKey="AwardID" Type="AwardingLesson" Cardinality="One" />
+      <Association Name="LearnerAward_BonusTransaction" Member="BonusTransaction" ThisKey="AwardID" OtherKey="AwardID" Type="BonusTransaction" />
       <Association Name="BonusAwardingItem_LearnerAward" Member="BonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingItem" IsForeignKey="true" />
       <Association Name="UserProfile_LearnerAward" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
       <Association Name="UserProfile_LearnerAward1" Member="Actor" Storage="_UserProfile1" ThisKey="ActorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
@@ -856,6 +865,7 @@
       <Association Name="LessonPriceType_CourseContractLessonExchange" Member="CourseContractLessonExchange" ThisKey="PriceID" OtherKey="TargetPriceID" Type="CourseContractLessonExchange" />
       <Association Name="LessonPriceType_CourseContractExtension" Member="CourseContractExtension" ThisKey="PriceID" OtherKey="UnitPriceID" Type="CourseContractExtension" />
       <Association Name="LessonPriceType_PromptLessonRequirement" Member="PromptLessonRequirement" ThisKey="PriceID" OtherKey="PriceID" Type="PromptLessonRequirement" Cardinality="One" />
+      <Association Name="LessonPriceType_LessonMissionBonusAwardingItem" Member="LessonMissionBonusAwardingItem" ThisKey="PriceID" OtherKey="PriceID" Type="LessonMissionBonusAwardingItem" />
       <Association Name="LessonPriceSeries_LessonPriceType" Member="CurrentPriceSeries" Storage="_PriceSeries" ThisKey="SeriesID" OtherKey="PriceID" Type="LessonPriceSeries" IsForeignKey="true" />
       <Association Name="LevelExpression_LessonPriceType" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="BranchStore_LessonPriceType" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
@@ -1949,9 +1959,9 @@
       <Column Name="Title" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Column Name="StartDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
       <Column Name="EndDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-		<Column Name="ActionName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-		<Column Name="ControllerName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-		<Column Name="PopupContent" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="ActionName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="ControllerName" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="PopupContent" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="SystemEventBulletin_UserEvent" Member="UserEvent" ThisKey="EventID" OtherKey="SystemEventID" Type="UserEvent" />
     </Type>
   </Table>
@@ -2003,6 +2013,7 @@
       <Column Name="NotAfter" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Youtube" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Association Name="BlogArticle_BlogTag" Member="BlogTag" ThisKey="DocID" OtherKey="DocID" Type="BlogTag" />
+      <Association Name="BlogArticle_TipsArticleRelation" Member="TipsArticleRelation" ThisKey="DocID" OtherKey="DocID" Type="TipsArticleRelation" />
       <Association Name="Document_BlogArticle" Member="Document" ThisKey="DocID" OtherKey="DocID" Type="Document" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="UserProfile_BlogArticle" Member="UserProfile" ThisKey="AuthorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
     </Type>
@@ -2188,8 +2199,10 @@
       <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="TransactionType" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
       <Column Name="CategorySourceID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Subtitle" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="MerchandiseTransactionType_MerchandiseTransaction" Member="MerchandiseTransaction" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransaction" />
       <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="SubCategory" Storage="_MerchandiseTransactionType2" ThisKey="TransactionID" OtherKey="CategorySourceID" Type="MerchandiseTransactionType" />
+      <Association Name="MerchandiseTransactionType_AwardingItemCategory" Member="AwardingItemCategory" ThisKey="TransactionID" OtherKey="TransactionID" Type="AwardingItemCategory" />
       <Association Name="MerchandiseTransactionType_MerchandiseTransactionType" Member="ParentType" Storage="_MerchandiseTransactionType1" ThisKey="CategorySourceID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
     </Type>
   </Table>
@@ -3161,6 +3174,164 @@
       <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
       <Association Name="LevelExpression_UserProfileProperty" Member="LevelExpression" ThisKey="PropertyID" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
       <Association Name="UserProfile_UserProfileProperty" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.GameLevel" Member="GameLevel">
+    <Type Name="GameLevel">
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="LevelCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
+    </Type>
+  </Table>
+  <Table Name="BG.StageProgress" Member="StageProgress">
+    <Type Name="StageProgress">
+      <Column Name="ProgressID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="StartDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="EndExclusiveDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="StageProgress_Player" Member="Player" ThisKey="ProgressID" OtherKey="ProgressID" Type="Player" />
+    </Type>
+  </Table>
+  <Table Name="BG.Player" Member="Player">
+    <Type Name="Player">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ProgressID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PlayerLevel" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="GameLevel_Player" Member="GameLevel" ThisKey="PlayerLevel" OtherKey="LevelID" Type="GameLevel" IsForeignKey="true" />
+      <Association Name="StageProgress_Player" Member="StageProgress" ThisKey="ProgressID" OtherKey="ProgressID" Type="StageProgress" IsForeignKey="true" />
+      <Association Name="UserProfile_Player" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.LessonFeedbackSurvey" Member="LessonFeedbackSurvey">
+    <Type Name="LessonFeedbackSurvey">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Score" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Answer" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="LessonFeedBack_LessonFeedbackSurvey" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="FeedbackSurvey_LessonFeedbackSurvey" Member="FeedbackSurvey" ThisKey="QuestionID" OtherKey="QuestionID" Type="FeedbackSurvey" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.LessonSelfAssessment" Member="LessonSelfAssessment">
+    <Type Name="LessonSelfAssessment">
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Assessment" Type="System.String" DbType="NVarChar(32) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Score" Type="System.Decimal" DbType="Decimal(12,2)" CanBeNull="true" />
+      <Column Name="Answer" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="LessonFeedBack_LessonSelfAssessment" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.FeedbackSurveyType" Member="FeedbackSurveyType">
+    <Type Name="FeedbackSurveyType">
+      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ClassType" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="QuestionNo" Type="System.String" DbType="NVarChar(16)" CanBeNull="true" />
+      <Association Name="LevelExpression_FeedbackSurveyType" Member="LevelExpression" ThisKey="ClassType" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
+      <Association Name="FeedbackSurvey_FeedbackSurveyType" Member="FeedbackSurvey" ThisKey="QuestionID" OtherKey="QuestionID" Type="FeedbackSurvey" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.FeedbackSurvey" Member="FeedbackSurvey">
+    <Type Name="FeedbackSurvey">
+      <Column Name="QuestionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Question" Type="System.String" DbType="NVarChar(1024) NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionType" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="RequiredLevel" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="FeedbackSurvey_LessonFeedbackSurvey" Member="LessonFeedbackSurvey" ThisKey="QuestionID" OtherKey="QuestionID" Type="LessonFeedbackSurvey" />
+      <Association Name="FeedbackSurvey_FeedbackSurveyType" Member="FeedbackSurveyType" ThisKey="QuestionID" OtherKey="QuestionID" Type="FeedbackSurveyType" />
+    </Type>
+  </Table>
+  <Table Name="BG.ExerciseTips" Member="ExerciseTips">
+    <Type Name="ExerciseTips">
+      <Column Name="TipsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Tips" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Association Name="ExerciseTips_TipsArticleRelation" Member="TipsArticleRelation" ThisKey="TipsID" OtherKey="TipsID" Type="TipsArticleRelation" />
+    </Type>
+  </Table>
+  <Table Name="BG.TipsArticleRelation" Member="TipsArticleRelation">
+    <Type Name="TipsArticleRelation">
+      <Column Name="DocID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TipsID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="BlogArticle_TipsArticleRelation" Member="BlogArticle" ThisKey="DocID" OtherKey="DocID" Type="BlogArticle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="ExerciseTips_TipsArticleRelation" Member="ExerciseTips" ThisKey="TipsID" OtherKey="TipsID" Type="ExerciseTips" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.BonusDepositAccount" Member="BonusDepositAccount">
+    <Type Name="BonusDepositAccount">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DepositPoint" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="BonusDepositAccount_BonusDepositSettlement" Member="BonusDepositSettlement" ThisKey="UID" OtherKey="UID" Type="BonusDepositSettlement" Cardinality="One" />
+      <Association Name="BonusDepositAccount_BonusTransaction" Member="BonusTransaction" ThisKey="UID" OtherKey="UID" Type="BonusTransaction" />
+      <Association Name="UserProfile_BonusDepositAccount" Member="UserProfile" ThisKey="UID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.BonusDepositSettlement" Member="BonusDepositSettlement">
+    <Type Name="BonusDepositSettlement">
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SettlementDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="BonusDepositAccount_BonusDepositSettlement" Member="BonusDepositAccount" ThisKey="UID" OtherKey="UID" Type="BonusDepositAccount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="BonusTransaction_BonusDepositSettlement" Member="BonusTransaction" ThisKey="TransactionID" OtherKey="TransactionID" Type="BonusTransaction" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.CampaignMission" Member="CampaignMission">
+    <Type Name="CampaignMission">
+      <Column Name="MissionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Mission" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
+      <Association Name="CampaignMission_LessonMissionBonusAwardingItem" Member="LessonMissionBonusAwardingItem" ThisKey="MissionID" OtherKey="MissionID" Type="LessonMissionBonusAwardingItem" />
+    </Type>
+  </Table>
+  <Table Name="BG.BonusTransaction" Member="BonusTransaction">
+    <Type Name="BonusTransaction">
+      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="TransactionDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="TransactionPoint" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AwardID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Reason" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
+      <Column Name="BonusID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="BonusTransaction_BonusDepositSettlement" Member="BonusDepositSettlement" ThisKey="TransactionID" OtherKey="TransactionID" Type="BonusDepositSettlement" />
+      <Association Name="BonusDepositAccount_BonusTransaction" Member="BonusDepositAccount" ThisKey="UID" OtherKey="UID" Type="BonusDepositAccount" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="LearnerAward_BonusTransaction" Member="LearnerAward" ThisKey="AwardID" OtherKey="AwardID" Type="LearnerAward" IsForeignKey="true" />
+      <Association Name="CampaignMissionBonus_BonusTransaction" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.CampaignMissionBonus" Member="CampaignMissionBonus">
+    <Type Name="CampaignMissionBonus">
+      <Column Name="BonusID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="CompleteDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Association Name="CampaignMissionBonus_BonusTransaction" Member="BonusTransaction" ThisKey="BonusID" OtherKey="BonusID" Type="BonusTransaction" />
+      <Association Name="CampaignMissionBonus_LessonMissionBonus" Member="LessonMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="LessonMissionBonus" Cardinality="One" />
+    </Type>
+  </Table>
+  <Table Name="BG.LessonMissionBonusAwardingItem" Member="LessonMissionBonusAwardingItem">
+    <Type Name="LessonMissionBonusAwardingItem">
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="MissionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PriceID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PointValue" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="LessonMissionBonusAwardingItem_LessonMissionBonus" Member="LessonMissionBonus" ThisKey="ItemID" OtherKey="ItemID" Type="LessonMissionBonus" />
+      <Association Name="CampaignMission_LessonMissionBonusAwardingItem" Member="CampaignMission" ThisKey="MissionID" OtherKey="MissionID" Type="CampaignMission" IsForeignKey="true" />
+      <Association Name="LessonPriceType_LessonMissionBonusAwardingItem" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.LessonMissionBonus" Member="LessonMissionBonus">
+    <Type Name="LessonMissionBonus">
+      <Column Name="BonusID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="CampaignMissionBonus_LessonMissionBonus" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" />
+      <Association Name="LessonMissionBonusAwardingItem_LessonMissionBonus" Member="LessonMissionBonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="LessonMissionBonusAwardingItem" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.AwardingItemCategory" Member="AwardingItemCategory">
+    <Type Name="AwardingItemCategory">
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TransactionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Association Name="BonusAwardingItem_AwardingItemCategory" Member="BonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingItem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="MerchandiseTransactionType_AwardingItemCategory" Member="MerchandiseTransactionType" ThisKey="TransactionID" OtherKey="TransactionID" Type="MerchandiseTransactionType" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

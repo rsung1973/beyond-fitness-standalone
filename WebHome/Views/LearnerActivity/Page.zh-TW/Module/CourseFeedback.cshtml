@@ -1,0 +1,136 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+
+@{
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary feedbackItemState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    feedbackItemState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+
+    LessonTime _model = this.Model as LessonTime;
+
+    var profile = await Context.GetUserAsync();
+
+    var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
+                        .FirstOrDefault()?.RegisterID;
+
+    var feedbackItem = models.GetTable<LessonFeedBack>()
+                                .Where(f => f.LessonID == _model.LessonID)
+                                .Where(f => f.RegisterID == registerID).FirstOrDefault();
+    int feedback = -1;
+
+    if (feedbackItem != null)
+    {
+        var feedbackItems = models.GetTable<LessonFeedbackSurvey>()
+            .Where(s => s.LessonID == feedbackItem.LessonID)
+            .Where(s => s.RegisterID == feedbackItem.RegisterID)
+            .Where(s=>s.Score.HasValue);
+
+        if(feedbackItems.Any())
+        {
+            feedback = (int)(feedbackItems.Sum(s => s.Score) / feedbackItems.Count());
+        }
+    }
+}
+<div class="card card-style bg-beyond-dark">
+
+    <div class="content mx-lg-auto mx-md-auto">
+
+        <h2 class="text-center mb-1 letter-spacing-2 color-white">訓練感受</h2>
+
+        <p class="text-center font-12 mb-4 color-white opacity-40">How you feel about our services</p>
+
+        <!-- <p class="text-center font-30" onclick="javascript:gotoRank('1');">
+
+        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+
+        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+
+        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+
+        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+
+    </p> -->
+
+        <div class="d-flex justify-content-center">
+
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 5 ? "show" : null)">
+
+                <h1 class="font-40">😃</h1>
+
+                <strong class="font-14 opacity-50 color-white letter-spacing-1">非常滿意</strong>
+
+            </div>
+
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 4 ? "show" : null)">
+
+                <h1 class="font-40">😊</h1>
+
+                <strong class="font-14 opacity-50 color-white letter-spacing-1">滿意</strong>
+
+            </div>
+
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 3 ? "show" : null)">
+
+                <h1 class="font-40">😐</h1>
+
+                <strong class="font-14 opacity-50 color-white letter-spacing-1">及格</strong>
+
+            </div>
+
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 2 ? "show" : null)">
+
+                <h1 class="font-40">😠</h1>
+
+                <strong class="font-14 opacity-50 color-white letter-spacing-1">不滿意</strong>
+
+            </div>
+
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 1 ? "show" : null)">
+
+                <h1 class="font-40">😡</h1>
+
+                <strong class="font-14 opacity-50 color-white letter-spacing-1">非常不滿意</strong>
+
+            </div>
+
+        </div>
+
+        @if (feedbackItem?.FeedBackDate.HasValue != true && _model.LessonAttendance != null)
+        {
+            <p class="text-center pt-2">
+                <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("TakeFeedbackSurvey", "LearnerActivity"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())', 'from': '@Html.Raw(Url.Action("Events", "LearnerActivity"))' });" class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">Now Feedback<i class="fa-solid fa-chevron-right ps-2"></i></a>
+            </p>
+        }
+
+    </div>
+
+</div>

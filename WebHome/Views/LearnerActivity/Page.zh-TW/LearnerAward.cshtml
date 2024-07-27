@@ -1,0 +1,157 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+}
+
+@section MainContent
+{
+
+    <div class="card mb-0 bg-transparent">
+
+        <div class="content mt-5" id="point_query">
+
+            <div class="tab-controls point tabs-large tabs-rounded" data-highlight="bg-beyond-dark" style="background-color: transparent !important;">
+
+                <a href="#" data-active data-bs-toggle="collapse" data-bs-target="#session" class="mx-2 font-500">訓練．恢復課</a>
+
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#minus" class="mx-2 font-500">其他商品</a>
+
+            </div>
+
+            <div class="clearfix my-5 pt-1"></div>
+
+            <div class="card mb-0 py-5 bg-transparent" style="box-shadow: none;">
+
+                <div data-bs-parent="#point_query" class="collapse show mx-3 mx-lg-5 mx-md-5" id="session">
+                    @{
+                        var items = profile.LearnerAward.Where(a => a.BonusAwardingItem.BonusAwardingLesson != null);
+                    }
+                    @foreach (var item in items)
+                            {
+                        <div class="d-flex my-3">
+
+                            <div class="align-self-start ms-3 me-3">
+
+                                <h5 class="letter-spacing-2 font-500">
+                                    @Html.Raw(item.BonusAwardingItem.ItemName)
+                                    @if (item.AwardingLessonGift != null)
+                                    {
+                                        <text> - @Html.Raw(item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(true))</text>
+                                    }
+                                </h5>
+                                <span class="font-14 color-theme opacity-60 letter-spacing-1">@Html.Raw($"{item.AwardDate:yyyy/MM/dd}")</span>
+
+                            </div>
+
+                            <div class="align-self-center ms-auto me-3">
+
+                            </div>
+
+                            <div class="align-self-center">
+                                @{
+                                    DateTime? classTime = null;
+                                }
+                                @if (item.AwardingLesson != null)
+                                {
+                                    if (item.AwardingLesson.RegisterLesson.LessonTime.Any())
+
+                                    {
+                                        classTime = item.AwardingLesson.RegisterLesson.LessonTime.First().ClassTime;
+                                    }
+                                }
+                                else if (item.AwardingLessonGift?.RegisterLesson.LessonTime.Any() == true)
+                                {
+                                    classTime = item.AwardingLessonGift.RegisterLesson.LessonTime.First().ClassTime;
+                                }
+                                @if (classTime.HasValue)
+                                {
+                                    <span class="font-14 letter-spacing-1 d-block"><i class="fa-regular fa-calendar-check font-16 px-2"></i>@($"{classTime:yy/MM/dd}")</span>
+                                }
+                                else
+                                {
+                                    <span class="font-14 color-theme letter-spacing-1"><i class="fa-regular fa-calendar-xmark color-beyondred-dark font-16 px-2"></i></span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="divider mt-4 mb-4"></div>
+                    }
+
+                </div>
+
+                <div data-bs-parent="#point_query" class="collapse mx-4 mx-lg-5 mx-md-5" id="minus">
+                    @{
+                        items = profile.LearnerAward.Where(a => a.BonusAwardingItem.BonusAwardingLesson == null);
+                    }
+                    @foreach (var item in items)
+                    {
+                        <div class="d-flex my-3">
+
+                            <div class="align-self-start ms-3 me-3">
+
+                                <h5 class="letter-spacing-2 font-500">@Html.Raw(item.BonusAwardingItem.ItemName)</h5>
+
+                            </div>
+
+                            <div class="align-self-center ms-auto me-3">
+
+
+
+                            </div>
+
+                            <div class="align-self-center">
+
+                                <span class="font-14 letter-spacing-1 d-block"><i class="fa-solid fa-bookmark px-2"></i>@Html.Raw($"{item.AwardDate:yyyy/MM/dd}")</span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="divider mt-4 mb-4"></div>
+                    }
+
+                </div>
+
+            </div>
+
+            <div class="clearfix my-5"></div>
+
+        </div>
+
+    </div>
+
+}
+
+@section PopupBox
+{
+
+}

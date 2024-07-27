@@ -17,6 +17,7 @@
 
     function clearErrors() {
         $('span.help-error-text').remove();
+        $('label.help-error-text').remove();
     }
 
     function loadScript(url, callback) {
@@ -138,11 +139,12 @@
     }
 
     function doPost(url, viewModel, done, onFail) {
+        clearErrors();
         showLoading();
         $.ajax({
             type: 'POST',
             url: url,
-            data: JSON.stringify(viewModel),
+            data: JSON.stringify(viewModel).replaceAll('""', 'null'),
             type: "POST",
             //dataType: "json",
             contentType: "application/json;charset=utf-8",

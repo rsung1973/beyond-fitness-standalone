@@ -50,7 +50,7 @@
         var plan = item.AssertTrainingPlan(models, UID: _viewModel.LearnerID);
         var execution = plan.TrainingExecution;
         <li class="lessonitem">
-            <div class="@(item.IsPTSession()
+            <div class="@(item.IsPTOrSRSession()
                             ? "bullet PT"
                             : item.IsCoachPISession()
                                 ? "bullet CoachPI"

@@ -312,6 +312,14 @@ namespace WebHome.Helper
                         (int)Naming.LessonPriceStatus.運動防護課程,
         };
 
+        public static int?[] PurePTScope = new int?[] {
+                        (int)Naming.LessonPriceStatus.一般課程,
+                        (int)Naming.LessonPriceStatus.團體學員課程,
+                        (int)Naming.LessonPriceStatus.已刪除,
+                        (int)Naming.LessonPriceStatus.點數兌換課程,
+                        (int)Naming.LessonPriceStatus.員工福利課程,
+        };
+
         public static IQueryable<LessonTime> PTorPILesson(this IQueryable<LessonTime> items)
         {
             return items.Where(l => PTScope.Contains(l.RegisterLesson.LessonPriceType.Status.Value)
@@ -355,7 +363,7 @@ namespace WebHome.Helper
                                 }).Contains(l.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status)));
         }
 
-        public static bool IsPTSession(this LessonTime item)
+        public static bool IsPTOrSRSession(this LessonTime item)
         {
             return PTScope.Contains(item.RegisterLesson.LessonPriceType.Status.Value)
                     || (item.RegisterLesson.RegisterLessonEnterprise != null
@@ -364,6 +372,23 @@ namespace WebHome.Helper
                                     (int)Naming.LessonPriceStatus.一般課程,
                                     (int)Naming.LessonPriceStatus.團體學員課程
                                 }).Contains(item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status));
+        }
+
+        public static bool IsPTSession(this LessonTime item)
+        {
+            return PurePTScope.Contains(item.RegisterLesson.LessonPriceType.Status.Value)
+                    || (item.RegisterLesson.RegisterLessonEnterprise != null
+                            && (new int?[]
+                                {
+                                    (int)Naming.LessonPriceStatus.一般課程,
+                                    (int)Naming.LessonPriceStatus.團體學員課程
+                                }).Contains(item.RegisterLesson.RegisterLessonEnterprise.EnterpriseCourseContent.EnterpriseLessonType.Status));
+        }
+
+        public static bool IsSRSession(this LessonTime item)
+        {
+            return item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程
+                    || item.RegisterLesson.LessonPriceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程);
         }
 
         public static IQueryable<LessonTime> PILesson(this IQueryable<LessonTime> items)
@@ -789,13 +814,18 @@ namespace WebHome.Helper
 
         }
 
-        public static IQueryable<RegisterLesson> PromptLearnerRegisterLessons(this UserProfile profile, GenericManager<BFDataContext> models)
-            
+        public static IQueryable<RegisterLesson> PromptLearnerRegisterLessons(this int UID, GenericManager<BFDataContext> models)
         {
             return models.GetTable<RegisterLesson>()
+                .Where(r => r.UID == UID);
+        }
+
+
+        public static IQueryable<RegisterLesson> PromptLearnerEffectiveRegisterLessons(this UserProfile profile, GenericManager<BFDataContext> models)
+        {
+            return PromptLearnerRegisterLessons(profile.UID, models)
                 .Where(r => r.RegisterLessonContract != null)
-                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束
-                    && l.UID == profile.UID)
+                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束)
                 .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
                 .Where(l => l.RegisterGroupID.HasValue);
         }
@@ -803,9 +833,8 @@ namespace WebHome.Helper
         public static IQueryable<RegisterLesson> PromptLearnerEnterpriseLessons(this UserProfile profile, GenericManager<BFDataContext> models)
             
         {
-            return models.GetTable<RegisterLesson>()
-                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束
-                    && (l.UID == profile.UID))
+            return PromptLearnerRegisterLessons(profile.UID, models)
+                .Where(l => l.Attended != (int)Naming.LessonStatus.課程結束)
                 .Where(l => l.Lessons > l.GroupingLesson.LessonTime.Count)
                 .Where(l => l.RegisterGroupID.HasValue)
                 .Join(models.GetTable<RegisterLessonEnterprise>(), r => r.RegisterID, t => t.RegisterID, (r, t) => r);
@@ -820,23 +849,28 @@ namespace WebHome.Helper
                 .Where(q => !q.Status.HasValue && !q.PDQTask.Any());
         }
 
-        public static IQueryable<LessonTime> PromptLearnerLessons(this int learnerID, GenericManager<BFDataContext> models)
-            
+        public static IQueryable<LessonTime> PromptLearnerLessons(this GenericManager<BFDataContext> models, IQueryable<RegisterLesson> lessons, IQueryable<LessonTime> lessonTimes)
         {
-            return models.GetTable<RegisterLesson>().Where(u => u.UID == learnerID)
-                .Where(r=>r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI)
-                .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
-                .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
+            return lessons
+                    .Join(lessonTimes, r => r.RegisterGroupID, l => l.GroupID, (r, l) => l);
+        }
+
+
+        public static IQueryable<LessonTime> PromptLearnerLessons(this int learnerID, GenericManager<BFDataContext> models)
+        {
+            return models.PromptLearnerLessons(
+                learnerID.PromptLearnerRegisterLessons(models)
+                    .Where(r => r.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI), 
+                models.GetTable<LessonTime>());
         }
 
         public static IQueryable<LessonTime> PromptLearnerLessons(this CourseContract item, GenericManager<BFDataContext> models)
-            
         {
-            return models.GetTable<RegisterLesson>()
-                .Join(models.GetTable<RegisterLessonContract>().Where(c => c.ContractID == item.ContractID),
-                    r => r.RegisterID, c => c.RegisterID, (r, c) => r)
-                .Join(models.GetTable<GroupingLesson>(), r => r.RegisterGroupID, g => g.GroupID, (r, g) => g)
-                .Join(models.GetTable<LessonTime>(), g => g.GroupID, l => l.GroupID, (g, l) => l);
+            return models.PromptLearnerLessons(
+                models.GetTable<RegisterLesson>()
+                        .Join(models.GetTable<RegisterLessonContract>().Where(c => c.ContractID == item.ContractID),
+                            r => r.RegisterID, c => c.RegisterID, (r, c) => r),
+                models.GetTable<LessonTime>());
         }
 
         public static IQueryable<LessonTime> PromptCoachPILessons(this int learnerID, GenericManager<BFDataContext> models)

@@ -94,5 +94,14 @@ namespace WebHome.Models.Timeline
         public IQueryable<SystemEventBulletin> BulletinEventList { get; set; }
     }
 
+    public class SelfAssessmentEvent : TimelineEvent
+    {
+        public IQueryable<LessonTime> LessonList { get; set; }
+    }
+
+    public class FeedbackSurveyEvent : SelfAssessmentEvent
+    {
+
+    }
 
 }

@@ -48,7 +48,7 @@
                 ? new String[] { "b-l b-2x b-approve" }
                 : g.LessonAttendance != null
                     ? new String[] { "b-l b-2x b-finish" }
-                    : g.IsPTSession() || g.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null
+                    : g.IsPTOrSRSession() || g.RegisterLesson.LessonPriceType.IsWelfareGiftLesson != null
                         ? g.BranchStore?.IsVirtualClassroom() == true
                             ? new string[] { "b-l b-2x b-PT" }
                             : new string[] { "b-l b-2x b-PT" }

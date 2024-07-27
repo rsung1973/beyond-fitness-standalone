@@ -1,0 +1,167 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var account = profile.BonusDepositAccount;
+}
+
+@section MainContent
+{
+    <div class="card header-card" data-card-height="280">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    </div>
+
+    @{ 
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BonusDeposit.cshtml", account);
+    }
+
+    <div class="row gx-0">
+
+        <div class="col-12">
+
+            <div class="card mb-0" style="background-color: #333333; min-height: 350px;">
+
+                <div class="content" id="point_query">
+
+                    <div class="tab-controls point tabs-large tabs-rounded" data-highlight="bg-beyondsunny-dark" style="background-color: #333333 !important">
+
+                        <a href="#" data-active data-bs-toggle="collapse" data-bs-target="#add" class="mx-2 font-500 letter-spacing-2">
+                            <i class="fa-solid fa-plus px-2"></i>加點
+                        </a>
+
+                        <a href="#" data-bs-toggle="collapse" data-bs-target="#minus" class="mx-2 font-500 letter-spacing-2">
+                            <i class="fa-solid fa-minus px-2"></i>扣點
+                        </a>
+
+                    </div>
+
+                    <div class="clearfix my-5"></div>
+
+                    <div class="card card-style mb-0 py-5 mx-2">
+
+                        <div data-bs-parent="#point_query" class="collapse show mx-3 mx-lg-5 mx-md-5" id="add">
+
+                            @{
+                                var transactionItems = models.GetTable<BonusTransaction>()
+                                    .Where(t => t.UID == profile.UID)
+                                    .Where(t => t.TransactionPoint > 0)
+                                    .OrderByDescending(t => t.TransactionID);
+                            }
+                            @foreach (var item in transactionItems)
+                            {
+                                <div class="d-flex my-3">
+
+                                    <div class="align-self-start ms-3 me-3">
+
+                                        <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
+
+                                        <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd}")</span>
+
+                                    </div>
+
+                                    <div class="align-self-center ms-auto me-3">
+
+
+                                    </div>
+
+                                    <div class="align-self-center">
+
+                                        <b class="color-beyondred-dark justify-content-center font-500">+@(item.TransactionPoint)</b>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="divider mt-4 mb-4"></div>
+
+                            }
+
+                        </div>
+
+                        <div data-bs-parent="#point_query" class="collapse mx-4 mx-lg-5 mx-md-5" id="minus">
+                            @{
+                                transactionItems = models.GetTable<BonusTransaction>()
+                                    .Where(t => t.UID == profile.UID)
+                                    .Where(t => t.TransactionPoint < 0)
+                                    .OrderByDescending(t => t.TransactionID);
+                            }
+                            @foreach (var item in transactionItems)
+                            {
+                                <div class="d-flex my-3">
+
+                                    <div class="align-self-start ms-3 me-3">
+
+                                        <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
+
+                                        <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd}")</span>
+
+                                    </div>
+
+                                    <div class="align-self-center ms-auto me-3">
+
+                                    </div>
+
+                                    <div class="align-self-center">
+
+                                        <b class="color-beyondred-dark justify-content-center font-500">@(item.TransactionPoint)</b>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="divider mt-4 mb-4"></div>
+                            }
+
+                        </div>
+
+                        <p class="mx-4 mx-lg-5 mx-md-5 color-beyond-dark opacity-40 font-12">※僅提供2024/10/01之後之點數查詢</p>
+
+                    </div>
+
+                    <div class="clearfix my-5"></div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+}
+
+@section PopupBox
+{
+
+}

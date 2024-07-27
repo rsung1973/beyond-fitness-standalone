@@ -31,7 +31,7 @@
     if (item != null)
     {
         var plan = item.AssertTrainingPlan(models, UID: learner.UID);
-        if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動恢復課程)
+        if (item.IsSRSession())
         {
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSR.cshtml", item);
         }

@@ -506,8 +506,8 @@ namespace WebHome.Controllers
             return Login(viewModel);
         }
 
-
-        public async Task<ActionResult> ConfirmSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        [HttpPost]
+        public async Task<ActionResult> ConfirmSignatureAsync([FromBody] CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
         {
             ViewBag.ViewModel = viewModel;
             var profile = await HttpContext.GetUserAsync();
@@ -656,6 +656,423 @@ namespace WebHome.Controllers
             {
                 return await viewModel.ConfirmContractSignatureAsync(this, item);
             }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CommitSelfAssessmentAsync([FromBody] SelfAssessmentViewModel viewModel)
+        {
+            if (viewModel == null)
+            {
+                viewModel = await PrepareViewModelAsync<SelfAssessmentViewModel>(viewModel);
+                ModelState.Clear();
+            }
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            if (viewModel.CheckTerms != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意課前健康狀況自我檢視聲明書");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意個人身體健康狀況事項切結書");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+
+            if (!(viewModel.SleepDuration >= 0))
+            {
+                ModelState.AddModelError("SleepDuration", "請填寫睡眠時間");
+            }
+
+            if (!(viewModel.WaterIntake >= 0))
+            {
+                ModelState.AddModelError("WaterIntake", "請填寫水分攝取");
+            }
+
+            if (!(viewModel.FatigueIndex >= 0 && viewModel.FatigueIndex <= 10))
+            {
+                ModelState.AddModelError("FatigueIndex", "請填寫生理疲勞");
+            }
+
+            if (!(viewModel.StressIndex >= 0 && viewModel.StressIndex <= 10))
+            {
+                ModelState.AddModelError("StressIndex", "請填寫心理壓力");
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                SelfAssessmentViewModel tmpModel = JsonConvert.DeserializeObject<SelfAssessmentViewModel>(viewModel.KeyID.DecryptKey());
+                viewModel.LessonID = tmpModel.LessonID;
+                viewModel.RegisterID = tmpModel.RegisterID;
+            }
+
+            var lessonItem = models.GetTable<LessonTime>().Where(l=>l.LessonID== viewModel.LessonID).FirstOrDefault();
+            if(lessonItem == null || !viewModel.RegisterID.HasValue)
+            {
+                ModelState.AddModelError("Message", "資料錯誤");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            LessonFeedBack item = models.GetTable<LessonFeedBack>()
+                .Where(c => c.LessonID == viewModel.LessonID)
+                .Where(c => c.RegisterID == viewModel.RegisterID)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                item = new LessonFeedBack
+                {
+                    LessonID = viewModel.LessonID.Value,
+                    RegisterID = viewModel.RegisterID.Value,
+                };
+                models.GetTable<LessonFeedBack>()
+                    .InsertOnSubmit(item);
+                models.SubmitChanges();
+            }
+            else
+            {
+                models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
+                            WHERE   LessonID = {0} and RegisterID = {1}", item.LessonID, item.RegisterID);
+            }
+
+            item.LessonSelfAssessment.Add(new LessonSelfAssessment 
+            {
+                Assessment = "SleepDuration",
+                Score = viewModel.SleepDuration,
+            });
+
+            item.LessonSelfAssessment.Add(new LessonSelfAssessment
+            {
+                Assessment = "WaterIntake",
+                Score = viewModel.WaterIntake,
+            });
+
+            item.LessonSelfAssessment.Add(new LessonSelfAssessment
+            {
+                Assessment = "FatigueIndex",
+                Score = viewModel.FatigueIndex,
+            });
+
+            item.LessonSelfAssessment.Add(new LessonSelfAssessment
+            {
+                Assessment = "StressIndex",
+                Score = viewModel.StressIndex,
+            });
+
+            item.LessonSelfAssessment.Add(new LessonSelfAssessment
+            {
+                Assessment = "SupplementaryStatement",
+                Answer = viewModel.SupplementaryStatement.GetEfficientString(),
+            });
+
+            item.CommitAssessment = DateTime.Now;
+
+            lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
+            lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+
+            models.SubmitChanges();
+
+            item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
+
+            return Json(new { result = true });
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CommitSurveyAnswerAsync([FromBody] FeedbackSurveyViewModel viewModel)
+        {
+            if (viewModel == null)
+            {
+                viewModel = await PrepareViewModelAsync<FeedbackSurveyViewModel>(viewModel);
+                ModelState.Clear();
+            }
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            if (viewModel.KeyID != null)
+            {
+                FeedbackSurveyViewModel tmpModel = JsonConvert.DeserializeObject<FeedbackSurveyViewModel>(viewModel.KeyID.DecryptKey());
+                viewModel.LessonID = tmpModel.LessonID;
+                viewModel.RegisterID = tmpModel.RegisterID;
+            }
+
+            var lessonItem = models.GetTable<LessonTime>().Where(l=>l.LessonID==viewModel.LessonID).FirstOrDefault();
+
+            if (lessonItem == null || !viewModel.RegisterID.HasValue)
+            {
+                ModelState.AddModelError("Message", "資料錯誤");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            IQueryable<FeedbackSurveyType> questItems = models.GetTable<FeedbackSurveyType>().Where(s => false);
+
+            if (lessonItem.IsPTSession())
+            {
+                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.一般課程);
+            }
+            else if (lessonItem.IsPISession())
+            {
+                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.自主訓練);
+            }
+            if (lessonItem.IsSRSession())
+            {
+                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.運動恢復課程);
+            }
+
+            List<LessonFeedbackSurvey> surveyItems = new List<LessonFeedbackSurvey>();
+            if (questItems.Any())
+            {
+                foreach (var quest in questItems)
+                {
+                    var ansItem = viewModel.Answer?.Where(a => a.Name == quest.QuestionNo).FirstOrDefault();
+                    if (ansItem == null)
+                    {
+                        if (quest.FeedbackSurvey.RequiredLevel == (int)FeedbackSurvey.RequiredLevelDefinition.Required)
+                        {
+                            ModelState.AddModelError("Message", $"請回答{quest.QuestionNo}");
+                        }
+                    }
+                    else
+                    {
+                        LessonFeedbackSurvey survey = new LessonFeedbackSurvey
+                        {
+                            LessonID = lessonItem.LessonID,
+                            RegisterID = viewModel.RegisterID.Value,
+                            QuestionID = quest.QuestionID,
+                        };
+
+                        if (quest.FeedbackSurvey.QuestionType == (int)FeedbackSurvey.QuestionTypeDefinition.SingleChoice)
+                        {
+                            if (int.TryParse(ansItem.Value, out int score))
+                            {
+                                survey.Score = score;
+                                surveyItems.Add(survey);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("Message", $"請回答{quest.QuestionNo}");
+                            }
+                        }
+                        else /*if (quest.FeedbackSurvey.QuestionType == (int)FeedbackSurvey.QuestionTypeDefinition.QandA)*/
+                        {
+                            survey.Answer = ansItem.Value.GetEfficientString();
+                            surveyItems.Add(survey);
+                        }
+                    }
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            LessonFeedBack item = models.GetTable<LessonFeedBack>()
+                .Where(c => c.LessonID == viewModel.LessonID)
+                .Where(c => c.RegisterID == viewModel.RegisterID)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                item = new LessonFeedBack
+                {
+                    LessonID = viewModel.LessonID.Value,
+                    RegisterID = viewModel.RegisterID.Value,
+                };
+                models.GetTable<LessonFeedBack>()
+                    .InsertOnSubmit(item);
+                models.SubmitChanges();
+            }
+            else
+            {
+                models.ExecuteCommand(@"DELETE FROM BG.LessonFeedbackSurvey
+                            WHERE   LessonID = {0} and RegisterID = {1}", item.LessonID, item.RegisterID);
+            }
+
+            item.LessonFeedbackSurvey.AddRange(surveyItems);
+            item.FeedBackDate = DateTime.Now;
+
+            models.SubmitChanges();
+
+            item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.FeedbackSurvey);
+
+            return Json(new { result = true });
+        }
+
+        public ActionResult BonusSettlement(LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            var viewResult = CheckView("BonusSettlement");
+            return View(viewResult.ViewName);
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> ExchangeBonusPointAsync([FromBody] AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel?.KeyID != null) 
+            {
+                viewModel.ItemID = viewModel.DecryptKeyValue();
+            }
+
+            var profile = await HttpContext.GetUserAsync();
+
+            var item = models.GetTable<BonusAwardingItem>().Where(i => i.ItemID == viewModel.ItemID).FirstOrDefault();
+            if (item == null)
+            {
+                return Json(new { result = false, message = "兌換商品錯誤!!" });
+            }
+
+            var account = profile.UID.PromptDepositAccount(models)?.CommitBonusSettlement(models);
+
+            if (!(account?.DepositPoint >= item.PointValue))
+            {
+                return Json(new { result = false, message = "累積點數不足!!" });
+            }
+
+            viewModel.WriteoffCode = viewModel.WriteoffCode.GetEfficientString();
+            int? recipientID = null;
+            if (item.BonusAwardingLesson != null)
+            {
+                viewModel.ActorID = profile.UID;
+
+                if (item.BonusAwardingIndication != null && item.BonusAwardingIndication.Indication == "AwardingLessonGift")
+                {
+                    var users = models.GetTable<UserProfile>()
+                        .Where(u => u.UID != profile.UID)
+                        .Where(u => u.LevelID != (int)Naming.MemberStatusDefinition.Deleted)
+                        .Where(u => u.LevelID != (int)Naming.MemberStatusDefinition.Anonymous)
+                        .Where(l => l.Phone == viewModel.WriteoffCode)
+                        .FilterByLearner(models)
+                        .Where(u => u.UserProfileExtension != null)
+                        .Where(u => !u.UserProfileExtension.CurrentTrial.HasValue);
+
+                    int count = users.Count();
+
+                    if (count == 0)
+                    {
+                        ModelState.AddModelError("WriteoffCode", "受贈會員資料錯誤，請確認後再重新輸入");
+                    }
+                    else if (count > 1)
+                    {
+                        ModelState.AddModelError("WriteoffCode", "受贈學員手機號碼重複，請連絡您的體能顧問");
+                    }
+                    else
+                    {
+                        recipientID = users.First().UID;
+                    }
+                }
+            }
+            else
+            {
+                var coach = models.PromptEffectiveCoach(models.GetTable<UserProfile>().Where(l => l.Phone == viewModel.WriteoffCode)).FirstOrDefault();
+                if (coach == null)
+                {
+                    ModelState.AddModelError("WriteoffCode", "兌換核銷密碼欄位資料錯誤，請確認後再重新輸入");
+                }
+                else
+                {
+                    viewModel.ActorID = coach.CoachID;
+                }
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            var txnItem = new BonusTransaction
+            {
+                UID = account.UID,
+                TransactionDate = DateTime.Now,
+                TransactionPoint = -item.PointValue,
+                Reason = $"兌換{item.ItemName}",
+                LearnerAward = new LearnerAward
+                {
+                    UID = profile.UID,
+                    AwardDate = DateTime.Now,
+                    ItemID = item.ItemID,
+                    ActorID = viewModel.ActorID.Value,
+                },
+            };
+
+            models.GetTable<BonusTransaction>().InsertOnSubmit(txnItem);
+
+            var award = txnItem.LearnerAward;
+            ///兌換課程
+            ///
+            if (item.BonusAwardingLesson != null)
+            {
+                var lesson = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID)
+                    .Join(models.GetTable<RegisterLessonContract>(), r => r.RegisterID, c => c.RegisterID, (r, c) => r)
+                    .OrderByDescending(r => r.RegisterID).FirstOrDefault();
+
+                if (item.BonusAwardingIndication != null && item.BonusAwardingIndication.Indication == "AwardingLessonGift")
+                {
+                    var giftLesson = new RegisterLesson
+                    {
+                        RegisterDate = DateTime.Now,
+                        GroupingMemberCount = 1,
+                        ClassLevel = item.BonusAwardingLesson.PriceID,
+                        Lessons = 1,
+                        UID = recipientID.Value,
+                        AdvisorID = lesson?.RegisterLessonContract.CourseContract.FitnessConsultant,
+                        Attended = (int)Naming.LessonStatus.準備上課,
+                        GroupingLesson = new GroupingLesson { }
+                    };
+                    award.AwardingLessonGift = new AwardingLessonGift
+                    {
+                        RegisterLesson = giftLesson
+                    };
+                    models.GetTable<RegisterLesson>().InsertOnSubmit(giftLesson);
+                }
+                else
+                {
+                    var awardLesson = new RegisterLesson
+                    {
+                        RegisterDate = DateTime.Now,
+                        GroupingMemberCount = 1,
+                        ClassLevel = item.BonusAwardingLesson.PriceID,
+                        Lessons = 1,
+                        UID = profile.UID,
+                        AdvisorID = lesson?.AdvisorID,
+                        Attended = (int)Naming.LessonStatus.準備上課,
+                        GroupingLesson = new GroupingLesson { }
+                    };
+                    award.AwardingLesson = new AwardingLesson
+                    {
+                        RegisterLesson = awardLesson
+                    };
+                    models.GetTable<RegisterLesson>().InsertOnSubmit(awardLesson);
+                }
+            }
+
+            models.SubmitChanges();
+            return Json(new { result = true });
+
         }
 
 

@@ -120,8 +120,7 @@ namespace WebHome.Controllers
                     lessonAchievement += (coachTuitionItems.Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                     tuitionAchievement = coachAchievementItems.Sum(a => a.ShareAmount) ?? 0;
 
-                    coachIndicator.ActualCompleteLessonCount = coachTuitionItems.Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)).Count()
-                                    + coachTuitionItems.Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Count();
+                    coachIndicator.ActualCompleteLessonCount =  coachTuitionItems.SessionScopeForComleteLesson(models).Count();
                     coachIndicator.ActualLessonAchievement = lessonAchievement;
                     coachIndicator.ActualRenewContractAchievement = coachContractItems.Where(c => c.Renewal == true).Count();
                     coachIndicator.ActualNewContractAchievement = coachContractItems.Count() - coachIndicator.ActualRenewContractAchievement;
@@ -131,8 +130,8 @@ namespace WebHome.Controllers
                                     + coachTuitionItems.Where(t => t.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count();
                     coachIndicator.ATCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Count();
                     coachIndicator.ATAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動防護課程).Sum(t => t.ListPrice) ?? 0;
-                    coachIndicator.SRCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Count();
-                    coachIndicator.SRAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.運動恢復課程).Sum(t => t.ListPrice) ?? 0;
+                    coachIndicator.SRCount = coachTuitionItems.SRSessionScope(models).Count();
+                    coachIndicator.SRAchievement = coachTuitionItems.SRSessionScope(models).Sum(t => t.ListPrice) ?? 0;
                     coachIndicator.SDCount = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
                     coachIndicator.SDAchievement = coachTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
 

@@ -1,0 +1,241 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+
+    StageProgress current = models.PromptCurrentStage();
+
+    ViewBag.StageProgress = current;
+
+    Player currentLevel = current != null ? profile.Player.Where(p => p.ProgressID == current.ProgressID).FirstOrDefault() : null;
+    ViewBag.Player = currentLevel;
+    PromotionAppraisalDataModel appraisal = new PromotionAppraisalDataModel { };     //[0]: promotion level
+                                                                                     //[2]: promotion check
+    ViewBag.Appraisal = appraisal;
+}
+
+@section MainContent
+{
+
+    <div class="card header-card shape-rounded" data-card-height="250">
+
+        <div class="card-overlay bg-beyondsunny-light opacity-95"></div>
+
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+    </div>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PlayerCurrentLevel.cshtml", currentLevel);
+    }
+
+    <div class="row" style="margin-top: 100px;">
+
+        <div class="col-12">
+
+            <!--玩家攻略-->
+
+            <div class="content mb-3 mx-0 mx-lg-5 mx-md-5">
+
+                <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme mx-5 mx-lg-0 mx-md-0">
+                    玩家攻略·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Strategy Guide</small>
+                </h4>
+
+                <div class="clearfix"></div>
+
+                <div class="splide single-slider slider-no-arrows homepage-slider" id="levelSlide">
+
+                    <div class="splide__track">
+
+                        <div class="splide__list">
+                            @{
+                                var levels = models.GetTable<GameLevel>().ToArray();
+                                int idx = 0, promotionID = 0;
+                                for (; idx < levels.Length; idx++)
+                                {
+                                    if (levels[idx].LevelID == currentLevel?.PlayerLevel)
+                                    {
+                                        promotionID = Math.Min(idx + 1, levels.Length - 1);
+                                        break;
+                                    }
+                                }
+
+                                appraisal.PromotionLevel = levels[promotionID];
+                                appraisal.CheckResult = false;
+
+                                for (int i = 0; i < levels.Length; i++)
+                                {
+                                    var level = levels[idx % levels.Length];
+                                    <div class="splide__slide">
+                                        @{
+                                            if (appraisal.CheckResult)
+                                            {
+                                                appraisal.PromotionLevel = level;
+                                                appraisal.CheckResult = false;
+                                            }
+                                            await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignGameLevel_{level.LevelCode}.cshtml", level);
+
+                                            if ((GameLevel)appraisal.PromotionLevel == level)
+                                            {
+                                                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckCampaignMission.cshtml", level);
+                                            }
+                                        }
+                                    </div>
+                                    idx++;
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignPromotionGuide.cshtml");
+            }
+        </div>
+        <div class="col-12">
+
+            <!--FAQ-->
+
+            <div class="card campain-intro rounded-l mt-5 mx-3 mx-lg-5 mx-md-5 text-center shadow-l preload-img" data-src="../images/card/campaign-faq2.jpg"
+                 data-card-height="230">
+
+                <div class="content">
+
+                    <h1 class="font-24 font-700 color-beyondwhite-dark">玩家 FAQ</h1>
+
+                    <p class="boxed-text-xl">
+
+                        <a href="#" data-menu="popup-levelIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>玩家等級注意事項</u></a>
+
+                        <a href="#" data-menu="popup-levelThreshold" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>等級門檻條件說明</u></a>
+
+                        <a href="#" data-menu="popup-pointIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>任務點數回饋說明</u></a>
+
+                        <a href="#" data-menu="popup-faqs" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>常見問題</u></a>
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- <div class="strategy mt-5 mx-3 mx-lg-5 mx-md-5">
+
+                <svg width="0" height="0">
+
+                    <defs>
+
+                        <clipPath id="left-clip" clipPathUnits="objectBoundingBox">
+
+                            <path d="M 0,0 H 0.5 A 0.5,0.5 0 0 1 0.5,1 H 0 V 0 Z" />
+
+                        </clipPath>
+
+                        <clipPath id="right-clip" clipPathUnits="objectBoundingBox">
+
+                            <path d="M 0.5,0 A 0.5,0.5 0 0 1 0.5,1" />
+
+                        </clipPath>
+
+                        <clipPath id="left-clip-mobile" clipPathUnits="objectBoundingBox">
+
+                            <path d="M 0,0 H 0.4 A 0.5,0.5 0 0 1 0.4,1 H 0 V 0 Z" />
+
+                        </clipPath>
+
+                        <clipPath id="right-clip-mobile" clipPathUnits="objectBoundingBox">
+
+                            <path d="M 0.4,0 A 0.5,0.5 0 0 1 0.4,1" />
+
+                        </clipPath>
+
+                    </defs>
+
+                </svg>
+
+                <div class="card faq">
+
+                    <div class="level faq">玩家<br/>FAQ</div>
+
+                    <div class="conditions faq">
+
+                        <div class="condition faq">
+
+                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>玩家等級注意事項</u>
+
+                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>等級門檻條件說明</u>
+
+                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>常見問題</u>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div> -->
+
+        </div>
+
+    </div>
+
+}
+
+@section PopupBox
+{
+    <!--玩家等級攻略表-->
+
+    <div id="popup-levelTable" class="menu menu-box-modal menu-box-detached rounded-m bg-transparent" data-menu-width="350" data-menu-height="400"
+         data-menu-effect="menu-over" data-menu-load="PopupCampainLevelTable">
+
+    </div>
+
+
+
+    <!--玩家等級注意事項-->
+
+    <div id="popup-levelIntro" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600" data-menu-effect="menu-over"
+         data-menu-load="popup-campain-levelNotice.html">
+
+    </div>
+
+
+
+    <!--玩家等級門檻條件說明-->
+
+    <div id="popup-levelThreshold" class="menu menu-box-modal auto menu-box-detached rounded-m"
+         data-menu-height="600" data-menu-effect="menu-over" data-menu-load="popup-campain-levelThreshold.html">
+
+    </div>
+}

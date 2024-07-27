@@ -1,0 +1,99 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    LearnerViewModel _viewModel = ViewBag.ViewModel as LearnerViewModel;
+    if(_viewModel.KeyID!=null)
+    {
+        _viewModel.UID = _viewModel.DecryptKeyValue();
+    }
+
+    int exchangeRate = 50;
+
+    var learner = models.GetTable<UserProfile>().Where(u => u.UID == _viewModel.UID).FirstOrDefault();
+
+}
+@if(learner==null)
+            {
+    <div>N/A</div>
+}
+else
+{
+    var account = learner.BonusDepositAccount;
+    if (account == null)
+    {
+        account = learner.BonusDepositAccount = new BonusDepositAccount
+        {
+            UID = learner.UID,
+            DepositPoint = 0,
+        };
+
+        models.SubmitChanges();
+    }
+
+    var totalPoints = learner.BonusPoint(models) ?? 0;
+    int settlementPoints = totalPoints * exchangeRate;
+
+    BonusTransaction txn = new BonusTransaction
+    {
+        UID = account.UID,
+        TransactionPoint = settlementPoints,
+        TransactionDate = DateTime.Now,
+        Reason = $"原beyond幣{totalPoints}點轉換新幣{settlementPoints}點",
+    };
+    models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
+    models.SubmitChanges();
+
+    var settlement = account.BonusDepositSettlement;
+    if (settlement == null)
+    {
+        settlement = account.BonusDepositSettlement = new BonusDepositSettlement
+        {
+            TransactionID = -1,
+            UID = account.UID,
+        };
+    }
+    settlement.SettlementDate = DateTime.Now;
+
+    var items = models.GetTable<BonusTransaction>()
+                    .Where(t => t.UID == account.UID)
+                    .Where(t => t.TransactionID > settlement.TransactionID);
+
+    if (items.Any())
+    {
+        var subtotal = items.Sum(t => t.TransactionPoint);
+        account.DepositPoint += subtotal;
+        settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
+            .First().TransactionID;
+        models.SubmitChanges();
+    }
+    <div>@Html.Raw(learner.FullName()),@(account.DepositPoint)</div>
+}

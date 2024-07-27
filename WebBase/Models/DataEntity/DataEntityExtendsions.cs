@@ -1094,4 +1094,39 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class FeedbackSurvey
+    {
+        public enum RequiredLevelDefinition 
+        {
+            Required = 1,
+        }
+
+        public enum QuestionTypeDefinition 
+        { 
+            QandA = 200,
+            SingleChoice = 201,
+        }
+    }
+
+    public partial class CampaignMission
+    {
+        public enum CampaignMissionType
+        {
+            SelfAssessment = 1,
+            FeedbackSurvey = 2,
+        }
+    }
+
+    public partial class MerchandiseTransactionType
+    {
+        public enum MainAwardingCategory
+        {
+            TrainingCourse = 11,
+            ExerciseEquipment = 12,
+            FasciaReleaseEquipment = 13,    
+            BrandedClothing = 14,
+        }
+    }
+
+
 }

@@ -48,8 +48,7 @@
                     d,
                     h,
                     dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
-                        .FirstOrDefault()?.Where(t => BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.PriceStatus)
-                            || BusinessConsoleExtensions.SessionScopeForComleteLessonCount.Contains(t.ELStatus)).Sum(l=>l.GroupingMemberCount) ?? 0,
+                        .FirstOrDefault()?.SessionScopeForComleteLesson(models).Sum(l=>l.GroupingMemberCount) ?? 0,
                     dataItems.Where(g => g.Key.DateIdx == d && g.Key.Hour == h)
                         .FirstOrDefault()?.Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練
                         || l.ELStatus == (int)Naming.LessonPriceStatus.自主訓練).Count() ?? 0,

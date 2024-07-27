@@ -899,56 +899,56 @@ namespace WebHome.Helper
                 { 36,   //  level 0
                     new []
                     {
-                        new int[] { 101, 180,12 },
-                        new int[] { 13, 150,12 },
+                        new int[] { 101, 180,25 },
+                        new int[] { 26, 150,25 },
                     }
                 },
                 { 33,   //  level 1
                     new []
                     {
-                        new int[] { 111, 230,20 },
+                        new int[] { 111, 200,20 },
                         new int[] { 101, 200,20 },
-                        new int[] { 21, 180,20},
+                        new int[] { 21, 170,20},
                     }
                 },
                 { 34,   //  level 2
                     new []
                     {
-                        new int[] { 121, 250 ,40},
-                        new int[] { 101, 230 ,40},
-                        new int[] { 41, 200,40},
+                        new int[] { 121, 240 ,25},
+                        new int[] { 101, 230 ,25},
+                        new int[] { 26, 190,25},
                     }
                 },
                 { 35,   //  level 3
                     new []
                     {
-                        new int[] { 131, 300,40 },
-                        new int[] { 101, 280,40 },
-                        new int[] { 41, 230, 40 },
+                        new int[] { 131, 280,30 },
+                        new int[] { 101, 260,30 },
+                        new int[] { 31, 210, 30 },
                     }
                 },
                 { 39,   //  level 4
                     new []
                     {
-                        new int[] { 141, 330,40 },
-                        new int[] { 101, 300,40 },
-                        new int[] { 41, 250, 40 },
+                        new int[] { 141, 320,35 },
+                        new int[] { 101, 290,35 },
+                        new int[] { 36, 230, 35 },
                     }
                 },
                 { 40,   //  level 5
                     new []
                     {
-                        new int[] { 151, 380,40 },
-                        new int[] { 101, 330,40 },
-                        new int[] { 41, 280, 40 },
+                        new int[] { 151, 360,40 },
+                        new int[] { 101, 320,40 },
+                        new int[] { 41, 250, 40 },
                     }
                 },
                 { 41,   //  level 6
                     new []
                     {
-                        new int[] { 161, 400,40 },
-                        new int[] { 101, 380,40 },
-                        new int[] { 41, 300, 40 },
+                        new int[] { 161, 400,45 },
+                        new int[] { 101, 350,45 },
+                        new int[] { 46, 270, 45 },
                     }
                 },
             };

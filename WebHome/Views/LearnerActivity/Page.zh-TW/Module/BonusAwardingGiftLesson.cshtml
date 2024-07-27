@@ -1,0 +1,64 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    Layout = "~/Views/LearnerActivity/Page.zh-TW/Module/BonusAwardingTemplate.cshtml";
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+}
+@section ExchangeInfo
+{
+    <div class="row mb-2 pt-3">
+
+        <div class="row mb-0">
+
+            <div class="col-12">
+
+                <div class="input-style input-style-always-active has-borders no-icon">
+
+                    <input type="number" class="form-control focus-blue validate-number" id="cellphone" placeholder="09xxxxxxxx" name="WriteoffCode" />
+
+                    <label for="cellphone" class="color-theme font-16">受贈學員手機號碼</label>
+
+                    <i class="fa fa-times disabled invalid color-red-dark"></i>
+
+                    <i class="fa fa-check disabled valid color-green-dark"></i>
+
+                    <em>(必要輸入)</em>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+}

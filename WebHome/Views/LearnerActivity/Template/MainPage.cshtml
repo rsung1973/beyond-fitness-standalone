@@ -11,6 +11,7 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
+@using WebHome.Models.Timeline
 
 @{
     Layout = "~/Views/LearnerActivity/Template/BasicPage.cshtml";
@@ -67,10 +68,26 @@
 
 @section FooterBar
 {
-    <div id="footer-bar" class="footer-bar-2">        
+    @{
+        int? totalCount;
+        List<TimelineEvent> events = null;
+        if (ViewBag.UserNotice == null)
+        {
+            events = new List<TimelineEvent>();
+            ViewBag.UserNotice = events;
+
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BuildEventItems.cshtml");
+        }
+        else
+        {
+            events = (List<TimelineEvent>)ViewBag.UserNotice;
+        }
+        totalCount = (int?)ViewContext.HttpContext.Items["TotalEventCount"] ?? 0;
+    }
+    <div id="footer-bar" class="footer-bar-2">
         <a href="Index"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務集點</span></a>
-        <a href="#"><i class="fa-solid fa-dice mb-2"></i><span class="font-12">玩家攻略</span></a>
-        <a href="Events" class="@(eventsActive)"><i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">11</em></a>
+        <a href="CampaignStrategy"><i class="fa-solid fa-dice mb-2"></i><span class="font-12">玩家攻略</span></a>
+        <a href="Events" class="@(eventsActive)"><i class="fa fa-bell mb-2"></i><span class="font-12">動態快訊</span><em class="badge bg-beyondred-dark">@(totalCount)</em></a>
         <a href="ContactBook" class="@(contactBookActive)"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
         <a href="Settings" class="@(settingsActive)"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
     </div>

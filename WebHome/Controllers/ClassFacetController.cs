@@ -143,7 +143,7 @@ namespace WebHome.Controllers
                 DurationInMinutes = item.DurationInMinutes
             };
 
-            if (item.IsPTSession())
+            if (item.IsPTOrSRSession())
             {
                 if (models.GetTable<Settlement>().Any(s => s.StartDate <= viewModel.ClassDate && s.EndExclusiveDate > viewModel.ClassDate))
                 {

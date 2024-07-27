@@ -76,14 +76,14 @@
                             <a href="#" onclick='getInvoicePdf(@Html.Raw((new {InvoiceNo= $"{item.TrackCode}{item.No}",InvoiceDate=$"{item.InvoiceDate:yyyy-MM-dd}", BuyerReceiptNo = item.InvoiceBuyer.ReceiptNo, item.InvoiceCarrier?.CarrierNo, item.RandomNo}).JsonStringify()));' class="list-group-item">列印發票(A4列印)</a>
                         }
                     }
-                    @if (_model.AllowanceID.HasValue)
+                    @*@if (_model.AllowanceID.HasValue)
                     {
                         if (_model.InvoiceAllowance.Document.DocumentPrintLog.Count == 0
                             || _profile.IsAssistant() || _profile.IsManager() || _profile.IsViceManager())
                         {
                             <a href="#" onclick="printAllowance(@(_model.AllowanceID),'@(item.Organization.InvoiceSignature)');" class="list-group-item">列印折讓單</a>
                         }
-                    }
+                    }*@
                     @{
                         if (printPaper || _profile.IsAssistant() || _profile.IsSysAdmin())
                         {

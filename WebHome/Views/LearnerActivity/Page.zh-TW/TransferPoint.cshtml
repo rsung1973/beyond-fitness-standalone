@@ -1,0 +1,142 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var account = profile.BonusDepositAccount;
+
+}
+
+@section MainContent
+{
+    <div class="card header-card" data-card-height="280">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    </div>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BonusDeposit.cshtml", account);
+    }
+
+    <div class="card card-style mb-0 py-5 mx-4 mx-lg-5 mx-md-5">
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-12 col-lg-6 col-md-6 mb-3">
+
+                    <div class="input-style input-style-always-active has-borders no-icon">
+
+                        <input type="number" class="form-control focus-blue validate-number" id="cellphone"
+                               placeholder="09xxxxxxxx" />
+
+                        <label for="cellphone" class="color-theme font-16">移轉學員手機號碼</label>
+
+                        <i class="fa fa-times disabled invalid color-red-dark"></i>
+
+                        <i class="fa fa-check disabled valid color-green-dark"></i>
+
+                        <em>(必要輸入)</em>
+
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-lg-6 col-md-6 mb-3">
+
+                    <div class="input-style input-style-always-active has-borders no-icon">
+
+                        <input type="number" class="form-control focus-blue validate-number" id="point" placeholder="0">
+
+                        <label for="cellphone" class="color-theme font-16">點數</label>
+
+                        <i class="fa fa-times disabled invalid color-red-dark"></i>
+
+                        <i class="fa fa-check disabled valid color-green-dark"></i>
+
+                        <em>(必要輸入)</em>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <a href="point-query.html"
+               class="close-menu btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">確定移轉</a>
+
+        </div>
+
+        <p class="mx-4 mx-lg-4 mx-md-4 font-13 mb-0 color-beyondred-dark">
+
+            <i class="fa-solid fa-circle-info pe-2"></i>注意事項：
+
+        </p>
+
+        <ul class="mx-4 mx-lg-4 mx-md-4 font-13 ps-4">
+
+            <li>本服務僅限Beyond Fitness正式學員使用，轉出者、轉入者於申請及移轉點數時皆需為有效之Beyond Fitness正式學員。</li>
+
+            <li>每月轉出與轉入次數上限為3次，轉出及轉入次數分別計算。</li>
+
+            <li>每筆轉出點數最低1(含)點，上限為50點，且不得有小數點。</li>
+
+            <li>Beyond點數轉出一經申請且成功移轉，恕不得要求取消、退回。</li>
+
+            <li>使用移轉點數服務即表示將您的姓名、轉出點數等相關資訊(例:轉出日期及時間、點數等)提供給轉入者查詢。</li>
+
+            <li>移轉之Beyond點數有Beyond期限為移轉日起至獲得點數年度之隔年年底，另此服務免收手續費，未來如有異動將提前於本行官網進行公告。</li>
+
+            <li>轉出者不得冒用他人身分進行申請，否則需自負相關民刑事法律責任。</li>
+
+            <li>學員若因使用本服務造成本行遭受損失、損害，或直接、間接致使本行產生費用支出，需於收到本行要求後賠償本行，本行有權暫停會員使用本服務。</li>
+
+            <li>倘使用本服務發生任何爭議時，本行有權暫時取消轉出者之本項申請，或暫停一切移轉作業，待爭議結束後再續行辦理。</li>
+
+            <li>
+                點數移轉視同贈與，依中華民國遺產及贈與稅法第19條規定，贈與人每年贈與總額減除扣除額及免稅額後所得之贈與淨額依稅率分級課徵贈與稅。Beyond點數價值以1點等同新臺幣1元計算，以此作為課稅標準。提醒轉出者應依遺產及贈與稅法相關規定如期辦理。
+
+            </li>
+
+            <li>其他未盡事宜依本公司Beyond Fitness正式學員權益約定條款辦理。</li>
+
+        </ul>
+
+    </div>
+
+
+}
+
+@section PopupBox
+{
+
+}

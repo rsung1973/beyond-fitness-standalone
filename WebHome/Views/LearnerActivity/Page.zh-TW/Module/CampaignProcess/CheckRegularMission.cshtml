@@ -1,0 +1,37 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+}
+@{
+    CampaignMissionDataModel mission = (CampaignMissionDataModel)ViewBag.CurrentMission;
+    mission.CheckResult = true;
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckSelfAssessmentMission.cshtml");
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckFeedbackSurveyMission.cshtml");
+}

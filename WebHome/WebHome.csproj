@@ -94,7 +94,6 @@
     <Folder Include="Views\ContractConsole\Items\" />
     <Folder Include="Views\MyTest\" />
     <Folder Include="Views\SystemInfo\" />
-    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

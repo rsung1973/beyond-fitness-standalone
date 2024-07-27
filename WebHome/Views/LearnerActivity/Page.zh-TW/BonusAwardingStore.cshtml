@@ -1,0 +1,357 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var account = profile.BonusDepositAccount;
+}
+
+@section MainContent
+{
+    <div class="card header-card" data-card-height="280">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    </div>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BonusDeposit.cshtml", account);
+    }
+
+    <div class="card mb-0" style="box-shadow: none;">
+
+        <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+                兌換商品·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Popular Categories</small>
+            </h4>
+
+            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
+
+                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+            </svg>
+
+            <div class="row text-center">
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.TrainingCourse).EncryptKey())');" class="col-6 col-lg-3 col-md-3 my-3">
+
+                    <div class="icon icon-xl exchange-store-icon text-center py-3 px-4">
+
+                        <img src="../images/icons/session/function.svg" class="icon icon-l rounded-m mx-auto mb-3 bg-transparent" width="75">
+
+                        <p class="font-15 font-400 text-uppercase color-theme opacity-80">訓練．恢復課</p>
+
+                    </div>
+
+                </a>
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.ExerciseEquipment).EncryptKey())');" class="col-6 col-lg-3 col-md-3 my-3">
+
+                    <div class="icon icon-xl exchange-store-icon text-center py-3 px-4">
+
+                        <img src="../images/icons/store/bodybuilding.svg" class="mx-auto mb-2 bg-transparent" width="80">
+
+                        <p class="font-15 font-700 text-uppercase">運動器材</p>
+
+                    </div>
+
+                </a>
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.FasciaReleaseEquipment).EncryptKey())');" class="col-6 col-lg-3 col-md-3 my-3">
+
+                    <div class="icon icon-xl exchange-store-icon text-center py-3 px-4">
+
+                        <img src="../images/icons/store/tennis.svg" class="mx-auto mb-2 bg-transparent" width="80">
+
+                        <p class="font-15 font-700 text-uppercase">放鬆筋膜器材</p>
+
+                    </div>
+
+                </a>
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.BrandedClothing).EncryptKey())');" class="col-6 col-lg-3 col-md-3 my-3">
+
+                    <div class="icon icon-xl exchange-store-icon text-center py-3 px-4">
+
+                        <img src="../images/icons/store/judo.svg" class="mx-auto mb-2 bg-transparent" width="80">
+
+                        <p class="font-15 font-700 text-uppercase">品牌服飾</p>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card bg-beyond-dark mb-0">
+
+        <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline color-beyondwhite-dark font-20">
+                熱門商品·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Popular Items</small>
+            </h4>
+
+
+
+            <div class="row text-center mt-5">
+
+                <div class="col-12 col-lg-4 col-md-4 mb-4">
+
+                    <a href="#"><img src="../images/store/massage-01.jpg" class="rounded-sm shadow-xl img-fluid"></a>
+
+                    <a href="#" class="d-block mt-3">
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i><br>
+
+                        <span class="font-13 d-block mt-n1 color-beyondblue-dark">548 Reviewers</span>
+
+                    </a>
+
+                    <a href="#">
+
+                        <h5 class="mt-1 color-white font-18">大眼怪</h5>
+
+                    </a>
+
+                    <h1 class="mt-3 mb-n2 font-800 color-beyondred-light">13<small class="font-300 font-13 letter-spacing-0">P</small></h1>
+
+                    <span class="opacity-50 font-14 d-block"><del>NTD $1,000</del></span>
+
+                    <a href="#" data-menu="exchange-merchant"
+                       class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
+                        立即兌換
+
+                        Go
+                    </a>
+
+                </div>
+
+
+
+                <div class="col-6 col-lg-4 col-md-4 mb-4">
+
+                    <a href="#"><img src="../images/store/massage-02.jpg" class="rounded-sm shadow-xl img-fluid"></a>
+
+                    <a href="#" class="d-block mt-3">
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i><br>
+
+                        <span class="font-13 d-block mt-n1 color-beyondblue-dark">241 Reviewers</span>
+
+                    </a>
+
+                    <a href="#">
+
+                        <h5 class="mt-1 color-white font-18">按摩滾筒（短）</h5>
+
+                    </a>
+
+                    <h1 class="mt-3 mb-n2 font-800 color-beyondred-light">15<small class="font-300 font-13 letter-spacing-0">P</small></h1>
+
+                    <span class="opacity-50 font-14 d-block"><del>NTD $1,440</del></span>
+
+                    <a href="#" data-menu="exchange-merchant"
+                       class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
+                        立即兌換
+
+                        Go
+                    </a>
+
+                </div>
+
+
+
+                <div class="col-6 col-lg-4 col-md-4 mb-4">
+
+                    <a href="#"><img src="../images/store/equipment-01.jpg" class="rounded-sm shadow-xl img-fluid"></a>
+
+                    <a href="#" class="d-block mt-3">
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i>
+
+                        <i class="fa fa-star color-beyondsunny-light"></i><br>
+
+                        <span class="font-13 d-block mt-n1 color-beyondblue-dark">174 Reviewers</span>
+
+                    </a>
+
+                    <a href="#">
+
+                        <h5 class="mt-1 color-white font-18">跳繩</h5>
+
+                    </a>
+
+                    <h1 class="mt-3 mb-n2 font-800 color-beyondred-light">6<small class="font-300 font-13 letter-spacing-0">P</small></h1>
+
+                    <span class="opacity-50 font-14 d-block"><del>NTD $450</del></span>
+
+                    <a href="#" data-menu="exchange-merchant"
+                       class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
+                        立即兌換
+
+                        Go
+                    </a>
+
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+
+
+    <div class="card">
+
+        <div class="content mx-4 mx-lg-4 mx-md-4 mt-5 mb-3">
+
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+                推薦好物·<small class="ps-2 font-14 font-400 text-capitalize color-beyondred-dark">Recommended for You</small>
+            </h4>
+
+            <div class="clearfix"></div>
+
+        </div>
+
+        <div class="splide single-slider slider-no-arrows slider-no-dots mx-3 " id="single-slider-2">
+
+            <div class="splide__track">
+
+                <div class="splide__list">
+
+                    <div class="splide__slide">
+
+                        <div class="content">
+
+                            <div class="d-flex">
+
+                                <div>
+
+                                    <img src="../images/store/equipment-02.jpg" class="me-3 rounded-m" style="width:150px!important;">
+
+                                </div>
+
+                                <div class="w-100">
+
+                                    <h4>滑盤 <span class="opacity-50 font-11"><del>NTD $200</del></span></h4>
+
+                                    <h1 class="mt-3 mb-n2 font-800">
+                                        3<small class="font-300 font-13 letter-spacing-0">P</small>
+                                    </h1>
+
+                                    <a href="#" data-menu="exchange-merchant"
+                                       class="d-block float-end color-theme opacity-90">
+                                        <i class="fa fa-shopping-cart pe-2 color-highlight"></i>立即兌換
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="splide__slide">
+
+                        <div class="content">
+
+                            <div class="d-flex">
+
+                                <div>
+
+                                    <img src="../images/store/equipment-03.jpg" class="me-3 rounded-m" style="width:150px!important;">
+
+                                </div>
+
+                                <div class="w-100">
+
+                                    <h4>滾筒+大花生球+按摩球(黑) <span class="opacity-50 font-11"><del>NTD $2,000</del></span></h4>
+
+                                    <h1 class="mt-3 mb-n2 font-800">20<small class="font-300 font-13 letter-spacing-0">P</small></h1>
+
+                                    <a href="#" data-menu="exchange-merchant" class="d-block float-end color-theme opacity-90">
+                                        <i class="fa fa-shopping-cart pe-2 color-highlight"></i>立即兌換Go
+                                    </a>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function gotoWindow(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("BonusAwardingWindow", "LearnerActivity"))',{'keyID':keyID, 'from': '@Html.Raw(Url.Action("BonusAwardingStore", "LearnerActivity"))'});
+        }
+    </script>
+
+}
+
+@section PopupBox
+{
+
+}

@@ -1,0 +1,55 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Models.Timeline
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    BonusDepositAccount account = this.Model as BonusDepositAccount;
+
+}
+<div class="content">
+
+    <!--Beyond幣-->
+
+    <div class="card bg-transparent mb-4 mx-auto" data-card-height="80" style="width: 210px;box-shadow:none" onclick="javascript:gotoCampaignStrategy();">
+
+        <div class="card-top">
+
+            <span class="icon icon-xl rounded-s float-end mb-n2"><i class="fa-brands fa-bitcoin font-40 color-beyondwhite-dark"></i></span>
+
+        </div>
+
+        <div class="card-bottom">
+
+            <h1 class="font-700 text-center color-white font-32 mb-2">@(account?.DepositPoint ?? 0)</h1>
+
+        </div>
+
+    </div>
+
+</div>

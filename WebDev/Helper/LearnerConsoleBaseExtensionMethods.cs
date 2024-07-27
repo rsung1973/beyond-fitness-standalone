@@ -38,5 +38,13 @@ namespace WebHome.Helper
 
         }
 
+        public static StageProgress PromptCurrentStage(this GenericManager<BFDataContext> models)
+        {
+            return models.GetTable<StageProgress>()
+                                .Where(p => DateTime.Today >= p.StartDate)
+                                .Where(p => DateTime.Today < p.EndExclusiveDate)
+                                .FirstOrDefault();
+        }
+
     }
 }

@@ -1,0 +1,65 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    PromotionAppraisalDataModel appraisal = (PromotionAppraisalDataModel)ViewBag.Appraisal;
+    Player currentPlayer = ViewBag.Player as Player;
+    var profile = currentPlayer?.UserProfile ?? (await Context.GetUserAsync());
+
+    CampaignMissionDataModel mission = (CampaignMissionDataModel)ViewBag.CurrentMission;
+
+    StageProgress current =  (StageProgress)ViewBag.StageProgress;
+
+}
+@{
+    LessonTimeAchievementHelper helper = new LessonTimeAchievementHelper(models)
+    {
+        LessonItems = models.GetTable<V_Tuition>()
+                        .Where(l => l.ClassTime >= current.StartDate)
+                        .Where(l => l.ClassTime < current.EndExclusiveDate)
+    };
+
+    var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID);
+    var lessonItems = models.GetTable<LessonTime>()
+        .Join(helper.LessonItems, l => l.LessonID, v => v.LessonID, (l, v) => l)
+        .Join(lessons, l => l.GroupID, r => r.RegisterGroupID, (l, r) => new { Lesson = l, l.RegisterID });
+
+    var feedbackItems = lessonItems
+                            .Select(l => l.Lesson.LessonFeedBack
+                                .Where(f => f.RegisterID == l.RegisterID)
+                                .Where(f=>f.CommitAssessment.HasValue)
+                                .FirstOrDefault())
+                            .ToList();
+
+    var result = !feedbackItems.Any(f => f == null);
+
+    mission.Goal = lessonItems.Count();
+    mission.ResultModel = feedbackItems.Where(f => f != null).Count();
+    mission.CheckResult = result;
+}

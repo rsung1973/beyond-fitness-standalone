@@ -1,0 +1,328 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    int id = (int)MerchandiseTransactionType.MainAwardingCategory.TrainingCourse;
+    if (_viewModel.KeyID != null)
+    {
+        id = _viewModel.DecryptKeyValue();
+    }
+
+    var typeItem = models.GetTable<MerchandiseTransactionType>()
+        .Where(t => t.TransactionID == id)
+        .FirstOrDefault();
+
+
+}
+
+@section MainContent
+{
+    <div class="card header-card" data-card-height="280">
+
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+    </div>
+
+    @if (typeItem != null)
+    {
+        <div class="content z-index-10">
+
+            <h1 class="boxed-text-xl font-28 color-beyondwhite-dark z-index-10 pt-5">@Html.Raw(typeItem.TransactionType)</h1>
+
+            <p class="text-center z-index-10">@Html.Raw(typeItem.Subtitle)</p>
+
+        </div>
+
+        <div class="row gx-0">
+
+            <div class="col-12">
+
+                <div class="card" style="background-color: #333333;">
+
+                    <div class="content mt-5">
+
+                        <div class="row">
+                            @{
+                                var items = typeItem.AwardingItemCategory.Select(c => c.BonusAwardingItem);
+                            }
+                            @foreach (var item in items
+                                                 .OrderBy(b => b.OrderIndex.HasValue ? b.OrderIndex : 10000)
+                                                 .ThenBy(b => b.PointValue))
+                            {
+                                <div class="col-12 col-lg-4 col-md-6 my-4">
+
+                                    <div class="d-flex mb-3">
+
+                                        <div class="w-100 me-3">
+                                            <div class="card card-style m-0 preload-img" data-src="@Html.Raw(item.SampleUrl!=null ? VirtualPathUtility.ToAbsolute(item.SampleUrl) : null)"
+                                                 data-card-height="160">
+                                            </div>
+                                        </div>
+
+                                        <div class="ms-auto w-100">
+                                            <h5 class="font-600 font-16 line-height-sm color-white">@Html.Raw(item.ItemName)</h5>
+                                            <h1 class="mt-3 mb-n2 font-800 color-beyondred-light">
+                                                @(item.PointValue)<small class="font-300 font-13 letter-spacing-0">P</small>
+                                            </h1>
+                                            <span class="opacity-50 font-14 d-block"><del>NTD $@($"{item.Price:##,###,###}")</del></span>
+
+                                            <a href="javascript:exchangeItem('@Html.Raw(item.ItemID.EncryptKey())');" class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
+                                                立即兌換
+
+                                                Go
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="divider my-4"></div>
+
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+
+
+
+    <!--更多類別-->
+
+    <div class="row">
+
+        <div class="row mx-3">
+
+            <div class="col-12">
+
+                <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20">
+                    更多類別·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">More Options</small>
+                </h4>
+
+                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-3">
+
+                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+
+                </svg>
+
+                <div class="clearfix"></div>
+
+            </div>
+
+        </div>
+
+        @if (id != (int)MerchandiseTransactionType.MainAwardingCategory.TrainingCourse)
+        {
+            <div class="col-12 col-lg-4 col-md-6">
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.TrainingCourse).EncryptKey())');">
+
+                    <div class="card card-style mb-3">
+
+                        <div class="d-flex">
+
+                            <div class="ps-2 ms-2 align-self-center">
+
+                                <h1 class="pt-4 font-22 color-theme">訓練．恢復課</h1>
+
+                                <p class="font-13 opacity-50 mt-n2 mb-4">Sessions</p>
+
+                            </div>
+
+                            <div class="ms-auto me-3 align-self-center">
+
+                                <img src="../images/icons/session/function.svg" class="icon icon-l rounded-m mx-auto mb-3 bg-transparent"
+                                     width="65">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+        @if (id != (int)MerchandiseTransactionType.MainAwardingCategory.ExerciseEquipment)
+        {
+            <div class="col-12 col-lg-4 col-md-6">
+
+                <a href="#">
+
+                    <div class="card card-style mb-3">
+
+                        <div class="d-flex">
+
+                            <div class="ps-2 ms-2 align-self-center">
+
+                                <h1 class="pt-4 font-22 color-theme">運動器材</h1>
+
+                                <p class="font-13 opacity-50 mt-n2 mb-4">Training Gears</p>
+
+                            </div>
+
+                            <div class="ms-auto me-3 align-self-center">
+
+                                <img src="../images/icons/store/bodybuilding.svg" class="mx-auto mb-2 bg-transparent"
+                                     width="65">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+        @if (id != (int)MerchandiseTransactionType.MainAwardingCategory.FasciaReleaseEquipment)
+        {
+            <div class="col-12 col-lg-4 col-md-6">
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.FasciaReleaseEquipment).EncryptKey())');">
+
+                    <div class="card card-style mb-3">
+
+                        <div class="d-flex">
+
+                            <div class="ps-2 ms-2 align-self-center">
+
+                                <h1 class="pt-4 font-22 color-theme">放鬆筋膜</h1>
+
+                                <p class="font-13 opacity-50 mt-n2 mb-4">Massage Equipment</p>
+
+                            </div>
+
+                            <div class="ms-auto me-3 align-self-center">
+
+                                <img src="../images/icons/store/tennis.svg" class="icon icon-l rounded-m mx-auto mb-3 bg-transparent"
+                                     width="65">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+        @if (id != (int)MerchandiseTransactionType.MainAwardingCategory.BrandedClothing)
+        {
+            <div class="col-12 col-lg-4 col-md-6">
+
+                <a href="javascript:gotoWindow('@Html.Raw(((int)MerchandiseTransactionType.MainAwardingCategory.BrandedClothing).EncryptKey())');">
+
+                    <div class="card card-style mb-3">
+
+                        <div class="d-flex">
+
+                            <div class="ps-2 ms-2 align-self-center">
+
+                                <h1 class="pt-4 font-22 color-theme">品牌服飾</h1>
+
+                                <p class="font-13 opacity-50 mt-n2 mb-4">Dress</p>
+
+                            </div>
+
+                            <div class="ms-auto me-3 align-self-center">
+
+                                <img src="../images/icons/store/judo.svg" class="mx-auto mb-2 bg-transparent"
+                                     width="65">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+        }
+    </div>
+    <script>
+        function gotoWindow(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("BonusAwardingWindow", "LearnerActivity"))',{'keyID':keyID, 'from': '@Html.Raw(Url.Action("BonusAwardingStore", "LearnerActivity"))'});
+        }
+
+        function exchangeItem(keyID) {
+            if (keyID == null || keyID == '') {
+                return;
+            }
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupBonusAwardingItem", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#exchange-item').html(data);
+                    $('#exchange-item').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+
+        function commitExchange(keyID) {
+            var viewModel = {
+                'KeyID': keyID,
+                'WriteoffCode': $('input[name="WriteoffCode"]').val(),
+            };
+            doPost('@Html.Raw(Url.Action("ExchangeBonusPoint", "LearnerActivity"))', viewModel, function (data) {
+                if (data.result) {
+                    window.location.href = 'LearnerAward';
+                } else {
+                    $('body').append(data);
+                }
+            });
+        }
+    </script>
+}
+
+@section PopupBox
+{
+    <div id="exchange-item" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="350">
+
+
+    </div>
+}

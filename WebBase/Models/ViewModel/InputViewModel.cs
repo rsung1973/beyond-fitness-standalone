@@ -661,4 +661,25 @@ namespace WebHome.Models.ViewModel
 		public int? AdvisorID { get; set; }
 	}
 
+    public class SelfAssessmentViewModel : QueryViewModel
+    {
+        public int? LessonID { get; set; }
+        public int? RegisterID { get; set; }
+        public decimal? SleepDuration { get; set; }
+        public decimal? WaterIntake { get; set; }
+        public decimal? FatigueIndex { get; set; }
+        public decimal? StressIndex { get; set; }
+        public bool? CheckTerms { get; set; }
+        public bool? Agree { get; set; }
+        public String SupplementaryStatement { get; set; }
+    }
+
+    public class FeedbackSurveyViewModel : QueryViewModel
+    {
+        public int? LessonID { get; set; }
+        public int? RegisterID { get; set; }
+        public DataTableColumn[] Answer { get; set; }
+
+    }
+
 }

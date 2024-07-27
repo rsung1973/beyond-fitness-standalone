@@ -1,0 +1,52 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    GameLevel _model = (GameLevel)this.Model;
+
+    Player currentPlayer = ViewBag.Player as Player;
+    var profile = currentPlayer?.UserProfile;
+
+    PromotionAppraisalDataModel appraisal = (PromotionAppraisalDataModel)ViewBag.Appraisal;
+    var missions = appraisal.Missions;
+    ViewBag.CheckMission = true;
+    bool result = true;
+    foreach(var mission in missions)
+    {
+        ViewBag.CurrentMission = mission;
+        await Html.RenderPartialAsync(mission.ViewPath, mission.Goal);
+        if (mission.CheckResult == false)
+        {
+            result = false;
+        }
+    }
+
+    appraisal.CheckResult = result;
+}
+

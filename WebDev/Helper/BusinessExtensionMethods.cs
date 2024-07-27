@@ -50,7 +50,7 @@ namespace WebHome.Helper
 
                 models.SubmitChanges();
 
-                if (item.IsPTSession())
+                if (item.IsPTOrSRSession())
                 {
                     foreach (var r in item.GroupingLesson.RegisterLesson)
                     {

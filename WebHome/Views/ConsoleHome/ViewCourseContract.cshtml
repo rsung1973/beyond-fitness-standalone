@@ -48,23 +48,66 @@
     <style type="text/css">
         body {
             background-color: #fff;
+            counter-reset: myCounter;
         }
+
+        #purpose {
+            counter-reset: myCounter;
+        }
+
         ol {
-            padding: 0 0 0 18px;
+            padding: 0 0 0 15px;
             margin: 0;
-            list-style-type:decimal;
+            list-style-type: decimal;
             list-style-position: outside;
         }
-        ol li li {
-            padding: 0 0 0 15px;
+
+            ol li b {
+                counter-increment: myCounter;
+                counter-reset: itemCounter;
+            }
+
+            ol li ol li ol {
+                counter-reset: detailsCounter;
+            }
+
+                ol li ol li ol li ol {
+                    counter-reset: fourthCounter;
+                }
+
+            ol li li {
+                padding: 0 0 0 5px;
+                counter-increment: itemCounter;
+            }
+
+                ol li li li {
+                    counter-increment: detailsCounter;
+                }
+
+                    ol li li li li {
+                        counter-increment: fourthCounter;
+                    }
+
+            ol li::marker {
+                font-weight: bold;
+            }
+
+        li li::marker {
+            content: counter(myCounter)"."counter(itemCounter);
+            font-weight: normal;
         }
-        ol li::marker {
-            font-weight: bold;
-        }        
-        li li::marker{
-            content: counters(list-item,".",list-item)" ";
-            font-weight: normal;            
+
+        li li li::marker {
+            content: counter(myCounter)"."counter(itemCounter)"."counter(detailsCounter);
+            font-weight: normal;
         }
+
+        li li li li::marker {
+            content: counter(myCounter)"."counter(itemCounter)"."counter(detailsCounter)"."counter(fourthCounter);
+            font-weight: normal;
+        }
+
+
         ol ol {
             padding-left: 23px;
         }
@@ -73,7 +116,7 @@
             size: portrait; /* 直向 */
             size: A4 portrait; /* 混合使用 */
             
-            margin: 1cm; /* 邊界與內容的距離 */
+            margin: 1.27cm; /* 邊界與內容的距離 */
         }
     </style>
 </head>

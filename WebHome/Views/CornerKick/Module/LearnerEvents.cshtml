@@ -43,7 +43,7 @@
     {
         <div class="added-event type1" data-date="@($"{item.ClassTime:yyyy-MM-dd}")" data-title="@($"{item.ClassTime:yyyy-MM-dd HH:mm}")-@($"{item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value):HH:mm}")【S.D】" data-event-id="@(item.LessonID)" data-link="#"></div>
     }
-    else if (item.IsPTSession())
+    else if (item.IsPTOrSRSession())
     {
         if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.點數兌換課程
             && item.RegisterLesson.LessonPriceType.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))

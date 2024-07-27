@@ -1,0 +1,69 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    Layout = "~/Views/LearnerActivity/Page.zh-TW/Module/CampaignGameLevelTemplate.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    GameLevel _model = (GameLevel)this.Model;
+    //Player currentLevel = ViewBag.Player as Player;
+    //var profile = currentLevel?.UserProfile;
+}
+
+@section Condition
+{
+    <div class="condition">
+
+        <ul class="line-height-l">
+
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PTMission.cshtml", 4);
+            }
+
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/SelfAssessmentMission.cshtml");
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/FeedbackSurveyMission.cshtml");
+            }
+
+        </ul>
+
+        <badge class="bg-beyondred-dark px-2 rounded-m font-12 mb-2">限時回饋</badge>
+
+        <ul>
+
+            <li>
+
+                原任務牆點數回饋加碼 150%
+
+            </li>
+
+        </ul>
+
+        <a href="#" data-menu="popup-levelTable" class="btn btn-border rounded-xl border-lightgray-dark bg-beyond-dark color-beyondwhite-dark px-4 py-1 font-12 align-self-end align-self-lg-start align-self-md-start mx-2 mx-lg-0 mx-md-0">瞭解更多</a>
+
+    </div>
+}
