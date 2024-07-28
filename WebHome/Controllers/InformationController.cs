@@ -364,11 +364,17 @@ namespace WebHome.Controllers
             var item = models.GetTable<Attachment>().Where(a => a.AttachmentID == viewModel.id).FirstOrDefault();
             if (item != null)
             {
-                if (System.IO.File.Exists(item.StoredPath))
+                String imgPath = item.StoredPath;
+                if (!System.IO.File.Exists(imgPath))
+                {
+                    imgPath = WebApp.MapPath(imgPath);
+                }
+
+                if (System.IO.File.Exists(imgPath))
                 {
                     if (stretch == true)
                     {
-                        using (Bitmap img = new Bitmap(item.StoredPath))
+                        using (Bitmap img = new Bitmap(imgPath))
                         {
                             checkOrientation(img);
 
@@ -389,7 +395,7 @@ namespace WebHome.Controllers
                             }
                         }
                     }
-                    return new PhysicalFileResult(item.StoredPath, "application/octet-stream");
+                    return new PhysicalFileResult(imgPath, "application/octet-stream");
                 }
             }
             return new EmptyResult();
