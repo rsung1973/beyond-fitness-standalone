@@ -163,7 +163,7 @@
                             "Name":"bodybuilding",
                         }
                     ],
-                    "Experience": "<ul><li>極限健身中心資深私人教練</li><li>健身工廠私人教練</li><li>波恩體能顧問店經理</li><li>Beyond Fitness南京店副理</li><li>Beyond Fitness教育培訓首席教官</li></ul>",
+                    "Experience": "<ul><li>Beyond Fitness教育培訓首席教官</li><li>波恩體能顧問店經理</li><li>健身工廠私人教練</li><li>極限健身中心資深私人教練</li><li>國立臺灣師範大學運動科學研究所</li></ul>",
                     "Voice": [
                         {
                             "Date": "2023.10.12",
@@ -238,7 +238,7 @@
                             "Name":"yoga",
                         }
                     ],
-                    "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>2003 救國團/企業瑜伽專任教練</li><li>攀登百岳#嘉明湖</li></ul>"                    
+                    "Experience": "<ul><li>2023 Beyond Fitness Influencer Award 季軍🥉</li><li>2022 Beyond Fitness Influencer Award 季軍🥉</li><li>2003 救國團/企業瑜伽專任教練</li><li>攀登百岳#嘉明湖</li></ul>"                    
                 },
                 {
                     "MemberCode": "KE83515245",
@@ -329,7 +329,7 @@
                             "Name":"diving",
                         }
                     ],
-                    "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 季軍</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
+                    "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 亞軍🥈</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"                    
                 },          
                 {
                     "MemberCode": "DK80697151",
@@ -370,7 +370,7 @@
                             "Name":"football",
                         }
                     ],
-                    "Experience": "<ul><li>108年全國運動會橄欖球項目金牌</li><li>2022 Beyond Fitness Thoughtfulness Award 冠軍</li></ul>"                    
+                    "Experience": "<ul><li>2023 Beyond Fitness Thoughtfulness Award冠軍🥇 </li><li>2022 Beyond Fitness Thoughtfulness Award冠軍🥇</li><li>2008年全國運動會橄欖球項目金牌</li></ul>"                                     
                 },
                 // {
                 //     "MemberCode": "PA57705810",
@@ -488,84 +488,7 @@
                         }
                     ],
                     "Experience": "<ul><li>國都汽車企業團課講師（教學正確運動方式和和提升心肺適能）</li><li>國都汽車企業拍攝教練（伸展動作教學）</li><li>偏鄉公益活動講師（瑜珈）</li><li>百岳攀登＃大小壩</li></ul>"                    
-                },
-                // {
-                //     "MemberCode": "CL74347383",
-                //     "Name": "曾怡暄",
-                //     "NameDesc": "Cami",
-                //     "JobTitle": "營養諮詢師",
-                //     "JobType": "Dietitian",
-                //     "CoverInfo":[
-                //         {
-                //             "Shape": "avatar-left.svg",
-                //             "NamePosition": "translate(98.06 183.4)",
-                //             "JobPosition": "translate(85.06 153.46)",
-                //             "ImgXShifting": -40,
-                //             "ImgYShifting": -40,
-                //         }                        
-                //     ],
-                //     "Slogan": "Diet is life, life is diet, as important as exercise.",
-                //     "SloganDesc": "飲食就是生活，生活就是飲食，跟運動一樣重要。",
-                //     "Desc": "對任何人事物保持好奇心並認真的去了解其中的細節，並且喜歡接受不同的挑戰來演變成自己的一套生活方法。",
-                //     "License":[
-                //         {
-                //             "Name": "高考營養師",
-                //         },
-                //          {
-                //             "Name": "CTSSN運動營養認證",
-                //         }        
-                //     ],
-                //     "Expertise":[
-                //         {
-                //             "Item": "客製化飲食規劃",
-                //         },
-                //         {
-                //             "Item": "運動營養菜單設計",
-                //         },
-                //         {
-                //             "Item": "素食營養飲食規劃",
-                //         }                  
-                //     ],
-                //     "Sports":[
-                //         {
-                //             "Name":"hiking",
-                //         },
-                //         {
-                //             "Name":"running",
-                //         }
-                //     ],
-                //     "Experience": "<ul><li>長跑退役選手</li><li>攀登百岳#嘉明湖#玉山主峰</li><li>Lululemon企業合作營養講師</li></ul>",
-                //     "Voice": [
-                //         {
-                //             "AboutDefCoach": "如何在自己的職涯中，發揮更深遠的正面效應?",
-                //             "BriefPosition": "right",
-                //             "BriefColor": "text-color-light",
-                //             "NameColor": "text-color-secondary",
-                //             "BriefInfo": "於2022年加入Beyond<br>曾為長跑退役選手、Lululemon企業合作營養講師，現擔任Beyond Fitness營養諮詢師",
-                //             "TalkSlogan": "成為彼此生活中的夥伴",
-                //             "TalkMessage": "能夠看到學生的改變，是身為一位專業教練的成就感來源。但能夠推動學生變化的，不是只有單純在訓練上照表操課，更多的是能夠聆聽學生真正的內在需求。<br/><br/>Hogan認為，如果可以讓工作與生活緊密結合，在生活中也成為與學生互相支持的夥伴，這會成為一種強大的力量，互惠彼此。",
-                //             "Interviews":[
-                //                 {
-                //                     "Question":"是什麼動機使你從「運動員」轉換到「營養師」的跑道？ 心態上有哪些轉換？",
-                //                     "Answers": "<p>高中時期我是一名長跑選手，然而由於受傷的緣故，重新開始深思「<u>營養對運動的重要性</u>」。</p><p>在深入了解營養知識後，發現網路上存在著許多誤導與錯誤的觀念，例如：認為不吃碳水化合物才能達到減肥效果，或者誤以為夠瘦可以增加跑步的速度等等。但經過學習真正的營養知識後，我明白這些觀念實際上可能會影響跑步表現，甚至增加受傷風險。</p><p>最終，我得出的結論是，<u>為了能夠更快、更有效地跑步，確實需要攝取足夠的碳水化合物</u>。這是一個我之前所未意識到的關鍵因素，它不僅有助於提升表現，還能減少受傷的可能性。 </p>"
-                //                 },
-                //                 {
-                //                     "Question":"「退役運動員」與「營養師」的雙重身份，你是如何看待？",
-                //                     "Answers": "<p>退役的運動員經歷，讓我比其他人更了解<u>堅持與努力不懈才能達到期許的目標</u>，這種信念是我將其融入學生生活的核心理念。我理解學生在面對生活節奏及執行上的挑戰時，容易感到沮喪並放棄。因此，我努力「<u>配合學生的步調，並從他們的角度出發</u>」，以更符合實際情境的方式，調整達到目標的步伐。</p><p>透過我的長期營養諮詢的經驗，能夠以更貼近學生的方式引導，鼓勵他們在困難面前保持堅持。如何能夠達成目標應該切實的理解，在<u>實現目標過程中是需要耐心和持之以恆</u>。這種以學生為中心的教學方法，不僅考慮到他們的生活節奏，也讓我能夠更有效地協助他們達成個人目標，為未來打下健康穩固的基礎。</p>"
-                //                 },
-                //                 {
-                //                     "Question":"與學生諮詢的過程中，最常見的問題與挑戰有哪些？有發生什麼樣有趣的小故事嗎？",
-                //                     "Answers": "<p>最常面臨的挑戰是學生原本的飲食本來就低於每日需求量，但卻希望進一步減重。這種情況下，通常<u>花更多時間和學生溝通，並且深入了解他們的期望和需求</u>。</p><p>有時候，學生可能對自己的身體狀況存在一些誤解，以為進一步節食就是唯一的方法。我會藉由清晰的思路與營養科學的角度，幫助他們理解健康減重的原則，並提供合理的飲食建議。在這個過程中，同時告訴他們，雖然調整飲食可能需要一些時間，但在長遠來看，這種努力是值得的，因為它不僅有助於減重，更有助於維持良好的整體健康。鼓勵學生<u>放眼未來，看到他們為自己的身體所做的投資，並理解現在的努力將帶來長遠的益處</u>。</p>"
-                //                 },
-                //                 {
-                //                     "Question":"Beyond的職場經驗中，有哪些觸動你的故事嗎？",
-                //                     "Answers": "<p>每位Beyond的學生都有著與眾不同的故事，<u>透過諮詢的過程，得以深入瞭解他們的飲食習慣、生活方式，以及更深層的個人層面</u>。這樣的交流過程充滿趣味，因為每個人的故事都是如此豐富多彩。</p><p>其中一位學生的故事尤其令我印象深刻。她與我分享了從事的工作，以及她的小孩。透過聊天的過程中，得知小孩在媽媽受到營養諮詢的啟發下，也開始對營養產生濃厚興趣。這樣的轉變讓我感覺非常有成就感，因為看到我的工作不僅僅是在影響學生，同時也擴散至他們身邊的家人和社交圈，產生更大的正面影響力。</p><p>這樣的連鎖效應讓我深信，營養諮詢不僅僅是關於飲食與熱量的控制。透過營養諮詢的過程，我發現它更具有深刻的影響力，能夠在周遭的人們中產生深遠的正面效應。</p>"
-                //                 },
-                //             ],
-                //             "Conclusion":"對任何人事物保持好奇心並認真的去了解其中的細節，並且喜歡接受不同的挑戰來演變成自己的一套生活方法。"
-                //         }                    
-                //     ]      
-                // }
+                },                
             ]         
         },
         {
@@ -991,7 +914,7 @@
                             "Name":"basketball",
                         }
                     ],
-                    "Experience": "<ul><li>木柵高工棒球隊</li><li>林口康World gym私人教練橋幼兒足球教練</li><li>偏鄉兒童足球活動指導</li></ul>",
+                    "Experience": "<ul><li>木柵高工棒球隊</li><li>World Gym私人教練</li><li>偏鄉兒童足球活動指導</li></ul>",
                     "Voice": [
                         {
                             "AboutDefCoach": "如何與學生成為相互支持的夥伴？",
@@ -1394,7 +1317,7 @@
                             "Name":"swimming",
                         }
                     ],
-                    "Experience": "<ul><li>伊甸社會福利基金會 2018台北一壽養護中心 樂活講座講師</li><li>伊甸社會福利基金會 2019基隆頤福中心員工教育訓練之運動指導</li><li>百岳攀登＃七星山＃長壽山</li></ul>",
+                    "Experience": "<h4>2024</h4><ul><li>伊甸基金會長輩運動之強化核心與下肢肌力課程</li><li>第13屆松運MIIZUNO盃全國分齡游泳錦標 <ul class=\"text-3\"><li>35~44歲級女子組 50公尺蝶式亞軍🥈</li><li>200公尺混合接力第四名🏅</li><li>100公尺蛙式第六名🏅</li></ul></li><li>駿斯夢想游泳錦標賽 <ul class=\"text-3\"><li>35~44歲級女子組50公尺蝶式第五名🏅</li><li>50公尺仰式第五名🏅</li></ul></li></ul><h4>2023</h4><ul><li>斯巴達障礙跑競賽 SUPER 競爭組 10K</li><li>第九屆日月潭公開水域游泳錦標賽泳渡挑戰組</li></ul>",
                     "Voice": [
                         {
                             "Date": "2023.11.08",
@@ -1429,7 +1352,6 @@
                         }                    
                     ]
                 },
-
                 {
                     "MemberCode": "BV7219179",
                     "Name": "劉家瑜",
@@ -1445,9 +1367,9 @@
                         }     
 
                     ],
-                    "Slogan": "A crisis can be an opportunity.",
+                    "Slogan": "A crisis can be an opportunity, it’s all about attitude",
                     "SloganDesc": "危機就是轉機，你的選擇比努力更重要。",
-                    "Desc": "運動超越運動本身！它是我克服低谷，重拾生活的伙伴。對我來說運動不僅僅只是訓練，而是找到更自信的”我”。",
+                    "Desc": "認真看待生活的每一個環節，人生如是，工作如是，運動如是。",
                     "License":[
                         {
                             "Name": "ACE",
@@ -1470,7 +1392,7 @@
                             "Name":"weightlifting",
                         }
                     ],
-                    "Experience": "<h4>2022</h4><ul><li>Beyond月內訓講師</li><li>Beyond Fitness Responsibility Award 冠軍</li></ul><h4>~2021</h4><ul><li>跆拳道品勢全國賽</li><li>波恩體能顧問私人教練</li></ul>"                                    
+                    "Experience": "<h4>2022~2024</h4><ul><li>Beyond月內訓講師</li><li>Beyond Fitness Responsibility Award 冠軍🥇</li><li>Beyond Fitness Responsibility Award 季軍🥉</li></ul><h4>~2021</h4><ul><li>跆拳道品勢全國賽</li><li>波恩體能顧問私人教練</li></ul>"                                    
                 },
                 {
                     "MemberCode": "KK31237994",
@@ -1514,7 +1436,7 @@
                             "Name":"weightlifting",
                         }
                     ],
-                    "Experience": "<ul><li>桃城硬舉單項健力賽</li><li>Beyond足球隊</li><li>2022~Beyond教育培訓首席教官</li></ul>"                    
+                    "Experience": "<ul><li>2022~2023 Beyond教育培訓首席教官</li><li>Beyond足球隊</li><li>桃城硬舉單項健力賽</li></ul>"                    
                 },
                 {
                     "MemberCode": "UB83379346",
@@ -1559,6 +1481,18 @@
                         },
                         {
                             "Name":"weightlifting",
+                        },
+                        {
+                            "Name":"badminton",
+                        },
+                        {
+                            "Name":"tennis",
+                        },
+                        {
+                            "Name":"swimming",
+                        },
+                        {
+                            "Name":"gymnastics",
                         }
                     ],
                     "Experience": "<ul><li>保加利亞國際邀請賽-田徑</li><li>俄羅斯奧林匹克青少年-田徑</li><li>游泳教練&救生員</li></ul>"                    
@@ -1605,49 +1539,87 @@
                     "Experience": "<ul><li>2022中正盃五人制足球賽</li><li>企業公益活動講師</li><li>Beyond月內訓講師</li></ul>"                    
                 },
                 {
-                    "MemberCode": "HT51228765",
-                    "Name": "林雅婷",
-                    "NameDesc": "Arika",
+                    "MemberCode": "HY495202",
+                    "Name": "薛皓云",
+                    "NameDesc": "Sina",
                     "JobTitle": "私人教練",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(250.61 184.4)",
-                            "JobPosition": "translate(250.61 154.46)",
-                            "ImgXShifting": -100,
-                            "ImgYShifting": -30,
+                            "Shape": "avatar-half.svg",
+                            "NamePosition": "translate(63.61 184.4)",
+                            "JobPosition": "translate(55.61 154.46)",
+                            "ImgXShifting": -90,
+                            "ImgYShifting": -40,
                         }                        
-                    ],                    
-                    "Slogan": "Be patient,the best things happen unexpectedly.",
-                    "SloganDesc": "保持耐性,訓練是一段長期而持續累積的過程,會有意想不到的收穫。",
-                    "Desc": "三鐵比賽教會我用充滿堅忍活力的好奇心來拓展視野，我認為運動不僅只是訓練肌肉，更是訓練一顆強健的心來面對生活。",
+                    ],
+                    "Slogan": "無論何時開始，永遠不嫌晚",
+                    "SloganDesc": "Better late than never.",
+                    "Desc": "樂於陪伴他人一同探索，體驗成長的喜悅。相信耐心的陪伴能夠在創造深刻的連結，並共同擁抱每一個進步的時刻。",
                     "License":[
                         {
                             "Name": "ACE",
                         },
                         {
-                            "Name": "TRX",
-                        }, 
+                            "Name": "Monster",
+                        },
+                        {
+                            "Name": "AIDA",
+                        },
                         {
                             "Name": "CPRAED"
-                        }                   
+                        }                        
                     ],
                     "Sports":[
                         {
-                            "Name":"running",
-                            
-                        },
-                        {
-                            "Name":"swimming",
-                            
-                        },
-                        {
-                            "Name":"ironman",
-                            
+                            "Name":"diving",
                         }
                     ],
-                    "Experience": "<ul><li>113鐵人三項競賽</li><li>國內外馬拉松</li><li>三鐵賽事</li></ul>"                       
+                    "Experience": "<h4>2022</h4><ul><li>Beyond 月內訓 講師</li><li>Beyond Fitness Excellence Award 冠軍</li></ul>"                    
                 },
+                // {
+                //     "MemberCode": "HT51228765",
+                //     "Name": "林雅婷",
+                //     "NameDesc": "Arika",
+                //     "JobTitle": "私人教練",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-right.svg",
+                //             "NamePosition": "translate(250.61 184.4)",
+                //             "JobPosition": "translate(250.61 154.46)",
+                //             "ImgXShifting": -100,
+                //             "ImgYShifting": -30,
+                //         }                        
+                //     ],                    
+                //     "Slogan": "Be patient,the best things happen unexpectedly.",
+                //     "SloganDesc": "保持耐性,訓練是一段長期而持續累積的過程,會有意想不到的收穫。",
+                //     "Desc": "三鐵比賽教會我用充滿堅忍活力的好奇心來拓展視野，我認為運動不僅只是訓練肌肉，更是訓練一顆強健的心來面對生活。",
+                //     "License":[
+                //         {
+                //             "Name": "ACE",
+                //         },
+                //         {
+                //             "Name": "TRX",
+                //         }, 
+                //         {
+                //             "Name": "CPRAED"
+                //         }                   
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"running",
+                            
+                //         },
+                //         {
+                //             "Name":"swimming",
+                            
+                //         },
+                //         {
+                //             "Name":"ironman",
+                            
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>113鐵人三項競賽</li><li>國內外馬拉松</li><li>三鐵賽事</li></ul>"                       
+                // },
                 {
                     "MemberCode": "YF58789473",
                     "Name": "蔡靖綾",
@@ -1664,7 +1636,7 @@
                     ],
                     "Slogan": "You are stronger than you think.",
                     "SloganDesc": "訓練就是對身體最好的投資；愛自己也是。",
-                    "Desc": "透過處事細膩且堅定的特質來幫助他人。注重聆聽自己的內心聲音，遠離外界的期望，我認為每一刻的”我”都是獨一無二的。",
+                    "Desc": "透過處事細膩且堅定的特質來幫助他人。我認為每一刻的”我”都是獨一無二的。不論是在什麼樣貌，都是美麗的。",
                     "License":[
                         {
                             "Name": "NASM",
@@ -1687,7 +1659,7 @@
                             "Name":"skateboarding",
                         }
                     ],
-                    "Experience": "<ul><li>百岳攀登#合歡山東峰</li></ul>"                    
+                    "Experience": "<ul><li>斯巴達障礙跑競賽 2023 Super超級賽</li><li>半程馬拉松（國家地理頻道）</li><li>百岳攀登#合歡山東峰</li></ul>"                    
                 },
                 {
                     "MemberCode": "AP42116196",
@@ -1777,7 +1749,7 @@
                             "Name":"running",
                         }                   
                     ],
-                    "Experience": "<ul><li>2015半馬賽事</li><li>2016 10K跑步</li><li>2023 3200m長泳</li></ul>"                    
+                    "Experience": "<h4>2024</h4><ul><li>國家地理頻道半程馬拉松</li><li>社區乙組棒球聯賽</li></ul><h4>2023</h4><ul><li>斯巴達障礙跑競賽Super超級賽</li><li>3200m長泳</li></ul><h4>~2015</h4><ul><li>半馬賽事</li><li>新北市政府社區棒球聯賽</li></ul>"
                 },
             ]
         },
@@ -1866,7 +1838,7 @@
                             "Name":"softball",
                         }
                     ],
-                    "Experience": "<ul><li>2008 總統盃壘球大專校隊組 第四名</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍</li><li>2023 全國大專校友盃壘球賽 第五名</li></ul>"                    
+                    "Experience": "<ul><li>2023 全國大專校友盃壘球賽 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍🥇</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2008 總統盃壘球大專校隊組 第四名</li></ul>"                    
                 },
                 {
                     "MemberCode": "UX92868239",
@@ -1907,7 +1879,7 @@
                             "Name":"boxing",
                         }
                     ],
-                    "Experience": "<ul><li>2015 新竹社會服務中心 年長者日間照顧實習生</li><li>2014 寧園安養院照顧服務臨床實習</li></ul>"                    
+                    "Experience": "<ul><li>2023 TMMA 男子拳擊館內賽</li><li>2015 新竹社會服務中心 年長者日間照顧實習生</li><li>2014 寧園安養院照顧服務臨床實習</li></ul>"                    
                 },
                 {
                     "MemberCode": "IK16227216",
@@ -1960,46 +1932,8 @@
                             "Name":"handball",
                         }
                     ],
-                    "Experience": "<h4>2022~2023</h4><ul><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2014</h4><ul><li>巧固球-亞洲盃中華隊</li></ul>"                    
-                },
-                {
-                    "MemberCode": "HY495202",
-                    "Name": "薛皓云",
-                    "NameDesc": "Sina",
-                    "JobTitle": "私人教練",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(63.61 184.4)",
-                            "JobPosition": "translate(55.61 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Better late than never.",
-                    "SloganDesc": "Better late than never.",
-                    "Desc": "樂於陪伴他人一同探索，體驗成長的喜悅。相信耐心的陪伴能夠在創造深刻的連結，並共同擁抱每一個進步的時刻。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "Monster",
-                        },
-                        {
-                            "Name": "AIDA",
-                        },
-                        {
-                            "Name": "CPRAED"
-                        }                        
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<h4>2022</h4><ul><li>Beyond 月內訓 講師</li><li>Beyond Fitness Excellence Award 冠軍</li></ul>"                    
-                },
+                    "Experience": "<h4>2024</h4><ul><li>HYROX 2024 TAIPEI DOUBLES MEN</li></ul><h4>2022~2023</h4><ul><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2014</h4><ul><li>巧固球-亞洲盃中華隊</li></ul>"                    
+                },                
                 {
                     "MemberCode": "RX14099392",
                     "Name": "洪翎容",
@@ -2105,7 +2039,7 @@
                             "Name":"hiking",
                         }
                     ],
-                    "Experience": "<h4>2022</h4><ul><li>百岳攀登 #加利山 #伊澤山</li></ul>"                    
+                    "Experience": "<h4>2024</h4><ul><li>HYROX 2024 TAIPEI DOUBLES MEN</li><li>合歡北峰 3422m</li></ul><h4>2023</h4><ul><li>雪山東峰 3201m</li><li>Beyond Collaboration Award 季軍🥉</li></ul><h4>2022</h4><ul><li>百岳攀登 #加利山 #伊澤山</li></ul>"                    
                 },
                 {
                     "MemberCode": "AN96094341",
@@ -2150,7 +2084,7 @@
                             "Name":"running",
                         }
                     ],
-                    "Experience": "<h4>2022</h4><ul><li>Beyond 月內訓 講師</li><li>華南銀行合作課程 講師</li></ul><h4>2023</h4><ul><li>Beyond 月內訓 講師</li><li>Beyond Fitness Influencer Award 冠軍</li><li>Beyond Fitness Responsibility Award 亞軍</li></ul><h4>2019</h4><ul><li>渣打臺北馬拉松 運動傷害防護</li></ul>"                    
+                    "Experience": "<h4>2024</h4><ul><li>HYROX 2024 TAIPEI DOUBLES MIXED</li></ul><h4>2023</h4><ul><li>Beyond 月內訓講師</li><li>華南銀行合作課程講師</li></ul><h4>2022</h4><ul><li>Beyond 月內訓講師</li><li>Beyond Fitness Influencer Award 冠軍🥇</li><li>Beyond Fitness Responsibility Award 季軍🥈</li></ul><h4>2019</h4><ul><li>渣打臺北馬拉松 運動傷害防護</li></ul>"                    
                 },
                 {
                     "MemberCode": "FF91980536",
@@ -2185,7 +2119,7 @@
                             "Name":"skating",
                         }
                     ],
-                    "Experience": "<ul><li>2021總統盃健體178-新秀🥉</li><li>2021環球盃健體178-新秀🥈</li><li>2021環球盃健體178-公開🥉</li><li>Panasonic x Beyond 企業合作教練</li></ul>"                    
+                    "Experience": "<ul><li>2021總統盃健體178-新秀季軍🥉</li><li>2021環球盃健體178-新秀亞軍🥈</li><li>2021環球盃健體178-公開季軍🥉</li><li>Panasonic x Beyond 企業合作教練</li></ul>"                    
                 },
                 {
                     "MemberCode": "WW14600706",
@@ -2229,7 +2163,7 @@
                             "Name":"handball",
                         }
                     ],
-                    "Experience": "<ul><li>2018紐西蘭西式划船教練研習</li><li>2019世界名校賽艇對抗賽 台灣大學代表</li><li>2019年西式划船亞洲盃 </li><li>2019划船世界名校賽體育系列賽 台灣大學代表</li><li>第40屆香港賽艇錦標賽 季軍</li></ul>"                    
+                    "Experience": "<h4>2024</h4><ul><li>HYROX 2024 TAIPEI DOUBLES MIXED</li></ul><h4>2023</h4><ul><li>世界名校賽艇對抗賽 台灣大學代表</li><li>西式划船亞洲盃季軍🥈</li><li>划船世界名校賽體育系列賽 台灣大學代表</li></ul>"                    
                 },
                 {
                     "MemberCode": "WF96233308",
@@ -2268,6 +2202,9 @@
                     "Sports":[
                         {
                             "Name":"badminton",
+                        },
+                        {
+                            "Name":"hiking",
                         }
                     ],
                     "Experience": "<ul><li>運動指導員增能課程研習</li><li>OAK-PGC 精準指導學研習</li><li>Panasonic x Beyond 企業合作教練</li></ul>"                    
@@ -2327,7 +2264,7 @@
                         }
 
                     ],
-                    "Experience": "<ul><li>Beyond X Lulu Lemon 品牌合作跑步恢復講堂講師</li></ul>",
+                    "Experience": "<h4>2024</h4><ul><li>Challenge Taiwan 鐵人三項｜51.5Ｋ標鐵組</li></ul><h4>2023</h4><ul><li>臺北馬拉松｜21K半馬組</li><li>斯巴達障礙挑戰賽｜SUPER 10Ｋ組</li></ul><h4>2022</h4><ul><li>Beyond X Lulu Lemon 品牌合作 跑步恢復講堂 講師</li></ul>",
                     "Voice": [
                         {
                             "Date": "2024.06.22",
@@ -2461,7 +2398,7 @@
                             "Name":"handstand",
                         }
                     ],
-                    "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li>"                    
+                    "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul>"                    
                 },
             ]
         },
@@ -2752,7 +2689,7 @@
                             "Name":"bodybuilding",
                         }
                     ],
-                    "Experience": "<ul><li>極限健身中心資深私人教練</li><li>健身工廠私人教練</li><li>波恩體能顧問店經理</li><li>Beyond Fitness南京店副理</li><li>Beyond Fitness教育培訓首席教官</li></ul>",
+                    "Experience": "<ul><li>Beyond Fitness教育培訓首席教官</li><li>波恩體能顧問店經理</li><li>健身工廠私人教練</li><li>極限健身中心資深私人教練</li><li>國立臺灣師範大學運動科學研究所</li></ul>",
                     "Voice": [
                         {
                             "Date": "2023.10.12",
