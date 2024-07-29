@@ -34,23 +34,17 @@
 
 @section MainContent
 {
-
+     <div class="card header-card shape-rounded" data-card-height="310">
+        <div class="card-overlay bg-beyondsunny-dark opacity-95"></div>
+    </div>
     <div class="card mb-0 bg-transparent">
-
         <div class="content mt-5" id="point_query">
-
             <div class="tab-controls point tabs-large tabs-rounded" data-highlight="bg-beyond-dark" style="background-color: transparent !important;">
-
                 <a href="#" data-active data-bs-toggle="collapse" data-bs-target="#session" class="mx-2 font-500">訓練．恢復課</a>
-
                 <a href="#" data-bs-toggle="collapse" data-bs-target="#minus" class="mx-2 font-500">其他商品</a>
-
             </div>
-
             <div class="clearfix my-5 pt-1"></div>
-
             <div class="card mb-0 py-5 bg-transparent" style="box-shadow: none;">
-
                 <div data-bs-parent="#point_query" class="collapse show mx-3 mx-lg-5 mx-md-5" id="session">
                     @{
                         var items = profile.LearnerAward.Where(a => a.BonusAwardingItem.BonusAwardingLesson != null);
@@ -58,22 +52,20 @@
                     @foreach (var item in items)
                             {
                         <div class="d-flex my-3">
-
                             <div class="align-self-start ms-3 me-3">
-
                                 <h5 class="letter-spacing-2 font-500">
-                                    @Html.Raw(item.BonusAwardingItem.ItemName)
+                                    @Html.Raw(item.BonusAwardingItem.ItemName.CutString('('))
                                     @if (item.AwardingLessonGift != null)
                                     {
-                                        <text> - @Html.Raw(item.AwardingLessonGift.RegisterLesson.UserProfile.FullName(true))</text>
+                                       
+                                        <small
+                                            class="d-block">贈送-@Html.Raw(item.AwardingLessonGift.RegisterLesson.UserProfile.RealName)</small>
                                     }
+                                    
                                 </h5>
                                 <span class="font-14 color-theme opacity-60 letter-spacing-1">@Html.Raw($"{item.AwardDate:yyyy/MM/dd}")</span>
-
                             </div>
-
                             <div class="align-self-center ms-auto me-3">
-
                             </div>
 
                             <div class="align-self-center">
@@ -94,7 +86,7 @@
                                 }
                                 @if (classTime.HasValue)
                                 {
-                                    <span class="font-14 letter-spacing-1 d-block"><i class="fa-regular fa-calendar-check font-16 px-2"></i>@($"{classTime:yy/MM/dd}")</span>
+                                    <span class="font-14 letter-spacing-1 d-block"><i class="fa-regular fa-calendar-check font-16 px-2"></i>@($"{classTime:yyyy/MM/dd}")</span>
                                 }
                                 else
                                 {
@@ -102,7 +94,6 @@
                                 }
                             </div>
                         </div>
-
                         <div class="divider mt-4 mb-4"></div>
                     }
 

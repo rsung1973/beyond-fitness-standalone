@@ -20,8 +20,7 @@
     _modelState = ViewContext.ModelState;
 
     Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
-    ViewBag.MainClass = "home";
-    ViewBag.MenuDark = false;
+    ViewBag.From = "Campaign";
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
         ? "tw"
@@ -58,23 +57,16 @@
     }
 
     <div class="row" style="margin-top: 100px;">
-
         <div class="col-12">
-
             <!--玩家攻略-->
-
             <div class="content mb-3 mx-0 mx-lg-5 mx-md-5">
-
                 <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme mx-5 mx-lg-0 mx-md-0">
                     玩家攻略·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Strategy Guide</small>
                 </h4>
 
                 <div class="clearfix"></div>
-
                 <div class="splide single-slider slider-no-arrows homepage-slider" id="levelSlide">
-
                     <div class="splide__track">
-
                         <div class="splide__list">
                             @{
                                 var levels = models.GetTable<GameLevel>().ToArray();
@@ -126,26 +118,16 @@
         <div class="col-12">
 
             <!--FAQ-->
-
             <div class="card campain-intro rounded-l mt-5 mx-3 mx-lg-5 mx-md-5 text-center shadow-l preload-img" data-src="../images/card/campaign-faq2.jpg"
                  data-card-height="230">
-
                 <div class="content">
-
                     <h1 class="font-24 font-700 color-beyondwhite-dark">玩家 FAQ</h1>
-
                     <p class="boxed-text-xl">
-
                         <a href="#" data-menu="popup-levelIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>玩家等級注意事項</u></a>
-
                         <a href="#" data-menu="popup-levelThreshold" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>等級門檻條件說明</u></a>
-
                         <a href="#" data-menu="popup-pointIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>任務點數回饋說明</u></a>
-
                         <a href="#" data-menu="popup-faqs" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>常見問題</u></a>
-
                     </p>
-
                 </div>
 
             </div>
