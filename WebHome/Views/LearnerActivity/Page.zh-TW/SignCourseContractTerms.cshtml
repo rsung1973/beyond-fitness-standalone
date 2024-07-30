@@ -17,6 +17,8 @@
 @using WebHome.Models.Resources
 @using WebHome.Properties;
 
+<!-- jSignature-->
+<link href="../plugins/jSignature/jsignature.css" rel="stylesheet">
 @{
     Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
 
@@ -70,187 +72,109 @@
     </div>
 
     <div class="card card-style">
-
         <div class="content pb-3">
-
             <div class="d-flex">
-
                 <div class="d-flex px-3 py-2">
-
                     <div class="me-auto">
-
-                        <!-- <h4 class="font-600">產品及服務特約條款</h4> -->
-
                     <p class="font-11 mt-1 mb-3 line-height-xs">本合約業經體育局府體產字第1133002560號公文審定通過</p>
-
                     </div>
-
                     <div class="ms-auto">
-
                         <i data-feather="file-text" data-feather-line="1" data-feather-size="38" data-feather-color="green-dark"
                            data-feather-bg="green-fade-light">
-
                         </i>
-
                     </div>
-
                 </div>
-
             </div>
-
             <div class="divider"></div>
-
             <div class="row">
-
                 <div class="col-12 col-lg-6 col-md-6 pt-2">
-
                     <div class="form-check icon-check mx-1 py-2 border border-lightgray-dark rounded-xl">
-
                         <input class="form-check-input" typeof="checkbox" onclick="return false;" name="HasViewedDetails" value="true" type="checkbox" id="checkTerms" />
-
                         <label class="form-check-label font-15 ms-n1 bg- mx-1 my-2" for="checkTerms">
                             <a href="#"
                                data-menu="contract-terms" class="color-highlight"><u>產品及服務特約條款</u></a>
                         </label>
-
                         <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2 my-2"></i>
-
                         <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2 my-2"></i>
-
                     </div>
-
                 </div>
 
                 <div class="col-12 col-lg-6 col-md-6 pt-2">
-
                     <div class="form-check icon-check mx-1 py-2 border border-lightgray-dark rounded-xl">
-
                         <input class="form-check-input" type="checkbox" onclick="return false;" name="GDPRAgree" value="true" id="checkCollectionAgreement" />
-
                         <label class="form-check-label font-15 ms-n1 bg- mx-1 my-2" for="checkCollectionAgreement">
                             <a href="#"
                                data-menu="personaldata-collection-agreement" class="color-highlight"><u>個人資料告知事項暨同意書</u></a>
                         </label>
-
                         <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2 my-2"></i>
-
                         <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2 my-2"></i>
-
                     </div>
-
                 </div>
-
             </div>
 
             <div class="pt-2"></div>
-
             <div class="form-check icon-check">
-
                 <input class="form-check-input" type="checkbox" name="Booking" value="true" id="cancle">
-
                 <label class="form-check-label font-15 ms-n1 color-theme" for="cancle">預約/取消：我已閱讀並同意第8條服務預約之規定。</label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-square color-gray-dark font-18"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-square font-18 color-highlight"></i>
-
             </div>
 
             <div class="pt-4"></div>
-
             <div class="form-check icon-check">
-
                 <input class="form-check-input" type="checkbox" name="Extension" value="true" id="extend">
-
                 <label class="form-check-label font-15 ms-n1 color-theme" for="extend">展延：我已閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定。</label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-square color-gray-dark font-18"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-square font-18 color-highlight"></i>
-
             </div>
 
             <div class="pt-4"></div>
-
             <div class="form-check icon-check">
-
                 <input class="form-check-input" type="checkbox" name="Agree" value="true" id="agree" />
-
                 <label class="form-check-label font-15 ms-n1 color-theme"
                        for="agree">我已閱讀並同意超越體能顧問有限公司隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任。</label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-square color-gray-dark font-18"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-square font-18 color-highlight"></i>
-
             </div>
 
             <div class="pt-4"></div>
-
             <div class="form-check icon-check">
-
                 <input class="form-check-input" type="checkbox" name="PersonalData" value="true" id="provided">
-
                 <label class="form-check-label font-15 ms-n1 color-theme" for="provided">
                     台端得自由選擇是否提供各項個人資料，惟若選擇不提供時，台端 <u>@Html.Raw(profile.RealName)</u>
-
                     明確認知，此將可能影響與BF間權利義務關係之建立、維繫或履行。
                 </label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-square color-gray-dark font-18"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-square font-18 color-highlight"></i>
-
             </div>
 
             <div class="pt-4"></div>
-
             <div class="form-check icon-check">
-
                 <input class="form-check-input" type="checkbox" name="Understood" value="true" id="agree2">
-
                 <label class="form-check-label font-15 ms-n1 color-theme"
                        for="agree2">就上開告知內容本人已受告知、並已充分知悉，本人同意BF得依本告知暨同意書之內容蒐集、處理、利用及國際傳輸本人之個人資料。就其中有關本人家屬和親友之個人資料，由本人負責告知，並使其充分知悉和同意本告知暨同意書之內容。</label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-square color-gray-dark font-18"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-square font-18 color-highlight"></i>
-
             </div>
-
         </div>
-
     </div>
 
     <a href="#" data-menu="contract-sign"
        class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
 
     <div class="my-5 px-4">
-
         <div class="d-flex mt-4">
-
             <div class="me-auto">
-
                 <i class="fa fa-check-circle color-green-dark font-28"></i>
-
             </div>
-
             <div class="m-auto">
-
                 <i class="fa fa-check-circle color-gray-dark font-28"></i>
-
             </div>
-
             <div class="m-auto">
-
                 <i class="fa fa-circle color-gray-dark font-28"></i>
-
             </div>
-
         </div>
-
         <div class="divider mx-4" style="margin-top:-18px"></div>
-
     </div>
 
 
