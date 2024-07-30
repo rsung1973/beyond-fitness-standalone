@@ -307,20 +307,29 @@ namespace WebHome.Helper.BusinessOperation
                     item.Lessons = totalLessons;
                     item.TotalCost = totalCost;
 
-                    item.Expiration = combinationPrice.Any()
-                        ? DateTime.Today.AddMonths(combinationPrice[0].EffectiveMonths ?? 18)
-                        : null;
+                    int mainPriceID = -1;
+                    if(combinationPrice.Any())
+                    {
+                        item.Expiration = combinationPrice.Any()
+                            ? DateTime.Today.AddMonths(combinationPrice[0].EffectiveMonths ?? 18)
+                            : null;
+                        mainPriceID = combinationPrice[0].PriceID;
+                    }
 
                     for (int i = 0; i < combinationPrice.Count; i++)
                     {
                         var p = combinationPrice[i];
                         if (p != null && viewModel.OrderLessons[i] > 0)
                         {
+                            var packageItem = models.GetTable<LessonPricePackage>()
+                                .Where(g => g.PriceID == mainPriceID)
+                                .Where(g => g.ItemID == p.PriceID).FirstOrDefault();
                             item.CourseContractOrder.Add(new CourseContractOrder
                             {
                                 LessonPriceType = p,
                                 Lessons = viewModel.OrderLessons[i].Value,
                                 SeqNo = item.CourseContractOrder.Count,
+                                Title = packageItem?.Title,
                             });
                         }
                     }
@@ -1776,13 +1785,13 @@ namespace WebHome.Helper.BusinessOperation
             switch ((Naming.LessonPriceStatus?)item.Status)
             {
                 case Naming.LessonPriceStatus.營養課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂(購買一個月單價{item.ListPrice*item.BundleCount:##,###,####,###}元)。";
+                    return $"{prefix}{order.Title}營養諮詢(S.D){order.Lessons}個月{order.Lessons * (item.BundleCount ?? 1)}堂(購買一個月單價{item.ListPrice*item.BundleCount:##,###,####,###}元)。";
                 case Naming.LessonPriceStatus.運動恢復課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
+                    return $"{prefix}{order.Title}運動恢復(S.R){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
                 case Naming.LessonPriceStatus.運動防護課程:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
+                    return $"{prefix}{order.Title}運動防護(A.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
                 default:
-                    return $"{prefix}{(order.SeqNo > 0 ? "加購" : null)}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
+                    return $"{prefix}{order.Title}私人教練(P.T){item.DurationInMinutes}分鐘{order.Lessons * (item.BundleCount ?? 1)}堂(購買每堂單價{item.ListPrice:##,###,####,###}元)。";
             }
         }
 
@@ -1821,7 +1830,7 @@ namespace WebHome.Helper.BusinessOperation
             {
                 foreach (var order in item.CourseContractOrder.OrderBy(o => o.SeqNo))
                 {
-                    CreateRegisterLesson(item, models, order.LessonPriceType, order.Lessons * (order.LessonPriceType.BundleCount ?? 1), order.SeqNo > 0 ? "加購" : null);
+                    CreateRegisterLesson(item, models, order.LessonPriceType, order.Lessons * (order.LessonPriceType.BundleCount ?? 1), order.Title);
                 }
             }
             else if (item.LessonPriceType.IsPackagePrice)

@@ -74,7 +74,7 @@
 
             <div class="col-8 mb-2">
                 <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
-                    @($"{(order.SeqNo > 0 ? "加購" : null)}")
+                    @Html.Raw(order.Title)
                     @{
                         BuildLessonOrder(priceItem);
                     }
