@@ -209,8 +209,10 @@ namespace WebHome.Helper
             var receivable = models.GetTable<LessonPriceType>()
                                 .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款));
 
-            items = items.Where(r => receivable.Any(p => r.ClassLevel == p.PriceID))
-                        .Where(r => !models.GetTable<RegisterLessonContract>().Any(c => c.RegisterID == r.RegisterID));
+            items = items.Where(r=>r.LessonPriceType.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
+                        //.Where(r => receivable.Any(p => r.ClassLevel == p.PriceID))
+                        .Where(r => r.RegisterLessonContract == null);
+                        //.Where(r => !models.GetTable<RegisterLessonContract>().Any(c => c.RegisterID == r.RegisterID));
 
             var voidPayment = models.GetTable<VoidPayment>()
                                 .Where(v => v.Status == (int)Naming.CourseContractStatus.已生效);
@@ -221,8 +223,11 @@ namespace WebHome.Helper
             var installment = models.GetTable<TuitionInstallment>()
                                 .Where(t => effectivePayment.Any(p => p.PaymentID == t.InstallmentID));
 
-            return items.Where(r => !installment.Any(t => t.RegisterID == r.RegisterID));
+            //return items.Where(r => !installment.Any(t => t.RegisterID == r.RegisterID));
+            items = items.Where(r => !r.IntuitionCharge.TuitionInstallment.Any()
+                        || r.IntuitionCharge.TuitionInstallment.Any(t => !t.Payment.PayoffDate.HasValue));
 
+            return items;
             //IQueryable<IntuitionCharge> intuitionItems = models.GetTable<IntuitionCharge>()
             //        .Join(models.GetTable<TuitionInstallment>(), c => c.RegisterID, t => t.RegisterID, (c, t) => c);
             //var voidItems = models.GetTable<VoidPayment>()

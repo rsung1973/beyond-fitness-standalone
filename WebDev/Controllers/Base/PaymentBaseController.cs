@@ -24,6 +24,7 @@ using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
 using WebHome.Security.Authorization;
 using System.Diagnostics.Contracts;
+using System.Data.Linq;
 
 namespace WebHome.Controllers.Base
 {
@@ -442,6 +443,22 @@ namespace WebHome.Controllers.Base
             }
         }
 
+        [HttpPost]
+        public ActionResult UnpaidSessionList([FromBody] PaymentQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
 
+            //DataLoadOptions opts = new DataLoadOptions();
+            //opts.LoadWith<LessonTime>(l => l.RegisterLesson);
+            //opts.LoadWith<LessonTime>(l => l.AsAttendingCoach);
+            //opts.LoadWith<LessonTime>(l => l.BranchStore);
+            //opts.LoadWith<ServingCoach>(l => l.UserProfile);
+            //opts.LoadWith<RegisterLesson>(l => l.UserProfile);
+            //opts.LoadWith<RegisterLesson>(l => l.LessonPriceType);
+            //opts.LoadWith<LessonPriceType>(l => l.LessonPriceProperty);
+            //models.LoadOptions = opts;
+
+            return View("~/Views/PaymentConsole/Module/UnpaidSessionList.cshtml");
+        }
     }
 }

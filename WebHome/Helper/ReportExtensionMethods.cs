@@ -1747,7 +1747,7 @@ namespace WebHome.Helper
                     salary.AttendanceBonus = (int?)(
                             Math.Max(reviewItem.PTAttendanceCount.Value - 10 * (currentSettlementCount == reviewItem.DataCount ? currentSettlementCount : reviewItem.DataCount.Value - 1), 0)
                             * (int?)(reviewItem.PTAverageUnitPrice / 1.05M + 0.5M)
-                            * salary.GradeIndex / 100M * 0.05M + 0.5M
+                            * salary.GradeIndex / 100M * 0.08M + 0.5M
                         ) ?? 0;
 
                     salary.AchievementBonus = (int?)(netAchievement * shareRatio / 100M * 0.05M + 0.5M );
@@ -1774,7 +1774,7 @@ namespace WebHome.Helper
                 {
                     var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / 1.05M + 0.5M, 0);
 
-                    salary.AchievementBonus = (int?)(netAchievement * 0.03M + 0.5M);
+                    salary.AchievementBonus = (int?)(netAchievement * 0.055M + 0.5M);
 
                     models.SubmitChanges();
                 }

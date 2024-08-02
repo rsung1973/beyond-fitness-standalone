@@ -51,6 +51,6 @@
         合約繳款截止日即將於<u class="color-beyondred-dark mx-1 font-600">@($"{contract.PayoffDue:yyyy/MM/dd}")</u>到期，請記得聯絡您的教練喔！
 
     </p>
-    <a href="transaction-contractInfo.html"
+    <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))',{'keyID': '@Html.Raw(contract.ContractID.EncryptKey())', 'from': '@Html.Raw(Url.Action("ContractEvents","LearnerActivity"))'});"
        class="close-menu btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt-5">合約詳細資訊</a>
 }

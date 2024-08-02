@@ -1,0 +1,138 @@
+
+@using System.IO
+@using System.Linq.Expressions
+@using System.Data.Linq
+
+@using WebHome.Helper
+@using WebHome.Helper.DataOperation
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    UserProfile _profile;
+    String _viewID = $"unpaidPI{DateTime.Now.Ticks}";
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _profile = await Context.GetUserAsync();
+}
+@{
+    PaymentQueryViewModel _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
+    if (_profile.IsCoach())
+    {
+        _viewModel.BranchID = models.GetTable<CoachWorkplace>().Where(c => c.CoachID == _profile.UID)
+                                .FirstOrDefault()?.BranchID;
+    }
+    IQueryable<LessonTime> items = null;
+}
+@{
+    if (_viewModel.SessionType == Naming.LessonPriceStatus.體驗課程)
+    {
+        items = _viewModel.GetUnpaidTrialSession(models, _profile)
+            .OrderBy(l => l.BranchID)
+            .ThenBy(l => l.ClassTime);
+        if (items.Any())
+        {
+            <div class="card square inbox">
+                <div class="cover">
+                    <ul class="mail_list list-group list-unstyled">
+                        @{
+                            foreach (var item in items)
+                            {
+                                await BuildItem(item);
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+    else if (_viewModel.SessionType == Naming.LessonPriceStatus.一般課程)
+    {
+        items = _viewModel.GetUnpaidPTSession(models, _profile)
+                            .OrderBy(l => l.BranchID)
+                            .ThenBy(l => l.ClassTime);
+
+        if (items.Any())
+        {
+            <div class="card square inbox">
+                <div class="cover">
+                    <ul class="mail_list list-group list-unstyled">
+                        @{
+                            foreach (var item in items)
+                            {
+                                await BuildItem(item, "《單堂購買》P.T Session");
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+    else if (_viewModel.SessionType == Naming.LessonPriceStatus.自主訓練)
+    {
+        items = _viewModel.GetUnpaidPISession(models)
+                                            .OrderBy(l => l.BranchID)
+                                            .ThenBy(l => l.ClassTime);
+        if (items.Any())
+        {
+            <div class="card square inbox">
+                <div class="cover">
+                    <ul class="mail_list list-group list-unstyled">
+                        @foreach (var item in items)
+                        {
+                            await BuildItem(item);
+                        }
+                    </ul>
+                </div>
+            </div>
+        }
+    }
+}
+
+@{
+    async Task BuildItem(LessonTime item, String itemName = null)
+    {
+        <li class="list-group-item">
+            <div class="media">
+                <div class="pull-left">
+                    <div class="controls">
+                        <label class="fancy-checkbox">
+                            <input type="checkbox" id="basic_checkbox_@(item.LessonID)" name="RegisterID" value="@(item.RegisterID)" onclick="selectPI(this);" />
+                            <span></span>
+                        </label>
+                        <a href="javascript:void(0);" class="favourite text-muted hidden-sm-down" data-toggle="active"><i class="zmdi zmdi-run"></i></a>
+                    </div>
+                    <div class="thumb hidden-sm-down m-r-20">
+                        @{
+                            ViewBag.ProfileClass = "rounded-circle popfit";
+                            await Html.RenderPartialAsync("~/Views/Common/ProfileImage.cshtml", item.RegisterLesson.UserProfile);
+                        }
+                    </div>
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <a class="m-r-10">@($"{item.ClassTime:yyyy/MM/dd HH:mm}") - @(item.RegisterLesson.UserProfile.FullName())</a>
+                        <small class="float-right text-muted"><time>NT @(item.RegisterLesson.LessonPriceType.ListPrice)</time></small>
+                        <div class="msg">
+                            @(itemName ?? item.RegisterLesson.LessonPriceType?.SimpleDescription)
+                            <span class="float-right">
+                                <small><time>@(item.AsAttendingCoach.UserProfile.FullName())</time></small>
+                                @{
+                                    await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", item.BranchStore);
+                                }
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    }
+}

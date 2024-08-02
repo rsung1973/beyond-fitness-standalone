@@ -187,6 +187,48 @@ function finishDownload() {
     hideLoading();
 }
 
+function doPost(url, viewModel, done, onFail) {
+    clearErrors();
+    showLoading();
+    $.ajax({
+        type: 'POST',
+        url: url,
+        data: JSON.stringify(viewModel).replaceAll('""', 'null'),
+        type: "POST",
+        //dataType: "json",
+        contentType: "application/json;charset=utf-8",
+        success: function (data) {
+            hideLoading();
+            if ($.isPlainObject(data)) {
+                if (data.result) {
+                    if (done) {
+                        done(data);
+                    }
+                } else {
+                    Swal.fire(
+                        'Oops...',
+                        data.message,
+                        'warning'
+                    ).then((result) => {
+                        if (onFail) {
+                            onFail(data);
+                        }
+                    });
+                }
+            } else {
+                if (done) {
+                    done(data);
+                }
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            hideLoading();
+            console.log(xhr.status);
+            console.log(thrownError);
+        }
+    });
+}
+
 function uploadFile($file, postData, url, callback, errorback) {
 
     $('<form method="post" enctype="multipart/form-data"></form>')

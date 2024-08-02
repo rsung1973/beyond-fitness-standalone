@@ -288,7 +288,7 @@ namespace WebHome.Models.ViewModel
         public DateTime? AllowanceDateTo { get => allowanceDateTo?.CurrentLocalTime(); set => allowanceDateTo = value; }
         public DateTime? CancelDateFrom { get => cancelDateFrom?.CurrentLocalTime(); set => cancelDateFrom = value; }
         public DateTime? CancelDateTo { get => cancelDateTo?.CurrentLocalTime(); set => cancelDateTo = value; }
-
+        public Naming.LessonPriceStatus? SessionType { get; set; }
     }
 
     public class PayoffViewModel : PaymentViewModel
