@@ -64,245 +64,136 @@
             .Where(s => s.RegisterID == registerID);
 
     <div class="card" data-card-height="230" style="margin-bottom:-70px">
-
         <div class="card-center text-center">
-
             <h1 class="color-white font-600 mb-1 mt-n4 font-32">今日健康健康指數</h1>
-
             <p class="color-highlight">Health Status</p>
-
         </div>
-
         <div class="card-overlay bg-beyond-dark opacity-95"></div>
-
-        <!-- <div class="card-overlay dark-mode-tint"></div> -->
-
         <div class="card-bg preload-img" data-src="../images/card/declaration.jpg"></div>
-
     </div>
 
     <div class="card card-style">
-
         <div class="content">
-
             <div class="d-flex">
-
                 <div class="me-auto">
-
                     <h4 class="font-600">填寫健康指數</h4>
-
                     <p class="font-11 mt-n2 mb-3">24-Hour Body Scan Mission</p>
-
                 </div>
-
                 <div class="ms-auto">
-
                     <i data-feather="edit-2" data-feather-line="1" data-feather-size="38" data-feather-color="red-dark"
                        data-feather-bg="red-fade-light">
-
                     </i>
-
                 </div>
-
             </div>
 
             <div class="divider"></div>
-
             <form action="#" method="post" id="bodyScanForm">
-
                 <div class="row mt-5 mb-2">
-
                     <div class="col-12 col-lg-6 col-md-6 my-2">
-
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
-
                             <i class="fa fa-moon color-magenta-light"></i>
-
                             <input type="number" class="form-control validate-number" id="SleepDuration" placeholder="8" name="SleepDuration" value="@($"{GetItem(assessment,"SleepDuration")?.Score:.}")" />
-
                             <label for="SleepDuration" class="color-theme font-500 font-15">睡眠時間(小時)</label>
-
                             <i class="fa fa-times disabled invalid color-red-dark"></i>
-
                             <i class="fa fa-check disabled valid color-green-dark"></i>
-
                             <em class="font-13">(必要輸入)</em>
-
                         </div>
-
                     </div>
 
                     <div class="col-12 col-lg-6 col-md-6 my-2">
-
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
-
                             <i class="fa fa-tint color-blue-dark"></i>
-
                             <input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />
-
                             <label for="Hydration" class="color-theme font-500 font-15">水分攝取(cc)</label>
-
                             <i class="fa fa-times disabled invalid color-red-dark"></i>
-
                             <i class="fa fa-check disabled valid color-green-dark"></i>
-
                             <em class="font-13">(必要輸入)</em>
-
                         </div>
-
                     </div>
 
                     <div class="col-6 col-lg-6 col-md-6 my-2">
-
-
-
                         <a href="#" data-menu="health-info">
-
                             <span class="color-theme font-500 font-15">
-                                生理疲勞<small>(1-10)</small><i data-feather="info" data-feather-line="3"
-                                                            data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
+                                生理疲勞<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
                             </span>
-
                         </a>
-
-
-
                         <div class="mx-auto mt-2">
-
                             <div class="stepper rounded-s float-start">
-
                                 <a href="#" class="stepper-sub">
                                     <i class="fa fa-minus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-
                                 <input type="number" min="1" max="10" placeholder="5" id="FatigueIndex" name="FatigueIndex" value="@($"{GetItem(assessment,"FatigueIndex")?.Score:.}")" />
-
                                 <a href="#" class="stepper-add">
                                     <i class="fa fa-plus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-
                             </div>
-
                             <div class="clearfix"></div>
-
                         </div>
-
                     </div>
-
                     <div class="col-6 col-lg-6 col-md-6 my-2">
-
                         <a href="#" data-menu="health-info">
-
                             <span class="color-theme font-500 font-15">
-                                心理壓力<small>(1-10)</small><i data-feather="info" data-feather-line="3"
-                                                            data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
+                                心理壓力<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
                             </span>
-
                         </a>
-
                         <div class="mx-auto mt-2">
-
                             <div class="stepper rounded-s float-start">
-
                                 <a href="#" class="stepper-sub">
                                     <i class="fa fa-minus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-
                                 <input type="number" min="1" max="10" placeholder="5" id="StressIndex" name="StressIndex" value="@($"{GetItem(assessment,"SleepDuration")?.Score:.}")" />
-
                                 <a href="#" class="stepper-add">
                                     <i class="fa fa-plus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-
                             </div>
-
                             <div class="clearfix"></div>
-
                         </div>
-
                     </div>
 
                     <div class="col-12 my-2">
-
                         <div class="input-style has-borders no-icon my-4">
-
-                            <textarea id="form7" placeholder="補充其他身體狀況" class="font-15" name="SupplementaryStatement">@Html.Raw(GetItem(assessment,"SupplementaryStatement")?.Answer)</textarea>
-
-                            <label for="form7" class="color-beyondred-dark font-15">補充其他身體狀況</label>
-
+                            <textarea placeholder="補充其他身體狀況" class="font-15" name="SupplementaryStatement">@Html.Raw(GetItem(assessment,"SupplementaryStatement")?.Answer)</textarea>
+                            <label class="color-beyondred-dark font-15">補充其他身體狀況</label>
+                            <em>Other Message</em>                        
                         </div>
-
                     </div>
-
                 </div>
-
             </form>
-
         </div>
-
     </div>
 
-
-
     <div class="card card-style">
-
         <div class="content pb-3">
-
             <div class="d-flex">
-
                 <div class="me-auto">
-
                     <h4 class="font-600">請詳閱並同意以下聲明事項</h4>
-
                     <p class="font-11 mt-n2 mb-3">版本更新日期：2024/04/30</p>
-
                 </div>
-
                 <div class="ms-auto">
-
-                    <i data-feather="file-text" data-feather-line="1" data-feather-size="40" data-feather-color="green-dark"
-                       data-feather-bg="green-fade-light">
-
+                    <i data-feather="file-text" data-feather-line="1" data-feather-size="40" data-feather-color="green-dark" data-feather-bg="green-fade-light">
                     </i>
-
                 </div>
-
             </div>
 
             <div class="divider"></div>
-
             <div class="form-check icon-check py-2">
-
                 <input class="form-check-input" type="checkbox" value="true" id="checkTerms" onclick="return false;" name="CheckTerms" />
-
                 <label class="form-check-label font-15 ms-n1 bg- mx-0" for="checkTerms">
                     <a href="#"
                        data-menu="health-declaration-terms" class="color-highlight"><u>課前健康狀況自我檢視聲明書</u></a>
                 </label>
-
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2"></i>
-
             </div>
 
             <div class="pt-4"></div>
-
             <div class="form-check icon-check py-2">
-
                 <input class="form-check-input" type="checkbox" value="true" id="agree" name="Agree" />
-
-                <label class="form-check-label font-15 ms-n1 bg- mx-0 color-theme"
-                       for="agree">本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</label>
-
+                <label class="form-check-label font-15 ms-n1 bg- mx-0 color-theme" for="agree">本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</label>
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2"></i>
-
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2"></i>
-
             </div>
-
         </div>
-
     </div>
 
 
@@ -383,7 +274,6 @@
     </script>
 
     <!-- 健康聲明-結果頁 -->
-
     <div id="health-declaration-result" class="menu menu-box-modal" data-menu-width="cover" data-menu-effect="menu-over">
         @{ 
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/HealthDeclarationResult.cshtml", lessonItem);
@@ -391,94 +281,76 @@
     </div>
 
     <!-- 健康聲明-條款 -->
-
-    <div id="health-declaration-terms" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350"
-         data-menu-height="600" data-menu-effect="menu-over">
-
+    <div id="health-declaration-terms" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350" data-menu-height="600" data-menu-effect="menu-over">
         <div class="menu-title text-center">
-
             <h1 class="text-center pt-1 text-uppercase font-700 color-theme pt-4">課前健康狀況<br />自我檢視聲明書</h1>
-
             <p class="color-theme opacity-30 opacity-70 mt-1">Check Terms</p>
-
         </div>
-
         <div class="content">
-
             <div class="scroll-container terms" id="terms">
-
                 <div class="content pb-3">
-
                     <h3 class="color-beyond-dark mb-3 font-16">謹聲明 <br /><small>I hereby declare that:</small></h3>
-
                     <ol type="color-beyond-dark opacity-70">
-
-                        <li class="mb-4">
-                            本人即將參加Beyond Fitness 超越體能P.T / P.I 課程 ，本人瞭解從事相關體適能訓練之合理風險，並確認目前身體狀況可以參與本次課程。<br /><small>
-                                I am here to participate in the Beyond Fitness P.T / P.I course and I understand the reasonable risks associated with
-
-                                physical fitness training and confirm that I am physically fit to participate in this course.
-                            </small>
+                        <li class="mb-4">本人即將參加Beyond Fitness 超越體能P.T / P.I 課程
+                            ，本人瞭解從事相關體適能訓練之合理風險，並確認目前身體狀況可以參與本次課程。<br /><small>I am here to participate in the Beyond
+                                Fitness P.T / P.I course and I understand the reasonable risks associated with
+                                physical fitness training and confirm that I am physically fit to participate in this
+                                course.</small></li>
+                        <li class="mb-4">本人明白如對目前身體狀況是否適合參加本次課程有任何懷疑，應在參加本次課程前，徵詢專業醫事人員之意見。<br /><small>I understand that if
+                                I am in any doubt about the suitability of my current physical condition to participate in
+                                this
+                                course, I should seek the advice of a medical professional before participating in this
+                                course.</small></li>
+                        <li class="mb-2">本人明白Beyond
+                            Fitness之教練之體適能訓練計畫及課程中之交談與討論，並不能取代專業醫事人員之意見，且明白Beyond教練所設計之體適能訓練計畫均是基於本人已揭露的身體健康狀況資訊所設計的。<br /><small>I
+                                understand that any conversations and discussions during the course with my trainers are not
+                                a substitute for
+                                professional medical advice, and I clearly understand that the fitness programs designed by
+                                Beyond Fitness trainers are
+                                based on the information about my health condition that I have already disclosed.</small>
                         </li>
-
-                        <li class="mb-4">
-                            本人明白如對目前身體狀況是否適合參加本次課程有任何懷疑，應在參加本次課程前，徵詢專業醫事人員之意見。<br /><small>
-                                I understand that if I am in any doubt about the suitability of my current physical condition to participate in this
-
-                                course, I should seek the advice of a medical professional before participating in this course.
-                            </small>
-                        </li>
-
-                        <li class="mb-2">
-                            本人明白Beyond Fitness之教練之體適能訓練計畫及課程中之交談與討論，並不能取代專業醫事人員之意見，且明白Beyond教練所設計之體適能訓練計畫均是基於本人已揭露的身體健康狀況資訊所設計的。<br /><small>
-                                I understand that any conversations and discussions during the course with my trainers are not a substitute for
-
-                                professional medical advice, and I clearly understand that the fitness programs designed by Beyond Fitness trainers are
-
-                                based on the information about my health condition that I have already disclosed.
-                            </small>
-                        </li>
-
                     </ol>
-
                 </div>
-
             </div>
-
             <div class="text-center mt-3 mx-2">
-
                 <a href="javascript:scrollBottom();"
-                   class="btn color-theme font-500 rounded-xl px-4 px-lg-5 px-md-5 font-15">
-                    <i class="fa-solid fa-circle-arrow-down pe-2"></i>請閱讀到最下方
-                </a>
-
+                    class="btn color-theme font-500 rounded-xl px-4 px-lg-5 px-md-5 font-15"><i
+                        class="fa-solid fa-circle-arrow-down pe-2"></i>請閱讀到最下方</a>
             </div>
-
         </div>
-
-        <a href="#"
-           class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">我同意以上聲明</a>
-
+        <a href="#" class="close-menu btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark bg-beyondred-dark font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2">我同意以上聲明</a>
     </div>
 
     <!--健康指數說明-->
-
-    <div id="health-info" class="menu menu-box-bottom menu-box-detached bg-white rounded-m" data-menu-height="300"
-         data-menu-effect="menu-over" style="display: block;">
-
-        <h1 class="text-center mt-4">
-            <i class="fa-solid fa-circle-info fa-3x color-beyondred-dark rounded-circle"></i>
-
+    <div id="health-info" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="300" data-menu-effect="menu-over" style="display: block;">
+        <h1 class="text-center mt-4"><i class="fa-solid fa-circle-info fa-3x color-beyondblue-dark rounded-circle"></i>
         </h1>
-
-        <h1 class="text-center mt-3 text-uppercase color-dark font-700">生理疲勞指數</h1>
-
+        <h1 class="text-center mt-3 text-uppercase color-dark font-700">指數說明<small
+                class="color-theme opacity-50 d-block font-13">(1-10分)</small></h1>
         <p class="boxed-text-l color-dark opacity-80 line-height-l text-start">
-
-            這是一小段說明這是一小段說明這是一小段說明這是一小段說明這是一小段說明這是一小段說明這是一小段說明這是一小段說明這是一小段說明
-
+        <div class="d-flex justify-content-center">
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
+                <h1 class="font-40">😃</h1>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">10分</strong>
+            </div>
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
+                <h1 class="font-40">😊</h1>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">8分</strong>
+            </div>
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
+                <h1 class="font-40">😐</h1>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">5分</strong>
+            </div>
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
+                <h1 class="font-40">😖</h1>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">3分</strong>
+            </div>
+            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
+                <h1 class="font-40">😫</h1>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">1分</strong>
+            </div>
+        </div>
         </p>
-
     </div>
 
 }
