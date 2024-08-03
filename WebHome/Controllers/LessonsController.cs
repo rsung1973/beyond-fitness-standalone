@@ -549,7 +549,8 @@ namespace WebHome.Controllers
                     //var lessonCount = lesson.GroupingLesson.LessonTime.Count;
                     //if (contract.CourseContractType.ContractCode == "CFA"
                     //        || contract.CourseContractType.ContractCode == "CGF"
-                    //        || contract.CourseContractType.ContractCode == "CVF")
+                    //        || contract.CourseContractType.ContractCode == "CVF"
+                    //        || contract.CourseContractType.ContractCode == "CRF")
                     //{
                     //    lessonCount = contract.RegisterLessonContract.Sum(c => c.RegisterLesson.GroupingLesson.LessonTime.Count());
                     //}

@@ -2004,7 +2004,8 @@ namespace WebHome.Helper.BusinessOperation
 
             if (item.CourseContractType.ContractCode == "CFA"
                 || item.CourseContractType.ContractCode == "CGF"
-                || item.CourseContractType.ContractCode == "CVF")
+                || item.CourseContractType.ContractCode == "CVF"
+                || item.CourseContractType.ContractCode == "CRF")
             {
                 if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 3)
                 {
@@ -2115,7 +2116,8 @@ namespace WebHome.Helper.BusinessOperation
 
                 if (contract.CourseContractType.ContractCode == "CFA"
                     || contract.CourseContractType.ContractCode == "CGF"
-                    || contract.CourseContractType.ContractCode == "CVF")
+                    || contract.CourseContractType.ContractCode == "CVF"
+                    || contract.CourseContractType.ContractCode == "CRF")
                 {
                     if (owner.CourseContractSignature.Count(s => s.SignatureName.StartsWith("Signature") && s.Signature != null) < 1)
                     {

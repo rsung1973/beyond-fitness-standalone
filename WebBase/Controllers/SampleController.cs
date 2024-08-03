@@ -92,12 +92,26 @@ namespace WebHome.Controllers
             return fileName;
         }
 
-        protected async Task<T> PrepareViewModelAsync<T>(T viewModel)
+        String _reqeustBody;
+        public String RequestBody
+        {
+            get
+            {
+                if (_reqeustBody == null)
+                {
+                    var t = Request.GetRequestBodyAsync();
+                    t.Wait();
+                    _reqeustBody = t.Result;
+                }
+                return _reqeustBody;
+            }
+        }
+
+        protected T PrepareViewModel<T>(T viewModel)
         {
             if (Request.ContentType?.Contains("application/json", StringComparison.InvariantCultureIgnoreCase) == true)
             {
-                var data = await Request.GetRequestBodyAsync();
-                viewModel = JsonConvert.DeserializeObject<T>(data)!;
+                viewModel = JsonConvert.DeserializeObject<T>(RequestBody)!;
             }
 
             ViewBag.ViewModel = viewModel;

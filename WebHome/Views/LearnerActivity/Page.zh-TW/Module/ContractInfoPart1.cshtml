@@ -45,21 +45,19 @@
                 continue;
             }
             <div class="col-8 mb-2">
-                <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                <p class="color-beyond-dark font-700">
                     @Html.Raw(rc.Title)
-                    @Html.Raw(priceItem.SessionName)
-                    <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
+                    @{
+                        BuildLessonOrder(priceItem);
+                    }
                 </p>
             </div>
             <div class="col-4 mb-2">
-                <p class="float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+                <p class="font-500 float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
             </div>
         }
     }
-    else if (item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGA
-                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGB
-                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGC
-                || item.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF)
+    else if (item.CourseContractOrder.Any())
     {
         var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
         List<CourseContractOrder> lessonItems = installment.Any()
@@ -73,12 +71,11 @@
             var priceItem = order.LessonPriceType;
 
             <div class="col-8 mb-2">
-                <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
+                <p class="color-beyond-dark font-700">
                     @Html.Raw(order.Title)
                     @{
                         BuildLessonOrder(priceItem);
                     }
-                    @(priceItem.DurationInMinutes)Min
                 </p>
             </div>
             <div class="col-4 mb-2">
@@ -91,9 +88,10 @@
     {
         var priceItem = item.LessonPriceType;
         <div class="col-8 mb-2">
-            <p class="color-beyond-dark font-700 font-16 mb-2 letter-spacing-1">
-                @Html.Raw(priceItem.SessionName)
-                <small class="font-14 font-400 ps-1">@(priceItem.DurationInMinutes)Min</small>
+            <p class="color-beyond-dark font-700">
+                @{
+                    BuildLessonOrder(priceItem);
+                }
             </p>
         </div>
         <div class="col-4 mb-2">
@@ -108,20 +106,20 @@
         switch ((Naming.LessonPriceStatus?)priceItem.Status)
         {
             case Naming.LessonPriceStatus.營養課程:
-                <text>S.D Session《一個月 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                <text>S.D Session<small class="font-13 font-400 d-block"> 1 Month</small></text>
                 break;
             case Naming.LessonPriceStatus.運動恢復課程:
-                <text>S.R Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                <text>S.R Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
                 break;
             case Naming.LessonPriceStatus.運動防護課程:
-                <text>A.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                <text>A.T Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
                 break;
             case Naming.LessonPriceStatus.自主訓練:
-                <text>P.I Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                <text>P.I Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
                 break;
 
             default:
-                <text>P.T Session《@(priceItem.DurationInMinutes)分鐘 / @($"{priceItem.ListPrice*(priceItem.BundleCount??1):##,###,###,###}")》</text>
+                <text>P.T Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
                 break;
         }
     }

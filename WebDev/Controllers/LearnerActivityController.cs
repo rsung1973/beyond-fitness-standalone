@@ -507,11 +507,24 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> ConfirmSignatureAsync([FromBody] CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel)
+        public async Task<ActionResult> ConfirmSignatureAsync([FromBody] CourseContractViewModel viewModel, [FromBody] CourseContractSignatureViewModel signatureViewModel)
         {
+            if (viewModel == null)
+            {
+                viewModel = PrepareViewModel<CourseContractViewModel>(viewModel);
+                ModelState.Clear();
+            }
+
+            if (signatureViewModel == null)
+            {
+                signatureViewModel = PrepareViewModel<CourseContractSignatureViewModel>(signatureViewModel);
+                ModelState.Clear();
+            }
+
+
             ViewBag.ViewModel = viewModel;
             var profile = await HttpContext.GetUserAsync();
-            ViewEngineResult viewResult = null;
+            //ViewEngineResult viewResult = null;
 
             if (viewModel.Agree != true)
             {
@@ -563,14 +576,14 @@ namespace WebHome.Controllers
                 return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
             }
 
-            viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
-            if (viewModel.SignerPIN == null)
-            {
-                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
-                ViewBag.AlertError = true;
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
-            }
+            //viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
+            //if (viewModel.SignerPIN == null)
+            //{
+            //    ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+            //    ViewBag.AlertError = true;
+            //    ViewBag.ModelState = this.ModelState;
+            //    return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            //}
 
             if (viewModel.KeyID != null)
             {
@@ -616,8 +629,7 @@ namespace WebHome.Controllers
             String jsonData = await RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyToContractPayment.cshtml", item);
             jsonData.PushLineMessage();
 
-            viewResult = CheckView("SignCourseContractResult");
-            return View(viewResult.ViewName, item);
+            return Json(new { result = true });
         }
 
         private async Task<CourseContract> CommitSignatureAsync(CourseContractViewModel viewModel, CourseContractSignatureViewModel signatureViewModel, CourseContract item)
@@ -663,7 +675,7 @@ namespace WebHome.Controllers
         {
             if (viewModel == null)
             {
-                viewModel = await PrepareViewModelAsync<SelfAssessmentViewModel>(viewModel);
+                viewModel = PrepareViewModel<SelfAssessmentViewModel>(viewModel);
                 ModelState.Clear();
             }
             ViewBag.ViewModel = viewModel;
@@ -794,7 +806,7 @@ namespace WebHome.Controllers
         {
             if (viewModel == null)
             {
-                viewModel = await PrepareViewModelAsync<FeedbackSurveyViewModel>(viewModel);
+                viewModel = PrepareViewModel<FeedbackSurveyViewModel>(viewModel);
                 ModelState.Clear();
             }
             ViewBag.ViewModel = viewModel;

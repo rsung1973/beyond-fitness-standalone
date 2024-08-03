@@ -17,6 +17,8 @@
 @using WebHome.Helper.BusinessOperation
 
 @{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
@@ -30,36 +32,56 @@
             ? "en"
             : "ja";
 
-    CourseContract _model = this.Model as CourseContract;
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    int? contractID = -1;
+
+    if (_viewModel?.KeyID != null)
+    {
+        contractID = _viewModel.DecryptKeyValue();
+    }
+
+    var item = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
+
 }
-<div class="card" data-card-height="cover">
+@if (item != null)
+{
+    <!-- 合約簽名通知-結果頁 -->
+    <div id="contract-sign-result" class="menu menu-box-modal menu-active" data-menu-width="cover" data-menu-effect="menu-over">
+        <div class="card" data-card-height="cover">
 
-    <div class="card-center text-center mx-2">
+            <div class="card-center text-center mx-2">
 
-        <div class="row">
+                <div class="row">
 
-            <div class="col-12">
+                    <div class="col-12">
 
-                <i class="fa fa-check-circle color-highlight fa-5x"></i>
+                        <i class="fa fa-check-circle color-highlight fa-5x"></i>
 
-                <h1 class="pt-4 font-26 mb-0">Thank you</h1>
+                        <h1 class="pt-4 font-26 mb-0">Thank you</h1>
 
-                <p class="boxed-text-l">
+                        <p class="boxed-text-l">
 
-                    盡情享受您的上課時光!
+                            盡情享受您的上課時光!
 
-                </p>
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <a href="javascript:gotoContractInfo('@Html.Raw(item.ContractID.EncryptKey())');"
+                   class="close-menu btn border-lightgray-dark color-beyond-dark bg-white font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看合約資訊</a>
+
+                <a href="TransactionForActiveContract"
+                   class="close-menu btn border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看購買紀錄</a>
 
             </div>
 
-        </div>
-
-        <a href="javascript:gotoContractInfo('@Html.Raw(_model.ContractID.EncryptKey())');"
-           class="close-menu btn border-lightgray-dark color-beyond-dark bg-white font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看合約資訊</a>
-
-        <a href="TransactionForActiveContract"
-           class="close-menu btn border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2">查看購買紀錄</a>
-
+        </div>    
     </div>
-
-</div>
+    <script>
+        function gotoContractInfo(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("ContractInfo", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForActiveContract", "LearnerActivity"))' });
+        }
+    </script>
+}
