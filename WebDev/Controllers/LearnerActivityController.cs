@@ -1138,7 +1138,7 @@ namespace WebHome.Controllers
                 var coach = models.PromptEffectiveCoach(models.GetTable<UserProfile>().Where(l => l.Phone == viewModel.WriteoffCode)).FirstOrDefault();
                 if (coach == null)
                 {
-                    ModelState.AddModelError("WriteoffCode", "兌換核銷密碼欄位資料錯誤，請確認後再重新輸入");
+                    ModelState.AddModelError("WriteoffCode", "兌換核銷碼錯誤，請確認後再重新輸入");
                 }
                 else
                 {

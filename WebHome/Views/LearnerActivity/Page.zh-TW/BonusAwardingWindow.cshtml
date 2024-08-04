@@ -221,7 +221,7 @@
             };
             doPost('@Html.Raw(Url.Action("ExchangeBonusPoint", "LearnerActivity"))', viewModel, function (data) {
                 if (data.result) {
-                    window.location.href = 'LearnerAward';
+                    window.location.href = 'BonusPointQuery';
                 } else {
                     $('body').append(data);
                 }
@@ -232,7 +232,7 @@
 
 @section PopupBox
 {
-    <div id="exchange-item" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="350">
+    <div id="exchange-item" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="400">
 
 
     </div>
