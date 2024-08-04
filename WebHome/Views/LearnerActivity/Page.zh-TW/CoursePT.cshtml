@@ -54,21 +54,13 @@
 @section MainContent
 {
     <div class="card header-card shape-rounded" data-card-height="310">
-
         <div class="card-overlay bg-beyond-dark opacity-95"></div>
-
-        <!-- <div class="card-overlay dark-mode-tint"></div> -->
-
     </div>
 
-
-
     <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">體能訓練</h1>
+    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>@(_model.DurationInMinutes) Min<br/>@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
 
-    <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>@(_model.DurationInMinutes) Min</p>
-
-    <img style="margin-bottom:-80px" src="../images/icons/session/trx.svg"
-         class="mx-auto over-card bg-transparent" width="200" />
+    <img style="margin-bottom:-80px" src="../images/icons/session/trx.svg" class="mx-auto over-card bg-transparent" width="200" />
 
     <div style="padding-top: 90px;" class="card card-style bg-beyond-dark custom-rounded-card top-100">
         <div class="content">
@@ -76,7 +68,6 @@
                 <h3 class="color-white letter-spacing-1">@(_training.Emphasis ?? "重點稍後揭曉，一起加油達標")</h3>
                 <span class="color-white opacity-30 fst-italic letter-spacing-1">@(_model.AsAttendingCoach.UserProfile.Nickname)</span>
             </div>
-
             <div class="collapse show" id="collapse-healthy">
                 <div class="row text-center">
                     <div class="col-6 col-lg-3 col-md-3 mb-2">
