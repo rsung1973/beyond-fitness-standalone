@@ -98,7 +98,9 @@
                         <i class="fa-solid font-18 fa-envelope bg-beyond-dark color-beyondwhite-dark rounded-sm"></i>
                         <span class="font-500 font-16">更新電子郵件</span>
                         <span class="font-14 mt-3 font-500 color-gray-dark let">Email Update</span>
-                        <span class="badge bg-beyondred-dark font-13">未認證</span>
+                        <span class="badge bg-beyondred-dark font-13">
+                            @Html.Raw(profile.UserProfileProperty.Any(p=>p.PropertyID==(int)UserProfileProperty.PropertyDefinition.ValidEmail) ? "已認證" : "未認證")
+                        </span>
                         <i class="fa fa-angle-right"></i>
                     </a>
                     @if (profile.UserProfileExtension.LineID == null)

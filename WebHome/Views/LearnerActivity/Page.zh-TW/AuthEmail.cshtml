@@ -33,6 +33,7 @@
     _viewModel.TimeTicks = DateTime.Now.AddMinutes(30).Ticks;
     _viewModel.UID = profile.UID;
     var authUrl = $"{WebApp.Properties["HostDomain"]}{Url.Action("CommitEmail", "LearnerActivity")}?{HttpUtility.UrlEncode(_viewModel.JsonStringify().EncryptKeyNormal().UrlEncodeBase64String())}";
+    CommonLib.Core.Utility.FileLogger.Logger.Debug(authUrl);
 }
 <!DOCTYPE html>
 

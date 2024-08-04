@@ -403,6 +403,20 @@ namespace WebHome.Controllers
             }
 
             item.PID = viewModel.Email;
+            var property = models.GetTable<UserProfileProperty>()
+                .Where(u => u.UID == item.UID)
+                .Where(p => p.PropertyID == (int)UserProfileProperty.PropertyDefinition.ValidEmail)
+                .FirstOrDefault();
+            if (property == null)
+            {
+                property = new UserProfileProperty
+                {
+                    UID = item.UID,
+                    PropertyID = (int)UserProfileProperty.PropertyDefinition.ValidEmail,
+                };
+                models.GetTable<UserProfileProperty>().InsertOnSubmit(property);
+            }
+            property.CommitmentDate = DateTime.Now;
             models.SubmitChanges();
 
             var viewResult = CheckView("EmailAuthResult");
