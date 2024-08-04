@@ -316,6 +316,48 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> ValidateSignerPINAsync([FromBody] CourseContractViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
+            if (viewModel.SignerPIN != item.CourseContractExtension.SignerPIN)
+            {
+                ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            if (item.CourseContractExtension.SignerPINExpiration < DateTime.Now)
+            {
+                return Json(new { result = false, message = "動態密碼過期!!" });
+            }
+
+            ViewEngineResult viewResult;
+            viewResult = CheckView("NextStep");
+
+            return View(viewResult.ViewName);
+
+        }
+
+        [HttpPost]
         public async Task<ActionResult> ValidatePINAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
@@ -678,15 +720,6 @@ namespace WebHome.Controllers
                 return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
             }
 
-            //viewModel.SignerPIN = viewModel.SignerPIN.GetEfficientString();
-            //if (viewModel.SignerPIN == null)
-            //{
-            //    ModelState.AddModelError("SignerPIN", "動態密碼輸入錯誤，請確認後再重新輸入");
-            //    ViewBag.AlertError = true;
-            //    ViewBag.ModelState = this.ModelState;
-            //    return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
-            //}
-
             if (viewModel.KeyID != null)
             {
                 viewModel.ContractID = viewModel.DecryptKeyValue();
@@ -806,7 +839,7 @@ namespace WebHome.Controllers
 
             if (!(viewModel.WaterIntake >= 0))
             {
-                ModelState.AddModelError("WaterIntake", "請填寫水分攝取");
+                ModelState.AddModelError("WaterIntake", "請選擇水分攝取");
             }
 
             if (!(viewModel.FatigueIndex >= 0 && viewModel.FatigueIndex <= 10))
@@ -870,7 +903,8 @@ namespace WebHome.Controllers
             item.LessonSelfAssessment.Add(new LessonSelfAssessment
             {
                 Assessment = "WaterIntake",
-                Score = viewModel.WaterIntake,
+                //Score = viewModel.WaterIntake,
+                SelectedIndex = (int?)viewModel.WaterIntake,
             });
 
             item.LessonSelfAssessment.Add(new LessonSelfAssessment
@@ -1185,6 +1219,8 @@ namespace WebHome.Controllers
             }
 
             models.SubmitChanges();
+            account.CommitBonusSettlement(models);
+
             return Json(new { result = true });
 
         }

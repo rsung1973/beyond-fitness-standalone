@@ -40,7 +40,8 @@
         .Where(t => t.TransactionID == id)
         .FirstOrDefault();
 
-
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var account = profile.BonusDepositAccount;
 }
 
 @section MainContent
@@ -82,9 +83,12 @@
                                                 @(item.PointValue)<small class="font-300 font-13 letter-spacing-0">P</small>
                                             </h1>
                                             <span class="opacity-50 font-14 d-block"><del>NTD $@($"{item.Price:##,###,###}")</del></span>
-                                            <a href="javascript:exchangeItem('@Html.Raw(item.ItemID.EncryptKey())');" class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
-                                                立即兌換 Go
-                                            </a>
+                                            @if (account?.DepositPoint >= item.PointValue)
+                                            {
+                                                <a href="javascript:exchangeItem('@Html.Raw(item.ItemID.EncryptKey())');" class="btn btn-xs rounded-xl border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-2">
+                                                    立即兌換 Go
+                                                </a>
+                                            }
                                         </div>
                                     </div>
                                     <div class="divider my-4"></div>

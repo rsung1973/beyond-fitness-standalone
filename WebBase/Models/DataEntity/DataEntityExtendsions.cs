@@ -1128,5 +1128,15 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class LessonSelfAssessment
+    {
+        public enum WaterIntakeIndication
+        {
+            極度缺乏 = 1,
+            有點缺乏 = 2,
+            及格 = 3,
+            良好 = 4,
+        }
+    }
 
 }

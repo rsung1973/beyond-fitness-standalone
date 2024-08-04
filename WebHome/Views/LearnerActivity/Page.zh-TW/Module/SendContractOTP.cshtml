@@ -19,7 +19,6 @@
 @using WebHome.Helper.MessageOperation
 
 @{
-    Layout = "~/Views/LearnerActivity/Page.zh-TW/Module/CheckOTPTemplate.cshtml";
 
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -52,7 +51,13 @@
         var jsonData = body.GetHtmlString();
         jsonData.PushLineMessage();
 
-        var profile = (await Context.GetUserAsync()).LoadInstance(models);
+        var profile = await Context.GetUserAsync();
+        profile = profile.LoadInstance(models);
+        profile.UserProfileExtension.PIN = item.CourseContractExtension.SignerPIN;
+        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(120);
+        models.SubmitChanges();
+
+        ViewBag.ValidDuration = "2小時";
         await Html.RenderPartialAsync("~/Views/LearnerActivity/SendOTP.cshtml", profile);
     }
 

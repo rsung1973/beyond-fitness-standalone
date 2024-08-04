@@ -76113,6 +76113,8 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _BRByCoach;
 		
+		private System.Nullable<System.DateTime> _SignerPINExpiration;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -76161,6 +76163,8 @@ namespace WebHome.Models.DataEntity
     partial void OnBRByLearnerChanged();
     partial void OnBRByCoachChanging(System.Nullable<int> value);
     partial void OnBRByCoachChanged();
+    partial void OnSignerPINExpirationChanging(System.Nullable<System.DateTime> value);
+    partial void OnSignerPINExpirationChanged();
     #endregion
 		
 		public CourseContractExtension()
@@ -76490,6 +76494,27 @@ namespace WebHome.Models.DataEntity
 					this._BRByCoach = value;
 					this.SendPropertyChanged("BRByCoach");
 					this.OnBRByCoachChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SignerPINExpiration", DbType="DateTime")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=15)]
+		public System.Nullable<System.DateTime> SignerPINExpiration
+		{
+			get
+			{
+				return this._SignerPINExpiration;
+			}
+			set
+			{
+				if ((this._SignerPINExpiration != value))
+				{
+					this.OnSignerPINExpirationChanging(value);
+					this.SendPropertyChanging();
+					this._SignerPINExpiration = value;
+					this.SendPropertyChanged("SignerPINExpiration");
+					this.OnSignerPINExpirationChanged();
 				}
 			}
 		}
@@ -81865,6 +81890,8 @@ namespace WebHome.Models.DataEntity
 		
 		private string _Answer;
 		
+		private System.Nullable<int> _SelectedIndex;
+		
 		private EntityRef<LessonFeedBack> _LessonFeedBack;
 		
     #region 擴充性方法定義
@@ -81881,6 +81908,8 @@ namespace WebHome.Models.DataEntity
     partial void OnScoreChanged();
     partial void OnAnswerChanging(string value);
     partial void OnAnswerChanged();
+    partial void OnSelectedIndexChanging(System.Nullable<int> value);
+    partial void OnSelectedIndexChanged();
     #endregion
 		
 		public LessonSelfAssessment()
@@ -81997,6 +82026,27 @@ namespace WebHome.Models.DataEntity
 					this._Answer = value;
 					this.SendPropertyChanged("Answer");
 					this.OnAnswerChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SelectedIndex", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6)]
+		public System.Nullable<int> SelectedIndex
+		{
+			get
+			{
+				return this._SelectedIndex;
+			}
+			set
+			{
+				if ((this._SelectedIndex != value))
+				{
+					this.OnSelectedIndexChanging(value);
+					this.SendPropertyChanging();
+					this._SelectedIndex = value;
+					this.SendPropertyChanged("SelectedIndex");
+					this.OnSelectedIndexChanged();
 				}
 			}
 		}

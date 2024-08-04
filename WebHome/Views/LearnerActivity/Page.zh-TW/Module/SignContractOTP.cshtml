@@ -50,7 +50,7 @@
         var profile = await Context.GetUserAsync();
         profile = profile.LoadInstance(models);
         profile.UserProfileExtension.PIN = item.CourseContractExtension.SignerPIN;
-        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(10);
+        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(120);
         models.SubmitChanges();
     }
 
@@ -70,7 +70,9 @@
                         '動態密碼已重送!',
                         '請開啟信箱查看動態密碼 Bye!',
                         'success'
-                    );
+                    ).then((result) => {
+                        $('').launchDownload('SignContractOTP', viewModel);
+                    });
                 });
             }
     </script>
@@ -92,10 +94,9 @@
         function validatePIN() {
             var viewModel = {
                 'KeyID': '@Html.Raw(contractID.EncryptKey())',
-                'PIN': $('input[name="Code"]').serializeObject().Code.join(''),
-                'UrlAction': 'SignCourseContract'
+                'SignerPIN': $('input[name="Code"]').serializeObject().Code.join(''),
             };
-            doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel,
+            doPost('@Html.Raw(Url.Action("ValidateSignerPIN", "LearnerActivity"))', viewModel,
                 function (data) {
                     $('#update-Passwd').html(data);
                     $('#update-Passwd').addClass('menu-active');

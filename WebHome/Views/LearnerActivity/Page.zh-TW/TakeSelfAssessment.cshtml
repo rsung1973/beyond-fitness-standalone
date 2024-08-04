@@ -100,11 +100,21 @@
                         </div>
                     </div>
 
+                    @{ 
+                        var assessmentItem = GetItem(assessment, "WaterIntake");
+                    }
                     <div class="col-12 col-lg-6 col-md-6 my-2">
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
                             <i class="fa fa-tint color-blue-dark"></i>
-                            <input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />
+                            @*<input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />*@
                             <label for="Hydration" class="color-theme font-500 font-15">水分攝取(cc)</label>
+                            <select id="Hydration" class="font-15" name="WaterIntake">
+                                <option value="" disabled selected>近8小時水分攝取</option>
+                                <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">極度缺乏(目前馬上補充也還是缺乏)</option>
+                                <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">有點缺乏(即時補充可以接近正常狀態)</option>
+                                <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">及格(差不多正常)</option>
+                                <option value="4" selected="@(assessmentItem?.SelectedIndex == 4)">良好(有補充並且有多攝取一些)</option>
+                            </select>
                             <i class="fa fa-times disabled invalid color-red-dark"></i>
                             <i class="fa fa-check disabled valid color-green-dark"></i>
                             <em class="font-13">(必要輸入)</em>
