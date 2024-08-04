@@ -67,7 +67,7 @@ else
         UID = account.UID,
         TransactionPoint = settlementPoints,
         TransactionDate = DateTime.Now,
-        Reason = $"原beyond幣{totalPoints}點轉換新幣{settlementPoints}點",
+        Reason = $"舊Beyond幣點數轉換({totalPoints})",
     };
     models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
     models.SubmitChanges();

@@ -81,18 +81,18 @@ namespace WebHome.Controllers
             var profile = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
             if (profile == null)
             {
-                return Json(new { result = false, message = "學員資料錯誤!!" });
+                return Json(new { result = false, message = "學生資料錯誤!!" });
             }
 
             var item = models.GetTable<BonusAwardingItem>().Where(i => i.ItemID == itemID).FirstOrDefault();
             if(item==null)
             {
-                return Json(new { result = false, message = "兌換商品錯誤!!" });
+                return Json(new { result = false, message = "兌換品項錯誤!!" });
             }
 
             if (profile.BonusPoint(models) < item.PointValue)
             {
-                return Json(new { result = false, message = "累積點數不足!!" });
+                return Json(new { result = false, message = "請確認您的Beyond幣是否足夠!!" });
             }
 
             var award = new LearnerAward
@@ -129,7 +129,7 @@ namespace WebHome.Controllers
                 {
                     if(!recipientID.HasValue)
                     {
-                        return Json(new { result = false, message = "請選擇受贈學員!!" });
+                        return Json(new { result = false, message = "請選擇贈與學生!!" });
                     }
 
                     var giftLesson = new RegisterLesson

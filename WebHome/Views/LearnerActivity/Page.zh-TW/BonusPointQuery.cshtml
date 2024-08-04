@@ -75,7 +75,7 @@
                                 var transactionItems = models.GetTable<BonusTransaction>()
                                     .Where(t => t.UID == profile.UID)
                                     .Where(t => t.TransactionPoint > 0)
-                                    .OrderByDescending(t => t.TransactionID);
+                                    .OrderByDescending(t => t.TransactionDate);
                             }
                             @foreach (var item in transactionItems)
                             {
