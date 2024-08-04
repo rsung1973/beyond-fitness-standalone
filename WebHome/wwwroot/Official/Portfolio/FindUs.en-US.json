@@ -2407,6 +2407,8 @@
             "BannerImgCount": 1,  
             "Slogan": "Start your journey to health and confidence with Beyond by your side!",
             "SloganMessage": "<p>Dear friends, <br/><br />Beyond Fitness Dazhi Grand Opening Soon.We will then guide you through some suitable sports activities and develop a personalized training plan based on your experience.<br/><br/>Beyond Fitness invites you to come <br class=\"d-none d-lg-block d-md-block\"/>and experience our sincerity and warm expectations.</p>",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 19:00",          
             "DemoImgItems":[
                 {
                     "FileName": "demo01.png"

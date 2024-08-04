@@ -2403,6 +2403,8 @@
             "BannerImgCount": 1,  
             "Slogan": "",
             "SloganMessage": "<p>親愛なる友人へ：<br/><br />Beyond Fitness 大直店がまもなく盛大にオープンします！<br /><br />お時間いただけませんか。ほんの少しでいいので、一度体験にいらしてみませんか。そうすれば、私たちの心遣いと真摯な期待が、きっと伝わります。これが、Beyond Fitnessの心のこもったお誘いです。</p>",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 19:00",          
             "DemoImgItems":[
                 {
                     "FileName": "demo01.png"
