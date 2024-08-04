@@ -38,6 +38,8 @@
     var profile = await Context.GetUserAsync();
     IQueryable<SystemEventBulletin> _model = (IQueryable<SystemEventBulletin>)this.Model;
 
+    _model = _model.OrderByDescending(l =>l.StartDate);
+
 }
 
 @foreach (var item in _model)
