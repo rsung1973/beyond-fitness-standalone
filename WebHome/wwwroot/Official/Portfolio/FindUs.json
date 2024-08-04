@@ -2417,6 +2417,8 @@
             "BannerImgCount": 1,  
             "Slogan": "踏上健康自信的旅程，<br class=\"hidden-md-up\" />享受運動後放鬆的時刻。",
             "SloganMessage": "<p>親愛的朋友：<br/><br/>Beyond Fitness 大直店即將盛大開幕<br class=\"hidden-sm-down\"/>邀請您一同來感受我們最初的用心及溫暖<br class=\"hidden-sm-down\"/>期待您在這可以得到更多的健康與踏實。</p>",
+            "InfoWeekDaysTime": "09:00 - 22:30",
+            "InfoHolidayTime": "08:00 - 19:00",          
             "DemoImgItems":[
                 {
                     "FileName": "demo01.png"

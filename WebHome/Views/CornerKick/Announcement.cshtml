@@ -84,30 +84,34 @@
                         <div class="personal-info">
                             <div class="row valign-wrapper">
                                 <div class="col s4 m2"> <i class="livicon-evo" data-options="name: idea.svg; size: 40px; style: original; strokeWidth:2px; autoPlay:false; animated:false"></i> </div>
-                                <div class="col s8 m10 text-box"> <span class="black-t18">【公告】Beyond Fitness
-                                        運動小學堂調整通知</span></div>
+                                <div class="col s8 m10 text-box"> <span class="black-t18">【公告】會員系統即將全新改版上線啦！</span>
+                                </div>
                             </div>
                         </div>
                         <div class="container">
                             <div class="goal-content">
                                 <!-- 1 -->
                                 <div class="personal-list">
-                                    <div class="row valign-wrapper">                                       
+                                    <div class="row valign-wrapper">
                                         <div class="col s12 m12 text-box">
-                                            <p class="gray-t16">
-                                                <b>親愛的Beyond Fitness學員們：</b><br /><br />
-                                                感謝您的持續支持，希望您一直享受 Beyond Fitness
-                                                提供的專業與服務。為了提升更優質的服務，運動小學堂活動進行了一些調整，調整內容將於<b
-                                                    class="f-red">2024年01月01日</b>生效。
+                                            <p class="gray-t14">
+                                                <b>親愛的會員：</b><br /><br />
+                                                感謝您持續對Beyond的支持與信任，為提供您更高品質的服務。
+                                                Beyond將於第四季推出全新升級的會員雲端系統，全新改版重點如下:
                                             </p><br />
-                                            <p class="gray-t16">以下是活動調整的詳細內容</p>
-                                            <img src="images/annoucetable-20231101.jpg"
-                                                class="responsive-img valign"><br />
-                                            <p class="gray-t16">
-                                                @* 請注意，所有提供題目的課程都是以有付費課程為前提，未付費課程不包含此活動中。<br /><br /> *@
-                                                謝謝您對Beyond Fitness的支持，我們期待與您繼續分享健康和活力的旅程。<br /><br />
-                                                祝健康<br />
-                                                <b style="float: right;">Beyond Fitness全體員工</b>
+                                            <p class="gray-t16" style="padding-bottom: 10px;">
+                                                自2024/10/01起，全新改版重點如下：
+                                            </p>
+                                            <ul
+                                                style="padding-top: 5px; padding-bottom: 20px; font-size: 16px; font-weight: 400;">
+                                                <li>● 優化現有的介面功能</li>
+                                                <li>● 新增全新集點制度</li>
+                                                <li>● 新增多元任務獎勵機制</li>
+                                                <li>●新增專業文推薦機制</li>
+                                            </ul>
+                                            <p class="gray-t14">
+                                                若對於相關權益與功能想了解更多，請務必於系統改版前主動洽詢您的教練，我們新系統見！<br /<br />
+                                                <b style="float: right; padding-top: 15px;">Beyond Fitness全體員工</b>
                                             </p>
                                         </div>
                                     </div>
@@ -124,7 +128,7 @@
                     UserEvent eventItem = ViewBag.EventItem as UserEvent;
                 }
                 <form action="@(Url.Action("CommitCurrentUserEvent","CornerKick",new { KeyID = eventItem?.EventID.EncryptKey()}))" method="post">
-                    <button class="btn waves-effect waves-light btn-send" type="submit" name="action">確定了解與同意</button>
+                    <button class="btn waves-effect waves-light btn-send" type="submit" name="action">回上頁</button>
                 </form>
             </div>
             <!--// End of button-->

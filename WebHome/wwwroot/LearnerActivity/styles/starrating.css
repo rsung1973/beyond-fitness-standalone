@@ -1,0 +1,193 @@
+.star-rating {
+  text-align: center;
+}
+
+.rating {
+  display: inline-block;
+  position: relative;
+}
+.rating input[type=radio] {
+  position: absolute;
+  opacity: 0;
+  height: 1px;
+  width: 1px;
+  bottom: 0;
+}
+
+.star {
+  transform: rotate(35deg);
+  -moz-transform: rotate(35deg);
+  -ms-transform: rotate(35deg);
+  -webkit-transform: rotate(35deg);
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  border-bottom: 1.05em solid #ECE8E2;
+  border-left: 1.5em solid transparent;
+  border-right: 1.5em solid transparent;
+  display: inline-block;
+  height: 0;
+  margin-bottom: 0.75em;
+  margin-top: 0.75em;
+  position: relative;
+  width: 0;
+  margin-right: 0.4em;
+  float: right;
+}
+.star:before, .star:after {
+  -webkit-transition: all 0.3s linear;
+  -moz-transition: all 0.3s linear;
+  -ms-transition: all 0.3s linear;
+  -o-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+  content: "";
+  display: block;
+  height: 0;
+  position: absolute;
+  width: 0;
+  z-index: -1;
+}
+.star:before {
+  transform: rotate(-35deg);
+  -moz-transform: rotate(-35deg);
+  -ms-transform: rotate(-35deg);
+  -webkit-transform: rotate(-35deg);
+  border-bottom: 1.2em solid #ECE8E2;
+  border-left: 0.45em solid transparent;
+  border-right: 0.45em solid transparent;
+  left: -0.975em;
+  top: -0.675em;
+}
+.star:after {
+  transform: rotate(-70deg);
+  -moz-transform: rotate(-70deg);
+  -ms-transform: rotate(-70deg);
+  -webkit-transform: rotate(-70deg);
+  border-bottom: 1.05em solid #ECE8E2;
+  border-left: 1.5em solid transparent;
+  border-right: 1.5em solid transparent;
+  left: -1.575em;
+  top: 0.045em;
+}
+
+.star-5.active, .star-5.active ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.star-5.active:before, .star-5.active:after, .star-5.active ~ .star:before, .star-5.active ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+input[type=radio] + .star-5 {
+  cursor: pointer;
+}
+input[type=radio] + .star-5:hover, input[type=radio] + .star-5:hover ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+input[type=radio] + .star-5:hover:before, input[type=radio] + .star-5:hover:after, input[type=radio] + .star-5:hover ~ .star:before, input[type=radio] + .star-5:hover ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.rating:not(:hover) .radio-5:checked ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.rating:not(:hover) .radio-5:checked ~ .star:before, .rating:not(:hover) .radio-5:checked ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.star-4.active, .star-4.active ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.star-4.active:before, .star-4.active:after, .star-4.active ~ .star:before, .star-4.active ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+input[type=radio] + .star-4 {
+  cursor: pointer;
+}
+input[type=radio] + .star-4:hover, input[type=radio] + .star-4:hover ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+input[type=radio] + .star-4:hover:before, input[type=radio] + .star-4:hover:after, input[type=radio] + .star-4:hover ~ .star:before, input[type=radio] + .star-4:hover ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.rating:not(:hover) .radio-4:checked ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.rating:not(:hover) .radio-4:checked ~ .star:before, .rating:not(:hover) .radio-4:checked ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.star-3.active, .star-3.active ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.star-3.active:before, .star-3.active:after, .star-3.active ~ .star:before, .star-3.active ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+input[type=radio] + .star-3 {
+  cursor: pointer;
+}
+input[type=radio] + .star-3:hover, input[type=radio] + .star-3:hover ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+input[type=radio] + .star-3:hover:before, input[type=radio] + .star-3:hover:after, input[type=radio] + .star-3:hover ~ .star:before, input[type=radio] + .star-3:hover ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.rating:not(:hover) .radio-3:checked ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.rating:not(:hover) .radio-3:checked ~ .star:before, .rating:not(:hover) .radio-3:checked ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.star-2.active, .star-2.active ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.star-2.active:before, .star-2.active:after, .star-2.active ~ .star:before, .star-2.active ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+input[type=radio] + .star-2 {
+  cursor: pointer;
+}
+input[type=radio] + .star-2:hover, input[type=radio] + .star-2:hover ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+input[type=radio] + .star-2:hover:before, input[type=radio] + .star-2:hover:after, input[type=radio] + .star-2:hover ~ .star:before, input[type=radio] + .star-2:hover ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.rating:not(:hover) .radio-2:checked ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.rating:not(:hover) .radio-2:checked ~ .star:before, .rating:not(:hover) .radio-2:checked ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.star-1.active, .star-1.active ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.star-1.active:before, .star-1.active:after, .star-1.active ~ .star:before, .star-1.active ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+input[type=radio] + .star-1 {
+  cursor: pointer;
+}
+input[type=radio] + .star-1:hover, input[type=radio] + .star-1:hover ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+input[type=radio] + .star-1:hover:before, input[type=radio] + .star-1:hover:after, input[type=radio] + .star-1:hover ~ .star:before, input[type=radio] + .star-1:hover ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}
+
+.rating:not(:hover) .radio-1:checked ~ .star {
+  border-bottom-color: #EBD7B4;
+}
+.rating:not(:hover) .radio-1:checked ~ .star:before, .rating:not(:hover) .radio-1:checked ~ .star:after {
+  border-bottom-color: #EBD7B4;
+}/*# sourceMappingURL=starrating.css.map */
