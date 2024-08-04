@@ -62,23 +62,15 @@
         @if (item != null)
         {
             <div class="content">
-
                 <div class="card-center text-center mx-2">
-
                     <div class="row">
-
                         <div class="col-12">
-
                             <i class="fa-regular fa-lightbulb color-highlight fa-3x"></i>
-
                             <h1 class="pt-4 font-20 mb-0">運動小學堂 Tips</h1>
-
-                            <p class="boxed-text-l pt-3 text-start pb-3">
+                            <div class="boxed-text-l pt-3 text-start pb-3">
                                 @Html.Raw(item?.Tips)
-                            </p>
-
+                            </div>
                         </div>
-
                     </div>
                     @if (item.TipsArticleRelation.Any())
                     {
@@ -88,13 +80,9 @@
                            class="btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">離開此頁面閱讀相關文章</a>
                     }
                 </div>
-
             </div>
-
         }
-
     </div>
-
 </div>
 <script>
     $(function () {
