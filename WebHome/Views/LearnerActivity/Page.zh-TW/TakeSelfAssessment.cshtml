@@ -230,6 +230,7 @@
             doPost('@Html.Raw(Url.Action("CommitSelfAssessment", "LearnerActivity"))', viewModel,
                 function (data) {
                     if ($.isPlainObject(data)) {
+                        $('#bonusPoint').text(data.point);
                         $('#health-declaration-result').addClass('menu-active');
                         $('.menu-hider').addClass('menu-active');
                     } else {

@@ -347,7 +347,7 @@ namespace WebHome.Controllers
 
             if (item.CourseContractExtension.SignerPINExpiration < DateTime.Now)
             {
-                return Json(new { result = false, message = "動態密碼過期!!" });
+                return View("~/Views/LearnerActivity/Page.zh-TW/Module/ResendSignContractOTP.cshtml", item);
             }
 
             ViewEngineResult viewResult;
@@ -932,9 +932,9 @@ namespace WebHome.Controllers
 
             models.SubmitChanges();
 
-            item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
+            var txn = item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
 
-            return Json(new { result = true });
+            return Json(new { result = true, point = txn?.TransactionPoint });
         }
 
         [HttpPost]

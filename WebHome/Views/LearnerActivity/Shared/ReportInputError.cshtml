@@ -29,7 +29,7 @@
                 {
                 <text>
                     Swal.fire(
-                        'Oops...',
+                        '@Html.Raw(ViewBag.MessageTitle ?? "Oops...")',
                         '@Html.Raw(_modelState.ErrorMessage())',
                         'warning'
                     ).then((result) => {
