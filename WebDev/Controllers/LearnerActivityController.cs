@@ -1061,9 +1061,17 @@ namespace WebHome.Controllers
 
             models.SubmitChanges();
 
-            item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.FeedbackSurvey);
+            BonusTransaction txn = null;
+            StageProgress current = models.PromptCurrentStage();
+            if (current != null)
+            {
+                if (lessonItem.ClassTime >= current.StartDate && lessonItem.ClassTime < current.EndExclusiveDate)
+                {
+                    txn = item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.FeedbackSurvey);
+                }
+            }
 
-            return Json(new { result = true });
+            return Json(new { result = true, point = txn?.TransactionPoint });
         }
 
         public ActionResult BonusSettlement(LearnerViewModel viewModel)

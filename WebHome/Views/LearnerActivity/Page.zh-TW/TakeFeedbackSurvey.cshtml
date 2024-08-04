@@ -116,7 +116,23 @@
             doPost('@Html.Raw(Url.Action("CommitSurveyAnswer", "LearnerActivity"))', viewModel,
                 function (data) {
                     if (data.result) {
-                        window.location.href = '@Url.Action("ShowExerciseTips", "LearnerActivity")';
+                        var msg = '';
+                        if (data.point) {
+                            msg = `恭喜您獲得 ${data.point} 點 Beyond 幣`;
+                        }
+                        Swal.fire({
+                            title: "感謝您的回饋！",
+                            text: msg,
+                            icon: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "運動小學堂Tips",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                        }).then((result) => {
+                            window.location.href = '@Url.Action("ShowExerciseTips", "LearnerActivity")';
+                        });
+
                     } else {
                         $(data).appendTo($('body')).remove();
                     }
