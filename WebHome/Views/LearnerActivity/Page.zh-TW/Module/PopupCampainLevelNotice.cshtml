@@ -1,0 +1,81 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+}
+<div class="menu-title">
+    <a href="#" class="close-menu color-theme"><i class="fa fa-times"></i>&nbsp;</a>
+</div>
+<div class="content mx-4 mx-lg-5 mx-md-5 mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">玩家等級機制</h1>
+            <ul class="ps-3">
+                <li>活動期間：2024/10/01~2024/12/31</li>
+                <li>玩家等級週期：每次等級週期為三個月，分別為1~3月、4~6月、7~9月、10~12月。</li>
+                <li>玩家等級升降：玩家等級週期第一日至會員等級週期結束前一日，為玩家等級門檻計算區間(1/1 00:00 ~ 3/30 22:00、4/1
+                    00:00 ~ 6/30 22:00、7/1 00:00 ~ 9/30 22:00、10/1 00:00 ~ 12/31
+                    22:00)，於每季底針對玩家是否達成各等級門檻進行判斷，並於次一玩家等級週期第一日(1/1、4/1、7/1、10/1)進行等級調整。</li>
+                <li>若有任一顧客新加入Beyond 玩家，皆將從Level
+                    1開始，待該玩家週期結束，計算該週期交易情形，於次一週期調整至新的等級。(新玩家第一個玩家週期之計算區間仍為該等級週期第一日至該等級週期結束前一日。例如顧客10/31加入玩家，該玩家週期計算區間仍為10/01~12/30)
+                </li>
+
+            </ul>
+        </div>
+        <div class="divider bg-beyondwhite-dark mt-4 mb-4"></div>
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">玩家等級權益</h1>
+            <ul class="ps-3">
+                <li>活動期間：2024/10/01~2024/12/31</li>
+                <li>點數任務牆加碼
+                    <ul class="ps-3">
+                        <li>Level 1 玩家於該會員週期期間進行 Beyond 任務牆每月型及固定型任務，將獲得加碼10%之 Beyond 點數。</li>
+                        <li>Level 2 玩家於該會員週期期間進行 Beyond 任務牆每月型及固定型任務，將獲得加碼15%之 Beyond 點數。</li>
+                        <li>Level 3 玩家於該會員週期期間進行 Beyond 任務牆每月型及固定型任務，將獲得加碼20%之 Beyond 點數。</li>
+                        <li>Level 4 玩家於該會員週期期間進行 Beyond 任務牆每月型及固定型任務，將獲得加碼25%之 Beyond 點數。</li>
+                        <li>Level 5 玩家於該會員週期期間進行 Beyond 任務牆每月型及固定型任務，將獲得加碼30%之 Beyond 點數。</li>
+                        <li>點數加碼將視原任務牆點數匯入當下之玩家等級做為計算依據。</li>
+                        <li>每一玩家週期點數任務牆加碼回饋上限最高10點 Beyond 點數。</li>
+                        <li>Beyond 任務每月型及固定型任務包含首次P.T體驗、首次S.R體驗</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="divider bg-beyondwhite-dark mt-4 mb-4"></div>
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">【共同注意事項】</h1>
+            <ul class="ps-3">
+                <li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 <a
+                        href="mailto:pr@beyond-fitness.com.tw">pr@beyond-fitness.com.tw</a></li>
+                <li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+                <li>本活動記錄均以本公司電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+            </ul>
+        </div>
+    </div>
+</div>
