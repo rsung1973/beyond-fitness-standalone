@@ -32,6 +32,7 @@
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
     Payment payment = this.Model as Payment;
+    InvoiceItem invoice = payment.InvoiceItem;
 
 }
 <div class="row mb-2">
@@ -44,11 +45,22 @@
     <div class="col-4 mb-2">
         <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">付款類型</p>
     </div>
-    <div class="col-8 mb-2">
+    <div class="col-4 mb-2">
         <p class="color-theme letter-spacing-1">@(payment.PaymentType)</p>
     </div>
+    <div class="col-4 mb-2">
+        @if (invoice != null && (invoice.InvoiceCarrier != null || !invoice.InvoiceBuyer.IsB2C()))
+        {
+            <div class="ms-auto">
+                <a href="#" onclick='getInvoicePdf(@Html.Raw((new { InvoiceNo = $"{invoice.TrackCode}{invoice.No}", InvoiceDate = $"{invoice.InvoiceDate:yyyy-MM-dd}", BuyerReceiptNo = invoice.InvoiceBuyer.ReceiptNo, invoice.InvoiceCarrier?.CarrierNo, invoice.RandomNo }).JsonStringify()));' class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-xl shadow-xl"
+                   target="_blank">
+                    <i class="fa-solid fa-file-invoice-dollar font-30"></i>
+                </a>
+                <span class="d-block color-theme font-12">電子發票</span>
+            </div>
+        }
+    </div>
     @{
-        InvoiceItem invoice = payment.InvoiceItem;
         if (invoice != null)
         {
             <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
@@ -115,8 +127,7 @@
             </div>
             <div class="col-8 mb-2">
                 <p class="color-theme letter-spacing-1">
-                    @Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d =>
-d.InvoiceProduct.Brief)))
+                    @Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d => d.InvoiceProduct.Brief)))
                 </p>
             </div>
         }

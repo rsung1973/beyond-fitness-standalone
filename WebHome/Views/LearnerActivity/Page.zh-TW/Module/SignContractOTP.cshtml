@@ -37,7 +37,7 @@
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
-    int? contractID = -1;
+    int contractID = -1;
 
     if (_viewModel?.KeyID != null)
     {
@@ -56,6 +56,26 @@
 
 }
 
+@section SendOTP
+{
+    <a href="javascript:sendOTP('@Html.Raw(contractID.EncryptKey())');"
+       class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
+    <script>
+            function sendOTP(keyID) {
+                var viewModel = {
+                    'KeyID': keyID
+                };
+                doPost('SendContractOTP', viewModel, function (data) {
+                    Swal.fire(
+                        '動態密碼已重送!',
+                        '請開啟信箱查看動態密碼 Bye!',
+                        'success'
+                    );
+                });
+            }
+    </script>
+}
+
 @section PrepareOTP
 {
 
@@ -71,7 +91,7 @@
 
         function validatePIN() {
             var viewModel = {
-                'KeyID': '@Html.Raw(contractID.Value.EncryptKey())',
+                'KeyID': '@Html.Raw(contractID.EncryptKey())',
                 'PIN': $('input[name="Code"]').serializeObject().Code.join(''),
                 'UrlAction': 'SignCourseContract'
             };

@@ -1,0 +1,98 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.From = "ShoppingCar";
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = await Context.GetUserAsync();
+    int currentIndex = (ViewBag.ViewModel as QueryViewModel)?.CurrentIndex ?? 0;
+
+    var items = models.GetTable<Payment>()
+                    .Where(p => p.PaymentTransaction.PayerID == profile.UID)
+                    .Where(p => p.PaymentTransaction.PaymentOrder.Any())
+                    .OrderByDescending(p => p.PaymentID)
+                    .Skip(currentIndex * 10)
+                    .Take(10);
+}
+@{
+    var idx = 0;
+    var iconDisplay = "fa-solid fa-dumbbell";
+    foreach (var item in items)
+    {
+        if (item.TransactionType == (int)Naming.PaymentTransactionType.運動商品)
+        {
+            iconDisplay = "fa-solid fa-dumbbell";
+        }
+        else if (item.TransactionType == (int)Naming.PaymentTransactionType.食飲品)
+        {
+            iconDisplay = "fa-solid fa-utensils";
+        }
+        else if (item.TransactionType == (int)Naming.PaymentTransactionType.各項費用)
+        {
+            iconDisplay = "fa-solid fa-coins";
+        }
+
+        <div class="d-flex" onclick="javascript:showPaymentInfo('@Html.Raw(item.PaymentID.EncryptKey())');">
+            <div>
+                <a href="#" class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-m shadow-xl">
+                    <i class="@(iconDisplay) font-24"></i>
+                </a>
+            </div>
+            <div class="align-self-center ps-3">
+                <h5 class="font-600 font-18 mb-1 letter-spacing-1">@((Naming.PaymentTransactionType)item.TransactionType)</h5>
+                <span class="font-15 color-theme letter-spacing-1">NTD @($"{item.PayoffAmount:##,###,###,###}")</span>
+            </div>
+            <div class="align-self-center ms-auto me-3">
+                <h5 class="mb-0 text-end font-400 font-14"><i class="fa-solid fa-location-dot pe-2"></i>@(item.PaymentTransaction.BranchStore.BranchName)</h5>
+                <span class="color-theme d-block text-end font-12">@($"{item.PayoffDate:yyyy/MM/dd}")</span>
+            </div>
+            <div class="align-self-center">
+                <i class="fa fa-angle-right color-highlight font-16"></i>
+            </div>
+        </div>
+
+        <div class="divider mt-4 mb-4"></div>
+
+        idx++;
+    }
+
+    if (idx == 10)
+    {
+        <script>
+            currentIndex++;
+        </script>
+    }
+    else
+    {
+        <script>
+            currentIndex = -1;
+        </script>
+    }
+}

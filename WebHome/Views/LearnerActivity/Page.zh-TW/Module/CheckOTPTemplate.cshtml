@@ -105,21 +105,7 @@
                     maxlength="1">
             </form>
         </div>
-        <a href="javascript:sendOTP();"
-            class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
-        <script>
-            function sendOTP() {
-                var viewModel = {
-                };
-                doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
-                    Swal.fire(
-                        '動態密碼已重送!',
-                        '請開啟信箱查看動態密碼 Bye!',
-                        'success'
-                    );
-                });
-            }
-        </script>
+        @RenderSection("SendOTP")
     </div>
 </div>
 
