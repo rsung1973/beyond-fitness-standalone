@@ -94,7 +94,7 @@
                                         <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
                                     </svg>
                                     <div class="row mb-2">
-                                        @{ 
+                                        @{
                                             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart0.cshtml", item);
                                         }
                                     </div>
@@ -117,18 +117,18 @@
                                     @{
                                         LessonPriceType priceType = item.CourseContractOrder.FirstOrDefault()?.LessonPriceType ?? item.LessonPriceType;
                                     }
-                                <div class="row mb-2">
-                                    @{
-                                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart1.cshtml", item);
-                                    }
-                                </div>
+                                    <div class="row mb-2">
+                                        @{
+                                            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ContractInfoPart1.cshtml", item);
+                                        }
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row my-5">
                         @{
-                            if (item.CourseContractMember.Count() >1)
+                            if (item.CourseContractMember.Count() > 1)
                             {
                                 <div class="col-12 col-lg-6 col-md-6">
                                     <!--成員資訊-->
@@ -198,13 +198,19 @@
                                         <h1 class="mb-2 color-theme letter-spacing-2">
                                             付款資訊·<small class="ps-2 font-12 font-400 text-capitalize opacity-60">Payment Info</small>
                                         </h1>
-                                        <div class="ms-auto">
-                                            <a href="#" class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-xl shadow-xl"
-                                               target="_blank">
-                                                <i class="fa-solid fa-file-invoice-dollar font-30"></i>
-                                            </a>
-                                            <span class="d-block color-theme font-12">電子發票</span>
-                                        </div>
+                                        @{
+                                            InvoiceItem invoice = payment.InvoiceItem;
+                                        }
+                                        @if (invoice != null && (invoice.InvoiceCarrier != null || !invoice.InvoiceBuyer.IsB2C()))
+                                        {
+                                            <div class="ms-auto">
+                                                <a href="#" onclick='getInvoicePdf(@Html.Raw((new { InvoiceNo = $"{invoice.TrackCode}{invoice.No}", InvoiceDate = $"{invoice.InvoiceDate:yyyy-MM-dd}", BuyerReceiptNo = invoice.InvoiceBuyer.ReceiptNo, invoice.InvoiceCarrier?.CarrierNo, invoice.RandomNo }).JsonStringify()));' class="icon icon-l bg-beyond-dark color-beyondwhite-dark rounded-xl shadow-xl"
+                                                   target="_blank">
+                                                    <i class="fa-solid fa-file-invoice-dollar font-30"></i>
+                                                </a>
+                                                <span class="d-block color-theme font-12">電子發票</span>
+                                            </div>
+                                        }
                                     </div>
                                     <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mb-4">
                                         <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
@@ -295,6 +301,15 @@
                         $('.menu-active').removeClass('menu-active');
                     });
             }
+
+            function getInvoicePdf(viewModel) {
+                $('').launchDownload('https://egui.uxifs.com/eivohub/IndividualProcess/GetInvoicePDF', viewModel, '_blank');
+            }
+
+            function gotoCourse(keyID) {
+                $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("TransactionForActiveContract", "LearnerActivity"))' });
+            }
+
         </script>
     }
 }

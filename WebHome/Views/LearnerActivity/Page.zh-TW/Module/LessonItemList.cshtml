@@ -37,7 +37,7 @@
             <a data-bs-toggle="collapse" class="no-effect px-2 d-flex @(idx>0 || currentIndex>0 ? "collapsed" : null)" href="#@(courseID)">
 
                 <div class="align-self-center">
-                    <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{item.AsAttendingCoach.UserProfile.PictureID}?stretch=true")"width="50" height="50" class="rounded-circle mx-1">
+                    <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{item.AsAttendingCoach.UserProfile.PictureID}?stretch=true")" width="50" height="50" class="rounded-circle mx-1">
                 </div>
 
                 <div class="align-self-center w-100 ps-1">
@@ -85,5 +85,5 @@
         <script>
             currentIndex = -1;
         </script>
-        }
     }
+}

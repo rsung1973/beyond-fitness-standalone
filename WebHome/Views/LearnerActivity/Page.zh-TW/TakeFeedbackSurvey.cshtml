@@ -78,7 +78,7 @@
                     <a href="#" data-menu="popup-info">
                         <small class="color-beyondred-dark pe-3"><i
                                 class="fa-solid fa-circle-info pe-1"></i>星評說明</small></a>
-                    <a href="course-PT.html">
+                    <a href="javascript:gotoCourse('@Html.Raw(lessonItem.LessonID.EncryptKey())');">
                         <small class="color-theme opacity-60"><i
                                 class="fa-solid fa-magnifying-glass pe-1"></i>查看課表內容</small>
                     </a>
@@ -127,6 +127,9 @@
 
         }
 
+        function gotoCourse(keyID) {
+            $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("Events","LearnerActivity"))' });
+        }
     </script>
 
     <!--星級說明-->

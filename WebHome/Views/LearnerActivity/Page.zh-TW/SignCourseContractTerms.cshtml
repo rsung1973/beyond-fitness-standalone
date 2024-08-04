@@ -160,8 +160,7 @@
         </div>
     </div>
 
-    <a href="#" data-menu="contract-sign"
-       class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
+    <a href="javascript:validateSignature();" class="btn btn-full rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 my-3">Next</a>
 
     <div class="my-5 px-4">
         <div class="d-flex mt-4">
@@ -322,6 +321,27 @@
                         $('#contract-sign-result').html(data);
                         $('#contract-sign-result').addClass('menu-active');
                         $('.menu-hider').addClass('menu-active');
+                    }
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
+
+        function validateSignature() {
+
+            var viewModel = $('input,select,textArea').serializeObject();
+
+            viewModel.KeyID = '@Html.Raw(contract.ContractID.EncryptKey())';
+
+            clearErrors();
+            doPost('@Html.Raw(Url.Action("ValidateSignature", "LearnerActivity"))', viewModel,
+                function (data) {
+                    if (data.result) {
+                        $('#contract-sign').addClass('menu-active');
+                        $('.menu-hider').addClass('menu-active');
+                    } else {
+                        $(data).appendTo($('body')).remove();
                     }
                 },
                 function () {

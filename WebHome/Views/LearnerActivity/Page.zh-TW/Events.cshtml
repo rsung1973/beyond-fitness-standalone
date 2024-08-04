@@ -51,9 +51,46 @@
         List<TimelineEvent> events = (List<TimelineEvent>)ViewBag.UserNotice;
         SelfAssessmentEvent assessmentEvents = (SelfAssessmentEvent)events.Where(v => v is SelfAssessmentEvent && !(v is FeedbackSurveyEvent)).FirstOrDefault();
     }
+    @{
+        FeedbackSurveyEvent surveyEvents = (FeedbackSurveyEvent)events.Where(v => v is FeedbackSurveyEvent).FirstOrDefault();
+        if (surveyEvents != null)
+        {
+            foreach (var item in surveyEvents.LessonList.OrderByDescending(l=>l.ClassTime))
+            {
+                <div class="d-flex" onclick="javascript:gotoFeedback('@Html.Raw(item.LessonID.EncryptKey())');">
+                    <div>
+                        <a href="survey-class-startstyle.html" class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">😊</i></a>
+                    </div>
+                    <div class="align-self-center ps-2">
+                        <h5 class="font-600 font-17 mb-1 letter-spacing-1">課後訓練回饋</h5>
+                        @if (item.IsPTSession())
+                        {
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">P.T</small></span>
+                        }
+                        else if (item.IsPISession())
+                        {
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">自主體能訓練<small class="font-400 color-theme">P.I</small></span>
+                        }
+                        else
+                        {
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">恢復按摩<small class="font-400 color-theme ps-1">S.R</small></span>
+                        }
+                    </div>
+                    <div class="align-self-center ms-auto me-3">
+                        <span class="color-theme d-block text-end font-13 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd}")</span>
+                        <h5 class="mb-0 text-end font-400 font-13 letter-spacing-1">@($"{item.ClassTime:HH:mm}")</h5>
+                    </div>
+                    <div class="align-self-center">
+                        <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
+                    </div>
+                </div>
+                <div class="divider mt-4 mb-4"></div>
+            }
+        }
+    }
     @if (assessmentEvents != null)
     {
-        foreach (var item in assessmentEvents.LessonList)
+        foreach (var item in assessmentEvents.LessonList.OrderByDescending(l=>l.ClassTime))
         {
             <div class="d-flex" onclick="javascript:gotoHealthyCheck('@Html.Raw(item.LessonID.EncryptKey())');">
                 <div>
@@ -83,45 +120,8 @@
             <div class="divider mt-4 mb-4"></div>
         }
     }
-    @{
-        FeedbackSurveyEvent surveyEvents = (FeedbackSurveyEvent)events.Where(v => v is FeedbackSurveyEvent).FirstOrDefault();
-        if (surveyEvents != null)
-        {
-            foreach (var item in surveyEvents.LessonList)
-            {
-                <div class="d-flex" onclick="javascript:gotoFeedback('@Html.Raw(item.LessonID.EncryptKey())');">
-                    <div>
-                        <a href="survey-class-startstyle.html" class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">😊</i></a>
-                    </div>
-                    <div class="align-self-center ps-2">
-                        <h5 class="font-600 font-17 mb-1 letter-spacing-1">課後訓練回饋</h5>
-                        @if (item.IsPTOrSRSession())
-                        {
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">P.T</small></span>
-                        }
-                        else if (item.IsPISession())
-                        {
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">自主體能訓練<small class="font-400 color-theme">P.I</small></span>
-                        }
-                        else
-                        {
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">恢復按摩<small class="font-400 color-theme ps-1">S.R</small></span>
-                        }
-                    </div>
-                    <div class="align-self-center ms-auto me-3">
-                        <span class="color-theme d-block text-end font-13 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd}")</span>
-                        <h5 class="mb-0 text-end font-400 font-13 letter-spacing-1">@($"{item.ClassTime:HH:mm}")</h5>
-                    </div>
-                    <div class="align-self-center">
-                        <i class="fa fa-angle-right color-theme opacity-50 font-16"></i>
-                    </div>
-                </div>
-                <div class="divider mt-4 mb-4"></div>
-            }
-        }
-    }
 
-<script>
+    <script>
 
     function gotoHealthyCheck(keyID) {
         $('').launchDownload('@Html.Raw(Url.Action("TakeSelfAssessment", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("Events","LearnerActivity"))' });
@@ -131,5 +131,5 @@
         $('').launchDownload('@Html.Raw(Url.Action("TakeFeedbackSurvey", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("Events","LearnerActivity"))' });
     }
 
-</script>
+    </script>
 }

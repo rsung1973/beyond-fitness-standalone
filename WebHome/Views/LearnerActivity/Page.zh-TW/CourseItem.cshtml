@@ -30,7 +30,7 @@
     var item = models.GetTable<LessonTime>().Where(l => l.LessonID == lessonID).FirstOrDefault();
     if (item != null)
     {
-        var plan = item.AssertTrainingPlan(models, UID: learner.UID);
+        var plan = item.AssertTrainingPlan(models);
         if (item.IsSRSession())
         {
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSR.cshtml", item);

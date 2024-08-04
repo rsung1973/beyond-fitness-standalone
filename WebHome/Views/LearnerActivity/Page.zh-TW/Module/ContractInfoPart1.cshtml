@@ -33,31 +33,7 @@
     CourseContract item = this.Model as CourseContract;
 }
 @{
-    if (item.RegisterLessonContract.Any())
-    {
-        foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
-        {
-            var registerItem = rc.RegisterLesson;
-            var priceItem = registerItem.LessonPriceType;
-            if (registerItem.RegisterLessonSharing != null
-                && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
-            {
-                continue;
-            }
-            <div class="col-8 mb-2">
-                <p class="color-beyond-dark font-700">
-                    @Html.Raw(rc.Title)
-                    @{
-                        BuildLessonOrder(priceItem);
-                    }
-                </p>
-            </div>
-            <div class="col-4 mb-2">
-                <p class="font-500 float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
-            </div>
-        }
-    }
-    else if (item.CourseContractOrder.Any())
+    if (item.CourseContractOrder.Any())
     {
         var installment = models.GetTable<CourseContract>().Where(c => c.InstallmentID == item.InstallmentID);
         List<CourseContractOrder> lessonItems = installment.Any()
@@ -82,7 +58,30 @@
                 <p class="float-end color-beyondred-dark">@(g.Sum(o=>o.Lessons))</p>
             </div>
         }
-
+    }
+    else if (item.RegisterLessonContract.Any())
+    {
+        foreach (var rc in item.RegisterLessonContract.OrderBy(c => c.Title))
+        {
+            var registerItem = rc.RegisterLesson;
+            var priceItem = registerItem.LessonPriceType;
+            if (registerItem.RegisterLessonSharing != null
+                && registerItem.RegisterLessonSharing.ShareID != registerItem.RegisterID)
+            {
+                continue;
+            }
+            <div class="col-8 mb-2">
+                <p class="color-beyond-dark font-700">
+                    @Html.Raw(rc.Title)
+                    @{
+                        BuildLessonOrder(priceItem);
+                    }
+                </p>
+            </div>
+            <div class="col-4 mb-2">
+                <p class="font-500 float-end color-beyondred-dark">@(registerItem.RemainedLessonCount()) / @(registerItem.Lessons)</p>
+            </div>
+        }
     }
     else
     {

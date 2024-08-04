@@ -76,26 +76,37 @@
             <div class="col-8 mb-2">
                 <p class="color-theme letter-spacing-1">@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</p>
             </div>
-            <div class="col-4 mb-2">
-                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">會員載具</p>
-            </div>
-            <div class="col-8 mb-2">
-                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)
-                    <a href="#"
-                        class="btn btn-border rounded-xl fst-italic border-lightgray-dark color-beyondwhite-dark bg-beyond-dark px-3 py-1 font-12 mx-1">載具歸戶</a>
-                </p>
-            </div>
-            <div class="col-4 mb-2">
-                <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">手機條碼</p>
-            </div>
-            <div class="col-8 mb-2">
-                <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)</p>
-            </div>
+            @if (invoice.InvoiceCarrier != null)
+            {
+                if (invoice.InvoiceCarrier.CarrierType == "3J0002")
+                {
+                    <div class="col-4 mb-2">
+                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">手機條碼</p>
+                    </div>
+                    <div class="col-8 mb-2">
+                        <p class="color-theme letter-spacing-1">@(invoice?.InvoiceCarrier?.CarrierNo)</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-4 mb-2">
+                        <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">會員載具</p>
+                    </div>
+                    <div class="col-8 mb-2">
+                        <p class="color-theme letter-spacing-1">
+                            @(invoice?.InvoiceCarrier?.CarrierNo)
+                            <a href="#"
+                               class="btn btn-border rounded-xl fst-italic border-lightgray-dark color-beyondwhite-dark bg-beyond-dark px-3 py-1 font-12 mx-1">載具歸戶</a>
+                        </p>
+                    </div>
+                }
+            }
             <div class="col-4 mb-2">
                 <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">買受人統編</p>
             </div>
             <div class="col-8 mb-2">
-                <p class="color-theme letter-spacing-1">@(!invoice.InvoiceBuyer.IsB2C() ? invoice.InvoiceBuyer.ReceiptNo : null)
+                <p class="color-theme letter-spacing-1">
+                    @(!invoice.InvoiceBuyer.IsB2C() ? invoice.InvoiceBuyer.ReceiptNo : null)
                 </p>
             </div>
             <div class="divider w-100 my-3 bg-beyondwhite-dark opacity-40"></div>
@@ -103,8 +114,10 @@
                 <p class="color-theme font-700 font-16 mb-2 letter-spacing-1">發票品項</p>
             </div>
             <div class="col-8 mb-2">
-                <p class="color-theme letter-spacing-1">@Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d =>
-            d.InvoiceProduct.Brief)))</p>
+                <p class="color-theme letter-spacing-1">
+                    @Html.Raw(String.Join("<br/>", invoice?.InvoiceDetails.Select(d =>
+d.InvoiceProduct.Brief)))
+                </p>
             </div>
         }
     }

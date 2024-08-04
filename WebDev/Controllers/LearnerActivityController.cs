@@ -507,6 +507,94 @@ namespace WebHome.Controllers
         }
 
         [HttpPost]
+        public async Task<ActionResult> ValidateSignatureAsync([FromBody] CourseContractViewModel viewModel, [FromBody] CourseContractSignatureViewModel signatureViewModel)
+        {
+            if (viewModel == null)
+            {
+                viewModel = PrepareViewModel<CourseContractViewModel>(viewModel);
+                ModelState.Clear();
+            }
+
+            if (signatureViewModel == null)
+            {
+                signatureViewModel = PrepareViewModel<CourseContractSignatureViewModel>(signatureViewModel);
+                ModelState.Clear();
+            }
+
+
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            if (viewModel.Agree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意BF隱私政策、服務條款、相關使用及消費合約，即表示即日起您同意接受本合約正面及背面條款之相關約束及其責任");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Booking != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第8條服務預約之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Extension != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意第9條體能/健康顧問服務期間與一般展延之申請之規定");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.HasViewedDetails != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意產品及服務特約條款");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.GDPRAgree != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意個人資料告知事項暨同意書");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.PersonalData != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並同意提供各項個人資料");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+            else if (viewModel.Understood != true)
+            {
+                ModelState.AddModelError("Message", "請閱讀並充分知悉和同意本告知暨同意書之內容");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.ContractID = viewModel.DecryptKeyValue();
+            }
+
+            CourseContract item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("Message", "合約資料錯誤!!");
+                ViewBag.AlertError = true;
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+            }
+
+            return Json(new { result = true });
+        }
+
+
+        [HttpPost]
         public async Task<ActionResult> ConfirmSignatureAsync([FromBody] CourseContractViewModel viewModel, [FromBody] CourseContractSignatureViewModel signatureViewModel)
         {
             if (viewModel == null)

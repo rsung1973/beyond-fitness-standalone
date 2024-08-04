@@ -40,10 +40,10 @@
 </div>
 <div class="content">
     <div class="row mb-5">
-        <div class="col-12 text-center">  
-            @foreach(var u in learners)
+        <div class="col-12 text-center">
+            @foreach (var u in learners)
             {
-            <img src="@(u.UserProfileExtension.Gender == "F" ? "../images/avatars/default-fm.png" : "../images/avatars/default-mm.png")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
+                <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{u.PictureID}?stretch=true")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
             }
         </div>
     </div>
@@ -83,6 +83,6 @@
         </div>      
     </div>
     <div class="my-5"></div>
-    <a href="course-PT.html" data-menu="health-declaration-2"
+    <a href="javascript:gotoCourse('@Html.Raw(lesson.LessonID.EncryptKey())');" data-menu="health-declaration-2"
         class="btn btn-full rounded-xl btn-margins border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-500 px-3 py-2 font-15 mt- letter-spacing-2 fst-italic">上課內容</a>
 </div>
