@@ -751,6 +751,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertAwardingItemCategory(AwardingItemCategory instance);
     partial void UpdateAwardingItemCategory(AwardingItemCategory instance);
     partial void DeleteAwardingItemCategory(AwardingItemCategory instance);
+    partial void InsertBonusAwardingItemProperty(BonusAwardingItemProperty instance);
+    partial void UpdateBonusAwardingItemProperty(BonusAwardingItemProperty instance);
+    partial void DeleteBonusAwardingItemProperty(BonusAwardingItemProperty instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2790,6 +2793,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<AwardingItemCategory>();
+			}
+		}
+		
+		public System.Data.Linq.Table<BonusAwardingItemProperty> BonusAwardingItemProperty
+		{
+			get
+			{
+				return this.GetTable<BonusAwardingItemProperty>();
 			}
 		}
 		
@@ -19022,6 +19033,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<AwardingItemCategory> _AwardingItemCategory;
 		
+		private EntitySet<BonusAwardingItemProperty> _BonusAwardingItemProperty;
+		
 		private bool serializing;
 		
     #region 擴充性方法定義
@@ -19327,6 +19340,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BonusAwardingItem_BonusAwardingItemProperty", Storage="_BonusAwardingItemProperty", ThisKey="ItemID", OtherKey="ItemID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
+		public EntitySet<BonusAwardingItemProperty> BonusAwardingItemProperty
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._BonusAwardingItemProperty.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._BonusAwardingItemProperty;
+			}
+			set
+			{
+				this._BonusAwardingItemProperty.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -19371,12 +19403,25 @@ namespace WebHome.Models.DataEntity
 			entity.BonusAwardingItem = null;
 		}
 		
+		private void attach_BonusAwardingItemProperty(BonusAwardingItemProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.BonusAwardingItem = this;
+		}
+		
+		private void detach_BonusAwardingItemProperty(BonusAwardingItemProperty entity)
+		{
+			this.SendPropertyChanging();
+			entity.BonusAwardingItem = null;
+		}
+		
 		private void Initialize()
 		{
 			this._LearnerAward = new EntitySet<LearnerAward>(new Action<LearnerAward>(this.attach_LearnerAward), new Action<LearnerAward>(this.detach_LearnerAward));
 			this._BonusAwardingLesson = default(EntityRef<BonusAwardingLesson>);
 			this._BonusAwardingIndication = default(EntityRef<BonusAwardingIndication>);
 			this._AwardingItemCategory = new EntitySet<AwardingItemCategory>(new Action<AwardingItemCategory>(this.attach_AwardingItemCategory), new Action<AwardingItemCategory>(this.detach_AwardingItemCategory));
+			this._BonusAwardingItemProperty = new EntitySet<BonusAwardingItemProperty>(new Action<BonusAwardingItemProperty>(this.attach_BonusAwardingItemProperty), new Action<BonusAwardingItemProperty>(this.detach_BonusAwardingItemProperty));
 			OnCreated();
 		}
 		
@@ -84810,6 +84855,173 @@ namespace WebHome.Models.DataEntity
 		{
 			this._BonusAwardingItem = default(EntityRef<BonusAwardingItem>);
 			this._MerchandiseTransactionType = default(EntityRef<MerchandiseTransactionType>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.BonusAwardingItemProperty")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class BonusAwardingItemProperty : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ItemID;
+		
+		private int _PropertyID;
+		
+		private System.Nullable<int> _WeightIndex;
+		
+		private EntityRef<BonusAwardingItem> _BonusAwardingItem;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnItemIDChanging(int value);
+    partial void OnItemIDChanged();
+    partial void OnPropertyIDChanging(int value);
+    partial void OnPropertyIDChanged();
+    partial void OnWeightIndexChanging(System.Nullable<int> value);
+    partial void OnWeightIndexChanged();
+    #endregion
+		
+		public BonusAwardingItemProperty()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int ItemID
+		{
+			get
+			{
+				return this._ItemID;
+			}
+			set
+			{
+				if ((this._ItemID != value))
+				{
+					if (this._BonusAwardingItem.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnItemIDChanging(value);
+					this.SendPropertyChanging();
+					this._ItemID = value;
+					this.SendPropertyChanged("ItemID");
+					this.OnItemIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PropertyID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int PropertyID
+		{
+			get
+			{
+				return this._PropertyID;
+			}
+			set
+			{
+				if ((this._PropertyID != value))
+				{
+					this.OnPropertyIDChanging(value);
+					this.SendPropertyChanging();
+					this._PropertyID = value;
+					this.SendPropertyChanged("PropertyID");
+					this.OnPropertyIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WeightIndex", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public System.Nullable<int> WeightIndex
+		{
+			get
+			{
+				return this._WeightIndex;
+			}
+			set
+			{
+				if ((this._WeightIndex != value))
+				{
+					this.OnWeightIndexChanging(value);
+					this.SendPropertyChanging();
+					this._WeightIndex = value;
+					this.SendPropertyChanged("WeightIndex");
+					this.OnWeightIndexChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BonusAwardingItem_BonusAwardingItemProperty", Storage="_BonusAwardingItem", ThisKey="ItemID", OtherKey="ItemID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public BonusAwardingItem BonusAwardingItem
+		{
+			get
+			{
+				return this._BonusAwardingItem.Entity;
+			}
+			set
+			{
+				BonusAwardingItem previousValue = this._BonusAwardingItem.Entity;
+				if (((previousValue != value) 
+							|| (this._BonusAwardingItem.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BonusAwardingItem.Entity = null;
+						previousValue.BonusAwardingItemProperty.Remove(this);
+					}
+					this._BonusAwardingItem.Entity = value;
+					if ((value != null))
+					{
+						value.BonusAwardingItemProperty.Add(this);
+						this._ItemID = value.ItemID;
+					}
+					else
+					{
+						this._ItemID = default(int);
+					}
+					this.SendPropertyChanged("BonusAwardingItem");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._BonusAwardingItem = default(EntityRef<BonusAwardingItem>);
 			OnCreated();
 		}
 		

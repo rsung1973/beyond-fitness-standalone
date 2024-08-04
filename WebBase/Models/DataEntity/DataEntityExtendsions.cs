@@ -1139,4 +1139,13 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class BonusAwardingItemProperty
+    {
+        public enum PropertyDefinition
+        {
+            Recommended = 1,
+            BestSelling = 2,
+        }
+    }
+
 }

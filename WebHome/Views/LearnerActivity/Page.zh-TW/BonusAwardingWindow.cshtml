@@ -64,7 +64,9 @@
                     <div class="content mt-5">
                         <div class="row">
                             @{
-                                var items = typeItem.AwardingItemCategory.Select(c => c.BonusAwardingItem);
+                                var items = typeItem.AwardingItemCategory
+                                                .Select(c => c.BonusAwardingItem)
+                                                .Where(c => c.Status == 1);
                             }
                             @foreach (var item in items
                                                  .OrderBy(b => b.OrderIndex.HasValue ? b.OrderIndex : 10000)
@@ -73,7 +75,7 @@
                                 <div class="col-12 col-lg-4 col-md-6 my-4">
                                     <div class="d-flex mb-3">
                                         <div class="w-100 me-3">
-                                            <div class="card card-style m-0 preload-img" data-src="../@Html.Raw(item.SampleUrl!=null ? VirtualPathUtility.ToAbsolute(item.SampleUrl) : null)"
+                                            <div class="card card-style m-0 preload-img" data-src="@Html.Raw($"../{item.SampleUrl}")"
                                                  data-card-height="160">
                                             </div>
                                         </div>
