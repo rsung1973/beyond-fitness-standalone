@@ -53,20 +53,7 @@
                 <a class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">🔆</i></a>
             </div>
             @Html.Raw(File.ReadAllText(actionPath));
-        }
-        else
-        {
-            <div>
-                <a class="icon icon-l bg-transparent"><i class="font-30 fst-normal px-2">🔆</i></a>
-            </div>
-            <div class="align-self-center ps-3">
-                <h5 class="font-600 font-17 mb-2 letter-spacing-1">系統公告</h5>
-                <span class="font-15 color-theme letter-spacing-1">
-                    @Html.Raw(item.Title)
-                </span>
-                <span class="color-theme d-block text-end font-13 mt-2 opacity-40">@($"{item.StartDate:yyyy/MM/dd}")</span>
-            </div>
-        }        
+        }       
         <div class="align-self-center ms-auto me-3">
         </div>
         <div class="align-self-center">

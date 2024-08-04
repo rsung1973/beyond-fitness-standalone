@@ -48,6 +48,7 @@
                 <div data-bs-parent="#point_query" class="collapse show mx-3 mx-lg-5 mx-md-5" id="session">
                     @{
                         var items = profile.LearnerAward.Where(a => a.BonusAwardingItem.BonusAwardingLesson != null);
+                        items = items.OrderByDescending(t => t.AwardDate);
                     }
                     @foreach (var item in items)
                             {
@@ -102,6 +103,7 @@
                 <div data-bs-parent="#point_query" class="collapse mx-4 mx-lg-5 mx-md-5" id="minus">
                     @{
                         items = profile.LearnerAward.Where(a => a.BonusAwardingItem.BonusAwardingLesson == null);
+                        items = items.OrderByDescending(t => t.AwardDate);
                     }
                     @foreach (var item in items)
                     {
