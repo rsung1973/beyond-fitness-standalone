@@ -48,6 +48,7 @@
     </div>
 
     @{ 
+        ViewBag.Golden = true;
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PlayerCurrentLevel.cshtml", currentLevel);
     }
 

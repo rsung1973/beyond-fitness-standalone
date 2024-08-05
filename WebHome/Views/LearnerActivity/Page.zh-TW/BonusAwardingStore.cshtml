@@ -100,12 +100,13 @@
                                 .Where(c => c.Status == 1)
                                 .Where(c => c.BonusAwardingItemProperty.Any(p => p.PropertyID == (int)BonusAwardingItemProperty.PropertyDefinition.BestSelling))
                                 .OrderBy(c => c.BonusAwardingItemProperty.Where(p => p.PropertyID == (int)BonusAwardingItemProperty.PropertyDefinition.BestSelling).FirstOrDefault().WeightIndex);
+                int idx = 0;
             }
 
             <div class="row text-center mt-5">
                 @foreach (var item in items)
                 {
-                    <div class="col-12 col-lg-4 col-md-4 mb-4">
+                    <div class="@(idx == 0 ? "col-12" : "col-6") col-lg-4 col-md-4 mb-4">
                         <a href="#"><img src="@Html.Raw($"../{item.SampleUrl}")" class="rounded-sm shadow-xl img-fluid" /></a>
                         @*<a href="#" class="d-block mt-3">
                                 <i class="fa fa-star color-beyondsunny-light"></i>
@@ -129,6 +130,7 @@
                             </a>
                         }
                     </div>
+                    idx++;
                 }
             </div>
 
