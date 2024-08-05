@@ -107,7 +107,7 @@
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
                             <i class="fa fa-tint color-blue-dark"></i>
                             @*<input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />*@
-                            <label for="Hydration" class="color-theme font-500 font-15">水分攝取(cc)</label>
+                            <label for="Hydration" class="color-theme font-500 font-15">水分攝取</label>
                             <select id="Hydration" class="font-15" name="WaterIntake">
                                 <option value="" disabled selected>近8小時水分攝取</option>
                                 <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">極度缺乏(目前馬上補充也還是缺乏)</option>
