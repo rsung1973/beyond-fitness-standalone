@@ -1,0 +1,160 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
+    ViewBag.From = "Campaign";
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+
+    StageProgress current = models.PromptCurrentStage();
+
+    ViewBag.StageProgress = current;
+
+    Player currentLevel = current != null ? profile.Player.Where(p => p.ProgressID == current.ProgressID).FirstOrDefault() : null;
+    ViewBag.Player = currentLevel;
+    PromotionAppraisalDataModel appraisal = new PromotionAppraisalDataModel { };     //[0]: promotion level
+                                                                                     //[2]: promotion check
+    ViewBag.Appraisal = appraisal;
+}
+
+@section MainContent
+{
+    <div class="card header-card shape-rounded" data-card-height="280">
+        <div class="card-overlay bg-beyondwhite-dark opacity-95"></div>
+    </div>
+
+    <div class="content" id="challenges">
+        <!--Beyond幣與會員等級-->
+        <div class="card bg-transparent mb-0 mx-auto" data-card-height="110" style="width: 250px;box-shadow:none"
+            onclick="javascript:gotoCampaignStrategy();">
+            <div class="card-top text-center py-2 align-self-center">
+                <span class="icon icon-xl rounded-s"><img src="../images/icons/sports/hiking-dark.svg" width="60"></span>
+            </div>
+            <div class="card-bottom">
+                <h1 class="font-800 text-center color-beyondred-dark font-24 mb-n1 letter-spacing-2">Level 2</h1>
+                <p class="text-center z-index-10 font-14 color-beyond-dark opacity-50">2024/10/01~2024/12/31</p>
+            </div>
+        </div>
+    </div>
+
+    <!--每月挑戰-->
+    <div class="card bg-transparent mb-3 mx-4 mx-lg-5 mx-md-5" style="margin-top: 100px; box-shadow: none;">
+        <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme">每月挑戰·<small
+                class="ps-2 font-14 font-400 text-capitalize opacity-60">Monthly Challenges</small></h4>
+        <div class="clearfix"></div>
+        <div class="content mx-0">
+            <div class="row mb-0">
+                <div class="col-6 col-lg-4 col-md-4 pe-2">
+                    <div class="card card-style mx-0">
+                        <img src="../images/card/PT.jpg" class="img-fluid">
+                        <div class="content mt-3">
+                            <h2 class="font-15 font-500">P.T 體能訓練<small class="opacity-50 float-end">2</small></h2>
+                            <a href="CampaignStrategy"
+                                class="float-end btn fst-italic color-theme bg-theme px-2 py-1 font-12 mt-3">Read More<i
+                                    class="fa-solid fa-chevron-right ps-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4 col-md-4 ps-2">
+                    <div class="card card-style mx-0">
+                        <img src="../images/card/SR.jpg" class="img-fluid">
+                        <div class="content mt-3">
+                            <h2 class="font-15 font-500">S.R 恢復按摩<small class="opacity-50 float-end">0</small></h2>
+                            <a href="CampaignStrategy"
+                                class="float-end btn fst-italic color-theme bg-theme px-2 py-1 font-12 mt-3">Read More<i
+                                    class="fa-solid fa-chevron-right ps-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-4 col-md-4 pe-2">
+                    <div class="card card-style mx-0">
+                        <img src="../images/card/PI.jpg" class="img-fluid">
+                        <div class="content mt-3">
+                            <h2 class="font-15 font-500">P.I 自主訓練<small class="opacity-50 float-end">0</small></h2>
+                            <a href="CampaignStrategy"
+                                class="float-end btn fst-italic color-theme bg-theme px-2 py-1 font-12 mt-3">Read More<i
+                                    class="fa-solid fa-chevron-right ps-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--固定任務-->
+    <div class="card content pt-3 mt-5 shadow-l mx-0 mb-0" id="tasks" style="background-color: #333333;">
+        <div class="card-body mx-4 mx-lg-5 mx-md-5">
+            <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">固定任務·<small
+                    class="ps-2 font-14 font-400 text-capitalize">Routin Tasks</small> <i data-feather="info"
+                    data-feather-line="2" data-feather-size="24" data-feather-color="beyondsunny-dark" class="ms-1"></i>
+            </h4>
+            <div class="list-group list-custom-large me-2 mt-5">
+                <a data-menu="menu-task-item" href="Events">
+                    <i class="fa-solid fa-heart rounded-xl color-beyondred-dark font-24"></i>
+                    <span class="letter-spacing-1 font-16 color-white opacity-70">課前健康自評</span>
+                    <strong class="letter-spacing-1 font-12 color-white opacity-50">Health Index</strong>
+                    <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
+                </a>
+                <a data-menu="menu-task-item" href="Events">
+                    <i class="font-24 fst-normal">😊</i>
+                    <span class="letter-spacing-1 font-16 color-white opacity-70">課後訓練回饋</span>
+                    <strong class="letter-spacing-1 font-12 color-white opacity-50">Feelings</strong>
+                    <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!--特殊任務-->
+    <div class="card content pt-0 mt-0 shadow-l mx-0 bg-theme" id="missions">
+        <div class="content my-5 mx-4 mx-lg-5 mx-md-5">
+            <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme">特殊任務·<small
+                    class="ps-2 font-14 font-400 text-capitalize opacity-60">Mission Possible</small></h4>
+            <div class="clearfix mb-5"></div>
+
+            <div class="splide double-slider slider-no-dots boxed-slider" id="double-slider-2">
+                <div class="splide__track">
+                    <div class="splide__list">
+                        <div class="splide__slide">
+                            <div data-card-height="160" data-card-width="160" class="card mx-2 bg-transparent text-center"
+                                style="box-shadow: none;">
+                                <img src="../images/icons/mission/default.png" width="100" class="align-self-center">
+                                <div class="card-bottom p-3">
+                                    <h4 class="color-theme font-600 font-14">敬啟期待</h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section PopupBox
+{
+
+}
