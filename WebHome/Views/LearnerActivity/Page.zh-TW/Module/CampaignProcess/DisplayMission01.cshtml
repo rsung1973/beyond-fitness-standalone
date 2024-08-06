@@ -11,7 +11,10 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
-
+@functions
+{
+    const String MissionID = "01_PT";
+}
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -28,25 +31,8 @@
             ? "en"
             : "ja";
 
-    GameLevel _model = (GameLevel)this.Model;
+    GameLevelRequirement _model = (GameLevelRequirement)this.Model;
 
-    Player currentPlayer = ViewBag.Player as Player;
-    var profile = currentPlayer?.UserProfile;
-
-    PromotionAppraisalDataModel appraisal = (PromotionAppraisalDataModel)ViewBag.Appraisal;
-    var missions = appraisal.Missions;
-    ViewBag.CheckMission = true;
-    bool result = true;
-    foreach(var mission in missions)
-    {
-        ViewBag.CurrentMission = mission;
-        await Html.RenderPartialAsync(mission.ViewPath, mission.Goal);
-        if (mission.CheckResult == false)
-        {
-            result = false;
-        }
-    }
-
-    appraisal.CheckResult = result;
 }
+<li>完成固定任務</li>
 

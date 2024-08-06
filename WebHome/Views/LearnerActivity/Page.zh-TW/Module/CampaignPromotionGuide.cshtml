@@ -32,7 +32,6 @@
     GameLevel promotion = (GameLevel)appraisal.PromotionLevel;
     Player currentPlayer = ViewBag.Player as Player;
     var profile = currentPlayer?.UserProfile;
-    var missions = appraisal.Missions;
 
 }
 
@@ -51,22 +50,32 @@
         <div class="card-body mx-3 my-2">
 
             <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-16 color-white">
-                Level @(promotion.LevelCode)<small class="ps-2 font-14 font-400 text-capitalize">(已完成：@(missions.Where(c => c.CheckResult == true).Count())/@(missions.Count))</small>
+                Level @(promotion.LevelCode)<small id="gameResult" class="ps-2 font-14 font-400 text-capitalize"></small>
             </h4>
-
             <div class="complete-container mt-3">
-
                 @{
-                    ViewBag.ReviewMission = true;
-                    foreach (var mission in missions)
+                    var missions = models.GetTable<CampaignMission>().ToArray();
+                    int[] idx = new int[] { 2, 3, 4, 0, 1 };
+
+                    foreach (var id in idx)
                     {
-                        ViewBag.CurrentMission = mission;
-                        await Html.RenderPartialAsync(mission.ViewPath, mission.Goal);
+                        var mission = missions[id];
+                        CampaignMissionDataModel dataModel = new CampaignMissionDataModel 
+                        {
+                            MissionID = mission,
+                        };
+                        ViewBag.CurrentMission = dataModel;
+                        appraisal.Missions.Add(dataModel);
+                        await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PlayMission{mission.MissionID:00}.cshtml", promotion.GameLevelRequirement.Where(r => r.MissionID == mission.MissionID).FirstOrDefault());
                     }
                 }
 
             </div>
-
+            <script>
+                $(function () {
+                    $('#gameResult').text('(已完成：@(appraisal.Missions.Where(c => c.CheckResult == true).Count())/@(appraisal.Missions.Count))');
+                });
+            </script>
         </div>
 
     </div>

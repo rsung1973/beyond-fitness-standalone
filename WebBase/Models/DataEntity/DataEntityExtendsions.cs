@@ -1114,6 +1114,9 @@ namespace WebHome.Models.DataEntity
         {
             SelfAssessment = 1,
             FeedbackSurvey = 2,
+            PT = 3,
+            PI = 4,
+            SR = 5,
         }
     }
 
@@ -1145,6 +1148,14 @@ namespace WebHome.Models.DataEntity
         {
             Recommended = 1,
             BestSelling = 2,
+        }
+    }
+
+    public partial class GameLevelReward 
+    {
+        public enum RewardDefinition 
+        {
+            任務牆點數回饋加碼 = 1,
         }
     }
 

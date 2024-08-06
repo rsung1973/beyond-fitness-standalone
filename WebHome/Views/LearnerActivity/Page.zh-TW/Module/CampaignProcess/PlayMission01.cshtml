@@ -28,13 +28,14 @@
             ? "en"
             : "ja";
 
+    GameLevelRequirement _model = this.Model as GameLevelRequirement;
     PromotionAppraisalDataModel appraisal = (PromotionAppraisalDataModel)ViewBag.Appraisal;
     Player currentPlayer = ViewBag.Player as Player;
     var profile = currentPlayer?.UserProfile ?? (await Context.GetUserAsync());
 
     CampaignMissionDataModel mission = (CampaignMissionDataModel)ViewBag.CurrentMission;
 
-    StageProgress current =  (StageProgress)ViewBag.StageProgress;
+    StageProgress current = (StageProgress)ViewBag.StageProgress;
 
 }
 @{
@@ -53,7 +54,7 @@
     var feedbackItems = lessonItems
                             .Select(l => l.Lesson.LessonFeedBack
                                 .Where(f => f.RegisterID == l.RegisterID)
-                                .Where(f=>f.CommitAssessment.HasValue)
+                                .Where(f => f.CommitAssessment.HasValue)
                                 .FirstOrDefault())
                             .ToList();
 
@@ -61,5 +62,13 @@
 
     mission.Goal = lessonItems.Count();
     mission.ResultModel = feedbackItems.Where(f => f != null).Count();
-    mission.CheckResult = result;
+    mission.CheckResult = _model == null ? true : result;
 }
+
+<div class="card bg-beyond-dark text-center">
+
+    <img src="@Html.Raw(mission.CheckResult ? "../images/icons/complete.png" : "../images/icons/notcomplete.png")" class="rounded-circle mb-2 mt-2" width="50" height="50">
+
+    <span class="d-block color-beyondwhite-light @Html.Raw(mission.CheckResult ? "" : "opacity-50") font-14">課前<br class="d-block d-lg-none d-md-none" />健康自評<small class="d-block">(@(mission.ResultModel)/@(mission.Goal))</small></span>
+
+</div>

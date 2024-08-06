@@ -754,6 +754,12 @@ namespace WebHome.Models.DataEntity
     partial void InsertBonusAwardingItemProperty(BonusAwardingItemProperty instance);
     partial void UpdateBonusAwardingItemProperty(BonusAwardingItemProperty instance);
     partial void DeleteBonusAwardingItemProperty(BonusAwardingItemProperty instance);
+    partial void InsertGameLevelRequirement(GameLevelRequirement instance);
+    partial void UpdateGameLevelRequirement(GameLevelRequirement instance);
+    partial void DeleteGameLevelRequirement(GameLevelRequirement instance);
+    partial void InsertGameLevelReward(GameLevelReward instance);
+    partial void UpdateGameLevelReward(GameLevelReward instance);
+    partial void DeleteGameLevelReward(GameLevelReward instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2801,6 +2807,22 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<BonusAwardingItemProperty>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GameLevelRequirement> GameLevelRequirement
+		{
+			get
+			{
+				return this.GetTable<GameLevelRequirement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<GameLevelReward> GameLevelReward
+		{
+			get
+			{
+				return this.GetTable<GameLevelReward>();
 			}
 		}
 		
@@ -81091,6 +81113,10 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<Player> _Player;
 		
+		private EntitySet<GameLevelRequirement> _GameLevelRequirement;
+		
+		private EntitySet<GameLevelReward> _GameLevelReward;
+		
 		private bool serializing;
 		
     #region 擴充性方法定義
@@ -81169,6 +81195,44 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelRequirement", Storage="_GameLevelRequirement", ThisKey="LevelID", OtherKey="LevelID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
+		public EntitySet<GameLevelRequirement> GameLevelRequirement
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._GameLevelRequirement.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._GameLevelRequirement;
+			}
+			set
+			{
+				this._GameLevelRequirement.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelReward", Storage="_GameLevelReward", ThisKey="LevelID", OtherKey="LevelID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
+		public EntitySet<GameLevelReward> GameLevelReward
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._GameLevelReward.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._GameLevelReward;
+			}
+			set
+			{
+				this._GameLevelReward.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -81201,9 +81265,35 @@ namespace WebHome.Models.DataEntity
 			entity.GameLevel = null;
 		}
 		
+		private void attach_GameLevelRequirement(GameLevelRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.GameLevel = this;
+		}
+		
+		private void detach_GameLevelRequirement(GameLevelRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.GameLevel = null;
+		}
+		
+		private void attach_GameLevelReward(GameLevelReward entity)
+		{
+			this.SendPropertyChanging();
+			entity.GameLevel = this;
+		}
+		
+		private void detach_GameLevelReward(GameLevelReward entity)
+		{
+			this.SendPropertyChanging();
+			entity.GameLevel = null;
+		}
+		
 		private void Initialize()
 		{
 			this._Player = new EntitySet<Player>(new Action<Player>(this.attach_Player), new Action<Player>(this.detach_Player));
+			this._GameLevelRequirement = new EntitySet<GameLevelRequirement>(new Action<GameLevelRequirement>(this.attach_GameLevelRequirement), new Action<GameLevelRequirement>(this.detach_GameLevelRequirement));
+			this._GameLevelReward = new EntitySet<GameLevelReward>(new Action<GameLevelReward>(this.attach_GameLevelReward), new Action<GameLevelReward>(this.detach_GameLevelReward));
 			OnCreated();
 		}
 		
@@ -83394,6 +83484,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<LessonMissionBonusAwardingItem> _LessonMissionBonusAwardingItem;
 		
+		private EntitySet<GameLevelRequirement> _GameLevelRequirement;
+		
 		private bool serializing;
 		
     #region 擴充性方法定義
@@ -83472,6 +83564,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CampaignMission_GameLevelRequirement", Storage="_GameLevelRequirement", ThisKey="MissionID", OtherKey="MissionID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
+		public EntitySet<GameLevelRequirement> GameLevelRequirement
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._GameLevelRequirement.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._GameLevelRequirement;
+			}
+			set
+			{
+				this._GameLevelRequirement.Assign(value);
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -83504,9 +83615,22 @@ namespace WebHome.Models.DataEntity
 			entity.CampaignMission = null;
 		}
 		
+		private void attach_GameLevelRequirement(GameLevelRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.CampaignMission = this;
+		}
+		
+		private void detach_GameLevelRequirement(GameLevelRequirement entity)
+		{
+			this.SendPropertyChanging();
+			entity.CampaignMission = null;
+		}
+		
 		private void Initialize()
 		{
 			this._LessonMissionBonusAwardingItem = new EntitySet<LessonMissionBonusAwardingItem>(new Action<LessonMissionBonusAwardingItem>(this.attach_LessonMissionBonusAwardingItem), new Action<LessonMissionBonusAwardingItem>(this.detach_LessonMissionBonusAwardingItem));
+			this._GameLevelRequirement = new EntitySet<GameLevelRequirement>(new Action<GameLevelRequirement>(this.attach_GameLevelRequirement), new Action<GameLevelRequirement>(this.detach_GameLevelRequirement));
 			OnCreated();
 		}
 		
@@ -85022,6 +85146,406 @@ namespace WebHome.Models.DataEntity
 		private void Initialize()
 		{
 			this._BonusAwardingItem = default(EntityRef<BonusAwardingItem>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.GameLevelRequirement")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GameLevelRequirement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LevelID;
+		
+		private int _MissionID;
+		
+		private System.Nullable<int> _Threshold;
+		
+		private System.Nullable<int> _DisplayOrder;
+		
+		private EntityRef<CampaignMission> _CampaignMission;
+		
+		private EntityRef<GameLevel> _GameLevel;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLevelIDChanging(int value);
+    partial void OnLevelIDChanged();
+    partial void OnMissionIDChanging(int value);
+    partial void OnMissionIDChanged();
+    partial void OnThresholdChanging(System.Nullable<int> value);
+    partial void OnThresholdChanged();
+    partial void OnDisplayOrderChanging(System.Nullable<int> value);
+    partial void OnDisplayOrderChanged();
+    #endregion
+		
+		public GameLevelRequirement()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LevelID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int LevelID
+		{
+			get
+			{
+				return this._LevelID;
+			}
+			set
+			{
+				if ((this._LevelID != value))
+				{
+					if (this._GameLevel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLevelIDChanging(value);
+					this.SendPropertyChanging();
+					this._LevelID = value;
+					this.SendPropertyChanged("LevelID");
+					this.OnLevelIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MissionID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int MissionID
+		{
+			get
+			{
+				return this._MissionID;
+			}
+			set
+			{
+				if ((this._MissionID != value))
+				{
+					if (this._CampaignMission.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnMissionIDChanging(value);
+					this.SendPropertyChanging();
+					this._MissionID = value;
+					this.SendPropertyChanged("MissionID");
+					this.OnMissionIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Threshold", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public System.Nullable<int> Threshold
+		{
+			get
+			{
+				return this._Threshold;
+			}
+			set
+			{
+				if ((this._Threshold != value))
+				{
+					this.OnThresholdChanging(value);
+					this.SendPropertyChanging();
+					this._Threshold = value;
+					this.SendPropertyChanged("Threshold");
+					this.OnThresholdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayOrder", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public System.Nullable<int> DisplayOrder
+		{
+			get
+			{
+				return this._DisplayOrder;
+			}
+			set
+			{
+				if ((this._DisplayOrder != value))
+				{
+					this.OnDisplayOrderChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayOrder = value;
+					this.SendPropertyChanged("DisplayOrder");
+					this.OnDisplayOrderChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CampaignMission_GameLevelRequirement", Storage="_CampaignMission", ThisKey="MissionID", OtherKey="MissionID", IsForeignKey=true)]
+		public CampaignMission CampaignMission
+		{
+			get
+			{
+				return this._CampaignMission.Entity;
+			}
+			set
+			{
+				CampaignMission previousValue = this._CampaignMission.Entity;
+				if (((previousValue != value) 
+							|| (this._CampaignMission.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CampaignMission.Entity = null;
+						previousValue.GameLevelRequirement.Remove(this);
+					}
+					this._CampaignMission.Entity = value;
+					if ((value != null))
+					{
+						value.GameLevelRequirement.Add(this);
+						this._MissionID = value.MissionID;
+					}
+					else
+					{
+						this._MissionID = default(int);
+					}
+					this.SendPropertyChanged("CampaignMission");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelRequirement", Storage="_GameLevel", ThisKey="LevelID", OtherKey="LevelID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public GameLevel GameLevel
+		{
+			get
+			{
+				return this._GameLevel.Entity;
+			}
+			set
+			{
+				GameLevel previousValue = this._GameLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._GameLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GameLevel.Entity = null;
+						previousValue.GameLevelRequirement.Remove(this);
+					}
+					this._GameLevel.Entity = value;
+					if ((value != null))
+					{
+						value.GameLevelRequirement.Add(this);
+						this._LevelID = value.LevelID;
+					}
+					else
+					{
+						this._LevelID = default(int);
+					}
+					this.SendPropertyChanged("GameLevel");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._CampaignMission = default(EntityRef<CampaignMission>);
+			this._GameLevel = default(EntityRef<GameLevel>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.GameLevelReward")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class GameLevelReward : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _LevelID;
+		
+		private int _RewardID;
+		
+		private int _Reward;
+		
+		private EntityRef<GameLevel> _GameLevel;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnLevelIDChanging(int value);
+    partial void OnLevelIDChanged();
+    partial void OnRewardIDChanging(int value);
+    partial void OnRewardIDChanged();
+    partial void OnRewardChanging(int value);
+    partial void OnRewardChanged();
+    #endregion
+		
+		public GameLevelReward()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LevelID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int LevelID
+		{
+			get
+			{
+				return this._LevelID;
+			}
+			set
+			{
+				if ((this._LevelID != value))
+				{
+					if (this._GameLevel.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLevelIDChanging(value);
+					this.SendPropertyChanging();
+					this._LevelID = value;
+					this.SendPropertyChanged("LevelID");
+					this.OnLevelIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RewardID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int RewardID
+		{
+			get
+			{
+				return this._RewardID;
+			}
+			set
+			{
+				if ((this._RewardID != value))
+				{
+					this.OnRewardIDChanging(value);
+					this.SendPropertyChanging();
+					this._RewardID = value;
+					this.SendPropertyChanged("RewardID");
+					this.OnRewardIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reward", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int Reward
+		{
+			get
+			{
+				return this._Reward;
+			}
+			set
+			{
+				if ((this._Reward != value))
+				{
+					this.OnRewardChanging(value);
+					this.SendPropertyChanging();
+					this._Reward = value;
+					this.SendPropertyChanged("Reward");
+					this.OnRewardChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelReward", Storage="_GameLevel", ThisKey="LevelID", OtherKey="LevelID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public GameLevel GameLevel
+		{
+			get
+			{
+				return this._GameLevel.Entity;
+			}
+			set
+			{
+				GameLevel previousValue = this._GameLevel.Entity;
+				if (((previousValue != value) 
+							|| (this._GameLevel.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._GameLevel.Entity = null;
+						previousValue.GameLevelReward.Remove(this);
+					}
+					this._GameLevel.Entity = value;
+					if ((value != null))
+					{
+						value.GameLevelReward.Add(this);
+						this._LevelID = value.LevelID;
+					}
+					else
+					{
+						this._LevelID = default(int);
+					}
+					this.SendPropertyChanged("GameLevel");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._GameLevel = default(EntityRef<GameLevel>);
 			OnCreated();
 		}
 		

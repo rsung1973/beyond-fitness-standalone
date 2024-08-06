@@ -31,7 +31,7 @@
 
     GameLevel _model = (GameLevel)this.Model;
     //Player currentLevel = ViewBag.Player as Player;
-    //var profile = currentLevel?.UserProfile;
+    //var profile = currentLevel?.UserProfile ?? (await Context.GetUserAsync()).LoadInstance(models);
 }
 
 @section Condition
@@ -39,34 +39,28 @@
     <div class="condition">
 
         <ul class="line-height-l">
-
-            @{
-                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PTMission.cshtml", 4);
+            @foreach (var item in _model.GameLevelRequirement.OrderBy(r => r.DisplayOrder))
+            {
+                await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/DisplayMission{item.MissionID:00}.cshtml", item);
             }
-            @{
-                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/SRMission.cshtml", 1);
-            }
-
-            @{
-                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/SelfAssessmentMission.cshtml");
-                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/FeedbackSurveyMission.cshtml");
-            }
-
         </ul>
 
         <badge class="bg-beyondred-dark px-2 rounded-m font-12 mb-2">限時回饋</badge>
-
         <ul>
-
-            <li>
-
-                原任務牆點數回饋加碼 200%
-
-            </li>
-
+            @{
+                var reward = _model.GameLevelReward.Where(r => r.RewardID == (int)GameLevelReward.RewardDefinition.任務牆點數回饋加碼)
+                                .FirstOrDefault();
+                if (reward != null)
+                {
+                    <li>
+                        原任務牆點數回饋加碼 @(reward.Reward)%
+                    </li>
+                }
+            }
         </ul>
 
-        <a href="#" data-menu="popup-levelTable" class="btn btn-border rounded-xl border-lightgray-dark bg-beyond-dark color-beyondwhite-dark px-4 py-1 font-12 align-self-end align-self-lg-start align-self-md-start mx-2 mx-lg-0 mx-md-0">瞭解更多</a>
+        <a href="#" data-menu="popup-levelTable"
+           class="btn btn-border rounded-xl border-lightgray-dark bg-beyond-dark color-beyondwhite-dark px-4 py-1 font-12 align-self-end align-self-lg-start align-self-md-start mx-2 mx-lg-0 mx-md-0">瞭解更多</a>
 
     </div>
 }

@@ -17,10 +17,9 @@ namespace WebHome.Models.ViewModel
 
     public class CampaignMissionDataModel
     {
-        public String ViewPath { get; set; }
         public object Goal { get; set; }
         public bool CheckResult { get; set; }
-        public String MissionID { get; set; }
+        public CampaignMission MissionID { get; set; }
         public object ResultModel { get; set; }
     }
 

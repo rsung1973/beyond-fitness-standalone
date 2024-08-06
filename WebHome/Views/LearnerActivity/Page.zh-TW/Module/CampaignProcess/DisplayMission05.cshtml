@@ -11,7 +11,10 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
-
+@functions
+{
+    const String MissionID = "01_PT";
+}
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -28,10 +31,8 @@
             ? "en"
             : "ja";
 
+    GameLevelRequirement _model = (GameLevelRequirement)this.Model;
+
 }
-@{
-    CampaignMissionDataModel mission = (CampaignMissionDataModel)ViewBag.CurrentMission;
-    mission.CheckResult = true;
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckSelfAssessmentMission.cshtml");
-    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckFeedbackSurveyMission.cshtml");
-}
+<li>完成<em class="px-1">@(_model.Threshold) S.R</em></li>
+

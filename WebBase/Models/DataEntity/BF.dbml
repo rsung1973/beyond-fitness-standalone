@@ -3183,6 +3183,8 @@
       <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="LevelCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
+      <Association Name="GameLevel_GameLevelRequirement" Member="GameLevelRequirement" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelRequirement" />
+      <Association Name="GameLevel_GameLevelReward" Member="GameLevelReward" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelReward" />
     </Type>
   </Table>
   <Table Name="BG.StageProgress" Member="StageProgress">
@@ -3282,6 +3284,7 @@
       <Column Name="MissionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Mission" Type="System.String" DbType="NVarChar(64) NOT NULL" CanBeNull="false" />
       <Association Name="CampaignMission_LessonMissionBonusAwardingItem" Member="LessonMissionBonusAwardingItem" ThisKey="MissionID" OtherKey="MissionID" Type="LessonMissionBonusAwardingItem" />
+      <Association Name="CampaignMission_GameLevelRequirement" Member="GameLevelRequirement" ThisKey="MissionID" OtherKey="MissionID" Type="GameLevelRequirement" />
     </Type>
   </Table>
   <Table Name="BG.BonusTransaction" Member="BonusTransaction">
@@ -3341,8 +3344,26 @@
     <Type Name="BonusAwardingItemProperty">
       <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="PropertyID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-		<Column Name="WeightIndex" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Association Name="BonusAwardingItem_BonusAwardingItemProperty" Member="BonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingItem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Column Name="WeightIndex" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="BonusAwardingItem_BonusAwardingItemProperty" Member="BonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="BonusAwardingItem" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.GameLevelRequirement" Member="GameLevelRequirement">
+    <Type Name="GameLevelRequirement">
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MissionID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Threshold" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DisplayOrder" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CampaignMission_GameLevelRequirement" Member="CampaignMission" ThisKey="MissionID" OtherKey="MissionID" Type="CampaignMission" IsForeignKey="true" />
+      <Association Name="GameLevel_GameLevelRequirement" Member="GameLevel" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.GameLevelReward" Member="GameLevelReward">
+    <Type Name="GameLevelReward">
+      <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="RewardID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Reward" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="GameLevel_GameLevelReward" Member="GameLevel" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

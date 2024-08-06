@@ -88,17 +88,7 @@
                                     var level = levels[idx % levels.Length];
                                     <div class="splide__slide">
                                         @{
-                                            if (appraisal.CheckResult)
-                                            {
-                                                appraisal.PromotionLevel = level;
-                                                appraisal.CheckResult = false;
-                                            }
-                                            await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignGameLevel_{level.LevelCode}.cshtml", level);
-
-                                            if ((GameLevel)appraisal.PromotionLevel == level)
-                                            {
-                                                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/CheckCampaignMission.cshtml", level);
-                                            }
+                                            await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignGameLevel.cshtml", level);
                                         }
                                     </div>
                                     idx++;
