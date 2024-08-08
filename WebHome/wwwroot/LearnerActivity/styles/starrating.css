@@ -73,121 +73,121 @@
 }
 
 .star-5.active, .star-5.active ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .star-5.active:before, .star-5.active:after, .star-5.active ~ .star:before, .star-5.active ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 input[type=radio] + .star-5 {
   cursor: pointer;
 }
 input[type=radio] + .star-5:hover, input[type=radio] + .star-5:hover ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 input[type=radio] + .star-5:hover:before, input[type=radio] + .star-5:hover:after, input[type=radio] + .star-5:hover ~ .star:before, input[type=radio] + .star-5:hover ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .rating:not(:hover) .radio-5:checked ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .rating:not(:hover) .radio-5:checked ~ .star:before, .rating:not(:hover) .radio-5:checked ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .star-4.active, .star-4.active ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .star-4.active:before, .star-4.active:after, .star-4.active ~ .star:before, .star-4.active ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 input[type=radio] + .star-4 {
   cursor: pointer;
 }
 input[type=radio] + .star-4:hover, input[type=radio] + .star-4:hover ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 input[type=radio] + .star-4:hover:before, input[type=radio] + .star-4:hover:after, input[type=radio] + .star-4:hover ~ .star:before, input[type=radio] + .star-4:hover ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .rating:not(:hover) .radio-4:checked ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .rating:not(:hover) .radio-4:checked ~ .star:before, .rating:not(:hover) .radio-4:checked ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .star-3.active, .star-3.active ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .star-3.active:before, .star-3.active:after, .star-3.active ~ .star:before, .star-3.active ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 input[type=radio] + .star-3 {
   cursor: pointer;
 }
 input[type=radio] + .star-3:hover, input[type=radio] + .star-3:hover ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 input[type=radio] + .star-3:hover:before, input[type=radio] + .star-3:hover:after, input[type=radio] + .star-3:hover ~ .star:before, input[type=radio] + .star-3:hover ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .rating:not(:hover) .radio-3:checked ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .rating:not(:hover) .radio-3:checked ~ .star:before, .rating:not(:hover) .radio-3:checked ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .star-2.active, .star-2.active ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .star-2.active:before, .star-2.active:after, .star-2.active ~ .star:before, .star-2.active ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 input[type=radio] + .star-2 {
   cursor: pointer;
 }
 input[type=radio] + .star-2:hover, input[type=radio] + .star-2:hover ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 input[type=radio] + .star-2:hover:before, input[type=radio] + .star-2:hover:after, input[type=radio] + .star-2:hover ~ .star:before, input[type=radio] + .star-2:hover ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .rating:not(:hover) .radio-2:checked ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .rating:not(:hover) .radio-2:checked ~ .star:before, .rating:not(:hover) .radio-2:checked ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .star-1.active, .star-1.active ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .star-1.active:before, .star-1.active:after, .star-1.active ~ .star:before, .star-1.active ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 input[type=radio] + .star-1 {
   cursor: pointer;
 }
 input[type=radio] + .star-1:hover, input[type=radio] + .star-1:hover ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 input[type=radio] + .star-1:hover:before, input[type=radio] + .star-1:hover:after, input[type=radio] + .star-1:hover ~ .star:before, input[type=radio] + .star-1:hover ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 
 .rating:not(:hover) .radio-1:checked ~ .star {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }
 .rating:not(:hover) .radio-1:checked ~ .star:before, .rating:not(:hover) .radio-1:checked ~ .star:after {
-  border-bottom-color: #EBD7B4;
+  border-bottom-color: #FFC46D;
 }/*# sourceMappingURL=starrating.css.map */
