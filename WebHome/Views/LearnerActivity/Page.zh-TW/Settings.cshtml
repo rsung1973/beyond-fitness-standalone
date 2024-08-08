@@ -31,6 +31,8 @@
             ? "en"
             : "ja";
 
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
 
 }
@@ -99,7 +101,7 @@
                         <span class="font-500 font-16">更新電子郵件</span>
                         <span class="font-14 mt-3 font-500 color-gray-dark let">Email Update</span>
                         <span class="badge bg-beyondred-dark font-13">
-                            @Html.Raw(profile.UserProfileProperty.Any(p=>p.PropertyID==(int)UserProfileProperty.PropertyDefinition.ValidEmail) ? "已認證" : "未認證")
+                            @Html.Raw(profile.UserProfileProperty.Any(p => p.PropertyID == (int)UserProfileProperty.PropertyDefinition.ValidEmail) ? "已認證" : "未認證")
                         </span>
                         <i class="fa fa-angle-right"></i>
                     </a>
@@ -109,7 +111,7 @@
                             <i class="fab font-32 fa-line color-line"></i>
                             <span class="font-500 font-16">LINE</span>
                             <span class="font-14 mt-3 font-500 color-gray-dark let">Bind</span>
-                            <span class="badge bg-beyondred-dark font-13">未綁定</span>                            
+                            <span class="badge bg-beyondred-dark font-13">未綁定</span>
                             <i class="fa fa-angle-right"></i>
                         </a>
                     }
@@ -153,13 +155,13 @@
         }
     </div>
     <!--前景調色盤-->
-    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m" 
-        data-menu-load="HighlightsItem"
-        data-menu-height="410" data-menu-effect="menu-over">         
+    <div id="menu-highlights" class="menu menu-box-bottom menu-box-detached rounded-m"
+         data-menu-load="HighlightsItem"
+         data-menu-height="410" data-menu-effect="menu-over">
     </div>
     <!--背景調色盤-->
     <div id="menu-backgrounds" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-load="BackgroundsItem"
-        data-menu-height="310" data-menu-effect="menu-over">
+         data-menu-height="310" data-menu-effect="menu-over">
     </div>
 
     <!--手機載具設定-->
@@ -225,4 +227,13 @@
         }
     </div>
 
+    @if (_viewModel?.CustomQuery != null)
+    {
+        <script>
+            $(function () {
+                $('#@(_viewModel.CustomQuery)').addClass('menu-active');
+                $('.menu-hider').addClass('menu-active');
+            });
+        </script>
+    }
 }

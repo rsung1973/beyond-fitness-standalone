@@ -34,11 +34,19 @@
     : "ja";
 
     var profile = this.Model as UserProfile;
+    var loginUser = await Context.GetUserAsync();
 
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
 }
+@section Indication
+{
+    <p class=" boxed-text-l color-theme font-18">
+        請您開啟Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入最後6位數字
+    </p>
+ }
+
 @section SendOTP
 {
     <a href="javascript:sendOTP();"
@@ -64,7 +72,7 @@
     <script>
 
         function closeOTP() {
-            window.location.href = 'Settings';
+            window.location.href = '@(loginUser == null ? "Login" : "Settings")';
         }
 
         function validatePIN() {

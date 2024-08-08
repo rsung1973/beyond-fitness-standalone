@@ -39,90 +39,44 @@
 
 }
 <div class="page-content pb-0">
-
     <div class="card" data-card-height="cover">
-
-
-
         <div class="card-center">
-
-
-
             <div class="px-5">
-
                 <div class="text-center">
-
                     <img src="../images/preload-logo-gold.svg" width="120">
-
                     <p class="color-beyondred-dark text-center font-15 mt-2 fst-italic custom-font-secondary">Better living throgh Beyond</p>
-
                 </div>
-
-
 
                 <div class="input-style input-transparent has-borders has-icon validate-field">
-
                     <i class="fa fa-user color-beyondwhite-dark"></i>
-
-                    <input type="email" class="form-control validate-email bg-transparent" id="form1a" name="PID" placeholder="name@domain.com" />
-
-                    <label for="form1a" class="font-14 my-1 color-beyondred-dark font-500">登入帳號</label>
-
+                    <input type="text" class="form-control validate-name bg-transparent" id="form1a" placeholder="會員編號" name="MemberCode" />
+                    <label for="form1a" class="font-14 my-1 color-beyondred-dark font-500">會員編號</label>
                     <i class="fa fa-times disabled invalid color-beyondred-dark"></i>
-
                     <i class="fa fa-check disabled valid color-green-dark"></i>
-
                     <em>(必要欄位)</em>
-
                 </div>
-
-
-
-                <div class="input-style input-transparent has-borders has-icon validate-field mt-4">
-
-                    <i class="fa fa-lock color-beyondwhite-dark"></i>
-
-                    <input type="password" class="form-control validate-password bg-transparent" id="form3a" name="Password" placeholder="登入密碼" />
-
-                    <label for="form3a" class="font-14 my-1 color-beyondred-dark font-500">登入密碼</label>
-
-                    <i class="fa fa-times disabled invalid color-beyondred-dark"></i>
-
-                    <i class="fa fa-check disabled valid color-green-dark"></i>
-
-                    <em>(必要欄位)</em>
-
-                </div>
-
-                <a href="javascript:login();"
-                   class="back-button btn btn-full rounded-xl shadow-large font-500 border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark letter-spacing-1 font-16">登入</a>
-
-                <div class="d-flex mt-3 mb-4 px-5">
-
-                    <div class="w-50 font-11 pb-2 text-start font-15"><a href="ActivateAccount" class="color-white">啟用帳號</a></div>
-
-                    <div class="w-50 font-11 pb-2 text-end font-15"><a href="#" data-menu="menu-forgot" class="color-white">忘記密碼</a></div>
-
-                </div>
-
-                <div class="divider mt-5 bg-beyondwhite-dark opacity-20"></div>
-
-
-
-                @*https://liff.line.me/1645278921-kWRPP32q/?accountId=beyond_ft*@
-                <a href="@Html.Raw($"{AppSettings.Default.LineAuth.LineAuthUrl}?response_type=code&client_id={AppSettings.Default.LineAuth.ChannelID}&redirect_uri={HttpUtility.UrlEncode(AppSettings.Default.LineAuth.ReturnUrl)}&state={Guid.NewGuid()}&scope=profile%20openid")" class="btn btn-full shadow-l rounded-xl color-line font-700 text-center border-light border-opacity-50 letter-spacing-1 font-14">
-                    <i class="fab fa-line text-center bg-transparent font-16 px-2"></i>使用 Line 登入
-                </a>
 
                 <div class="pb-3"></div>
 
-                <!--<a href="https://liff.line.me/1645278921-kWRPP32q/?accountId=beyond_ft"
+                <div class="input-style input-transparent has-borders has-icon validate-field">
+                    <i class="fa-solid fa-envelope color-beyondwhite-dark"></i>
+                    <input type="email" class="form-control validate-email bg-transparent" id="form1b" placeholder="登入郵件信箱" name="PID" />
+                    <label for="form1a" class="font-14 my-1 color-beyondred-dark font-500">登入郵件信箱</label>
+                    <i class="fa fa-times disabled invalid color-beyondred-dark"></i>
+                    <i class="fa fa-check disabled valid color-green-dark"></i>
+                    <em>(必要欄位)</em>
+                </div>
 
-                class="btn btn-full shadow-l rounded-xl color-google font-700 text-center border-light border-opacity-50 letter-spacing-1 font-14"><i
+                <a href="javascript:commitToRegister();" class="back-button btn btn-full rounded-xl shadow-large font-500 border-light border-opacity-50 color-beyondwhite-dark bg-beyond-dark letter-spacing-1 font-16 mt-5">啟用/綁定帳號</a>
 
-                    class="fab fa-google text-center bg-transparent font-16 px-2"></i>使用 Google 登入</a> -->
-
-
+                <div class="d-flex mt-3 mb-4 px-5">
+                    <div class="w-50 font-11 pb-2 text-start font-15">
+                        <a href="Login" class="color-white">登入</a>
+                    </div>
+                    <div class="w-50 font-11 pb-2 text-end font-15">
+                        <a href="#" data-menu="menu-forgot" class="color-white">忘記密碼</a>
+                    </div>
+                </div>
 
             </div>
 
@@ -151,16 +105,10 @@
     }
 </div>
 
-<!--otp-->
-
-<div id="otp-check" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over">
-
-</div>
-
 <script>
-    function login() {
+    function commitToRegister() {
         var viewModel = $('input,select,textArea').serializeObject();
-        $('').launchDownload('@(Url.Action("SignOn", "LearnerActivity"))', viewModel);
+        $('').launchDownload('@(Url.Action("CommitToRegister", "LearnerActivity"))', viewModel);
     }
 </script>
 @{ 

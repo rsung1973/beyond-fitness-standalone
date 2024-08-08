@@ -184,6 +184,20 @@ namespace WebHome.Controllers
             return View(viewResult.ViewName, profile);
         }
 
+        [AllowAnonymous, HttpPost]
+        public async Task<ActionResult> CommitRegistrationPasswordAsync([FromBody] PasswordViewModel viewModel)
+        {
+            var result = await CommitPasswordAsync(viewModel);
+            if (result is not ViewResult)
+            {
+                return result;
+            }
+
+            UserProfile profile = ((ViewResult)result).Model as UserProfile;
+            var viewResult = CheckView("RegistrationCommitted");
+            return View(viewResult.ViewName, profile);
+        }
+
         [HttpPost]
         public async Task<ActionResult> UnbindLineAsync([FromBody] LearnerViewModel viewModel)
         {
@@ -397,43 +411,10 @@ namespace WebHome.Controllers
         [HttpPost]
         public async Task<ActionResult> ValidatePINAsync([FromBody] LearnerViewModel viewModel)
         {
-            ViewBag.ViewModel = viewModel;
-
-            if (viewModel.KeyID != null)
+            var profile = await CheckPINAsync(viewModel);
+            if (!ModelState.IsValid)
             {
-                viewModel.UID = viewModel.DecryptKeyValue();
-            }
-
-            UserProfile profile = await HttpContext.GetUserAsync();
-
-            if (profile == null)
-            {
-                profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
-            }
-            else
-            {
-                profile = profile.LoadInstance(models);
-            }
-
-            if (profile == null)
-            {
-                return Json(new { result = false, message = "資料錯誤!!" });
-            }
-
-            viewModel.PIN = viewModel.PIN.GetEfficientString();
-            if (viewModel.PIN == null || viewModel.PIN.Length < 4)
-            {
-                return Json(new { result = false, message = "請輸入動態密碼!!" });
-            }
-
-            if (profile.UserProfileExtension.PINExpiration < DateTime.Now)
-            {
-                return Json(new { result = false, message = "動態密碼過期!!" });
-            }
-
-            if (profile.UserProfileExtension.PIN != viewModel.PIN)
-            {
-                return Json(new { result = false, message = "動態密碼錯誤!!" });
+                return Json(new { result = false, message = ModelState.ErrorMessage() });
             }
 
             ViewEngineResult viewResult;
@@ -588,10 +569,100 @@ namespace WebHome.Controllers
         }
 
         [AllowAnonymous]
+        public ActionResult CommitToRegister(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            viewModel.MemberCode = viewModel.MemberCode.GetEfficientString();
+            if (viewModel.MemberCode == null)
+            {
+                ModelState.AddModelError("MemberCode", "會員編號資料錯誤，請確認後再重新輸入!!");
+            }
+
+            viewModel.PID = viewModel.PID.GetEfficientString();
+            if (viewModel.PID == null || !Regex.IsMatch(viewModel.PID, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+            {
+                ModelState.AddModelError("PID", "電子信箱資料錯誤，請確認後再重新輸入!!");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = this.ModelState;
+                ViewBag.SingleError = true;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.MemberCode == viewModel.MemberCode
+                || u.UserProfileExtension.IDNo == viewModel.MemberCode).FirstOrDefault();
+
+            if (item == null)
+            {
+                ModelState.AddModelError("MemberCode", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                ViewBag.ModelState = this.ModelState;
+                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+            }
+
+            if (models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID && u.UID != item.UID))
+            {
+                ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                ViewBag.ModelState = ModelState;
+            }
+
+            //if (item.UserProfileExtension.CurrentTrial == 1 /*|| !item.IsLearner()*/)
+            //{
+            //    ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+            //}
+
+            //var pwd = (viewModel.Password).MakePassword();
+            //if (item.LevelID != (int)Naming.MemberStatusDefinition.ReadyToRegister)
+            //{
+            //    if (item.Password != pwd)
+            //    {
+            //        ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+            //    }
+            //}
+            //else if (pwd == null)
+            //{
+            //    ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+            //}
+            //else
+            //{
+            //    item.Password = pwd;
+            //}
+
+            ViewEngineResult viewResult;
+            if (!ModelState.IsValid)
+            {
+                ViewBag.ModelState = ModelState;
+                viewResult = CheckView("ActivateAccount");
+                return View(viewResult.ViewName, item);
+            }
+
+            if (item.PID != viewModel.PID)
+            {
+                item.PID = viewModel.PID;
+            }
+            models.SubmitChanges();
+
+            viewResult = CheckView("CheckRegistrationOTP");
+            return View(viewResult.ViewName, item);
+
+        }
+
+        [AllowAnonymous]
         public ActionResult Login(RegisterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
             var viewResult = CheckView("Login");
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
+
+        }
+
+        [AllowAnonymous]
+        public ActionResult ActivateAccount(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var viewResult = CheckView("ActivateAccount");
             return CheckLanguageRoute() ?? View(viewResult.ViewName);
 
         }
@@ -1295,6 +1366,72 @@ namespace WebHome.Controllers
             var viewResult = CheckView("CheckOTP");
             return View(viewResult.ViewName, item);
         }
+
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> ValidateRegistrationPINAsync([FromBody] LearnerViewModel viewModel)
+        {
+            var profile = await CheckPINAsync(viewModel);
+            if (!ModelState.IsValid)
+            {
+                return Json(new { result = false, message = ModelState.ErrorMessage() });
+            }
+
+            profile.LevelID = (int)Naming.MemberStatusDefinition.Checked;
+            models.SubmitChanges();
+
+            await HttpContext.SignOnAsync(profile);
+
+            ViewEngineResult viewResult;
+
+            viewResult = CheckView("UpdatePassword");
+
+            return View(viewResult.ViewName, profile);
+        }
+
+        protected async Task<UserProfile> CheckPINAsync(LearnerViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+            else
+            {
+                profile = profile.LoadInstance(models);
+            }
+
+            if (profile == null)
+            {
+                ModelState.AddModelError("Message", "資料錯誤!!");
+                return null;
+            }
+
+            viewModel.PIN = viewModel.PIN.GetEfficientString();
+            if (viewModel.PIN == null || viewModel.PIN.Length < 4)
+            {
+                ModelState.AddModelError("Message", "請輸入動態密碼!!");
+            }
+            else if (profile.UserProfileExtension.PINExpiration < DateTime.Now)
+            {
+                ModelState.AddModelError("Message", "動態密碼過期!!");
+            }
+            else if (profile.UserProfileExtension.PIN != viewModel.PIN)
+            {
+                ModelState.AddModelError("Message", "動態密碼錯誤!!");
+            }
+
+            return profile;
+        }
+
 
     }
 }

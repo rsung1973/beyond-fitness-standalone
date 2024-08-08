@@ -33,61 +33,37 @@
     ? "en"
     : "ja";
 
+    var profile = this.Model as UserProfile;
+
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
-    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
-    int contractID = -1;
-
-    if (_viewModel?.KeyID != null)
-    {
-        contractID = _viewModel.DecryptKeyValue();
-    }
-
-    var item = models.GetTable<CourseContract>().Where(c => c.ContractID == contractID).FirstOrDefault();
-    if (item != null)
-    {
-        var profile = await Context.GetUserAsync();
-        profile = profile.LoadInstance(models);
-        profile.UserProfileExtension.PIN = item.CourseContractExtension.SignerPIN;
-        profile.UserProfileExtension.PINExpiration = DateTime.Now.AddMinutes(120);
-        models.SubmitChanges();
-    }
-
 }
-
 @section Indication
 {
     <p class=" boxed-text-l color-theme font-18">
-        請您開啟Beyond Line官方帳號查看動態密碼推播通知，並於下方輸入最後6位數字
+        請您開啟Email信箱查看動態密碼，並於下方輸入最後6位數字
     </p>
-}
+ }
 
 @section SendOTP
 {
-    <a href="javascript:sendOTP('@Html.Raw(contractID.EncryptKey())');"
+    <a href="javascript:sendOTP();"
        class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
     <script>
-        function sendOTP(keyID) {
-            var viewModel = {
-                'KeyID': keyID
-            };
-            doPost('SendContractOTP', viewModel, function (data) {
-                Swal.fire(
-                    '動態密碼已重送!',
-                    '請開啟信箱查看動態密碼 Bye!',
-                    'success'
-                ).then((result) => {
-                    $('').launchDownload('SignContractOTP', viewModel);
+            function sendOTP() {
+                var viewModel = {
+                    'KeyID': '@Html.Raw(profile.UID.EncryptKey())'
+                };
+                doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
+                    Swal.fire(
+                        '動態密碼已重送!',
+                        '請開啟信箱查看動態密碼 Bye!',
+                        'success'
+                    );
                 });
-            });
-        }
+            }
     </script>
-}
-
-@section PrepareOTP
-{
-
 }
 
 @section ValidatePIN
@@ -95,15 +71,15 @@
     <script>
 
         function closeOTP() {
-            window.location.href = 'ContractEvents';
+            window.location.href = 'Login';
         }
 
         function validatePIN() {
             var viewModel = {
-                'KeyID': '@Html.Raw(contractID.EncryptKey())',
-                'SignerPIN': $('input[name="Code"]').serializeObject().Code.join(''),
+                'KeyID': '@Html.Raw(profile.UID.EncryptKey())',
+                'PIN': $('input[name="Code"]').serializeObject().Code.join('')
             };
-            doPost('@Html.Raw(Url.Action("ValidateSignerPIN", "LearnerActivity"))', viewModel,
+            doPost('@Html.Raw(Url.Action("ValidateRegistrationPIN", "LearnerActivity"))', viewModel,
                 function (data) {
                     $('#update-Passwd').html(data);
                     $('#update-Passwd').addClass('menu-active');
