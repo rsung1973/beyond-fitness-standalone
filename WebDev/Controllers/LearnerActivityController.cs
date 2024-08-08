@@ -145,13 +145,27 @@ namespace WebHome.Controllers
             return Json(new { result = true });
         }
 
-        [HttpPost]
+        [AllowAnonymous, HttpPost]
         public async Task<ActionResult> CommitPasswordAsync([FromBody] PasswordViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            UserProfile item = await HttpContext.GetUserAsync();
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
 
-            if (item == null)
+            UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+            else
+            {
+                profile = profile.LoadInstance(models);
+            }
+
+            if (profile == null)
             {
                 return Json(new { result = false, message = "資料錯誤!!" });
             }
@@ -162,13 +176,12 @@ namespace WebHome.Controllers
             }
 
 
-            item = item.LoadInstance(models);
-            item.Password = (viewModel.Password).MakePassword();
-            item.ResetPassword.Clear();
+            profile.Password = (viewModel.Password).MakePassword();
+            profile.ResetPassword.Clear();
             models.SubmitChanges();
 
             var viewResult = CheckView("PasswordCommitted");
-            return View(viewResult.ViewName, item);
+            return View(viewResult.ViewName, profile);
         }
 
         [HttpPost]
@@ -254,15 +267,20 @@ namespace WebHome.Controllers
             ViewBag.ViewModel = viewModel;
             UserProfile profile = await HttpContext.GetUserAsync();
 
-            if (profile == null)
-            {
-                return Json(new { result = false, message = "資料錯誤!!" });
-            }
-
             viewModel.Email = viewModel.Email.GetEfficientString();
             if (viewModel.Email == null || !viewModel.Email.IsEmail())
             {
                 return Json(new { result = false, message = "請輸入正確Email!!" });
+            }
+
+            if (profile == null)
+            {
+                profile = models.GetTable<UserProfile>().Where(u => u.PID == viewModel.Email).FirstOrDefault();
+            }
+
+            if (profile == null)
+            {
+                return Json(new { result = false, message = "您提供的電子郵件信箱資料不存在!!" });
             }
 
             if (profile.PID != viewModel.Email)
@@ -275,13 +293,15 @@ namespace WebHome.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> ForgetPasswordPageAsync([FromBody] LearnerViewModel viewModel)
         {
             var result = await ForgetPasswordAsync(viewModel);
             if(result is ViewResult)
             {
-                return Json(new { result = true });
+                UserProfile profile = ((ViewResult)result).Model as UserProfile;
+                return Json(new { result = true, keyID = profile.UID.EncryptKey() });
             }
             return result;
         }
@@ -301,16 +321,32 @@ namespace WebHome.Controllers
 
         }
 
-        public async Task<ActionResult> SendOTPAsync()
+        [AllowAnonymous, HttpPost]
+        public async Task<ActionResult> SendOTPAsync([FromBody] LearnerViewModel viewModel)
         {
+            ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
             UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+            else
+            {
+                profile = profile.LoadInstance(models);
+            }
 
             if (profile == null)
             {
                 return Json(new { result = false, message = "資料錯誤!!" });
             }
 
-            profile = profile.LoadInstance(models);
             return View("~/Views/LearnerActivity/SendOTP.cshtml", profile);
 
         }
@@ -357,11 +393,27 @@ namespace WebHome.Controllers
 
         }
 
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> ValidatePINAsync([FromBody] LearnerViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
             UserProfile profile = await HttpContext.GetUserAsync();
+
+            if (profile == null)
+            {
+                profile = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+            }
+            else
+            {
+                profile = profile.LoadInstance(models);
+            }
 
             if (profile == null)
             {
@@ -374,7 +426,6 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "請輸入動態密碼!!" });
             }
 
-            profile = profile.LoadInstance(models);
             if (profile.UserProfileExtension.PINExpiration < DateTime.Now)
             {
                 return Json(new { result = false, message = "動態密碼過期!!" });
@@ -387,23 +438,14 @@ namespace WebHome.Controllers
 
             ViewEngineResult viewResult;
 
-            switch(viewModel.UrlAction)
-            {
-                case "SignCourseContract":
-                    viewResult = CheckView("NextStep");
-                    break;
-
-                default:
-                    models.ExecuteCommand("delete ResetPassword where UID = {0}", profile.UID);
-                    profile.ResetPassword
-                        .Add(new ResetPassword
-                        {
-                            ResetID = Guid.NewGuid(),
-                        });
-                    models.SubmitChanges();
-                    viewResult = CheckView("UpdatePassword");
-                    break;
-            }
+            models.ExecuteCommand("delete ResetPassword where UID = {0}", profile.UID);
+            profile.ResetPassword
+                .Add(new ResetPassword
+                {
+                    ResetID = Guid.NewGuid(),
+                });
+            models.SubmitChanges();
+            viewResult = CheckView("UpdatePassword");
 
             return View(viewResult.ViewName, profile);
 
@@ -550,7 +592,7 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             var viewResult = CheckView("Login");
-            return View(viewResult.ViewName);
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
 
         }
 
@@ -1233,6 +1275,26 @@ namespace WebHome.Controllers
 
         }
 
+        [AllowAnonymous]
+        [HttpPost]
+        public ActionResult CheckOTP(LoginViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.UID = viewModel.DecryptKeyValue();
+            }
+
+            UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
+
+            if (item == null)
+            {
+                return Json(new { result = false, message = "資料錯誤!!" });
+            }
+
+            var viewResult = CheckView("CheckOTP");
+            return View(viewResult.ViewName, item);
+        }
 
     }
 }

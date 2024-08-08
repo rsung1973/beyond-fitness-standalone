@@ -27,7 +27,7 @@
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
-    var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var profile = await Context.GetUserAsync();
 }
 <div class="menu-title text-center">
     <h1 class="text-center mt-4"><i class="fa-solid fa-circle-question fa-3x color-beyondwhite-dark rounded-circle"></i>
@@ -40,7 +40,7 @@
     <div class="input-style no-borders has-icon validate-field mb-4 mt-3 px-4">
         <i class="fa fa-at"></i>
         <input type="email" name="MyEmail" class="form-control validate-email" id="email" placeholder="name@domain.com"
-            value="@(profile.PID)" readonly />
+            value="@(profile?.PID)" @(profile !=null ? "readonly" : null) />
         <label for="email" class="color-highlight font-11 font-500 mt-1">E-mail</label>
         <i class="fa fa-times disabled invalid color-red-dark"></i>
         <i class="fa fa-check disabled valid color-green-dark"></i>
@@ -64,7 +64,9 @@
                 'Email': $('input[name="MyEmail"]').val()
             };
             doPost('@Html.Raw(Url.Action("ForgetPasswordPage", "LearnerActivity"))', viewModel, function (data) {
-                window.location.href = '@Url.Action("CheckOTP","LearnerActivity")';
+                $('').launchDownload('CheckOTP', { 'KeyID': data.keyID });
+            }, function () {
+                $('.menu-active').removeClass('menu-active');
             });
         }
 

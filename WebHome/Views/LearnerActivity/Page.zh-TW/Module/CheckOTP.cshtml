@@ -33,6 +33,8 @@
     ? "en"
     : "ja";
 
+    var profile = this.Model as UserProfile;
+
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
@@ -42,9 +44,9 @@
     <a href="javascript:sendOTP();"
        class="text-center d-block mb-4 font-12 color-highlight font-14">是否沒有收到OTP？點此重新發送</a>
     <script>
-            function sendOTP(keyID) {
+            function sendOTP() {
                 var viewModel = {
-                    'KeyID': keyID
+                    'KeyID': '@Html.Raw(profile.UID.EncryptKey())'
                 };
                 doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
                     Swal.fire(
@@ -67,6 +69,7 @@
 
         function validatePIN() {
             var viewModel = {
+                'KeyID': '@Html.Raw(profile.UID.EncryptKey())',
                 'PIN': $('input[name="Code"]').serializeObject().Code.join('')
             };
             doPost('@Html.Raw(Url.Action("ValidatePIN", "LearnerActivity"))', viewModel,

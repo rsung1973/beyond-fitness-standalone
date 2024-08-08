@@ -145,14 +145,15 @@
 <!--忘記密碼-->
 
 <div id="menu-forgot" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350" data-menu-height="480"
-     data-menu-effect="menu-over" data-menu-load="popup-forgetPasswd.html">
-
+     data-menu-effect="menu-over">
+    @{
+        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ForgetPasswd.cshtml");
+    }
 </div>
 
 <!--otp-->
 
-<div id="otp-check" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over"
-     data-menu-load="popup-otpcheck.html">
+<div id="otp-check" class="menu menu-box-bottom" data-menu-width="cover" data-menu-effect="menu-over">
 
 </div>
 
@@ -162,3 +163,7 @@
         $('').launchDownload('@(Url.Action("SignOn", "LearnerActivity"))', viewModel);
     }
 </script>
+@{ 
+    ViewBag.AlertError = true;
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
+}

@@ -36,8 +36,12 @@
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
-    var profile = await Context.GetUserAsync();
-    profile = profile.LoadInstance(models);
+    var profile = this.Model as UserProfile;
+    if (profile == null)
+    {
+        profile = await Context.GetUserAsync();
+        profile = profile.LoadInstance(models);
+    }
 
     if(IsSectionDefined("PrepareOTP"))
     {
