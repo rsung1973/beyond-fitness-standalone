@@ -302,6 +302,11 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "輸入資料錯誤[XA001]，請重新確認！" });
             }
 
+            if (profile.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister)
+            {
+                return Json(new { result = false, message = "帳號未啟用[XA008]，請聯繫您的專屬顧問！" });
+            }
+
             if (profile.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
             {
                 return Json(new { result = false, message = "帳號已停用[XA003]，請聯繫您的專屬顧問！" });
@@ -618,34 +623,29 @@ namespace WebHome.Controllers
             if (item == null)
             {
                 ModelState.AddModelError("MemberCode", "輸入資料錯誤[XA005]，請重新確認！");
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
-
-            if (models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID && u.UID != item.UID))
+            else
             {
-                ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
-                ViewBag.ModelState = ModelState;
-            }
-
-            if (item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-            {
-                if(item.PID.IsEmail())
+                if (models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID && u.UID != item.UID))
                 {
                     ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
                 }
+                else if (item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                {
+                    if (item.PID.IsEmail())
+                    {
+                        ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
+                    }
+                }
+                else if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+                {
+                    ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
+                }
+                else if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+                {
+                    ModelState.AddModelError("PID", "帳號已停用[XA004]，請聯繫您的專屬顧問！");
+                }
             }
-
-            if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
-            {
-                ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
-            }
-
-            if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
-            {
-                ModelState.AddModelError("PID", "帳號已停用[XA004]，請聯繫您的專屬顧問！");
-            }
-
 
             //if (item.UserProfileExtension.CurrentTrial == 1 /*|| !item.IsLearner()*/)
             //{

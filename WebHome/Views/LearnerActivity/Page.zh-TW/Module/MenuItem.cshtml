@@ -42,7 +42,7 @@
                               ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
                               : "../images/avatars/default-fxs.png")"> </a>
     </div>    
-    <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">@Html.Raw(profile.RealName)</h1>
+    <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">@Html.Raw(profile.UserName ?? profile.RealName)</h1>
     <p class="font-15 font-600 color-beyondred-dark d-block custom-font-secondary fst-italic">Start from Liking Yourself
     </p>
 </div>

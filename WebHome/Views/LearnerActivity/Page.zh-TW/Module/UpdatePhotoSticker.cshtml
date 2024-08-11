@@ -80,7 +80,7 @@
                 'UserName': $('input[name="UserName"]').val()
             };
             doPost('@Html.Raw(Url.Action("CommitUserName", "LearnerActivity"))', viewModel, function (data) {
-                window.location.reload();
+                $('').launchDownload('Settings', {});
             });
         }
     </script>

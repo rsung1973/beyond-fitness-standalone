@@ -601,7 +601,7 @@ namespace WebHome.Helper
             }
 
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.PID == viewModel.PID
-                      && u.LevelID == (int)Naming.MemberStatusDefinition.Checked).FirstOrDefault();
+                      /*&& u.LevelID == (int)Naming.MemberStatusDefinition.Checked*/).FirstOrDefault();
 
             if (item == null)
             {

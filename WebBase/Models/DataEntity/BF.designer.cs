@@ -16843,6 +16843,10 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<System.DateTime> _CommitAssessment;
 		
+		private string _CommitAssessmentIP;
+		
+		private string _AssessmentSignature;
+		
 		private EntitySet<LessonFeedbackSurvey> _LessonFeedbackSurvey;
 		
 		private EntitySet<LessonSelfAssessment> _LessonSelfAssessment;
@@ -16877,6 +16881,10 @@ namespace WebHome.Models.DataEntity
     partial void OnStatusChanged();
     partial void OnCommitAssessmentChanging(System.Nullable<System.DateTime> value);
     partial void OnCommitAssessmentChanged();
+    partial void OnCommitAssessmentIPChanging(string value);
+    partial void OnCommitAssessmentIPChanged();
+    partial void OnAssessmentSignatureChanging(string value);
+    partial void OnAssessmentSignatureChanged();
     #endregion
 		
 		public LessonFeedBack()
@@ -17064,8 +17072,50 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CommitAssessmentIP", DbType="NVarChar(32)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9)]
+		public string CommitAssessmentIP
+		{
+			get
+			{
+				return this._CommitAssessmentIP;
+			}
+			set
+			{
+				if ((this._CommitAssessmentIP != value))
+				{
+					this.OnCommitAssessmentIPChanging(value);
+					this.SendPropertyChanging();
+					this._CommitAssessmentIP = value;
+					this.SendPropertyChanged("CommitAssessmentIP");
+					this.OnCommitAssessmentIPChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AssessmentSignature", DbType="NVarChar(MAX)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10)]
+		public string AssessmentSignature
+		{
+			get
+			{
+				return this._AssessmentSignature;
+			}
+			set
+			{
+				if ((this._AssessmentSignature != value))
+				{
+					this.OnAssessmentSignatureChanging(value);
+					this.SendPropertyChanging();
+					this._AssessmentSignature = value;
+					this.SendPropertyChanged("AssessmentSignature");
+					this.OnAssessmentSignatureChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonFeedBack_LessonFeedbackSurvey", Storage="_LessonFeedbackSurvey", ThisKey="LessonID,RegisterID", OtherKey="LessonID,RegisterID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=9, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
 		public EntitySet<LessonFeedbackSurvey> LessonFeedbackSurvey
 		{
 			get
@@ -17084,7 +17134,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonFeedBack_LessonSelfAssessment", Storage="_LessonSelfAssessment", ThisKey="LessonID,RegisterID", OtherKey="LessonID,RegisterID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=10, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=12, EmitDefaultValue=false)]
 		public EntitySet<LessonSelfAssessment> LessonSelfAssessment
 		{
 			get
@@ -17103,7 +17153,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonFeedBack_LessonMissionBonus", Storage="_LessonMissionBonus", ThisKey="LessonID,RegisterID", OtherKey="LessonID,RegisterID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=11, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=13, EmitDefaultValue=false)]
 		public EntitySet<LessonMissionBonus> LessonMissionBonus
 		{
 			get
