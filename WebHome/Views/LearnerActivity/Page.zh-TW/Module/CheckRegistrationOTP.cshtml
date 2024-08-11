@@ -34,6 +34,7 @@
     : "ja";
 
     var profile = this.Model as UserProfile;
+    RegisterViewModel _viewModel = ViewBag.ViewModel as RegisterViewModel;
 
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
@@ -77,6 +78,7 @@
         function validatePIN() {
             var viewModel = {
                 'KeyID': '@Html.Raw(profile.UID.EncryptKey())',
+                'EncLineID': '@Html.Raw(_viewModel?.EncLineID)',
                 'PIN': $('input[name="Code"]').serializeObject().Code.join('')
             };
             doPost('@Html.Raw(Url.Action("ValidateRegistrationPIN", "LearnerActivity"))', viewModel,

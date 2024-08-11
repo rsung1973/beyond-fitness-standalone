@@ -19,6 +19,8 @@ using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
+using System.Text.RegularExpressions;
+using LineMessagingAPISDK.Models;
 ////
 
 namespace WebHome.Helper
@@ -586,20 +588,42 @@ namespace WebHome.Helper
 
 
         public static UserProfile ValiateLogin(this LoginViewModel viewModel, GenericManager<BFDataContext> models, ModelStateDictionary modelState)
-            
         {
+            if (viewModel.PID == null || viewModel.PID.Length > 48)
+            {
+                modelState.AddModelError("PID", "Email長度超過[E0002]，請重新確認！");
+                return null;
+            }
+            else if (!Regex.IsMatch(viewModel.PID, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+            {
+                modelState.AddModelError("PID", "Email格式錯誤[E0001]，請重新確認！");
+                return null;
+            }
+
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.PID == viewModel.PID
                       && u.LevelID == (int)Naming.MemberStatusDefinition.Checked).FirstOrDefault();
 
             if (item == null)
             {
-                modelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                modelState.AddModelError("PID", "輸入資料錯誤[XA001]，請重新確認！");
                 return null;
             }
 
             if (item.Password != (viewModel.Password).MakePassword())
             {
-                modelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                modelState.AddModelError("PID", "輸入資料錯誤[XA002]，請重新確認！");
+                return null;
+            }
+
+            if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+            {
+                modelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
+                return null;
+            }
+
+            if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+            {
+                modelState.AddModelError("PID", "帳號已停用[XA004]，請聯繫您的專屬顧問！");
                 return null;
             }
 

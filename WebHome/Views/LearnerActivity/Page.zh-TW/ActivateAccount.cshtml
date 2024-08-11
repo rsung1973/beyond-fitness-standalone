@@ -29,14 +29,14 @@
 
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
-    ? "tw"
-    : lang == "en-US"
-    ? "en"
-    : "ja";
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
 
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
-
+    RegisterViewModel _viewModel = ViewBag.ViewModel as RegisterViewModel;
 }
 <div class="page-content pb-0">
     <div class="card" data-card-height="cover">
@@ -49,7 +49,7 @@
 
                 <div class="input-style input-transparent has-borders has-icon validate-field">
                     <i class="fa fa-user color-beyondwhite-dark"></i>
-                    <input type="text" class="form-control validate-name bg-transparent" id="form1a" placeholder="會員編號" name="MemberCode" />
+                    <input type="text" class="form-control validate-name bg-transparent" id="form1a" placeholder="會員編號" name="MemberCode" value="@(_viewModel?.MemberCode)" />
                     <label for="form1a" class="font-14 my-1 color-beyondred-dark font-500">會員編號</label>
                     <i class="fa fa-times disabled invalid color-beyondred-dark"></i>
                     <i class="fa fa-check disabled valid color-green-dark"></i>
@@ -60,7 +60,8 @@
 
                 <div class="input-style input-transparent has-borders has-icon validate-field">
                     <i class="fa-solid fa-envelope color-beyondwhite-dark"></i>
-                    <input type="email" class="form-control validate-email bg-transparent" id="form1b" placeholder="登入郵件信箱" name="PID" />
+                    <input type="email" class="form-control validate-email bg-transparent" id="form1b" placeholder="登入郵件信箱" name="PID" value="@(_viewModel?.PID)" />
+                    <input type="hidden" name="EncLineID" value="@Html.Raw(_viewModel?.EncLineID)" />
                     <label for="form1a" class="font-14 my-1 color-beyondred-dark font-500">登入郵件信箱</label>
                     <i class="fa fa-times disabled invalid color-beyondred-dark"></i>
                     <i class="fa fa-check disabled valid color-green-dark"></i>
@@ -101,7 +102,7 @@
 <div id="menu-forgot" class="menu menu-box-bottom menu-box-modal rounded-m" data-menu-width="350" data-menu-height="480"
      data-menu-effect="menu-over">
     @{
-        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ForgetPasswd.cshtml");
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/ForgetPasswd.cshtml");
     }
 </div>
 

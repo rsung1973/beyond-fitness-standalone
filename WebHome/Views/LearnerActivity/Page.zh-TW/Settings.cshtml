@@ -236,4 +236,19 @@
             });
         </script>
     }
+
+    @if (_viewModel?.AlertMessage != null)
+    {
+        <script>
+            $(function () {
+                Swal.fire(
+                    'Oops...',
+                    '@Html.Raw(_viewModel.AlertMessage)',
+                    'warning'
+                ).then((result) => {
+                    $('.menu-active').removeClass('menu-active');
+                });
+            });
+        </script>
+    }
 }

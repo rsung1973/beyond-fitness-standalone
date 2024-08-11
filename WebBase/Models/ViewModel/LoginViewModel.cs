@@ -90,6 +90,11 @@ namespace WebHome.Models.ViewModel
         public String LineID { get; set; }
         public String Theme { get; set; }
         public bool? ViewAward { get; set; }
+        public String EncLineID
+        {
+            get => LineID != null ? LineID.EncryptKey() : null;
+            set => LineID = (value != null ? value.DecryptKey() : null);
+        }
 
     }
 
@@ -164,7 +169,7 @@ namespace WebHome.Models.ViewModel
         public Guid? UUID { get; set; }
     }
 
-    public class UserProfileViewModel : QueryViewModel
+    public class UserProfileViewModel : LoginViewModel
     {
         [Display(Name = "真實姓名")]
         public string RealName { get; set; }
@@ -181,8 +186,6 @@ namespace WebHome.Models.ViewModel
 
         [Display(Name = "生日")]
         public DateTime? Birthday { get; set; }
-
-        public int? UID { get; set; }
 
         public String Gender { get; set; }
         public String CountryCode { get; set; }

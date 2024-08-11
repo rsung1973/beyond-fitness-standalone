@@ -284,7 +284,7 @@ namespace WebHome.Controllers
             viewModel.Email = viewModel.Email.GetEfficientString();
             if (viewModel.Email == null || !viewModel.Email.IsEmail())
             {
-                return Json(new { result = false, message = "請輸入正確Email!!" });
+                return Json(new { result = false, message = "Email格式錯誤[E0001]，請重新確認！" });
             }
 
             if (profile == null)
@@ -294,12 +294,22 @@ namespace WebHome.Controllers
 
             if (profile == null)
             {
-                return Json(new { result = false, message = "您提供的電子郵件信箱資料不存在!!" });
+                return Json(new { result = false, message = "輸入資料錯誤[XA001]，請重新確認！" });
             }
 
             if (profile.PID != viewModel.Email)
             {
-                return Json(new { result = false, message = "您提供的電子郵件信箱資料不存在!!" });
+                return Json(new { result = false, message = "輸入資料錯誤[XA001]，請重新確認！" });
+            }
+
+            if (profile.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+            {
+                return Json(new { result = false, message = "帳號已停用[XA003]，請聯繫您的專屬顧問！" });
+            }
+
+            if (profile.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+            {
+                return Json(new { result = false, message = "帳號已停用[XA004]，請聯繫您的專屬顧問！" });
             }
 
             var viewResult = CheckView("CheckOTP");
@@ -435,7 +445,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult CommitEmail()
         {
-            if(!Request.QueryString.HasValue)
+            if (!Request.QueryString.HasValue)
             {
                 return NotFound();
             }
@@ -468,6 +478,14 @@ namespace WebHome.Controllers
             }
 
             item.PID = viewModel.Email;
+            CommitEmailCertified(item);
+
+            var viewResult = CheckView("EmailAuthResult");
+            return View(viewResult.ViewName, item);
+        }
+
+        private void CommitEmailCertified(UserProfile item)
+        {
             var property = models.GetTable<UserProfileProperty>()
                 .Where(u => u.UID == item.UID)
                 .Where(p => p.PropertyID == (int)UserProfileProperty.PropertyDefinition.ValidEmail)
@@ -483,9 +501,6 @@ namespace WebHome.Controllers
             }
             property.CommitmentDate = DateTime.Now;
             models.SubmitChanges();
-
-            var viewResult = CheckView("EmailAuthResult");
-            return View(viewResult.ViewName, item);
         }
 
         [HttpPost]
@@ -572,6 +587,7 @@ namespace WebHome.Controllers
         public ActionResult CommitToRegister(RegisterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+            ViewEngineResult viewResult;
 
             viewModel.MemberCode = viewModel.MemberCode.GetEfficientString();
             if (viewModel.MemberCode == null)
@@ -580,16 +596,20 @@ namespace WebHome.Controllers
             }
 
             viewModel.PID = viewModel.PID.GetEfficientString();
-            if (viewModel.PID == null || !Regex.IsMatch(viewModel.PID, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+            if (viewModel.PID == null || viewModel.PID.Length > 48)
             {
-                ModelState.AddModelError("PID", "電子信箱資料錯誤，請確認後再重新輸入!!");
+                ModelState.AddModelError("PID", "Email長度超過[E0002]，請重新確認！");
+            }
+            else if (!Regex.IsMatch(viewModel.PID, "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*"))
+            {
+                ModelState.AddModelError("PID", "Email格式錯誤[E0001]，請重新確認！");
             }
 
             if (!ModelState.IsValid)
             {
-                ViewBag.ModelState = this.ModelState;
-                ViewBag.SingleError = true;
-                return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
+                ViewBag.ModelState = ModelState;
+                viewResult = CheckView("ActivateAccount");
+                return View(viewResult.ViewName);
             }
 
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.MemberCode == viewModel.MemberCode
@@ -597,20 +617,33 @@ namespace WebHome.Controllers
 
             if (item == null)
             {
-                ModelState.AddModelError("MemberCode", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                ModelState.AddModelError("MemberCode", "輸入資料錯誤[XA005]，請重新確認！");
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/CornerKick/Shared/ReportInputError.cshtml");
             }
 
             if (models.GetTable<UserProfile>().Any(u => u.PID == viewModel.PID && u.UID != item.UID))
             {
-                ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
                 ViewBag.ModelState = ModelState;
             }
 
-            if (item.LevelID != (int)Naming.MemberStatusDefinition.ReadyToRegister)
+            if (item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
             {
-                ModelState.AddModelError("PID", "您輸入的資料錯誤，請確認後再重新輸入!!");
+                if(item.PID.IsEmail())
+                {
+                    ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
+                }
+            }
+
+            if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+            {
+                ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
+            }
+
+            if (item.LevelID == (int)Naming.MemberStatusDefinition.Anonymous)
+            {
+                ModelState.AddModelError("PID", "帳號已停用[XA004]，請聯繫您的專屬顧問！");
             }
 
 
@@ -636,7 +669,6 @@ namespace WebHome.Controllers
             //    item.Password = pwd;
             //}
 
-            ViewEngineResult viewResult;
             if (!ModelState.IsValid)
             {
                 ViewBag.ModelState = ModelState;
@@ -1383,14 +1415,38 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = ModelState.ErrorMessage() });
             }
 
+            if (viewModel.LineID != null) 
+            {
+                if (models.GetTable<UserProfileExtension>()
+                        .Where(u => u.LineID == viewModel.LineID)
+                        .Where(u => u.UID != profile.UID)
+                        .Any())
+                {
+                    return Json(new { result = false, message = "帳號已綁定其他帳號[XA007]，請聯繫您的專屬顧問！" });
+                }
+                else
+                {
+                    profile.UserProfileExtension.LineID = viewModel.LineID;
+                }
+            }
+
             profile.LevelID = (int)Naming.MemberStatusDefinition.Checked;
             models.SubmitChanges();
+
+            CommitEmailCertified(profile);
 
             await HttpContext.SignOnAsync(profile);
 
             ViewEngineResult viewResult;
 
-            viewResult = CheckView("UpdatePassword");
+            if (viewModel.LineID != null)
+            {
+                viewResult = CheckView("RegistrationCommitted");
+            }
+            else
+            {
+                viewResult = CheckView("UpdatePassword");
+            }
 
             return View(viewResult.ViewName, profile);
         }
@@ -1417,7 +1473,7 @@ namespace WebHome.Controllers
 
             if (profile == null)
             {
-                ModelState.AddModelError("Message", "資料錯誤!!");
+                ModelState.AddModelError("Message", "輸入資料錯誤[XA001]，請重新確認！");
                 return null;
             }
 

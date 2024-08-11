@@ -265,7 +265,7 @@ namespace WebHome.Controllers
 
             if (authorizationCode == null)
             {
-                return View("~/Views/Home/Login.cshtml");
+                return RedirectToAction("Login", "LearnerActivity");
             }
 
             using (var httpClient = new HttpClient())
@@ -312,10 +312,19 @@ namespace WebHome.Controllers
                             if (profile != null)
                             {
                                 profile = profile.LoadInstance(models);
-                                profile.UserProfileExtension.LineID = (string)lineID;
-                                models.SubmitChanges();
-
-                                return RedirectToAction("Settings", "LearnerActivity");
+                                if (models.GetTable<UserProfileExtension>()
+                                        .Where(u => u.LineID == (string)lineID)
+                                        .Where(u => u.UID != profile.UID)
+                                        .Any())
+                                {
+                                    return RedirectToAction("Settings", "LearnerActivity",new { AlertMessage = "帳號已綁定其他帳號[XA007]，請聯繫您的專屬顧問！"});
+                                }
+                                else
+                                {
+                                    profile.UserProfileExtension.LineID = (string)lineID;
+                                    models.SubmitChanges();
+                                    return RedirectToAction("Settings", "LearnerActivity");
+                                }
                             }
 
                             var user = models.GetTable<UserProfileExtension>().Where(m => m.LineID == (string)lineID!)
@@ -324,16 +333,20 @@ namespace WebHome.Controllers
                             {
                                 return RedirectToAction("SignOn", "LearnerActivity", new { KeyID = user.UID.EncryptKey() });
                             }
+                            else
+                            {
+                                return RedirectToAction("ActivateAccount", "LearnerActivity", new { EncLineID = ((string)lineID).EncryptKey() });
+                            }
                         }
                     }
                 }
                 else
                 {
                     // 登入驗證失敗的處理
-                    return RedirectToAction("Login", "CornerKick");
+                    return RedirectToAction("Login", "LearnerActivity");
                 }
             }
-            return RedirectToAction("Login", "CornerKick");
+            return RedirectToAction("Login", "LearnerActivity");
         }
 
 
