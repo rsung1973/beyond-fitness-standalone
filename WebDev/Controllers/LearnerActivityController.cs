@@ -1077,6 +1077,7 @@ namespace WebHome.Controllers
             });
 
             item.CommitAssessment = DateTime.Now;
+            item.CommitAssessmentIP = HttpContext.Connection.RemoteIpAddress?.ToString();
 
             lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
             lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
