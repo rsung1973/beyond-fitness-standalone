@@ -71,7 +71,7 @@
                     var required = promotion.GameLevelRequirement.Where(r => r.MissionID == (int)CampaignMission.CampaignMissionType.PT)
                         .FirstOrDefault();
                 }
-                <div class="col-6 col-lg-4 col-md-4 pe-2">
+                <div class="col-12 col-lg-4 col-md-4 pe-2">
                     <div class="card card-style mx-0">
                         <img src="../images/card/PT.jpg" class="img-fluid">
                         <div class="content mt-3">
@@ -83,7 +83,7 @@
                         </div>
                     </div>
                 </div>
-                @{ 
+                @*@{ 
                     required = promotion.GameLevelRequirement.Where(r => r.MissionID == (int)CampaignMission.CampaignMissionType.SR)
                         .FirstOrDefault();
                 }
@@ -114,7 +114,7 @@
                             </a>
                         </div>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
     </div>
