@@ -24,7 +24,7 @@
             ? "en"
             : "ja";
 
-    UserProfile profile = await Context.GetUserAsync();
+    UserProfile profile = (await Context.GetUserAsync()).LoadInstance(models);
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 }
@@ -40,7 +40,9 @@
     <div class="avatar">
         <a href="Settings"><img class="avatar-rounded-circle bg-beyond-dark shadow-xl preload-img" src="@(profile.PictureID.HasValue
                               ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
-                              : "../images/avatars/default-fxs.png")"> </a>
+                              : profile.UserProfileExtension.Gender == "F" 
+                                ? "../images/avatars/default-fxs.png"
+                                : "../images/avatars/default-mxs.png")"> </a>
     </div>    
     <h1 class="pt-3 font-800 font-28 text-uppercase color-beyondwhite-dark mb-0">@Html.Raw(profile.UserName ?? profile.RealName)</h1>
     <p class="font-15 font-600 color-beyondred-dark d-block custom-font-secondary fst-italic">Start from Liking Yourself

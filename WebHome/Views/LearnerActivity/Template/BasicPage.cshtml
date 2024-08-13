@@ -27,7 +27,7 @@
             ? "en"
             : "ja";
 
-    var profile = await Context.GetUserAsync();
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
 }
 
 <!-- header and footer bar go here-->
@@ -47,7 +47,9 @@
         <a href="javascript:void(0);" data-menu="menu-main" class="bg-beyond-dark shadow-xl preload-img"
            data-src="@(profile.PictureID.HasValue
                               ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
-                              : "../images/avatars/default-fxs.png")">
+                              : profile.UserProfileExtension.Gender == "F" 
+                                ? "../images/avatars/default-fxs.png"
+                                : "../images/avatars/default-mxs.png")">
         </a>
 
     </div>
