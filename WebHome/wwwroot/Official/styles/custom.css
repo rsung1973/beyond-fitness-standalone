@@ -826,7 +826,7 @@ u {
 }
 .findus .banner .dazhi-1 {
   /* 預設的背景圖片 */
-  background-image: url("../images/banner/dazhi-lg.jpg");
+  background-image: url("../images/banner/dazhi-lg-1.jpg");
   background-size: cover;
   background-position: bottom;
   height: 100vh;
@@ -834,7 +834,46 @@ u {
 }
 @media (max-width: 767px) {
   .findus .banner .dazhi-1 {
-    background-image: url("../images/banner/dazhi-sm.jpg") !important;
+    background-image: url("../images/banner/dazhi-sm-1.jpg") !important;
+  }
+}
+.findus .banner .dazhi-2 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/dazhi-lg-2.jpg");
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .dazhi-2 {
+    background-image: url("../images/banner/dazhi-sm-2.jpg") !important;
+  }
+}
+.findus .banner .dazhi-3 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/dazhi-lg-3.jpg");
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .dazhi-3 {
+    background-image: url("../images/banner/dazhi-sm-3.jpg") !important;
+  }
+}
+.findus .banner .dazhi-4 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/dazhi-lg-4.jpg");
+  background-size: cover;
+  background-position: bottom;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .dazhi-4 {
+    background-image: url("../images/banner/dazhi-sm-4.jpg") !important;
   }
 }
 .findus .branch-container {
@@ -985,6 +1024,7 @@ u {
   /*忠孝分店*/
   /*南京分店*/
   /*信義安和分店*/
+  /*大直分店*/
 }
 @media (max-width: 1199px) and (min-width: 768px) {
   .findus .slogan.container-background {
@@ -1089,6 +1129,28 @@ u {
 @media (max-width: 767px) {
   .findus .slogan.container-background.xinyianhe {
     background-image: url("../images/slogan/xinyianhe-sm.jpg");
+  }
+}
+.findus .slogan.container-background.dazhi {
+  background-image: url("../images/slogan/dazhi-slogan-lg.jpg");
+  /* PC */
+  /* iPad直板 */
+  /* iPad直板+手機 */
+}
+@media (min-width: 1200px) {
+  .findus .slogan.container-background.dazhi {
+    height: 900px;
+  }
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .findus .slogan.container-background.dazhi {
+    background-image: url("../images/slogan/dazhi-slogan-sm.jpg");
+    height: 900px;
+  }
+}
+@media (max-width: 767px) {
+  .findus .slogan.container-background.dazhi {
+    background-image: url("../images/slogan/dazhi-slogan-sm.jpg");
   }
 }
 .findus .map-img {
