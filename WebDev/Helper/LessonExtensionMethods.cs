@@ -1187,6 +1187,8 @@ namespace WebHome.Helper
             {
                 //lessonItem.InvitedCoach = viewModel.CoachID;
                 //lessonItem.AttendingCoach = viewModel.CoachID;
+                var originalTime = lessonItem.ClassTime;
+
                 lessonItem.ClassTime = viewModel.ClassTimeStart;
                 lessonItem.DurationInMinutes = timeItem.DurationInMinutes;
                 if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassTimeStart.Value.Hour))
@@ -1199,6 +1201,22 @@ namespace WebHome.Helper
                 }
 
                 models.SubmitChanges();
+
+                if (lessonItem.LessonPlan != null)
+                {
+                    lessonItem.LessonPlan.CommitAttendance = null;
+                    models.SubmitChanges();
+                }
+
+                if (originalTime.HasValue && lessonItem.ClassTime.Value.Day != originalTime.Value.Day)
+                {
+                    models.ExecuteCommand(@"UPDATE LessonFeedBack
+                        SET        CommitAssessment = NULL, CommitAssessmentIP = NULL
+                        WHERE   (LessonID = {0})", lessonItem.LessonID);
+
+                    models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
+                        WHERE   (LessonID = {0})", lessonItem.LessonID);
+                }
 
             };
 

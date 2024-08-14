@@ -293,6 +293,7 @@ namespace WebHome.Controllers
 
                 //item.InvitedCoach = viewModel.CoachID;
                 //item.AttendingCoach = viewModel.CoachID;
+                var originalTime = item.ClassTime;
                 item.ClassTime = viewModel.ClassDate;
                 if (models.GetTable<DailyWorkingHour>().Any(d => d.Hour == viewModel.ClassDate.Value.Hour))
                     item.HourOfClassTime = viewModel.ClassDate.Value.Hour;
@@ -305,6 +306,22 @@ namespace WebHome.Controllers
                     t.EventDate = viewModel.ClassDate.Value;
                 }
                 models.SubmitChanges();
+
+                if (item.LessonPlan != null)
+                {
+                    item.LessonPlan.CommitAttendance = null;
+                    models.SubmitChanges();
+                }
+
+                if (originalTime.HasValue && item.ClassTime.Value.Day != originalTime.Value.Day)
+                {
+                    models.ExecuteCommand(@"UPDATE LessonFeedBack
+                        SET        CommitAssessment = NULL, CommitAssessmentIP = NULL
+                        WHERE   (LessonID = {0})", item.LessonID);
+
+                    models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
+                        WHERE   (LessonID = {0})", item.LessonID);
+                }
 
                 if (!item.IsSTSession())
                 {
