@@ -171,14 +171,14 @@
     "License": "License",
     "LicenseDesc": "",
     "Author": "Author",
-    "Artical": "Artical",
+    "Artical": "Article",
     "ArticalDesc": "",   
     "Voice": "Voice",
     "VoiceDesc": "",    
     "Expertise": "Expertise",
 
-    "Next": "Next Articale",
-    "Previous": "Previous Articale",    
+    "Next": "Next Article",
+    "Previous": "Previous Article",    
     
     "JoinUsHeader": "Get discovered!",
     "JoinUsHeaderDesc": "Introduce yourself, <br class=\"hidden-sm-up\"/>and we’ll get in touch if there’s a role that seems like a good match.",

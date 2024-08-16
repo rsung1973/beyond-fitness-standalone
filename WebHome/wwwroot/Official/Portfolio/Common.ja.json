@@ -171,11 +171,11 @@
     "LicenseDesc": "License",
     "Artical": "お役立ちコラム",
     "Author": "撰文者",
-    "ArticalDesc": "Artical",
+    "ArticalDesc": "Article",
     "Voice": "スタッフの声",
     "VoiceDesc": "Voice",
     "Expertise": "Expertise",    
 
-    "Next": "下一篇<span class=\"ps-3\">Next Articale</span>",
-    "Previous": "上一篇<span class=\"ps-3\">Previous Articale</span>",
+    "Next": "下一篇<span class=\"ps-3\">Next Article</span>",
+    "Previous": "上一篇<span class=\"ps-3\">Previous Article</span>",
 }
