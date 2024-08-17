@@ -215,6 +215,22 @@ namespace WebHome.Controllers
 
         }
 
+        public ActionResult LearnerAttendLesson2024(SelfAssessmentViewModel viewModel, DailyBookingQueryViewModel signatureViewModel)
+        {
+            var item = viewModel.CommitSelfAssessment(this);
+
+            if (!ModelState.IsValid)
+            {
+                return Json(new { result = false, message = ModelState.ErrorMessage() });
+            }
+
+            item.LessonTime.LessonPlan.Signature = signatureViewModel.Signature;
+            models.SubmitChanges();
+
+            return Json(new { result = true, message = "資料存檔完成!!" });
+
+        }
+
         public async Task<ActionResult> CommitAssessmentAsync(TrainingAssessmentViewModel viewModel)
         {
             var profile = await HttpContext.GetUserAsync();

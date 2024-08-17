@@ -15,7 +15,7 @@ namespace WebHome.Helper
 {
     public static class LearnerActivityExtensions
     {
-        public static BonusTransaction AwardLessonMissionBonus(this LessonFeedBack item, GenericManager<BFDataContext> models, CampaignMission.CampaignMissionType missionID)
+        public static BonusTransaction AwardLessonMissionBonus(this LessonFeedBack item, GenericManager<BFDataContext> models, CampaignMission.CampaignMissionType missionID, LessonMissionBonus.BonusBonusType? status = null)
         {
             var awardingItem = models.GetTable<LessonMissionBonusAwardingItem>()
                 .Where(b => b.MissionID == (int)missionID)
@@ -47,7 +47,7 @@ namespace WebHome.Helper
             {
                 UID = account.UID,
                 TransactionDate = DateTime.Now,
-                TransactionPoint = awardingItem.PointValue,
+                TransactionPoint = status == LessonMissionBonus.BonusBonusType.Rollback ? -awardingItem.PointValue : awardingItem.PointValue,
                 Reason = $"完成{awardingItem.CampaignMission.Mission}",
                 CampaignMissionBonus = new CampaignMissionBonus
                 {
@@ -57,6 +57,7 @@ namespace WebHome.Helper
                         ItemID = awardingItem.ItemID,
                         LessonID = item.LessonID,
                         RegisterID = item.RegisterID,
+                        BonusStatus = (int?)status,
                     },
                 },
             };
@@ -67,6 +68,15 @@ namespace WebHome.Helper
             account.CommitBonusSettlement(models);
             return txnItem;
         }
+
+        public static void RollbackLessonMissionBonus(this LessonTime item, GenericManager<BFDataContext> models, CampaignMission.CampaignMissionType missionID)
+        {
+            foreach(var feedback in item.LessonFeedBack)
+            {
+                feedback.AwardLessonMissionBonus(models, missionID, LessonMissionBonus.BonusBonusType.Rollback);
+            }
+        }
+
 
         public static BonusDepositAccount PromptDepositAccount(this int uid, GenericManager<BFDataContext> models)
         {

@@ -3329,7 +3329,8 @@
       <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="CampaignMissionBonus_LessonMissionBonus" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+		<Column Name="BonusStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Association Name="CampaignMissionBonus_LessonMissionBonus" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" />
       <Association Name="LessonMissionBonusAwardingItem_LessonMissionBonus" Member="LessonMissionBonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="LessonMissionBonusAwardingItem" IsForeignKey="true" />
     </Type>

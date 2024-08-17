@@ -364,7 +364,7 @@ namespace WebHome.Helper
             return null;
         }
 
-        public static SelfAssessmentEvent PromptSelfAssessment(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current = null)
+        public static SelfAssessmentEvent PromptSelfAssessment(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current)
         {
 
             //var lessons = models.GetTable<RegisterLesson>()
@@ -386,58 +386,76 @@ namespace WebHome.Helper
             //    .Join(lessons, f => f.RegisterID, r => r.RegisterID, (f, r) => f);
 
             //var items = lessonItems.Where(l => !feedbackItems.Any(f => f.LessonID == l.LessonID));
-
-            var items = models.GetTable<LessonTime>()
-                            .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
-                            .Where(l => !l.LessonFeedBack.Any()
-                                    || l.LessonFeedBack
-                                            .Where(f => f.RegisterLesson.UID == profile.UID)
-                                            .Where(f => BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(f.RegisterLesson.LessonPriceType.Status))
-                                            .Any())
-                            .Where(l => DateTime.Now >= l.ClassTime.Value.AddHours(-2.5))
-                            .Where(l => l.ClassTime > DateTime.Now);
-
-            if (items.Any())
+            if (current != null)
             {
-                return new SelfAssessmentEvent
+                var items = models.GetTable<LessonTime>()
+                        .Where(l => l.ClassTime >= current.StartDate)
+                        .Where(l => l.ClassTime < current.EndExclusiveDate)
+                        .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
+                        .Where(l => !l.LessonFeedBack.Any()
+                                || l.LessonFeedBack
+                                        .Where(f => f.RegisterLesson.UID == profile.UID)
+                                        .Where(f => !f.CommitAssessment.HasValue)
+                                        .Where(f => BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(f.RegisterLesson.LessonPriceType.Status))
+                                        .Any())
+                        .Where(l => DateTime.Now.AddHours(2.5) >= l.ClassTime);
+
+                if (items.Any())
                 {
-                    LessonList = items,
-                    Profile = profile,
-                };
+                    return new SelfAssessmentEvent
+                    {
+                        LessonList = items,
+                        Profile = profile,
+                    };
+                }
             }
 
             return null;
         }
 
-        public static FeedbackSurveyEvent PromptFeedbackSurvey(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current = null)
+        public static FeedbackSurveyEvent PromptFeedbackSurvey(this UserProfile profile, GenericManager<BFDataContext> models, StageProgress current)
         {
 
-            var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID);
-            IQueryable<LessonTime> lessonItems =
-                models.GetTable<LessonTime>()
-                    .Where(l => l.LessonAttendance != null);
+            //var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID);
+            //IQueryable<LessonTime> lessonItems =
+            //    models.GetTable<LessonTime>()
+            //        .Where(l => l.LessonAttendance != null);
 
+            //if (current != null)
+            //{
+            //    lessonItems = lessonItems.Where(l => l.ClassTime >= current.StartDate)
+            //                    .Where(l => l.ClassTime < current.EndExclusiveDate);
+            //}
+
+            //lessonItems = models.PromptLearnerLessons(lessons, lessonItems);
+
+            //var serveyItems = models.GetTable<LessonFeedBack>()
+            //    .Where(f => f.FeedBackDate.HasValue)
+            //    .Join(lessons, f => f.RegisterID, r => r.RegisterID, (f, r) => f);
+
+            //var items = lessonItems.Where(l => !serveyItems.Any(f => f.LessonID == l.LessonID));
             if (current != null)
             {
-                lessonItems = lessonItems.Where(l => l.ClassTime >= current.StartDate)
-                                .Where(l => l.ClassTime < current.EndExclusiveDate);
-            }
+                var items = models.GetTable<LessonTime>()
+                            .Where(l => l.ClassTime >= current.StartDate)
+                            .Where(l => l.ClassTime < current.EndExclusiveDate)
+                            .Where(l => l.LessonAttendance != null)
+                            .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
+                            .Where(l => !l.LessonFeedBack.Any()
+                                    || l.LessonFeedBack
+                                            .Where(f => f.RegisterLesson.UID == profile.UID)
+                                            .Where(f => !f.FeedBackDate.HasValue)
+                                            .Where(f => BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(f.RegisterLesson.LessonPriceType.Status))
+                                            .Any());
 
-            lessonItems = models.PromptLearnerLessons(lessons, lessonItems);
-
-            var serveyItems = models.GetTable<LessonFeedBack>()
-                .Where(f => f.FeedBackDate.HasValue)
-                .Join(lessons, f => f.RegisterID, r => r.RegisterID, (f, r) => f);
-
-            var items = lessonItems.Where(l => !serveyItems.Any(f => f.LessonID == l.LessonID));
-
-            if (items.Any())
-            {
-                return new FeedbackSurveyEvent
+                if (items.Any())
                 {
-                    LessonList = items,
-                    Profile = profile,
-                };
+                    return new FeedbackSurveyEvent
+                    {
+                        LessonList = items,
+                        Profile = profile,
+                    };
+                }
             }
 
             return null;

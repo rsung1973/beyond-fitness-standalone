@@ -964,57 +964,10 @@ namespace WebHome.Controllers
                 viewModel = PrepareViewModel<SelfAssessmentViewModel>(viewModel);
                 ModelState.Clear();
             }
-            ViewBag.ViewModel = viewModel;
+
             var profile = await HttpContext.GetUserAsync();
 
-            if (viewModel.CheckTerms != true)
-            {
-                ModelState.AddModelError("Message", "請閱讀並同意課前健康狀況自我檢視聲明書");
-                ViewBag.AlertError = true;
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
-            }
-            else if (viewModel.Agree != true)
-            {
-                ModelState.AddModelError("Message", "請閱讀並同意個人身體健康狀況事項切結書");
-                ViewBag.AlertError = true;
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
-            }
-
-
-            if (!(viewModel.SleepDuration >= 0))
-            {
-                ModelState.AddModelError("SleepDuration", "請填寫睡眠時間");
-            }
-
-            if (!(viewModel.WaterIntake >= 0))
-            {
-                ModelState.AddModelError("WaterIntake", "請選擇水分攝取");
-            }
-
-            if (!(viewModel.FatigueIndex >= 0 && viewModel.FatigueIndex <= 10))
-            {
-                ModelState.AddModelError("FatigueIndex", "請填寫生理疲勞");
-            }
-
-            if (!(viewModel.StressIndex >= 0 && viewModel.StressIndex <= 10))
-            {
-                ModelState.AddModelError("StressIndex", "請填寫心理壓力");
-            }
-
-            if (viewModel.KeyID != null)
-            {
-                SelfAssessmentViewModel tmpModel = JsonConvert.DeserializeObject<SelfAssessmentViewModel>(viewModel.KeyID.DecryptKey());
-                viewModel.LessonID = tmpModel.LessonID;
-                viewModel.RegisterID = tmpModel.RegisterID;
-            }
-
-            var lessonItem = models.GetTable<LessonTime>().Where(l=>l.LessonID== viewModel.LessonID).FirstOrDefault();
-            if(lessonItem == null || !viewModel.RegisterID.HasValue)
-            {
-                ModelState.AddModelError("Message", "資料錯誤");
-            }
+            var item = viewModel.CommitSelfAssessment(this);
 
             if (!ModelState.IsValid)
             {
@@ -1022,67 +975,6 @@ namespace WebHome.Controllers
                 ViewBag.ModelState = this.ModelState;
                 return View("~/Views/LearnerActivity/Shared/ReportInputError.cshtml");
             }
-
-            LessonFeedBack item = models.GetTable<LessonFeedBack>()
-                .Where(c => c.LessonID == viewModel.LessonID)
-                .Where(c => c.RegisterID == viewModel.RegisterID)
-                .FirstOrDefault();
-
-            if (item == null)
-            {
-                item = new LessonFeedBack
-                {
-                    LessonID = viewModel.LessonID.Value,
-                    RegisterID = viewModel.RegisterID.Value,
-                };
-                models.GetTable<LessonFeedBack>()
-                    .InsertOnSubmit(item);
-                models.SubmitChanges();
-            }
-            else
-            {
-                models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
-                            WHERE   LessonID = {0} and RegisterID = {1}", item.LessonID, item.RegisterID);
-            }
-
-            item.LessonSelfAssessment.Add(new LessonSelfAssessment 
-            {
-                Assessment = "SleepDuration",
-                Score = viewModel.SleepDuration,
-            });
-
-            item.LessonSelfAssessment.Add(new LessonSelfAssessment
-            {
-                Assessment = "WaterIntake",
-                //Score = viewModel.WaterIntake,
-                SelectedIndex = (int?)viewModel.WaterIntake,
-            });
-
-            item.LessonSelfAssessment.Add(new LessonSelfAssessment
-            {
-                Assessment = "FatigueIndex",
-                Score = viewModel.FatigueIndex,
-            });
-
-            item.LessonSelfAssessment.Add(new LessonSelfAssessment
-            {
-                Assessment = "StressIndex",
-                Score = viewModel.StressIndex,
-            });
-
-            item.LessonSelfAssessment.Add(new LessonSelfAssessment
-            {
-                Assessment = "SupplementaryStatement",
-                Answer = viewModel.SupplementaryStatement.GetEfficientString(),
-            });
-
-            item.CommitAssessment = DateTime.Now;
-            item.CommitAssessmentIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-
-            lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
-            lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
-
-            models.SubmitChanges();
 
             var txn = item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
 

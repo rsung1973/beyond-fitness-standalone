@@ -1,0 +1,287 @@
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    String _dialogID = $"signature{DateTime.Now.Ticks}";
+    QueryViewModel _viewModel;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _viewModel = (QueryViewModel)ViewBag.ViewModel;
+}
+<div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5>課前健康指數</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-md-12">
+                        <div class="row clearfix">
+                            <div class="col-12 col-lg-4 col-md-5">睡眠時間</div>
+                            <div class="col-12 col-lg-8 col-md-7">
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-danger" placeholder="小時" name="SleepDuration" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-hourglass-alt"></i>
+                                    </span>
+                                </div>
+                                <label class="material-icons help-error-text">clear 請輸入睡眠時間</label>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-12 col-lg-4 col-md-5">攝取水分 <i class="zmdi zmdi-info-outline col-blue"></i></div>
+                            <div class="col-12 col-lg-8 col-md-7">
+                                <select class="form-control show-tick" name="WaterIntake">
+                                    <option value="" disabled selected>近8小時水分攝取</option>
+                                    <option value="1">極度缺乏(目前馬上補充也還是缺乏)</option>
+                                    <option value="2">有點缺乏(即時補充可以接近正常狀態)</option>
+                                    <option value="3">及格(差不多正常)</option>
+                                    <option value="4">良好(有補充並且有多攝取一些)</option>
+                                </select>
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-danger" placeholder="cc">
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-drink"></i>
+                                    </span>
+                                </div>
+                                <label class="material-icons help-error-text">clear 請輸入攝取水分</label>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-12 col-lg-4 col-md-5">心理壓力 <i class="zmdi zmdi-info-outline col-blue"></i></div>
+                            <div class="col-12 col-lg-8 col-md-7">
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-danger" placeholder="1-10" name="FatigueIndex" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-favorite"></i>
+                                    </span>
+                                </div>
+                                <label class="material-icons help-error-text">clear 請輸入心理壓力</label>
+                            </div>
+                        </div>
+                        <div class="row clearfix">
+                            <div class="col-lg-4 col-lg-4 col-md-5">生理疲勞 <i class="zmdi zmdi-info-outline col-blue"></i></div>
+                            <div class="col-12 col-lg-8 col-md-7">
+                                <div class="input-group">
+                                    <input type="number" class="form-control form-control-danger" placeholder="1-10" name="StressIndex" />
+                                    <span class="input-group-addon">
+                                        <i class="zmdi zmdi-hospital"></i>
+                                    </span>
+                                </div>
+                                <label class="material-icons help-error-text">clear 請輸入生理疲勞</label>
+                            </div>
+                        </div>
+                        <div class="row clearfix m-t-10">
+                            <div class="col-12">
+                                <div class="input-group">
+                                    <textarea rows="3" class="form-control no-resize" placeholder="請輸入任何想補充之健康事項..." name="SupplementaryStatement"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 col-md-12">
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <label class="fancy-radio custom-color-pink">
+                                    <input name="CheckTerms" value="true" type="radio" id="checkTerms" onclick="return false;" />
+                                    <span><i></i><a href="javascript:showHealthyTerms();" class="col-red"><u>課前健康狀況自我檢視聲明書</u></a></span>
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <label class="fancy-radio custom-color-pink">
+                                    <input name="Agree" value="true" type="radio" id="agree" onclick="return false;" />
+                                    <span><i></i>本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</span>
+                                </label>
+                            </div>
+                            <!-- <div class="col-12 text-right">
+                                <img src="images/sign/sabrina-sign.png" width="400px" />
+                            </div> -->
+                        </div>
+                        <div id="signatureparent">
+                            <div id="signature"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+                <button type="button"
+                        class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red resign">
+                    重新簽名
+                </button>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        $(function () {
+            $('#@(_dialogID)').on('shown.bs.modal', function (e) {
+                $("#signature").empty();
+                $("#signature").jSignature({ 'UndoButton': true, 'sizeRatio': 2  });
+            });
+
+            $("#@(_dialogID) button.resign").on('click', function (event) {
+                $("#signature").jSignature('reset');
+            });
+
+            $("#@(_dialogID) button.btnConfirm").on('click', function (event) {
+                if ($("#signature").jSignature('getData', 'native').length < 1) {
+                    return;
+                }
+                var sigData = $("#signature").jSignature("getData");
+                if (sigData) {
+                    var viewModel = $("#@(_dialogID)").find('input,select,textarea').serializeObject();
+                    viewModel.Signature = sigData;
+                    if ($global.commitSignature) {
+                        $global.commitSignature(viewModel);
+                    }
+                    $('#@(_dialogID)').modal('hide');
+                }
+            });
+        });
+
+        //檢視健康聲明條款
+        function showHealthyTerms() {
+            $('#termsModal').modal('show');
+        }
+        //點選同意聲明
+        function agreeTerms() {
+            $('#agree').prop('checked', true);
+            $('#termsModal').modal('hide');
+        }
+
+        $("#terms").scroll(function () {
+            var $this = $(this),
+                viewH = $(this).height(),//可見高度
+                contentH = $(this).get(0).scrollHeight,//內容高度
+                scrollTop = $(this).scrollTop();//滾動高度
+            // if(contentH - viewH - scrollTop <= 100) {
+
+            if (scrollTop / (contentH - viewH) >= 0.95) { //到達底部100px時,Radio checked
+                $('#checkTerms').prop('checked', true);
+            } else {
+                $('#checkTerms').prop('checked', false);
+                $('#agree').prop('checked', false);
+            }
+        });
+
+        function scrollBottom() {
+            $("#terms").animate({
+                scrollTop: $("#terms").get(0).scrollHeight
+            }, 800);
+        }
+
+        //Info顯示
+        $(".zmdi.zmdi-info-outline").on("click", function (event) {
+            $('#indexInfoModal').modal('show');
+        });
+
+    </script>
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+    }
+
+</div>
+<!-- 健康聲明 -->
+<div class="modal" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-mini" role="document">
+        <div class="modal-content">
+
+            <a class="closebutton" data-dismiss="modal"></a>
+            <div class="modal-body">
+                <div class="scroll-container" id="terms">
+                    <h3 class="color-beyond-dark mb-3 letter-spacing-1 font-16">謹聲明 <br /><small>I hereby declare that:</small></h3>
+                    <ol type="color-beyond-dark opacity-70">
+                        <li class="mb-4">
+                            本人即將參加Beyond Fitness 超越體能P.T / P.I 課程 ，本人瞭解從事相關體適能訓練之合理風險，並確認目前身體狀況可以參與本次課程。<br /><small>
+                                I am here
+                                to participate in the Beyond Fitness P.T / P.I course and I understand the reasonable risks associated with
+                                physical fitness training and confirm that I am physically fit to participate in this course.
+                            </small>
+                        </li>
+                        <li class="mb-4">
+                            本人明白如對目前身體狀況是否適合參加本次課程有任何懷疑，應在參加本次課程前，徵詢專業醫事人員之意見。<br /><small>
+                                I understand that if I am in any
+                                doubt about the suitability of my current physical condition to participate in this
+                                course, I should seek the advice of a medical professional before participating in this course.
+                            </small>
+                        </li>
+                        <li class="mb-2">
+                            本人明白Beyond
+                            Fitness之教練之體適能訓練計畫及課程中之交談與討論，並不能取代專業醫事人員之意見，且明白Beyond教練所設計之體適能訓練計畫均是基於本人已揭露的身體健康狀況資訊所設計的。<br /><small>
+                                I
+                                understand that any conversations and discussions during the course with my trainers are not a substitute
+                                for
+                                professional medical advice, and I clearly understand that the fitness programs designed by Beyond Fitness
+                                trainers are
+                                based on the information about my health condition that I have already disclosed.
+                            </small>
+                        </li>
+                    </ol>
+                </div>
+                <div class="text-center mt-3">
+                    <a href="javascript:scrollBottom();" class="btn-link"><i class="zmdi zmdi-caret-down-circle m-r-5"></i>請閱讀到最下方</a>
+                </div>
+                <div class="text-center mt-3">
+                    <button type="button" class="btn btn-darkteal btn-round waves-effect" onclick="javascript:agreeTerms();">我同意以上聲明</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- 健康聲明 -->
+<div class="modal" id="indexInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+     aria-hidden="true">
+    <div class="modal-dialog modal-mini" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-darkteal">
+                <h5>指數說明</h5>
+                <a class="closebutton" data-dismiss="modal"></a>
+            </div>
+            <div class="modal-body bg-darkteal">
+                <div class="d-flex justify-content-center">
+                    <div class="m-auto m-lg-4 m-md-3 text-center">
+                        <h1 class="font-40">😃</h1>
+                        <strong class="font-14 opacity-50 color-theme letter-spacing-1">10分</strong>
+                    </div>
+                    <div class="m-auto m-lg-4 m-md-3 text-center">
+                        <h1 class="font-40">😊</h1>
+                        <strong class="font-14 opacity-50 color-theme letter-spacing-1">8分</strong>
+                    </div>
+                    <div class="m-auto m-lg-4 m-md-3 text-center">
+                        <h1 class="font-40">😐</h1>
+                        <strong class="font-14 opacity-50 color-theme letter-spacing-1">5分</strong>
+                    </div>
+                    <div class="m-auto m-lg-4 m-md-3 text-center">
+                        <h1 class="font-40">😖</h1>
+                        <strong class="font-14 opacity-50 color-theme letter-spacing-1">3分</strong>
+                    </div>
+                    <div class="m-auto m-lg-4 m-md-3 text-center">
+                        <h1 class="font-40">😫</h1>
+                        <strong class="font-14 opacity-50 color-theme letter-spacing-1">1分</strong>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+

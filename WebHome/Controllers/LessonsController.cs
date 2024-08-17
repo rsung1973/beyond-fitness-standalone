@@ -307,20 +307,22 @@ namespace WebHome.Controllers
                 }
                 models.SubmitChanges();
 
-                if (item.LessonPlan != null)
-                {
-                    item.LessonPlan.CommitAttendance = null;
-                    models.SubmitChanges();
-                }
-
                 if (originalTime.HasValue && item.ClassTime.Value.Day != originalTime.Value.Day)
                 {
+                    if (item.LessonPlan != null)
+                    {
+                        item.LessonPlan.CommitAttendance = null;
+                        models.SubmitChanges();
+                    }
+
                     models.ExecuteCommand(@"UPDATE LessonFeedBack
                         SET        CommitAssessment = NULL, CommitAssessmentIP = NULL
                         WHERE   (LessonID = {0})", item.LessonID);
 
                     models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
                         WHERE   (LessonID = {0})", item.LessonID);
+
+                    item.RollbackLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
                 }
 
                 if (!item.IsSTSession())

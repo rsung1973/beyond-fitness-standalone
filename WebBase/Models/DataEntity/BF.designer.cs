@@ -84592,6 +84592,8 @@ namespace WebHome.Models.DataEntity
 		
 		private int _RegisterID;
 		
+		private System.Nullable<int> _BonusStatus;
+		
 		private EntityRef<CampaignMissionBonus> _CampaignMissionBonus;
 		
 		private EntityRef<LessonFeedBack> _LessonFeedBack;
@@ -84610,6 +84612,8 @@ namespace WebHome.Models.DataEntity
     partial void OnLessonIDChanged();
     partial void OnRegisterIDChanging(int value);
     partial void OnRegisterIDChanged();
+    partial void OnBonusStatusChanging(System.Nullable<int> value);
+    partial void OnBonusStatusChanged();
     #endregion
 		
 		public LessonMissionBonus()
@@ -84713,6 +84717,27 @@ namespace WebHome.Models.DataEntity
 					this._RegisterID = value;
 					this.SendPropertyChanged("RegisterID");
 					this.OnRegisterIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BonusStatus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.Nullable<int> BonusStatus
+		{
+			get
+			{
+				return this._BonusStatus;
+			}
+			set
+			{
+				if ((this._BonusStatus != value))
+				{
+					this.OnBonusStatusChanging(value);
+					this.SendPropertyChanging();
+					this._BonusStatus = value;
+					this.SendPropertyChanged("BonusStatus");
+					this.OnBonusStatusChanged();
 				}
 			}
 		}

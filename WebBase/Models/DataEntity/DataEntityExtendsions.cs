@@ -1159,4 +1159,12 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class LessonMissionBonus 
+    {
+        public enum BonusBonusType 
+        {
+            Rollback = 1,
+        }
+    }
+
 }
