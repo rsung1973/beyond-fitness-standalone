@@ -1,6 +1,11 @@
 ﻿@using System.IO
 @using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using System.Web
 @using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
 
 @using WebHome.Helper
 @using WebHome.Models.Locale
@@ -11,16 +16,17 @@
 @using Newtonsoft.Json
 @using Newtonsoft.Json.Linq
 @using WebHome.Models.Resources
+@using WebHome.Properties;
 
 @{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    ViewBag.MainClass = "home";
-    ViewBag.MenuDark = false;
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
         ? "tw"
@@ -28,172 +34,44 @@
             ? "en"
             : "ja";
 
-    var profile = this.Model as UserProfile;
+    UserProfile profile = this.Model as UserProfile;
 
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 }
 
-<!DOCTYPE html>
-
-<html>
-
-<head>
-
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
-    <meta name="apple-mobile-web-app-capable" content="yes">
-
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-
-    <title>Beyond Fitness</title>
+<div id="page">
+    <div class="page-content">
 
 
 
-    <link rel="stylesheet" href="../fonts/css/fontawesome-all.min.css" type="text/css">
+        <div class="page-title page-title-small text-center">
 
-    <link rel="manifest" href="../_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
-
-
-
-    <meta name="author" content="beyond-fitness.com.tw">
-
-    <!-- Favicon -->
-
-    <link rel="shortcut icon" href="../app/icons/favicon.ico" type="image/x-icon" />
-
-    <link rel="icon" href="../app/icons/icon-96x96.png">
-
-    <!-- Specifying a Webpage Icon for Web Clip -->
-
-    <link rel="apple-touch-icon" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../app/icons/icon-72x72.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="96x96" href="../app/icons/icon-96x96.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="128x128" href="../app/icons/icon-128x128.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="../app/icons/icon-144x144.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../app/icons/icon-152x152.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="192x192" href="../app/icons/icon-192x192.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="384x384" href="../app/icons/icon-384x384.png">
-
-    <link rel="apple-touch-icon-precomposed" sizes="512x512" href="../app/icons/icon-512x512.png">
-
-    <!-- Web Fonts  -->
-
-    <link id="googleFonts" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap"
-          rel="stylesheet" type="text/css">
-
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Noto+Sans+TC:wght@100&display=swap"
-          rel="stylesheet">
-
-
-
-    <link rel="stylesheet" type="text/css" href="../styles/bootstrap.css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/style.css">
-
-    <link rel="stylesheet" type="text/css" href="../styles/custom.css">
-
-</head>
-
-
-
-<body class="theme-light detect-dark-mode" data-highlight="beyond">
-
-
-
-    <div id="preloader" class="color-beyondwhite-dark">
-
-        <div class="preloader-body">
-
-            <div class="cssload-float-bars-container">
-
-                <ul class="cssload-float-bars-flex-container">
-
-                    <li><span class="cssload-float-bars-loading"></span></li>
-
-                </ul>
-
-            </div>
+            <a href="https://www.beyond-fitness.com.tw/"><img src="../images/preload-logo-gold.svg" width="80" class="mx-auto"></a>
 
         </div>
 
-    </div>
+
+
+        <div class="card header-card shape-rounded" data-card-height="250">
+
+            <div class="card-overlay bg-beyond-dark opacity-95"></div>
+
+            <!-- <div class="card-overlay dark-mode-tint"></div> -->
+
+        </div>
 
 
 
-    <div id="page">
+        <div class="content">
 
+            <div class="card bg-transparent mb-0 mx-auto" data-card-height="80" style="width: 250px;box-shadow:none">
 
+                <div class="card-bottom">
 
+                    <h1 class="font-700 text-center color-white font-32 mb-1">驗證成功</h1>
 
-
-
-
-        <div class="page-content">
-
-
-
-            <div class="page-title page-title-small text-center">
-
-                <a href="https://www.beyond-fitness.com.tw/"><img src="../images/preload-logo-gold.svg" width="80" class="mx-auto"></a>
-
-            </div>
-
-
-
-            <div class="card header-card shape-rounded" data-card-height="250">
-
-                <div class="card-overlay bg-beyond-dark opacity-95"></div>
-
-                <!-- <div class="card-overlay dark-mode-tint"></div> -->
-
-            </div>
-
-
-
-            <div class="content">
-
-                <div class="card bg-transparent mb-0 mx-auto" data-card-height="80" style="width: 250px;box-shadow:none">
-
-                    <div class="card-bottom">
-
-                        <h1 class="font-700 text-center color-white font-32 mb-1">驗證成功</h1>
-
-                        <p class="text-center z-index-10 color-beyondred-dark">Verify Success</p>
-
-                    </div>
-
-                </div>
-
-
-
-                <div class="content mb-3 mx-0 text-center" style="margin-top: 150px;">
-
-
-
-                    <p class="boxed-text-l my-5 font-15 text-start">
-
-                        恭喜您已成功完成以 E-mail 作為帳號的啟用程序！您可立即以您所設定的 Email（@Html.Raw(profile.PID.Mask(Math.Max(profile.PID.IndexOf('@')-3,0),3,'*'))）作為帳號和您所設定的密碼使用 Beyond Fitness 相關專屬服務及功能。
-
-                    </p>
-
-
-
-                    <a href="login.html"
-                       class="close-menu btn rounded-xl border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-400 px-5 py-2 font-16 fst-italic mt-5 letter-spacing-1">
-                        Let's
-
-                        get started!
-                    </a>
+                    <p class="text-center z-index-10 color-beyondred-dark">Verify Success</p>
 
                 </div>
 
@@ -201,45 +79,34 @@
 
 
 
+            <div class="content mb-3 mx-0 text-center" style="margin-top: 150px;">
 
+
+
+                <p class="boxed-text-l my-5 font-15 text-start">
+
+                    恭喜您已成功完成以 E-mail 作為帳號的啟用程序！您可立即以您所設定的 Email（@Html.Raw(profile.PID.Mask(Math.Max(profile.PID.IndexOf('@') - 3, 0), 3, '*'))）作為帳號和您所設定的密碼使用 Beyond Fitness 相關專屬服務及功能。
+
+                </p>
+
+
+
+                <a href="Login"
+                   class="close-menu btn rounded-xl border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-400 px-5 py-2 font-16 fst-italic mt-5 letter-spacing-1">
+                    Let's
+
+                    get started!
+                </a>
+
+            </div>
 
         </div>
 
-        <!-- end of page content-->
 
-
-
-        <div id="menu-main" class="menu menu-box-left menu-box-detached rounded-m" data-menu-width="cover"
-             data-menu-load="menu-main.html" data-menu-active="nav-welcome" data-menu-effect="menu-over">
-
-        </div>
-
-
-
-        <!--Go To Official Artical-->
-
-        <div id="popup-official" class="menu menu-box-top" data-menu-width="cover" data-menu-load="OfficialArtical" data-menu-effect="menu-over">
-
-        </div>
 
 
 
     </div>
 
-
-
-    <script type="text/javascript" src="../scripts/bootstrap.min.js"></script>
-
-    <script type="text/javascript" src="../scripts/jquery-3.6.4.min.js"></script>
-
-    <!-- Jquery Knob Plugin Js -->
-
-    <script src="../plugins/jquery-knob/jquery.knob.min.js"></script>
-
-    <script type="text/javascript" src="../scripts/custom.js"></script>
-
-
-
-</body>
-
-</html>
+    <!-- end of page content-->
+</div>

@@ -159,7 +159,8 @@
 
             @{
                 var idx=0;
-                foreach (var item in items.OrderByDescending(l => l.Expiration))
+                foreach (var item in items.OrderByDescending(l => l.Expiration)
+                                        .ThenByDescending(l=>l.ContractID))
                 {          
                     idx++;
                     var usepercent = Math.Round(((item.Lessons - item.RemainedLessonCount()) / (decimal?)item.Lessons).Value * 100M, 0);

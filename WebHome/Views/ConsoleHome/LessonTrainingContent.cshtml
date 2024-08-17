@@ -116,18 +116,19 @@
                                     <a href="javascript:signaturePanel();">學生現場打卡簽名</a>
                                     <script>
                                         function signaturePanel() {
-                                            @*                                            $global.commitSignature = function (sigData) {
+                                            @*
+                                            $global.commitSignature = function (viewModel, done) {
+                                                showLoading();
+                                                viewModel.KeyID = '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())';
+                                                $.post('@Html.Raw(Url.Action("LearnerAttendLesson2024", "Attendance"))', viewModel, function (data) {
+                                            *@
+                                                $global.commitSignature = function (sigData) {
                                                 showLoading();
                                                 var viewModel = {
                                                     keyID: '@Html.Raw(lessonItem.LessonID.EncryptKey())',
                                                     Signature: sigData
                                                 };
                                                 $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', viewModel, function (data) {
-                                            *@
-                                            $global.commitSignature = function (viewModel) {
-                                                showLoading();
-                                                viewModel.KeyID = '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())';
-                                                $.post('@Html.Raw(Url.Action("LearnerAttendLesson2024", "Attendance"))', viewModel, function (data) {
                                                     hideLoading();
                                                     if ($.isPlainObject(data)) {
                                                         if (data.result) {
@@ -154,7 +155,7 @@
                                             };
 
                                             showLoading();
-                                            $.post('@Html.Raw(Url.Action("SignaturePanel2024", "LessonConsole"))', { }, function (data) {
+                                            $.post('@Html.Raw(Url.Action("SignaturePanel", "LessonConsole"))', { }, function (data) {
                                                 hideLoading();
                                                 $(data).appendTo($('body'));
                                             });

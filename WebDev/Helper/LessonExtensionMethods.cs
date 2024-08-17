@@ -1209,7 +1209,9 @@ namespace WebHome.Helper
 
                 models.SubmitChanges();
 
-                if (originalTime.HasValue && lessonItem.ClassTime.Value.Day != originalTime.Value.Day)
+                if (originalTime.HasValue 
+                    && lessonItem.ClassTime.Value.Day != originalTime.Value.Day
+                    && lessonItem.ClassTime > originalTime)
                 {
                     if (lessonItem.LessonPlan != null)
                     {
@@ -1217,14 +1219,11 @@ namespace WebHome.Helper
                         models.SubmitChanges();
                     }
 
-                    models.ExecuteCommand(@"UPDATE LessonFeedBack
-                        SET        CommitAssessment = NULL, CommitAssessmentIP = NULL
-                        WHERE   (LessonID = {0})", lessonItem.LessonID);
-
-                    models.ExecuteCommand(@"DELETE FROM BG.LessonSelfAssessment
-                        WHERE   (LessonID = {0})", lessonItem.LessonID);
-
-                    lessonItem.RollbackLessonMissionBonus(models, CampaignMission.CampaignMissionType.SelfAssessment);
+                    models.ExecuteCommand(@"DELETE LessonFeedBack where LessonID = {0}", lessonItem.LessonID);
+                    foreach (var uid in lessonItem.GroupingLesson.RegisterLesson.Select(r => r.UID))
+                    {
+                        uid.PromptDepositAccount(models)?.CommitBonusSettlement(models, true);
+                    }
                 }
 
             };

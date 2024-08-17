@@ -53,12 +53,6 @@
                                     <option value="3">及格(差不多正常)</option>
                                     <option value="4">良好(有補充並且有多攝取一些)</option>
                                 </select>
-                                <div class="input-group">
-                                    <input type="number" class="form-control form-control-danger" placeholder="cc">
-                                    <span class="input-group-addon">
-                                        <i class="zmdi zmdi-drink"></i>
-                                    </span>
-                                </div>
                                 <label class="material-icons help-error-text">clear 請輸入攝取水分</label>
                             </div>
                         </div>
@@ -149,9 +143,10 @@
                     var viewModel = $("#@(_dialogID)").find('input,select,textarea').serializeObject();
                     viewModel.Signature = sigData;
                     if ($global.commitSignature) {
-                        $global.commitSignature(viewModel);
+                        $global.commitSignature(viewModel, function () {
+                            $('#@(_dialogID)').modal('hide');
+                        });
                     }
-                    $('#@(_dialogID)').modal('hide');
                 }
             });
         });

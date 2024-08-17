@@ -47,7 +47,18 @@ namespace WebHome.Controllers
             //return RedirectToAction("Index", "CornerKick");
         }
 
-        
+        [AllowAnonymous]
+        public ActionResult OfficeLogin(LoginViewModel viewModel)
+        {
+            this.HttpContext.Logout();
+            this.HttpContext.Session.Clear();
+
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/ConsoleHome/OfficeLogin.cshtml");
+        }
+
+
+
         public ActionResult LoginByMail()
         {
             this.HttpContext.Logout();
@@ -474,6 +485,28 @@ namespace WebHome.Controllers
 
             return processLogin(item);
 
+        }
+
+        public async Task<ActionResult> SignOnAsync(LoginViewModel viewModel, string returnUrl)
+        {
+            ViewBag.ViewModel = viewModel;
+
+            UserProfile item = viewModel.ValiateLogin(models, ModelState);
+
+            if (item == null)
+            {
+                ViewBag.AlertError = true;
+                return View("~/Views/ConsoleHome/OfficeLogin.cshtml");
+            }
+
+            await HttpContext.SignOnAsync(item, viewModel.RememberMe);
+
+            if (!String.IsNullOrEmpty(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+
+            return Redirect(this.ProcessLogin(item, false));
         }
 
         public async Task<ActionResult> QuickLoginAsync(LoginViewModel viewModel, string returnUrl)

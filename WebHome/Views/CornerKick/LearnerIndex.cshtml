@@ -236,7 +236,7 @@
                     </div>
                     <!-- // End of 活動通知 -->
                     <!-- 公告條款 -->
-                    @if (announcement != null)
+                    @*@if (announcement != null)
                     {
                         <div class="goal-block">
                             <div class="parallax-container" onclick="javascript:gtag('event', '公告訊息', {  'event_category': '卡片點擊',  'event_label': '卡片總覽'});window.location.assign('@(Url.Action("Announcement","CornerKick",new { KeyID = (announcement.Announcement.EventID.EncryptKey()) }))');">
@@ -244,7 +244,7 @@
                                 </div>
                             </div>
                         </div>
-                    }
+                    }*@
                     <!-- 公告條款 -->
                     <!-- 體能分析圖 -->
                     @{ await Html.RenderPartialAsync("~/Views/CornerKick/Module/BodyFitness.cshtml", _model);}

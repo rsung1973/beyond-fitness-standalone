@@ -26,16 +26,16 @@ namespace WebHome.Helper
                 return null;
             }
 
-            var bonusItem = models.GetTable<LessonMissionBonus>()
-                .Where(b => b.ItemID == awardingItem.ItemID)
-                .Where(b => b.LessonID == item.LessonID)
-                .Where(b => b.RegisterID == item.RegisterID)
-                .FirstOrDefault();
+            //var bonusItem = models.GetTable<LessonMissionBonus>()
+            //    .Where(b => b.ItemID == awardingItem.ItemID)
+            //    .Where(b => b.LessonID == item.LessonID)
+            //    .Where(b => b.RegisterID == item.RegisterID)
+            //    .FirstOrDefault();
 
-            if (bonusItem != null)
-            {
-                return bonusItem.CampaignMissionBonus.BonusTransaction.FirstOrDefault();
-            }
+            //if (bonusItem != null)
+            //{
+            //    return bonusItem.CampaignMissionBonus.BonusTransaction.FirstOrDefault();
+            //}
 
             var account = item.RegisterLesson.UID.PromptDepositAccount(models);
             if (account == null)
@@ -124,6 +124,7 @@ namespace WebHome.Helper
             if (rebuild == true)
             {
                 settlement.TransactionID = -1;
+                account.DepositPoint = 0;
             }
 
             var items = models.GetTable<BonusTransaction>()
