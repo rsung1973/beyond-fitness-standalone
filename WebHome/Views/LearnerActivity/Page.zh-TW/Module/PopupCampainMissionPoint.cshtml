@@ -1,0 +1,148 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+}
+<div class="menu-title">
+    <a href="#" class="close-menu color-theme"><i class="fa fa-times"></i>&nbsp;</a>
+</div>
+<div class="content mx-4 mx-lg-5 mx-md-5 mt-5">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">固定任務</h1>
+            <div class="row">
+                <div class="col-12">
+                    <table class="table level-table py-0 mt-3 my-2 align-self-center px-0 py-0 hidden-sm-up">
+                        <thead>
+                            <tr class="table-header">
+                                <th colspan="4" class="text-center font-15 pt-3 pb-1 letter-spacing-2">
+                                    P.T課程
+                                </th>
+                            </tr>
+                            <tr class="text-4">
+                                <th class="text-start font-14 bg-pink-01">條件狀態</th>
+                                <th class="text-center font-14 bg-gold-01" width="20%">健康自評</th>
+                                <th class="text-center font-14 bg-gold-01 py-2" width="20%">感受回饋</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-03">一般體能顧問合約課程</td>
+                                <td class="text-center bg-gold-03">10點</td>
+                                <td class="text-center">10點</td>
+                            </tr>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-02">複合式顧問合約P.T課程</td>
+                                <td class="text-center bg-gold-02">10點</td>
+                                <td class="text-center bg-gold-03">10點</td>
+                            </tr>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-03">單堂購買P.T課程</td>
+                                <td class="text-center bg-gold-03">10點</td>
+                                <td class="text-center">10點</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="color-theme opacity-50 font-12">※ 未在上述列表之P.T課程，不提供任務點數</span>
+                </div>
+                <div class="col-12">
+                    <table class="table level-table py-0 mt-3 my-2 align-self-center px-0 py-0 hidden-sm-up">
+                        <thead>
+                            <tr class="table-header">
+                                <th colspan="4" class="text-center font-15 pt-3 pb-1 letter-spacing-2">
+                                    S.R課程
+                                </th>
+                            </tr>
+                            <tr class="text-4">
+                                <th class="text-start font-14 bg-pink-01">條件狀態</th>
+                                <th class="text-center font-14 bg-gold-01" width="20%">感受回饋</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-03">一般體能顧問合約課程</td>
+                                <td class="text-center bg-gold-03">10點</td>
+                            </tr>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-02">複合式顧問合約P.T課程</td>
+                                <td class="text-center bg-gold-02">10點</td>
+                            </tr>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-03">單堂購買P.T課程</td>
+                                <td class="text-center bg-gold-03">10點</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="color-theme opacity-50 font-12">※ 未在上述列表之P.T課程，不提供任務點數</span>
+                </div>
+                <div class="col-12">
+                    <table class="table level-table py-0 mt-3 my-2 align-self-center px-0 py-0 hidden-sm-up">
+                        <thead>
+                            <tr class="table-header">
+                                <th colspan="4" class="text-center font-15 pt-3 pb-1 letter-spacing-2">
+                                    P.I課程
+                                </th>
+                            </tr>
+                            <tr class="text-4">
+                                <th class="text-start font-14 bg-pink-01">條件狀態</th>
+                                <th class="text-center font-14 bg-gold-01" width="20%">健康自評</th>
+                                <th class="text-center font-14 bg-gold-01 py-2" width="20%">感受回饋</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-03">自主體能訓練合約課程</td>
+                                <td class="text-center bg-gold-03">2點</td>
+                                <td class="text-center">2點</td>
+                            </tr>
+                            <tr class="px-2 px-lg-5 px-md-5">
+                                <td class="text-start font-14 font-500 bg-pink-02">單堂購買P.I課程</td>
+                                <td class="text-center bg-gold-02">2點</td>
+                                <td class="text-center bg-gold-03">2點</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span class="color-theme opacity-50 font-12">※ 未在上述列表之P.I課程，不提供任務點數</span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="divider bg-beyondwhite-dark mt-4 mb-4"></div>
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">【共同注意事項】</h1>
+            <ul class="ps-3">
+                <li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 <a
+                        href="mailto:pr@beyond-fitness.com.tw">pr@beyond-fitness.com.tw</a></li>
+                <li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+                <li>本活動記錄均以本行電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+            </ul>
+        </div>
+    </div>
+</div>

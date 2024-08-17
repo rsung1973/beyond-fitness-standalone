@@ -31,7 +31,7 @@
     <h1 class="text-center mt-5 mb-1 color-beyondred-dark letter-spacing-2">News·</h1>
     <h4 class="text-center font-400 font-15 letter-spacing-2">最新文章</h4>
     <img src="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{item.BlogID}/images/Title.jpg")}")"
-        class="img-fluid mt-5 mx-auto">
+        class="img-fluid mt-5 mx-auto rounded-l">
     <h1 class="boxed-text-l text-start mt-5 text-uppercase color-dark font-700">@Html.Raw(item.Title)</h1>
     <p class="boxed-text-l color-dark opacity-80 line-height-l text-start mt-4 font-16">@Html.Raw(item.Subtitle)</p>
     <a href="@Html.Raw($"{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")"

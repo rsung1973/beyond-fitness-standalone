@@ -100,7 +100,7 @@
             </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-12" id="PromotionGuide">
             @{
                 await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampaignPromotionGuide.cshtml");
             }
@@ -115,69 +115,11 @@
                     <p class="boxed-text-xl">
                         <a href="#" data-menu="popup-levelIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>玩家等級注意事項</u></a>
                         <a href="#" data-menu="popup-levelThreshold" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>等級門檻條件說明</u></a>
-                        <a href="#" data-menu="popup-pointIntro" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>任務點數回饋說明</u></a>
+                        <a href="#" data-menu="popup-missionPoint" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>任務點數回饋說明</u></a>
                         <a href="#" data-menu="popup-faqs" class="color-white opacity-50"><u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>常見問題</u></a>
                     </p>
                 </div>
-
             </div>
-
-            <!-- <div class="strategy mt-5 mx-3 mx-lg-5 mx-md-5">
-
-                <svg width="0" height="0">
-
-                    <defs>
-
-                        <clipPath id="left-clip" clipPathUnits="objectBoundingBox">
-
-                            <path d="M 0,0 H 0.5 A 0.5,0.5 0 0 1 0.5,1 H 0 V 0 Z" />
-
-                        </clipPath>
-
-                        <clipPath id="right-clip" clipPathUnits="objectBoundingBox">
-
-                            <path d="M 0.5,0 A 0.5,0.5 0 0 1 0.5,1" />
-
-                        </clipPath>
-
-                        <clipPath id="left-clip-mobile" clipPathUnits="objectBoundingBox">
-
-                            <path d="M 0,0 H 0.4 A 0.5,0.5 0 0 1 0.4,1 H 0 V 0 Z" />
-
-                        </clipPath>
-
-                        <clipPath id="right-clip-mobile" clipPathUnits="objectBoundingBox">
-
-                            <path d="M 0.4,0 A 0.5,0.5 0 0 1 0.4,1" />
-
-                        </clipPath>
-
-                    </defs>
-
-                </svg>
-
-                <div class="card faq">
-
-                    <div class="level faq">玩家<br/>FAQ</div>
-
-                    <div class="conditions faq">
-
-                        <div class="condition faq">
-
-                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>玩家等級注意事項</u>
-
-                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>等級門檻條件說明</u>
-
-                            <u class="d-block line-height-xl"><i class="fa-solid fa-plus pe-1"></i>常見問題</u>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div> -->
-
         </div>
 
     </div>
@@ -198,4 +140,8 @@
     <div id="popup-levelThreshold" class="menu menu-box-modal auto menu-box-detached rounded-m"
          data-menu-height="600" data-menu-effect="menu-over" data-menu-load="PopupCampainLevelThreshold">
     </div>
+    <!--任務點數回饋說明-->
+    <div id="popup-missionPoint" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
+            data-menu-effect="menu-over" data-menu-load="PopupCampainMissionPoint">
+    </div>    
 }

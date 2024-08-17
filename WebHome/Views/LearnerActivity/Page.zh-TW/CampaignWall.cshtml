@@ -76,7 +76,7 @@
                         <img src="../images/card/PT.jpg" class="img-fluid">
                         <div class="content mt-3">
                             <h2 class="font-15 font-500">P.T 體能訓練<small class="opacity-50 float-end">@(required?.Threshold ?? 0)</small></h2>
-                            <a href="CampaignStrategy"
+                            <a href="CampaignStrategy#PromotionGuide"
                                class="float-end btn fst-italic color-theme bg-theme px-2 py-1 font-12 mt-3">
                                 Read More<i class="fa-solid fa-chevron-right ps-1"></i>
                             </a>
@@ -121,10 +121,12 @@
     <!--固定任務-->
     <div class="card content pt-3 mt-5 shadow-l mx-0 mb-0" id="tasks" style="background-color: #333333;">
         <div class="card-body mx-4 mx-lg-5 mx-md-5">
-            <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">
-                固定任務·<small class="ps-2 font-14 font-400 text-capitalize">Routin Tasks</small> <i data-feather="info"
-                                                                                                  data-feather-line="2" data-feather-size="24" data-feather-color="beyondsunny-dark" class="ms-1"></i>
-            </h4>
+            <a href="#" data-menu="popup-missionPoint">
+                <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">
+                    固定任務·<small class="ps-2 font-14 font-400 text-capitalize">Routin Tasks</small> <i data-feather="info"
+                        data-feather-line="2" data-feather-size="24" data-feather-color="beyondsunny-dark" class="ms-1"></i>
+                </h4>
+            </a>            
             <div class="list-group list-custom-large me-2 mt-5">
                 <a data-menu="menu-task-item" href="Events">
                     <i class="fa-solid fa-heart rounded-xl color-beyondred-dark font-24"></i>
@@ -134,7 +136,7 @@
                 </a>
                 <a data-menu="menu-task-item" href="Events">
                     <i class="font-24 fst-normal">😊</i>
-                    <span class="letter-spacing-1 font-16 color-white opacity-70">課後訓練回饋</span>
+                    <span class="letter-spacing-1 font-16 color-white opacity-70">課後感受回饋</span>
                     <strong class="letter-spacing-1 font-12 color-white opacity-50">Feelings</strong>
                     <i class="fa fa-angle-right font-14 color-white opacity-30"></i>
                 </a>
@@ -171,5 +173,8 @@
 
 @section PopupBox
 {
-
+    <!--任務點數回饋說明-->
+    <div id="popup-missionPoint" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
+        data-menu-effect="menu-over" data-menu-load="PopupCampainMissionPoint">
+    </div>
 }
