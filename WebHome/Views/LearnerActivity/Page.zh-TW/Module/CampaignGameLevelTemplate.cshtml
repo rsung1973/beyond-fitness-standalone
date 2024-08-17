@@ -45,55 +45,33 @@
 }
 
 <div class="strategy mt-5 mx-2">
-
     <svg width="0" height="0">
-
         <defs>
-
             <clipPath id="left-clip" clipPathUnits="objectBoundingBox">
-
                 <path d="M 0,0 H 0.5 A 0.5,0.5 0 0 1 0.5,1 H 0 V 0 Z" />
-
             </clipPath>
-
             <clipPath id="right-clip" clipPathUnits="objectBoundingBox">
-
                 <path d="M 0.5,0 A 0.5,0.5 0 0 1 0.5,1" />
-
             </clipPath>
-
             <clipPath id="left-clip-mobile" clipPathUnits="objectBoundingBox">
-
                 <path d="M 0,0 H 0.4 A 0.5,0.5 0 0 1 0.4,1 H 0 V 0 Z" />
-
             </clipPath>
-
             <clipPath id="right-clip-mobile" clipPathUnits="objectBoundingBox">
-
                 <path d="M 0.4,0 A 0.5,0.5 0 0 1 0.4,1" />
-
             </clipPath>
-
         </defs>
-
     </svg>
-
     <div class="card">
-
         <div class="level">
+            <img src="../images/icons/beyond_coin_grey.svg" width="50" class="px-2 mt-1">
             Level @(_model.LevelCode)
             @if (currentPlayer?.PlayerLevel == _model.LevelID)
             {
                 <span>(本季等級)</span>
             }
         </div>
-
         <div class="conditions">
-
             @RenderSection("Condition")
-
         </div>
-
     </div>
-
 </div>
