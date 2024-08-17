@@ -745,9 +745,6 @@ namespace WebHome.Models.DataEntity
     partial void InsertLessonMissionBonusAwardingItem(LessonMissionBonusAwardingItem instance);
     partial void UpdateLessonMissionBonusAwardingItem(LessonMissionBonusAwardingItem instance);
     partial void DeleteLessonMissionBonusAwardingItem(LessonMissionBonusAwardingItem instance);
-    partial void InsertLessonMissionBonus(LessonMissionBonus instance);
-    partial void UpdateLessonMissionBonus(LessonMissionBonus instance);
-    partial void DeleteLessonMissionBonus(LessonMissionBonus instance);
     partial void InsertAwardingItemCategory(AwardingItemCategory instance);
     partial void UpdateAwardingItemCategory(AwardingItemCategory instance);
     partial void DeleteAwardingItemCategory(AwardingItemCategory instance);
@@ -760,6 +757,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertGameLevelReward(GameLevelReward instance);
     partial void UpdateGameLevelReward(GameLevelReward instance);
     partial void DeleteGameLevelReward(GameLevelReward instance);
+    partial void InsertLessonMissionBonus(LessonMissionBonus instance);
+    partial void UpdateLessonMissionBonus(LessonMissionBonus instance);
+    partial void DeleteLessonMissionBonus(LessonMissionBonus instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2786,14 +2786,6 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
-		public System.Data.Linq.Table<LessonMissionBonus> LessonMissionBonus
-		{
-			get
-			{
-				return this.GetTable<LessonMissionBonus>();
-			}
-		}
-		
 		public System.Data.Linq.Table<AwardingItemCategory> AwardingItemCategory
 		{
 			get
@@ -2823,6 +2815,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<GameLevelReward>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LessonMissionBonus> LessonMissionBonus
+		{
+			get
+			{
+				return this.GetTable<LessonMissionBonus>();
 			}
 		}
 		
@@ -84577,311 +84577,6 @@ namespace WebHome.Models.DataEntity
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.LessonMissionBonus")]
-	[global::System.Runtime.Serialization.DataContractAttribute()]
-	public partial class LessonMissionBonus : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _BonusID;
-		
-		private int _ItemID;
-		
-		private int _LessonID;
-		
-		private int _RegisterID;
-		
-		private System.Nullable<int> _BonusStatus;
-		
-		private EntityRef<CampaignMissionBonus> _CampaignMissionBonus;
-		
-		private EntityRef<LessonFeedBack> _LessonFeedBack;
-		
-		private EntityRef<LessonMissionBonusAwardingItem> _LessonMissionBonusAwardingItem;
-		
-    #region 擴充性方法定義
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnBonusIDChanging(int value);
-    partial void OnBonusIDChanged();
-    partial void OnItemIDChanging(int value);
-    partial void OnItemIDChanged();
-    partial void OnLessonIDChanging(int value);
-    partial void OnLessonIDChanged();
-    partial void OnRegisterIDChanging(int value);
-    partial void OnRegisterIDChanged();
-    partial void OnBonusStatusChanging(System.Nullable<int> value);
-    partial void OnBonusStatusChanged();
-    #endregion
-		
-		public LessonMissionBonus()
-		{
-			this.Initialize();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BonusID", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
-		public int BonusID
-		{
-			get
-			{
-				return this._BonusID;
-			}
-			set
-			{
-				if ((this._BonusID != value))
-				{
-					if (this._CampaignMissionBonus.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnBonusIDChanging(value);
-					this.SendPropertyChanging();
-					this._BonusID = value;
-					this.SendPropertyChanged("BonusID");
-					this.OnBonusIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemID", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
-		public int ItemID
-		{
-			get
-			{
-				return this._ItemID;
-			}
-			set
-			{
-				if ((this._ItemID != value))
-				{
-					if (this._LessonMissionBonusAwardingItem.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnItemIDChanging(value);
-					this.SendPropertyChanging();
-					this._ItemID = value;
-					this.SendPropertyChanged("ItemID");
-					this.OnItemIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
-		public int LessonID
-		{
-			get
-			{
-				return this._LessonID;
-			}
-			set
-			{
-				if ((this._LessonID != value))
-				{
-					if (this._LessonFeedBack.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnLessonIDChanging(value);
-					this.SendPropertyChanging();
-					this._LessonID = value;
-					this.SendPropertyChanged("LessonID");
-					this.OnLessonIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
-		public int RegisterID
-		{
-			get
-			{
-				return this._RegisterID;
-			}
-			set
-			{
-				if ((this._RegisterID != value))
-				{
-					if (this._LessonFeedBack.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnRegisterIDChanging(value);
-					this.SendPropertyChanging();
-					this._RegisterID = value;
-					this.SendPropertyChanged("RegisterID");
-					this.OnRegisterIDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BonusStatus", DbType="Int")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
-		public System.Nullable<int> BonusStatus
-		{
-			get
-			{
-				return this._BonusStatus;
-			}
-			set
-			{
-				if ((this._BonusStatus != value))
-				{
-					this.OnBonusStatusChanging(value);
-					this.SendPropertyChanging();
-					this._BonusStatus = value;
-					this.SendPropertyChanged("BonusStatus");
-					this.OnBonusStatusChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CampaignMissionBonus_LessonMissionBonus", Storage="_CampaignMissionBonus", ThisKey="BonusID", OtherKey="BonusID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public CampaignMissionBonus CampaignMissionBonus
-		{
-			get
-			{
-				return this._CampaignMissionBonus.Entity;
-			}
-			set
-			{
-				CampaignMissionBonus previousValue = this._CampaignMissionBonus.Entity;
-				if (((previousValue != value) 
-							|| (this._CampaignMissionBonus.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._CampaignMissionBonus.Entity = null;
-						previousValue.LessonMissionBonus = null;
-					}
-					this._CampaignMissionBonus.Entity = value;
-					if ((value != null))
-					{
-						value.LessonMissionBonus = this;
-						this._BonusID = value.BonusID;
-					}
-					else
-					{
-						this._BonusID = default(int);
-					}
-					this.SendPropertyChanged("CampaignMissionBonus");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonFeedBack_LessonMissionBonus", Storage="_LessonFeedBack", ThisKey="LessonID,RegisterID", OtherKey="LessonID,RegisterID", IsForeignKey=true)]
-		public LessonFeedBack LessonFeedBack
-		{
-			get
-			{
-				return this._LessonFeedBack.Entity;
-			}
-			set
-			{
-				LessonFeedBack previousValue = this._LessonFeedBack.Entity;
-				if (((previousValue != value) 
-							|| (this._LessonFeedBack.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._LessonFeedBack.Entity = null;
-						previousValue.LessonMissionBonus.Remove(this);
-					}
-					this._LessonFeedBack.Entity = value;
-					if ((value != null))
-					{
-						value.LessonMissionBonus.Add(this);
-						this._LessonID = value.LessonID;
-						this._RegisterID = value.RegisterID;
-					}
-					else
-					{
-						this._LessonID = default(int);
-						this._RegisterID = default(int);
-					}
-					this.SendPropertyChanged("LessonFeedBack");
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonMissionBonusAwardingItem_LessonMissionBonus", Storage="_LessonMissionBonusAwardingItem", ThisKey="ItemID", OtherKey="ItemID", IsForeignKey=true)]
-		public LessonMissionBonusAwardingItem LessonMissionBonusAwardingItem
-		{
-			get
-			{
-				return this._LessonMissionBonusAwardingItem.Entity;
-			}
-			set
-			{
-				LessonMissionBonusAwardingItem previousValue = this._LessonMissionBonusAwardingItem.Entity;
-				if (((previousValue != value) 
-							|| (this._LessonMissionBonusAwardingItem.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._LessonMissionBonusAwardingItem.Entity = null;
-						previousValue.LessonMissionBonus.Remove(this);
-					}
-					this._LessonMissionBonusAwardingItem.Entity = value;
-					if ((value != null))
-					{
-						value.LessonMissionBonus.Add(this);
-						this._ItemID = value.ItemID;
-					}
-					else
-					{
-						this._ItemID = default(int);
-					}
-					this.SendPropertyChanged("LessonMissionBonusAwardingItem");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void Initialize()
-		{
-			this._CampaignMissionBonus = default(EntityRef<CampaignMissionBonus>);
-			this._LessonFeedBack = default(EntityRef<LessonFeedBack>);
-			this._LessonMissionBonusAwardingItem = default(EntityRef<LessonMissionBonusAwardingItem>);
-			OnCreated();
-		}
-		
-		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
-		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
-		public void OnDeserializing(StreamingContext context)
-		{
-			this.Initialize();
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.AwardingItemCategory")]
 	[global::System.Runtime.Serialization.DataContractAttribute()]
 	public partial class AwardingItemCategory : INotifyPropertyChanging, INotifyPropertyChanged
@@ -85621,6 +85316,311 @@ namespace WebHome.Models.DataEntity
 		private void Initialize()
 		{
 			this._GameLevel = default(EntityRef<GameLevel>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="BG.LessonMissionBonus")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class LessonMissionBonus : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _BonusID;
+		
+		private int _ItemID;
+		
+		private int _LessonID;
+		
+		private int _RegisterID;
+		
+		private System.Nullable<int> _BonusStatus;
+		
+		private EntityRef<CampaignMissionBonus> _CampaignMissionBonus;
+		
+		private EntityRef<LessonFeedBack> _LessonFeedBack;
+		
+		private EntityRef<LessonMissionBonusAwardingItem> _LessonMissionBonusAwardingItem;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnBonusIDChanging(int value);
+    partial void OnBonusIDChanged();
+    partial void OnItemIDChanging(int value);
+    partial void OnItemIDChanged();
+    partial void OnLessonIDChanging(int value);
+    partial void OnLessonIDChanged();
+    partial void OnRegisterIDChanging(int value);
+    partial void OnRegisterIDChanged();
+    partial void OnBonusStatusChanging(System.Nullable<int> value);
+    partial void OnBonusStatusChanged();
+    #endregion
+		
+		public LessonMissionBonus()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BonusID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int BonusID
+		{
+			get
+			{
+				return this._BonusID;
+			}
+			set
+			{
+				if ((this._BonusID != value))
+				{
+					if (this._CampaignMissionBonus.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBonusIDChanging(value);
+					this.SendPropertyChanging();
+					this._BonusID = value;
+					this.SendPropertyChanged("BonusID");
+					this.OnBonusIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ItemID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public int ItemID
+		{
+			get
+			{
+				return this._ItemID;
+			}
+			set
+			{
+				if ((this._ItemID != value))
+				{
+					if (this._LessonMissionBonusAwardingItem.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnItemIDChanging(value);
+					this.SendPropertyChanging();
+					this._ItemID = value;
+					this.SendPropertyChanged("ItemID");
+					this.OnItemIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LessonID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int LessonID
+		{
+			get
+			{
+				return this._LessonID;
+			}
+			set
+			{
+				if ((this._LessonID != value))
+				{
+					if (this._LessonFeedBack.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnLessonIDChanging(value);
+					this.SendPropertyChanging();
+					this._LessonID = value;
+					this.SendPropertyChanged("LessonID");
+					this.OnLessonIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegisterID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public int RegisterID
+		{
+			get
+			{
+				return this._RegisterID;
+			}
+			set
+			{
+				if ((this._RegisterID != value))
+				{
+					if (this._LessonFeedBack.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnRegisterIDChanging(value);
+					this.SendPropertyChanging();
+					this._RegisterID = value;
+					this.SendPropertyChanged("RegisterID");
+					this.OnRegisterIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BonusStatus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5)]
+		public System.Nullable<int> BonusStatus
+		{
+			get
+			{
+				return this._BonusStatus;
+			}
+			set
+			{
+				if ((this._BonusStatus != value))
+				{
+					this.OnBonusStatusChanging(value);
+					this.SendPropertyChanging();
+					this._BonusStatus = value;
+					this.SendPropertyChanged("BonusStatus");
+					this.OnBonusStatusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CampaignMissionBonus_LessonMissionBonus", Storage="_CampaignMissionBonus", ThisKey="BonusID", OtherKey="BonusID", IsForeignKey=true)]
+		public CampaignMissionBonus CampaignMissionBonus
+		{
+			get
+			{
+				return this._CampaignMissionBonus.Entity;
+			}
+			set
+			{
+				CampaignMissionBonus previousValue = this._CampaignMissionBonus.Entity;
+				if (((previousValue != value) 
+							|| (this._CampaignMissionBonus.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._CampaignMissionBonus.Entity = null;
+						previousValue.LessonMissionBonus = null;
+					}
+					this._CampaignMissionBonus.Entity = value;
+					if ((value != null))
+					{
+						value.LessonMissionBonus = this;
+						this._BonusID = value.BonusID;
+					}
+					else
+					{
+						this._BonusID = default(int);
+					}
+					this.SendPropertyChanged("CampaignMissionBonus");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonFeedBack_LessonMissionBonus", Storage="_LessonFeedBack", ThisKey="LessonID,RegisterID", OtherKey="LessonID,RegisterID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public LessonFeedBack LessonFeedBack
+		{
+			get
+			{
+				return this._LessonFeedBack.Entity;
+			}
+			set
+			{
+				LessonFeedBack previousValue = this._LessonFeedBack.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonFeedBack.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonFeedBack.Entity = null;
+						previousValue.LessonMissionBonus.Remove(this);
+					}
+					this._LessonFeedBack.Entity = value;
+					if ((value != null))
+					{
+						value.LessonMissionBonus.Add(this);
+						this._LessonID = value.LessonID;
+						this._RegisterID = value.RegisterID;
+					}
+					else
+					{
+						this._LessonID = default(int);
+						this._RegisterID = default(int);
+					}
+					this.SendPropertyChanged("LessonFeedBack");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="LessonMissionBonusAwardingItem_LessonMissionBonus", Storage="_LessonMissionBonusAwardingItem", ThisKey="ItemID", OtherKey="ItemID", IsForeignKey=true)]
+		public LessonMissionBonusAwardingItem LessonMissionBonusAwardingItem
+		{
+			get
+			{
+				return this._LessonMissionBonusAwardingItem.Entity;
+			}
+			set
+			{
+				LessonMissionBonusAwardingItem previousValue = this._LessonMissionBonusAwardingItem.Entity;
+				if (((previousValue != value) 
+							|| (this._LessonMissionBonusAwardingItem.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._LessonMissionBonusAwardingItem.Entity = null;
+						previousValue.LessonMissionBonus.Remove(this);
+					}
+					this._LessonMissionBonusAwardingItem.Entity = value;
+					if ((value != null))
+					{
+						value.LessonMissionBonus.Add(this);
+						this._ItemID = value.ItemID;
+					}
+					else
+					{
+						this._ItemID = default(int);
+					}
+					this.SendPropertyChanged("LessonMissionBonusAwardingItem");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._CampaignMissionBonus = default(EntityRef<CampaignMissionBonus>);
+			this._LessonFeedBack = default(EntityRef<LessonFeedBack>);
+			this._LessonMissionBonusAwardingItem = default(EntityRef<LessonMissionBonusAwardingItem>);
 			OnCreated();
 		}
 		

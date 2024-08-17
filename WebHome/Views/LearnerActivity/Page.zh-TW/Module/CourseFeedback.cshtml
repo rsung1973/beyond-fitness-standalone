@@ -35,6 +35,8 @@
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 
+    StageProgress current = models.PromptCurrentStage();
+
     LessonTime _model = this.Model as LessonTime;
 
     var profile = await Context.GetUserAsync();
@@ -59,6 +61,8 @@
             feedback = (int)(feedbackItems.Sum(s => s.Score) / feedbackItems.Count());
         }
     }
+
+    var lessonItem = feedbackItem?.LessonTime;
 }
 <div class="card card-style bg-beyond-dark">
 
@@ -124,7 +128,10 @@
 
         </div>
 
-        @if (feedbackItem?.FeedBackDate.HasValue != true && _model.LessonAttendance != null)
+        @if (feedbackItem?.FeedBackDate.HasValue != true 
+            && _model.LessonAttendance != null
+            && lessonItem?.ClassTime >= current?.StartDate
+            && lessonItem?.ClassTime < current?.EndExclusiveDate)
         {
             <p class="text-center pt-2">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("TakeFeedbackSurvey", "LearnerActivity"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())', 'from': '@Html.Raw(Url.Action("Events", "LearnerActivity"))' });" class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">Now Feedback<i class="fa-solid fa-chevron-right ps-2"></i></a>

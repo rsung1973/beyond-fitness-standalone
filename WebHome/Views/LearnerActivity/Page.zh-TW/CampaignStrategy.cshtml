@@ -69,7 +69,8 @@
                     <div class="splide__track">
                         <div class="splide__list">
                             @{
-                                if (current == null) {
+                                if (current == null)
+                                {
                                     <div class="splide__slide">
                                         <div class="strategy mt-5 mx-2">
                                             <svg width="0" height="0">
@@ -92,13 +93,15 @@
                                                 <div class="level"><img src="../images/icons/beyond_coin.svg" width="80" class="px-2 mt-n1"></div>
                                                 <div class="conditions">
                                                     <div class="condition">
-                                                        Coming Soon！                                                                                                     
+                                                        Coming Soon！
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                } else {
+                                }
+                                else
+                                {
                                     var levels = models.GetTable<GameLevel>().ToArray();
                                     int idx = 0, promotionID = 0;
                                     for (; idx < levels.Length; idx++)
@@ -122,8 +125,8 @@
                                             }
                                         </div>
                                         idx++;
-                                    }                                    
-                                }                                
+                                    }
+                                }
                             }
                         </div>
                     </div>

@@ -102,7 +102,7 @@ namespace WebHome.Helper
             return account;
         }
 
-        public static BonusDepositAccount CommitBonusSettlement(this BonusDepositAccount account, GenericManager<BFDataContext> models)
+        public static BonusDepositAccount CommitBonusSettlement(this BonusDepositAccount account, GenericManager<BFDataContext> models,bool? rebuild = false)
         {
             if (account == null)
             {
@@ -110,12 +110,21 @@ namespace WebHome.Helper
             }
 
             var settlement = account.BonusDepositSettlement;
-            settlement ??= account.BonusDepositSettlement = new BonusDepositSettlement
+            if (settlement == null)
             {
-                TransactionID = -1,
-                UID = account.UID,
-            };
+                settlement = new BonusDepositSettlement
+                {
+                    TransactionID = -1,
+                    UID = account.UID,
+                };
+            }
+
             settlement.SettlementDate = DateTime.Now;
+
+            if (rebuild == true)
+            {
+                settlement.TransactionID = -1;
+            }
 
             var items = models.GetTable<BonusTransaction>()
                             .Where(t => t.UID == account.UID)
@@ -123,10 +132,16 @@ namespace WebHome.Helper
 
             if (items.Any())
             {
+                account.BonusDepositSettlement ??= settlement;
+
                 var subtotal = items.Sum(t => t.TransactionPoint);
                 account.DepositPoint += subtotal;
                 settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
                     .First().TransactionID;
+            }
+            else
+            {
+                account.DepositPoint = 0;
             }
 
             models.SubmitChanges();

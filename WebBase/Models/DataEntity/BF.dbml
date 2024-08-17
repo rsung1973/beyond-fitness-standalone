@@ -531,9 +531,9 @@
       <Column Name="RemarkDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Status" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="CommitAssessment" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-		<Column Name="CommitAssessmentIP" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
-		<Column Name="AssessmentSignature" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-		<Association Name="LessonFeedBack_LessonFeedbackSurvey" Member="LessonFeedbackSurvey" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedbackSurvey" />
+      <Column Name="CommitAssessmentIP" Type="System.String" DbType="NVarChar(32)" CanBeNull="true" />
+      <Column Name="AssessmentSignature" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="LessonFeedBack_LessonFeedbackSurvey" Member="LessonFeedbackSurvey" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedbackSurvey" />
       <Association Name="LessonFeedBack_LessonSelfAssessment" Member="LessonSelfAssessment" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonSelfAssessment" />
       <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonMissionBonus" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonMissionBonus" />
       <Association Name="LevelExpression_LessonFeedBack" Member="LevelExpression" ThisKey="Status" OtherKey="LevelID" Type="LevelExpression" IsForeignKey="true" />
@@ -3323,18 +3323,6 @@
       <Association Name="LessonPriceType_LessonMissionBonusAwardingItem" Member="LessonPriceType" ThisKey="PriceID" OtherKey="PriceID" Type="LessonPriceType" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="BG.LessonMissionBonus" Member="LessonMissionBonus">
-    <Type Name="LessonMissionBonus">
-      <Column Name="BonusID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-		<Column Name="BonusStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
-		<Association Name="CampaignMissionBonus_LessonMissionBonus" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-      <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" />
-      <Association Name="LessonMissionBonusAwardingItem_LessonMissionBonus" Member="LessonMissionBonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="LessonMissionBonusAwardingItem" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="BG.AwardingItemCategory" Member="AwardingItemCategory">
     <Type Name="AwardingItemCategory">
       <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -3367,6 +3355,18 @@
       <Column Name="RewardID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Reward" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Association Name="GameLevel_GameLevelReward" Member="GameLevel" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevel" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="BG.LessonMissionBonus" Member="LessonMissionBonus">
+    <Type Name="LessonMissionBonus">
+      <Column Name="BonusID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="ItemID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="LessonID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="RegisterID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="BonusStatus" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="CampaignMissionBonus_LessonMissionBonus" Member="CampaignMissionBonus" ThisKey="BonusID" OtherKey="BonusID" Type="CampaignMissionBonus" IsForeignKey="true" />
+      <Association Name="LessonFeedBack_LessonMissionBonus" Member="LessonFeedBack" ThisKey="LessonID,RegisterID" OtherKey="LessonID,RegisterID" Type="LessonFeedBack" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Association Name="LessonMissionBonusAwardingItem_LessonMissionBonus" Member="LessonMissionBonusAwardingItem" ThisKey="ItemID" OtherKey="ItemID" Type="LessonMissionBonusAwardingItem" IsForeignKey="true" />
     </Type>
   </Table>
   <Function Name="dbo.InquireVacantNo" Method="InquireVacantNo">

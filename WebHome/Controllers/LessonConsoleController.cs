@@ -553,5 +553,12 @@ namespace WebHome.Controllers
             return View("~/Views/LessonConsole/ProcessModal/SignaturePanel.cshtml");
         }
 
+        public ActionResult SignaturePanel2024(QueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/LessonConsole/ProcessModal/SignaturePanel2024.cshtml");
+        }
+
+
     }
 }

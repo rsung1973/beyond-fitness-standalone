@@ -756,6 +756,8 @@ namespace WebHome.Helper
             
         {
             var registerLesson = item.RegisterLesson;
+            var uidList = item.GroupingLesson.RegisterLesson.Select(v => v.UID).ToList();
+
             if (item.IsCoachPISession() 
                 || (item.IsTrialLesson() && !(item.BranchStore?.IsVirtualClassroom()==true))
                 || registerLesson.IsSingleCharge)
@@ -813,6 +815,10 @@ namespace WebHome.Helper
                 }
             }
 
+            foreach(var uid in uidList)
+            {
+                uid.PromptDepositAccount(models)?.CommitBonusSettlement(models, true);
+            }
         }
 
         public static IQueryable<RegisterLesson> PromptLearnerRegisterLessons(this int UID, GenericManager<BFDataContext> models)
