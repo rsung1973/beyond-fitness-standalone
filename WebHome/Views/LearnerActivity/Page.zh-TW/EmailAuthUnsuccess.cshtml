@@ -31,7 +31,6 @@
             ? "en"
             : "ja";
 
-    UserProfile profile = this.Model as UserProfile;
     //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
     //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
 }
@@ -47,21 +46,16 @@
         <div class="content">
             <div class="card bg-transparent mb-0 mx-auto" data-card-height="80" style="width: 250px;box-shadow:none">
                 <div class="card-bottom">
-                    <h1 class="font-700 text-center color-white font-32 mb-1">驗證成功</h1>
-                    <p class="text-center z-index-10 color-beyondred-dark">Verify Success</p>
+                    <h1 class="font-700 text-center color-white font-32 mb-1">驗證失敗</h1>
+                    <p class="text-center z-index-10 color-beyondred-dark">Email Unsucessful</p>
                 </div>
             </div>
             <div class="content mb-3 mx-0 text-center" style="margin-top: 150px;">
-
                 <p class="boxed-text-l my-5 font-15 text-start">
-                    恭喜您已成功完成以 E-mail 作為帳號的啟用程序！您可立即以您所設定的 Email（@Html.Raw(profile.PID.Mask(Math.Max(profile.PID.IndexOf('@') - 3, 0), 3, '*'))）作為帳號和您所設定的密碼使用 Beyond Fitness 相關專屬服務及功能。
+                    您的驗證E-mail連結<u class="color-beyondred-dark px-2">已失效</u>，請您登入系統後重新操作更新Email功能。
                 </p>
-
                 <a href="Login"
-                   class="close-menu btn rounded-xl border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-400 px-5 py-2 font-16 fst-italic mt-5 letter-spacing-1">
-                    Let's
-                    get started!
-                </a>
+                   class="close-menu btn rounded-xl border-light border-opacity-50 color-beyondwhite-dark  bg-beyond-dark font-400 px-5 py-2 font-16 fst-italic mt-5 letter-spacing-1">登入</a>
             </div>
         </div>
     </div>

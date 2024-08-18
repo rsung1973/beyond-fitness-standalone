@@ -450,42 +450,49 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult CommitEmail()
         {
+            ViewEngineResult viewResult;
+
             if (!Request.QueryString.HasValue)
             {
-                return NotFound();
+                viewResult = CheckView("EmailAuthUnsuccess");
+                return View(viewResult.ViewName);
             }
 
             LearnerViewModel viewModel = JsonConvert.DeserializeObject<LearnerViewModel>(Request.QueryString.Value[1..].UrlDecodeBase64String().DecryptKey());
 
             if (viewModel.TimeTicks < DateTime.Now.Ticks)
             {
-                return NotFound();
+                viewResult = CheckView("EmailAuthUnsuccess");
+                return View(viewResult.ViewName);
             }
 
             UserProfile item = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).FirstOrDefault();
 
             if (item == null)
             {
-                return NotFound();
+                viewResult = CheckView("EmailAuthUnsuccess");
+                return View(viewResult.ViewName);
             }
 
             viewModel.Email = viewModel.Email.GetEfficientString();
             if (viewModel.Email == null || !viewModel.Email.IsEmail())
             {
-                return NotFound();
+                viewResult = CheckView("EmailAuthUnsuccess");
+                return View(viewResult.ViewName);
             }
 
             if (models.GetTable<UserProfile>()
                 .Where(u => u.UID != item.UID)
                 .Any(u => u.PID == viewModel.Email))
             {
-                return NotFound();
+                viewResult = CheckView("EmailAuthUnsuccess");
+                return View(viewResult.ViewName);
             }
 
             item.PID = viewModel.Email;
             CommitEmailCertified(item);
 
-            var viewResult = CheckView("EmailAuthResult");
+            viewResult = CheckView("EmailAuthResult");
             return View(viewResult.ViewName, item);
         }
 
@@ -1387,6 +1394,14 @@ namespace WebHome.Controllers
             return profile;
         }
 
+        [AllowAnonymous]
+        public ActionResult Error()
+        {
+            ViewEngineResult viewResult;
+
+            viewResult = CheckView("SystemUnderMaintenance");
+            return CheckLanguageRoute() ?? View(viewResult.ViewName);
+        }
 
     }
 }

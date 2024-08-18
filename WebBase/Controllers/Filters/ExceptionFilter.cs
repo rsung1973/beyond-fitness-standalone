@@ -32,7 +32,8 @@ namespace WebHome.Controllers.Filters
                 {
                     ApplicationLogging.CreateLogger<ExceptionFilter>().LogError(filterContext.Exception, filterContext.Exception.Message);
                 }
-                filterContext.Result = new RedirectToActionResult("Error", "CornerKick", null);
+                filterContext.Result = new RedirectToActionResult("Error", "LearnerActivity", null);
+                //filterContext.Result = new RedirectToActionResult("Error", "CornerKick", null);
                 //filterContext.HttpContext.Response.Redirect(urlHelper.Action("Error", "CornerKick"));
             }
         }

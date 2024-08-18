@@ -1,0 +1,62 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Text
+@using System.Net
+@using System.Net.Mail
+@using System.Web
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.Extensions.Logging
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties;
+@{
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _modelState = ViewContext.ModelState;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+    //await Html.RenderPartialAsync("~/Views/LearnerActivity/Template/GlobalResource.cshtml");
+    //dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+}
+<div class="page-content">
+    <div class="page-title page-title-small text-center">
+        <a href="https://www.beyond-fitness.com.tw/">
+            <img src="../images/preload-logo-gold.svg" width="80"
+                 class="mx-auto">
+        </a>
+    </div>
+    <div class="card header-card shape-rounded" data-card-height="250">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
+        <!-- <div class="card-overlay dark-mode-tint"></div> -->
+    </div>
+    <div class="content">
+        <div class="card bg-transparent mb-0 mx-auto" data-card-height="80" style="width: 250px;box-shadow:none">
+            <div class="card-bottom">
+                <h1 class="font-700 text-center color-white font-32 mb-1">系統維護中</h1>
+                <p class="text-center z-index-10 color-beyondred-dark">Maintenance</p>
+            </div>
+        </div>
+        <div class="content text-center pt-4">
+            <div class="boxed-text-l pt-3 text-center pb-3">
+                <img src="../images/icons/service.svg" class="mx-auto py-5 mt-5">
+                <h2 class="pt-4 line-height-l">Oooops, <br class="d-block d-lg-none d-md-none" />Something went wrong!</h2>
+                <p class="boxed-text-l mt-5">
+                    We'll be back in a giffy. Our server had a small hickup. Thank you for your patience.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

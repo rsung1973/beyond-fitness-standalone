@@ -230,7 +230,11 @@
             doPost('@Html.Raw(Url.Action("CommitSelfAssessment", "LearnerActivity"))', viewModel,
                 function (data) {
                     if ($.isPlainObject(data)) {
-                        $('#bonusPoint').text(data.point);
+                        if (data.point) {
+                            $('#bonusPoint').text(data.point);
+                        } else {
+                            $('#bonusPoint').closest('p').text('請盡情享受您的上課時光!');
+                        }
                         $('#health-declaration-result').addClass('menu-active');
                         $('.menu-hider').addClass('menu-active');
                     } else {
