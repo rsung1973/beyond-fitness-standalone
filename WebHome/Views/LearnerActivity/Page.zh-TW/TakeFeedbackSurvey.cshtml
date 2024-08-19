@@ -62,7 +62,16 @@
         <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
             <div class="d-flex">
                 <div>
-                    <h1 class="mb-2 color-theme letter-spacing-2">滿意度回饋·<small class="ps-2 font-12 font-400 text-capitalize opacity-60">Survery</small></h1>
+                    <h1 class="mb-2 color-theme letter-spacing-2">
+                        @if (lessonItem.IsPTSession())
+                        {
+                            <text>訓練感受</text>
+                        }
+                        else 
+                        {
+                             <text>恢復感受</text>
+                        }
+                        ·<small class="ps-2 font-12 font-400 text-capitalize opacity-60">FeedBack</small></h1>
                 </div>
             </div>
 
