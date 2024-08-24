@@ -19,20 +19,21 @@
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _model = (CourseContract)this.Model;
+    CourseContract original = _model.CourseContractRevision.SourceContract;
 
     //Response.ContentType = "application/json";
-    var originalContract = _model.CourseContractRevision.SourceContract;
-    String sendBtnImg = "approve_b";
-    if (_model.ServingCoach.UserProfile.UserProfileExtension.Gender == "F") {
-      sendBtnImg = "approve_g";
-    }    
+    String sendBtnImg = "reject_b";
+    if (_model.ServingCoach.UserProfile.UserProfileExtension.Gender == "F")
+    {
+        sendBtnImg = "reject_g";
+    } 
 }
 {
-  "to": "@Html.Raw(_model.CourseContractExtension.BranchStore.Manager.UserProfileExtension.LineID)",
+  "to": "@Html.Raw(_model.ServingCoach.UserProfile.UserProfileExtension.LineID)",
   "messages": [
     {
       "type": "flex",
-      "altText": "您有一張轉換課程堂數服務申請等待您審核",
+      "altText": "您有一張快速終止服務申請被退審，請聯絡您的主管並盡快重新編輯",
       "contents": {
         "type": "bubble",
         "header": {
@@ -41,7 +42,7 @@
           "contents": [
             {
               "type": "image",
-              "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/title/ManagerToApproveExchange.png",
+              "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/title/CoachToRejectQickTermination.png",
               "offsetTop": "0px",
               "offsetBottom": "0px",
               "margin": "none",
@@ -124,7 +125,7 @@
                     },
                     {
                       "type": "text",
-                      "text": "@Html.Raw(originalContract.RemainedLessonCount())",
+                      "text": "@Html.Raw(original.RemainedLessonCount())",
                       "wrap": true,
                       "color": "#656565",
                       "size": "md",
@@ -174,7 +175,7 @@
           "contents": [
             {
               "type": "image",
-              "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/approve/@(sendBtnImg).png",
+              "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/reject/@(sendBtnImg).png",
               "size": "40%"
             }
           ],
@@ -195,8 +196,8 @@
               "height": "sm",
               "action": {
                 "type": "uri",
-                "label": "立即審核",
-                "uri": "@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.CourseContractExtension.BranchStore.ManagerID.Value.EncryptKey())}")"
+                "label": "立即編輯",
+                "uri": "@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToApplyContractService")}?KeyID={HttpUtility.UrlEncode(original.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.FitnessConsultant.EncryptKey())}")"
               },
               "margin": "0px",
               "gravity": "center",

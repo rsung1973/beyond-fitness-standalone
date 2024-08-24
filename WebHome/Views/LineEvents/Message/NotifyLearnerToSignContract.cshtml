@@ -21,179 +21,199 @@
     _model = (CourseContract)this.Model;
     CourseContract item = _model;
     //Response.ContentType = "application/json";
+    String sendBtnImg = "sign_b";
+    if (_model.ContractOwner.UserProfileExtension.Gender == "F")
+    {
+        sendBtnImg = "sign_g";
+    }    
 }
 {
   "to": "@Html.Raw(item.ContractOwner.UserProfileExtension.LineID)",
   "messages": [
-    {
-      "type": "flex",
-      "altText": "您有一張合約等待確認簽名",
-      "contents": {
-        "type": "bubble",
-        "hero": {
-          "type": "image",
-          "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/line/contract_conerkicksign.jpg",
-          "size": "full",
-          "aspectRatio": "20:15",
-          "aspectMode": "cover",
-          "offsetTop": "10px"
-        },
-        "body": {
-          "type": "box",
-          "layout": "vertical",
-          "contents": [
-            {
-              "type": "box",
-              "layout": "vertical",
-              "margin": "lg",
-              "spacing": "sm",
-              "contents": [
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
+        {
+            "type": "flex",
+            "altText": "您有一張合約等待學生簽名",
+            "contents": {
+                "type": "bubble",
+                "header": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
                     {
-                      "type": "text",
-                      "text": "合約名稱",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
+                        "type": "image",
+                        "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/title/AllToSignContract.png",
+                        "offsetTop": "0px",
+                        "offsetBottom": "0px",
+                        "margin": "none",
+                        "align": "center",
+                        "gravity": "top",
+                        "aspectRatio": "20:11",
+                        "size": "lg"
                     },
                     {
-                      "type": "text",
-                      "text": "@Html.Raw(item.CourseContractType.TypeName)",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
+                        "type": "box",
+                        "layout": "vertical",
+                        "margin": "none",
+                        "spacing": "xs",
+                        "contents": [
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "none",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "合約名稱",
+                                "color": "#AEAEAE",
+                                "flex": 3,
+                                "align": "start",
+                                "wrap": true,
+                                "size": "md"
+                            },
+                            {
+                                "type": "text",
+                                "text": "@Html.Raw(_model.CourseContractType.TypeName)",
+                                "wrap": true,
+                                "color": "#656565",
+                                "size": "md",
+                                "flex": 7,
+                                "align": "start"
+                            }
+                            ],
+                            "paddingAll": "xs"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "@Html.Raw(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? "上課/簽約分店" : "上課場所")",
+                                "color": "#AEAEAE",
+                                "size": "md",
+                                "flex": 3,
+                                "align": "start",
+                                "wrap": true
+                            },
+                            {
+                                "type": "text",
+                                "text": "@Html.Raw(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? $"遠距/{item.CourseContractExtension.BranchStore.BranchName}" : item.CourseContractExtension.BranchStore.BranchName)",
+                                "wrap": true,
+                                "color": "#656565",
+                                "size": "md",
+                                "flex": 7,
+                                "align": "start"
+                            }
+                            ],
+                            "paddingAll": "xs"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "購買總數",
+                                "color": "#AEAEAE",
+                                "size": "md",
+                                "flex": 3,
+                                "align": "start",
+                                "wrap": true
+                            },
+                            {
+                                "type": "text",
+                                "text": "@Html.Raw(_model.TotalLessonCount(models))",
+                                "wrap": true,
+                                "color": "#656565",
+                                "size": "md",
+                                "flex": 7,
+                                "align": "start"
+                            }
+                            ],
+                            "paddingAll": "xs"
+                        },
+                        {
+                            "type": "box",
+                            "layout": "baseline",
+                            "spacing": "sm",
+                            "contents": [
+                            {
+                                "type": "text",
+                                "text": "動態密碼",
+                                "color": "#AEAEAE",
+                                "size": "md",
+                                "flex": 3,
+                                "align": "start",
+                                "wrap": true
+                            },
+                            {
+                                "type": "text",
+                                "text": "@Html.Raw(models.CreatePIN(item.CourseContractExtension))",
+                                "wrap": true,
+                                "color": "#656565",
+                                "size": "md",
+                                "flex": 7,
+                                "align": "start"
+                            }
+                            ],
+                            "paddingAll": "xs"
+                        }
+                        ],
+                        "paddingAll": "none"
                     }
-                  ]
+                    ],
+                    "spacing": "none",
+                    "margin": "none",
+                    "paddingTop": "none"
                 },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
+                "body": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
                     {
-                      "type": "text",
-                      "text": "@Html.Raw(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? "上課/簽約分店" : "上課場所")",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw(item.LessonPriceType.BranchStore?.IsVirtualClassroom() == true || item.CourseContractExtension.CourseBranch?.IsVirtualClassroom() == true ? $"遠距/{item.CourseContractExtension.BranchStore.BranchName}" : item.CourseContractExtension.BranchStore.BranchName)",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
+                        "type": "image",
+                        "url": "https://www.beyond-fitness.com.tw/WebHome/ConsoleHome/images/line/sign/@(sendBtnImg).png",
+                        "size": "40%"
                     }
-                  ]
+                    ],
+                    "spacing": "none",
+                    "margin": "none",
+                    "paddingAll": "none"
                 },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
+                "footer": {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [
                     {
-                      "type": "text",
-                      "text": "購買總堂數",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
+                        "type": "separator"
                     },
                     {
-                      "type": "text",
-                      "text": "@Html.Raw(item.TotalLessonCount(models))",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "簽約體能顧問",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
+                        "type": "button",
+                        "style": "link",
+                        "height": "sm",
+                        "action": {
+                        "type": "uri",
+                        "label": "立即簽名",
+                        "uri": "@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}")"
+                        },
+                        "margin": "0px",
+                        "gravity": "center",
+                        "offsetTop": "5px",
+                        "offsetBottom": "none",
+                        "color": "#282828"
                     },
                     {
-                      "type": "text",
-                      "text": "@Html.Raw(item.ServingCoach.UserProfile.FullName())",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
+                        "type": "box",
+                        "layout": "vertical",
+                        "contents": [],
+                        "margin": "sm"
                     }
-                  ]
-                },
-                {
-                  "type": "box",
-                  "layout": "baseline",
-                  "spacing": "sm",
-                  "contents": [
-                    {
-                      "type": "text",
-                      "text": "動態密碼",
-                      "color": "#aaaaaa",
-                      "size": "sm",
-                      "flex": 3,
-                      "wrap": true
-                    },
-                    {
-                      "type": "text",
-                      "text": "@Html.Raw(models.CreatePIN(item.CourseContractExtension))",
-                      "wrap": true,
-                      "color": "#666666",
-                      "size": "sm",
-                      "flex": 5
-                    }
-                  ]
+                    ],
+                    "flex": 0
                 }
-              ]
             }
-          ]
-        },
-        "footer": {
-          "type": "box",
-          "layout": "vertical",
-          "spacing": "sm",
-          "contents": [
-            {
-              "type": "separator",
-              "color": "#d9d9d9"
-            },
-            {
-              "type": "button",
-              "style": "link",
-              "height": "sm",
-              "action": {
-                "type": "uri",
-                "label": "👉立即簽名",
-                "uri": "@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/ToSignCourseContract")}?KeyID={HttpUtility.UrlEncode(item.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(item.OwnerID.EncryptKey())}")"
-                }
-                },
-                {
-                "type": "spacer",
-                "size": "sm"
-                }
-                ],
-                "flex": 0
-                }
-                }
-                }
-                ]
-                }
+        }
+    ]
+}
