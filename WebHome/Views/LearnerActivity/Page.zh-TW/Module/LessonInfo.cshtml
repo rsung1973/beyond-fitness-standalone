@@ -43,7 +43,11 @@
         <div class="col-12 text-center">
             @foreach (var u in learners)
             {
-                <img src="@Html.Raw($"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{u.PictureID}?stretch=true")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
+                <img src="@Html.Raw(u.PictureID.HasValue
+                              ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource/")}{u.PictureID}?stretch=true"
+                              : u.UserProfileExtension.Gender == "F" 
+                                ? "../images/avatars/default-fm.png"
+                                : "../images/avatars/default-mm.png")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
             }
         </div>
     </div>

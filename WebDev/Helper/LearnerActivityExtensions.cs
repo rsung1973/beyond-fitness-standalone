@@ -140,7 +140,7 @@ namespace WebHome.Helper
                 settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
                     .First().TransactionID;
             }
-            else
+            else if (settlement.TransactionID < 0)
             {
                 account.DepositPoint = 0;
             }

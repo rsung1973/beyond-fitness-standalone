@@ -81161,6 +81161,10 @@ namespace WebHome.Models.DataEntity
 		
 		private int _LevelCode;
 		
+		private string _DisplayName;
+		
+		private string _Description;
+		
 		private EntitySet<Player> _Player;
 		
 		private EntitySet<GameLevelRequirement> _GameLevelRequirement;
@@ -81177,6 +81181,10 @@ namespace WebHome.Models.DataEntity
     partial void OnLevelIDChanged();
     partial void OnLevelCodeChanging(int value);
     partial void OnLevelCodeChanged();
+    partial void OnDisplayNameChanging(string value);
+    partial void OnDisplayNameChanged();
+    partial void OnDescriptionChanging(string value);
+    partial void OnDescriptionChanged();
     #endregion
 		
 		public GameLevel()
@@ -81226,8 +81234,50 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DisplayName", DbType="NVarChar(64)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public string DisplayName
+		{
+			get
+			{
+				return this._DisplayName;
+			}
+			set
+			{
+				if ((this._DisplayName != value))
+				{
+					this.OnDisplayNameChanging(value);
+					this.SendPropertyChanging();
+					this._DisplayName = value;
+					this.SendPropertyChanged("DisplayName");
+					this.OnDisplayNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Description", DbType="NVarChar(64)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4)]
+		public string Description
+		{
+			get
+			{
+				return this._Description;
+			}
+			set
+			{
+				if ((this._Description != value))
+				{
+					this.OnDescriptionChanging(value);
+					this.SendPropertyChanging();
+					this._Description = value;
+					this.SendPropertyChanged("Description");
+					this.OnDescriptionChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_Player", Storage="_Player", ThisKey="LevelID", OtherKey="PlayerLevel")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
 		public EntitySet<Player> Player
 		{
 			get
@@ -81246,7 +81296,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelRequirement", Storage="_GameLevelRequirement", ThisKey="LevelID", OtherKey="LevelID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=4, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=6, EmitDefaultValue=false)]
 		public EntitySet<GameLevelRequirement> GameLevelRequirement
 		{
 			get
@@ -81265,7 +81315,7 @@ namespace WebHome.Models.DataEntity
 		}
 		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="GameLevel_GameLevelReward", Storage="_GameLevelReward", ThisKey="LevelID", OtherKey="LevelID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=5, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=7, EmitDefaultValue=false)]
 		public EntitySet<GameLevelReward> GameLevelReward
 		{
 			get

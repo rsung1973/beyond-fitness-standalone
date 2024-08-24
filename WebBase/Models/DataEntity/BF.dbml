@@ -3184,7 +3184,9 @@
     <Type Name="GameLevel">
       <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="LevelCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
+		<Column Name="DisplayName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+		<Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+		<Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
       <Association Name="GameLevel_GameLevelRequirement" Member="GameLevelRequirement" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelRequirement" />
       <Association Name="GameLevel_GameLevelReward" Member="GameLevelReward" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelReward" />
     </Type>

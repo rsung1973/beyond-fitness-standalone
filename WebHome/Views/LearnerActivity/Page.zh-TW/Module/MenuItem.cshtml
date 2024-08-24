@@ -38,8 +38,8 @@
 
 <div class="menu-logo text-center">
     <div class="avatar">
-        <a href="Settings"><img class="avatar-rounded-circle bg-beyond-dark shadow-xl preload-img" src="@(profile.PictureID.HasValue
-                              ? VirtualPathUtility.ToAbsolute("~/Information/GetResource/") + profile.PictureID + "?stretch=true"
+        <a href="Settings"><img class="avatar-rounded-circle bg-beyond-dark shadow-xl preload-img" src="@Html.Raw(profile.PictureID.HasValue
+                              ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource/")}{profile.PictureID}?stretch=true"
                               : profile.UserProfileExtension.Gender == "F" 
                                 ? "../images/avatars/default-fxs.png"
                                 : "../images/avatars/default-mxs.png")"> </a>

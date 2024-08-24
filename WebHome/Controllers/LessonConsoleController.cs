@@ -553,10 +553,18 @@ namespace WebHome.Controllers
             return View("~/Views/LessonConsole/ProcessModal/SignaturePanel.cshtml");
         }
 
-        public ActionResult SignaturePanel2024(QueryViewModel viewModel)
+        public ActionResult SignaturePanel2024(DailyBookingQueryViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/LessonConsole/ProcessModal/SignaturePanel2024.cshtml");
+            if (viewModel.KeyID != null)
+            {
+                var tmpModel = JsonConvert.DeserializeObject<DailyBookingQueryViewModel>(viewModel.KeyID.DecryptKey());
+                viewModel.LearnerID = tmpModel.LearnerID;
+                viewModel.LessonID = tmpModel.LessonID;
+            }
+            var item = models.GetTable<LessonTime>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            ViewBag.Learner = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.LearnerID).FirstOrDefault();
+            return View("~/Views/LessonConsole/ProcessModal/SignaturePanel2024.cshtml", item);
         }
 
 

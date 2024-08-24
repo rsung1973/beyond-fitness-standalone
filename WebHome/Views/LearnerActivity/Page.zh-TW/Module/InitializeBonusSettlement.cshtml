@@ -1,0 +1,92 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+@using System.Web
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+
+@{
+    const int CreditBonusSettlementID = 53;
+
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+    LearnerViewModel _viewModel = ViewBag.ViewModel as LearnerViewModel;
+
+    int exchangeRate = 50;
+
+    UserProfile learner = this.Model as UserProfile;
+
+    var account = learner.BonusDepositAccount;
+    if (account == null)
+    {
+        account = learner.BonusDepositAccount = new BonusDepositAccount
+        {
+            UID = learner.UID,
+            DepositPoint = 0,
+        };
+
+        models.SubmitChanges();
+    }
+
+    var totalPoints = learner.BonusPoint(models) ?? 0;
+    int settlementPoints = totalPoints * exchangeRate;
+
+    if (totalPoints > 0)
+    {
+        BonusTransaction txn = models.GetTable<BonusTransaction>()
+            .Where(t => t.UID == account.UID)
+            .Where(t => t.LearnerAward.ItemID == CreditBonusSettlementID)
+            .FirstOrDefault();
+
+        if (txn == null)
+        {
+            txn = new BonusTransaction
+            {
+                UID = account.UID,
+                TransactionPoint = settlementPoints,
+                TransactionDate = DateTime.Now,
+                Reason = $"舊Beyond幣點數轉換({totalPoints})",
+                LearnerAward = new LearnerAward
+                {
+                    UID = account.UID,
+                    AwardDate = DateTime.Now,
+                    ItemID = CreditBonusSettlementID,
+                    ActorID = account.UID,
+                },
+            };
+            models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
+            models.SubmitChanges();
+
+            account.CommitBonusSettlement(models);
+
+            //models.ExecuteCommand(@"UPDATE PDQTaskBonus
+            //    SET        BonusPoint = 0
+            //    FROM     PDQTask INNER JOIN
+            //                   PDQTaskBonus ON PDQTask.TaskID = PDQTaskBonus.TaskID
+            //    WHERE   (PDQTask.UID = {0}) AND (PDQTaskBonus.BonusPoint > 0)", account.UID);
+        }
+    }
+}
+

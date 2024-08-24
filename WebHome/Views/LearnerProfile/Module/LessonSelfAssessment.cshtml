@@ -1,0 +1,83 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    LessonTime _model;
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (LessonTime)this.Model;
+    var lessonItem = _model;
+}
+@{
+    UserProfile learner = (UserProfile)ViewBag.Learner;
+
+    var registerID = lessonItem.GroupingLesson.RegisterLesson.Where(r => r.UID == learner.UID)
+                        .FirstOrDefault()?.RegisterID;
+}
+<a href="javascript:signaturePanel();">編輯健康指數</a>
+<i class="zmdi livicon-evo"
+   data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+<script>
+    function signaturePanel() {
+
+        if ($global.$currentModal) {
+            $global.$currentModal.modal('show');
+            return;
+        }
+
+        @*
+            $global.commitSignature = function (sigData) {
+            showLoading();
+            var viewModel = {
+                keyID: '@Html.Raw(lessonItem.LessonID.EncryptKey())',
+                Signature: sigData
+            };
+            $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', viewModel, function (data) {
+        *@
+        $global.commitSignature = function (viewModel, done) {
+            showLoading();
+            viewModel.KeyID = '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())';
+            $.post('@Html.Raw(Url.Action("LearnerAttendLesson2024", "Attendance"))', viewModel, function (data) {
+                hideLoading();
+                if ($.isPlainObject(data)) {
+                    if (data.result) {
+                        Swal.fire({
+                            title: "全部打卡成功!",
+                            text: "資料已經完成打卡 Bye!",
+                            icon: "success",
+                            showCancelButton: false,
+                            closeOnConfirm: true
+                        }).then((result) => {
+                            refreshTrainingContent();
+                        });
+                    } else {
+                        Swal.fire(
+                            'Oops...',
+                            data.message,
+                            'warning'
+                        );
+                    }
+                } else {
+                    $(data).appendTo($('body'));
+                }
+            });
+        };
+
+        showLoading();
+        $.post('@Html.Raw(Url.Action("SignaturePanel2024", "LessonConsole"))', {'KeyID' : '@Html.Raw((new { lessonItem.LessonID, LearnerID = learner.UID }).JsonStringify().EncryptKey())' }, function (data) {
+            hideLoading();
+            $(data).appendTo($('body'));
+        });
+    }
+</script>

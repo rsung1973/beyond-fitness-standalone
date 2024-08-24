@@ -47,53 +47,6 @@
 }
 else
 {
-    var account = learner.BonusDepositAccount;
-    if (account == null)
-    {
-        account = learner.BonusDepositAccount = new BonusDepositAccount
-        {
-            UID = learner.UID,
-            DepositPoint = 0,
-        };
-
-        models.SubmitChanges();
-    }
-
-    var totalPoints = learner.BonusPoint(models) ?? 0;
-    int settlementPoints = totalPoints * exchangeRate;
-
-    BonusTransaction txn = new BonusTransaction
-    {
-        UID = account.UID,
-        TransactionPoint = settlementPoints,
-        TransactionDate = DateTime.Now,
-        Reason = $"舊Beyond幣點數轉換({totalPoints})",
-    };
-    models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
-    models.SubmitChanges();
-
-    var settlement = account.BonusDepositSettlement;
-    if (settlement == null)
-    {
-        settlement = account.BonusDepositSettlement = new BonusDepositSettlement
-        {
-            TransactionID = -1,
-            UID = account.UID,
-        };
-    }
-    settlement.SettlementDate = DateTime.Now;
-
-    var items = models.GetTable<BonusTransaction>()
-                    .Where(t => t.UID == account.UID)
-                    .Where(t => t.TransactionID > settlement.TransactionID);
-
-    if (items.Any())
-    {
-        var subtotal = items.Sum(t => t.TransactionPoint);
-        account.DepositPoint += subtotal;
-        settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
-            .First().TransactionID;
-        models.SubmitChanges();
-    }
-    <div>@Html.Raw(learner.FullName()),@(account.DepositPoint)</div>
+    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/InitializeBonusSettlement.cshtml", learner);
+    <div>@Html.Raw(learner.FullName()),@(learner.BonusDepositAccount.DepositPoint)</div>
 }

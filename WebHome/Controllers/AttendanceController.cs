@@ -224,8 +224,11 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = ModelState.ErrorMessage() });
             }
 
-            item.LessonTime.LessonPlan.Signature = signatureViewModel.Signature;
-            models.SubmitChanges();
+            if (signatureViewModel.Signature != null)
+            {
+                item.LessonTime.LessonPlan.Signature = signatureViewModel.Signature;
+                models.SubmitChanges();
+            }
 
             return Json(new { result = true, message = "資料存檔完成!!" });
 

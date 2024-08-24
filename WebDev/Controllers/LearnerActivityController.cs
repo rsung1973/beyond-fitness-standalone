@@ -43,6 +43,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using LineMessagingAPISDK.Models;
 using WebHome.Helper.MessageOperation;
 using WebHome.Helper.BusinessOperation;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace WebHome.Controllers
 {
@@ -1401,6 +1402,21 @@ namespace WebHome.Controllers
 
             viewResult = CheckView("SystemUnderMaintenance");
             return CheckLanguageRoute() ?? View(viewResult.ViewName);
+        }
+
+        public async Task<ActionResult> RebuildBonusSettlement()
+        {
+            var profile = await HttpContext.GetUserAsync();
+            var account = profile?.UID.PromptDepositAccount(models)?.CommitBonusSettlement(models, true);
+            return Json(new { account.DepositPoint });
+        }
+
+        public async Task<ActionResult> TransferBonusCreditNewAsync(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            return View("~/Views/LearnerActivity/TransferBonusCreditNew.cshtml");
         }
 
     }
