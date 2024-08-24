@@ -40,7 +40,7 @@
 <div class="content mb-3 mx-1">
 
     <h4 class="mb-2 text-uppercase letter-spacing-2 d-inline font-20 color-theme mx-4 mx-lg-5 mx-md-5">
-        升級指南·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Upgrade Level</small>
+        升級指南·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Upgrade Intro</small>
     </h4>
 
     <div class="clearfix"></div>
@@ -49,8 +49,8 @@
 
         <div class="card-body mx-3 my-2">
 
-            <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-16 color-white">
-                Level @(promotion.LevelCode)<small id="gameResult" class="ps-2 font-14 font-400 text-capitalize"></small>
+            <h4 class="mb-5 text-capitalize letter-spacing-2 d-inline font-16 color-white">
+                @(promotion.DisplayName)·@(promotion.Description)<small id="gameResult" class="ps-2 font-14 font-400 text-capitalize"></small>
             </h4>
             <div class="complete-container mt-3">
                 @{
