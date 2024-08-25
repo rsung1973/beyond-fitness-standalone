@@ -106,7 +106,7 @@
                                 else
                                 {
                                     var levels = models.GetTable<GameLevel>().ToArray();
-                                    int idx = 0, promotionID = 0;
+                                    int idx = 0, promotionID = 1;
                                     for (; idx < levels.Length; idx++)
                                     {
                                         if (levels[idx].LevelID == currentLevel?.PlayerLevel)
