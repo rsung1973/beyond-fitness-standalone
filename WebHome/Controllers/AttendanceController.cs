@@ -182,6 +182,7 @@ namespace WebHome.Controllers
             item.LessonPlan.Remark = viewModel.Remark.GetEfficientString();
 
             models.AttendLesson(item, profile, viewModel.QuestionnaireGroupID);
+            await item.LineNotifyLessonAttendanceAsync(this);
             //foreach (var r in item.GroupingLesson.RegisterLesson)
             //{
             //    models.CheckLearnerQuestionnaireRequest(r);
@@ -255,6 +256,8 @@ namespace WebHome.Controllers
                 else
                 {
                     models.AttendLesson(model.LessonTime, profile);
+                    await model.LessonTime.LineNotifyLessonAttendanceAsync(this);
+
                     //LessonAttendance attendance = model.LessonTime.LessonAttendance;
                     //if (attendance == null)
                     //{

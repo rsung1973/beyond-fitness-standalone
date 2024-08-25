@@ -653,6 +653,7 @@ namespace WebHome.Controllers
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
                 models.AttendLesson(fitnessAssessment.LessonTime, profile);
+                await fitnessAssessment.LessonTime.LineNotifyLessonAttendanceAsync(this);
                 //foreach(var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
                 //{
                 //    models.CheckLearnerQuestionnaireRequest(r);
@@ -788,6 +789,7 @@ namespace WebHome.Controllers
             if (models.CouldMarkToAttendLesson(fitnessAssessment.LessonTime))
             {
                 models.AttendLesson(fitnessAssessment.LessonTime, profile);
+                await fitnessAssessment.LessonTime.LineNotifyLessonAttendanceAsync(this);
                 //foreach (var r in fitnessAssessment.LessonTime.GroupingLesson.RegisterLesson)
                 //{
                 //    models.CheckLearnerQuestionnaireRequest(r);

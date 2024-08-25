@@ -16,6 +16,8 @@ using WebHome.Models.ViewModel;
 using CommonLib.Core.Utility;
 using CommonLib.DataAccess;
 using CommonLib.Core;
+using WebHome.Controllers;
+using WebHome.Helper.MessageOperation;
 //
 
 namespace WebHome.Helper
@@ -35,6 +37,28 @@ namespace WebHome.Helper
             };
         }
 
+        public static async Task<LessonTime> LineNotifyLessonAttendanceAsync(this LessonTime item, SampleController<UserProfile> controller)
+        {
+            var Request = controller.Request;
+            var ModelState = controller.ModelState;
+            var ViewBag = controller.ViewBag;
+            var HttpContext = controller.HttpContext;
+            var models = controller.DataSource;
+
+            if (!item.LessonPlan.CommitAttendance.HasValue)
+            {
+                foreach (var feedback in item.LessonFeedBack)
+                {
+                    if (feedback.RegisterLesson.UserProfile.UserProfileExtension.LineID != null)
+                    {
+                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToTakeFeedbackSurvey.cshtml", feedback);
+                        jsonData.PushLineMessage();
+                    }
+                }
+            }
+
+            return item;
+        }
         public static void AttendLesson(this GenericManager<BFDataContext> models, LessonTime item, UserProfile actor, Naming.QuestionnaireGroup? groupID = null)
 
         {
@@ -76,6 +100,8 @@ namespace WebHome.Helper
                     }
 
                 }
+
+               
             }
 
             var lesson = item.RegisterLesson;
