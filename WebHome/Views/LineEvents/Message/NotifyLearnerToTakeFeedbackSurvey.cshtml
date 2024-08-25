@@ -1,0 +1,214 @@
+@using System.IO
+@using System.Linq.Expressions
+@using System.Web 
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using WebHome.Properties
+@using WebHome.Helper
+@using Newtonsoft.Json
+@{
+
+    ModelStateDictionary _modelState;
+    ModelSource<UserProfile> models;
+    CourseContract _model;
+
+
+    _modelState = ViewContext.ModelState;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _model = (CourseContract)this.Model;
+    CourseContract item = _model;
+    //Response.ContentType = "application/json";
+    String sendBtnImg = "sign_b";
+    if (_model.ContractOwner.UserProfileExtension.Gender == "F")
+    {
+        sendBtnImg = "sign_g";
+    }    
+}
+{
+  "to": "@Html.Raw(item.ContractOwner.UserProfileExtension.LineID)",
+  "messages": [
+        {
+            "type": "flex",
+            "altText": "您的教練已完成課後家庭聯絡簿",
+            "contents": {
+                "type": "bubble",
+                "header": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                {
+                    "type": "image",
+                    "url": "https://www.beyond-fitness.com.tw/WebHome/images/linepush/title/LearnerToTakeFeedback.png",
+                    "offsetTop": "0px",
+                    "offsetBottom": "0px",
+                    "margin": "none",
+                    "align": "center",
+                    "gravity": "top",
+                    "aspectRatio": "20:11",
+                    "size": "xl"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "margin": "none",
+                    "spacing": "xs",
+                    "contents": [
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "none",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "上課時間",
+                            "color": "#AEAEAE",
+                            "flex": 4,
+                            "align": "start",
+                            "wrap": true,
+                            "size": "md"
+                        },
+                        {
+                            "type": "text",
+                            "text": "2024/08/09 15:00",
+                            "wrap": true,
+                            "color": "#656565",
+                            "size": "md",
+                            "flex": 8,
+                            "align": "start"
+                        }
+                        ],
+                        "paddingAll": "xs"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "sm",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "上課顧問",
+                            "color": "#AEAEAE",
+                            "size": "md",
+                            "flex": 4,
+                            "align": "start",
+                            "wrap": true
+                        },
+                        {
+                            "type": "text",
+                            "text": "黃伊涵(Sabrina Huang)",
+                            "wrap": true,
+                            "color": "#656565",
+                            "size": "md",
+                            "flex": 8,
+                            "align": "start"
+                        }
+                        ],
+                        "paddingAll": "xs"
+                    },
+                    {
+                        "type": "box",
+                        "layout": "baseline",
+                        "spacing": "sm",
+                        "contents": [
+                        {
+                            "type": "text",
+                            "text": "家庭聯絡簿",
+                            "color": "#AEAEAE",
+                            "size": "md",
+                            "flex": 4,
+                            "align": "start",
+                            "wrap": true
+                        },
+                        {
+                            "type": "text",
+                            "text": "今天核心很努力喔！",
+                            "wrap": true,
+                            "color": "#656565",
+                            "size": "md",
+                            "flex": 8,
+                            "align": "start"
+                        }
+                        ],
+                        "paddingAll": "xs"
+                    }
+                    ],
+                    "paddingAll": "none"
+                }
+                ],
+                "spacing": "none",
+                "margin": "none",
+                "paddingTop": "none"
+            },
+            "body": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                {
+                    "type": "image",
+                    "url": "https://www.beyond-fitness.com.tw/ConsoleHome/images/linepush/task/learnerfeedback.png",
+                    "size": "40%"
+                }
+                ],
+                "spacing": "none",
+                "margin": "none",
+                "paddingAll": "none"
+            },
+            "footer": {
+                "type": "box",
+                "layout": "vertical",
+                "contents": [
+                {
+                    "type": "text",
+                    "text": "運動後的半小時內",
+                    "margin": "xs",
+                    "align": "center",
+                    "wrap": true,
+                    "offsetBottom": "10px",
+                    "size": "sm",
+                    "color": "#8DA4CF",
+                    "offsetTop": "0px"
+                },
+                {
+                    "type": "text",
+                    "text": "記得補充適當的水份唷～🚰",
+                    "margin": "xxl",
+                    "align": "center",
+                    "wrap": true,
+                    "offsetBottom": "15px",
+                    "size": "sm",
+                    "color": "#8DA4CF"
+                },
+                {
+                    "type": "separator"
+                },
+                {
+                    "type": "button",
+                    "style": "link",
+                    "height": "sm",
+                    "action": {
+                    "type": "uri",
+                    "label": "立即完成打卡",
+                    "uri": "https://line.me/"
+                    },
+                    "margin": "0px",
+                    "gravity": "center",
+                    "offsetTop": "5px",
+                    "offsetBottom": "none",
+                    "color": "#282828"
+                },
+                {
+                    "type": "box",
+                    "layout": "vertical",
+                    "contents": [],
+                    "margin": "sm"
+                }
+                ],
+                "flex": 0
+            }
+            }
+        }
+    ]
+}
