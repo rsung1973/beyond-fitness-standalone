@@ -143,8 +143,8 @@
         <div class="d-flex mt-4">
             @foreach (var stageItem in stageItems)
             {
-                <div class="me-auto">
-                    <i class="@(stageItem.StageID == keyValues.StageID ? "fa-regular fa-circle-play color-beyondred-dark font-28" : "fa-regular fa-circle-stop color-beyondwhite-dark font-28 opacity-30")"></i><span class="color-beyondwhite-dark d-block pt-1 letter-spacing-1">@Html.Raw(stageItem.Stage)</span>
+                <div class="me-auto text-center">
+                    <i class="@(stageItem.StageID == keyValues.StageID ? "fa-regular fa-circle-play color-beyondred-dark font-28" : "fa-regular fa-circle-stop color-beyondwhite-dark font-28 opacity-30")"></i><span class="color-beyondwhite-dark d-block pt-2 letter-spacing-1">@Html.Raw(stageItem.Stage)</span>
                 </div>
             }
         </div>
