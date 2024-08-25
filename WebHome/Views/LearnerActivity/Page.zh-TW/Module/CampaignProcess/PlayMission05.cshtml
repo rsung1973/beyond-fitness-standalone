@@ -56,6 +56,6 @@
 }
 <div class="card bg-beyond-dark text-center">
     <img src="@Html.Raw(mission.CheckResult ? "../images/icons/finish.svg" : "../images/icons/unfinish.svg")" class="rounded-circle mb-2 mt-2" width="100%" height="100%">
-    <span class="d-block color-beyondwhite-dark @Html.Raw(mission.CheckResult ? "" : "opacity-50") font-14">S.R<small class="d-block">(@(mission.ResultModel)/@(mission.Goal))</small></span>
+    <span class="d-block color-beyondwhite-dark @Html.Raw(mission.CheckResult ? "color-beyondwhite-dark" : "color-white opacity-50") font-14">S.R<small class="d-block">(@(mission.ResultModel)/@(mission.Goal))</small></span>
 
 </div>
