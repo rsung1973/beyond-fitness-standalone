@@ -63,8 +63,8 @@
     </svg>
     <div class="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "card" : "card opacity-60")">
         <div class="level">
-            <img src="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "../images/icons/beyond_coin.svg" : "../images/icons/beyond_coin_grey.svg")" width="50" class="px-2 mt-1">
-            Level @(_model.LevelCode)
+            <img src="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "../images/icons/beyond_coin.svg" : "../images/icons/beyond_coin_grey.svg")" width="50" class="mt-1 mb-2">
+            @(_model.DisplayName)<span class="mt-n1">@(_model.Description)</span>
             @if (currentPlayer?.PlayerLevel == _model.LevelID)
             {
                 <span>(本季等級)</span>

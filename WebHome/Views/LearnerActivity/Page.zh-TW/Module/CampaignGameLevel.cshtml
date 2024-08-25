@@ -39,25 +39,30 @@
     <div class="condition">
 
         <ul class="line-height-l">
-            @foreach (var item in _model.GameLevelRequirement.OrderBy(r => r.DisplayOrder))
+            @if (_model.GameLevelRequirement.Any()) {
+                foreach (var item in _model.GameLevelRequirement.OrderBy(r => r.DisplayOrder))
+                {
+                    await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/DisplayMission{item.MissionID:00}.cshtml", item);
+                 }
+            } 
+            else 
             {
-                await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/DisplayMission{item.MissionID:00}.cshtml", item);
+               <p>剛開始，充滿潛力！</p>
             }
         </ul>
-
-        <badge class="bg-beyondred-dark px-2 rounded-m font-12 mb-2">限時回饋</badge>
-        <ul>
             @{
                 var reward = _model.GameLevelReward.Where(r => r.RewardID == (int)GameLevelReward.RewardDefinition.任務牆點數回饋加碼)
                                 .FirstOrDefault();
-                if (reward != null)
+                if (reward != null && reward.Reward > 0)
                 {
+                <badge class="bg-beyondred-dark px-2 rounded-m font-12 mb-2">限時回饋</badge>
+                <ul>
                     <li>
                         原任務牆點數回饋加碼 @(reward.Reward)%
                     </li>
+                </ul>
                 }
             }
-        </ul>
 
         <a href="#" data-menu="popup-levelTable"
            class="btn btn-border rounded-xl border-lightgray-dark bg-beyond-dark color-beyondwhite-dark px-4 py-1 font-12 align-self-end align-self-lg-start align-self-md-start mx-2 mx-lg-0 mx-md-0">瞭解更多</a>
