@@ -584,6 +584,7 @@ input::placeholder {
   padding-top: 5px;
   font-size: 14px;
   font-weight: 400;
+  color: #282828 !important;
 }
 .strategy .conditions {
   background-color: #F8F4EB;
