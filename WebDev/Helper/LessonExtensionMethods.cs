@@ -1743,12 +1743,12 @@ namespace WebHome.Helper
 
             if (!(viewModel.FatigueIndex >= 0 && viewModel.FatigueIndex <= 10))
             {
-                ModelState.AddModelError("FatigueIndex", "請填寫生理疲勞");
+                ModelState.AddModelError("FatigueIndex", "請填寫生理疲勞(1~10)");
             }
 
             if (!(viewModel.StressIndex >= 0 && viewModel.StressIndex <= 10))
             {
-                ModelState.AddModelError("StressIndex", "請填寫心理壓力");
+                ModelState.AddModelError("StressIndex", "請填寫心理壓力(1~10)");
             }
 
             if (viewModel.KeyID != null)

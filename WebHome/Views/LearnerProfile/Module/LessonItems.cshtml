@@ -21,6 +21,8 @@
 }
 @{
     LessonQueryViewModel _viewModel = (LessonQueryViewModel)ViewBag.ViewModel;
+    var learner = models.GetTable<UserProfile>().Where(u => u.UID == _viewModel.LearnerID).FirstOrDefault();
+
     String encTargetID = (_viewModel.ExceptionalID ?? 0).EncryptKey();
     var exceptional = models.GetTable<LessonTime>().Where(l => l.LessonID == _viewModel.ExceptionalID)
             .FirstOrDefault();
@@ -51,14 +53,14 @@
         var execution = plan.TrainingExecution;
         <li class="lessonitem">
             <div class="@(item.IsPTOrSRSession()
-                            ? "bullet PT"
-                            : item.IsCoachPISession()
-                                ? "bullet CoachPI"
-                                : item.IsPISession()
-                                    ? "bullet PI"
-                                    : item.IsSTSession()
-                                        ? "bullet ST"
-                                        : "bullet TS")"></div>
+                ? "bullet PT"
+                : item.IsCoachPISession()
+                    ? "bullet CoachPI"
+                    : item.IsPISession()
+                        ? "bullet PI"
+                        : item.IsSTSession()
+                            ? "bullet ST"
+                            : "bullet TS")"></div>
             <div class="time">@($"{item.ClassTime:MM/dd}")<br />@($"{item.ClassTime:yyyy}")</div>
             <div class="desc">
                 <div class="header">
@@ -96,8 +98,25 @@
                 <h4><a href="javascript:viewTraining('@Html.Raw(item.LessonID.EncryptKey())','@(encTargetID)');">@(execution.Emphasis ?? "Unfinished")</a></h4>
                 @if (item.LessonPlan.Remark != null)
                 {
-                    <span class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></span>
-                }                
+                    <div class="comment">@(item.LessonPlan.Remark)<span class="author">@(item.AsAttendingCoach.UserProfile.FullName())</span></div>
+                }
+                @if (learner != null)
+                {
+                    var registerID = item.GroupingLesson.RegisterLesson.Where(r => r.UID == learner.UID)
+                                            .FirstOrDefault()?.RegisterID;
+
+                    var feedbackItem = models.GetTable<LessonFeedBack>()
+                                                .Where(f => f.LessonID == item.LessonID)
+                                                .Where(f => f.RegisterID == registerID)
+                                                .FirstOrDefault()?.LessonFeedbackSurvey
+                                                .Where(s => s.Answer != null).FirstOrDefault();
+                    if (feedbackItem != null)
+                    {
+                        <div class="comment col-cranberry">
+                            @Html.Raw(feedbackItem.Answer)<span class="author">@Html.Raw(learner.FullName())</span>
+                        </div>
+                    }
+                }
             </div>
         </li>
     }

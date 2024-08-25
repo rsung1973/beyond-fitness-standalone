@@ -36,8 +36,11 @@
 
     Player currentLevel = current != null ? profile.Player.Where(p => p.ProgressID == current.ProgressID).FirstOrDefault() : null;
     ViewBag.Player = currentLevel;
-    PromotionAppraisalDataModel appraisal = new PromotionAppraisalDataModel { };     //[0]: promotion level
-                                                                                     //[2]: promotion check
+    PromotionAppraisalDataModel appraisal = new PromotionAppraisalDataModel
+    {
+        PromotionLevel = models.GetTable<GameLevel>().Where(l => l.LevelID == 1).FirstOrDefault(),
+    };     //[0]: promotion level
+           //[2]: promotion check
     ViewBag.Appraisal = appraisal;
 }
 

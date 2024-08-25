@@ -51,6 +51,24 @@
         return levelID;
     }
 
+    void ApplyLevel(UserProfile learner, int levelID,StageProgress stage)
+    {
+        var player = models.GetTable<Player>()
+                        .Where(p => p.UID == learner.UID)
+                        .Where(p => p.ProgressID == stage.ProgressID).FirstOrDefault();
+        if (player == null)
+        {
+            player = new Player
+            {
+                UID = learner.UID,
+                ProgressID = stage.ProgressID,
+            };
+            models.GetTable<Player>().InsertOnSubmit(player);
+        }
+        player.PlayerLevel = levelID;
+        models.SubmitChanges();
+    }
+
 }
 @{
 
@@ -87,20 +105,7 @@
                 var levelID = AppraiseLevel(learner, lessons, levelRequirements);
                 if(levelID.HasValue)
                 {
-                    var player = models.GetTable<Player>()
-                                    .Where(p => p.UID == learner.UID)
-                                    .Where(p => p.ProgressID == stage.ProgressID).FirstOrDefault();
-                    if (player == null)
-                    {
-                        player = new Player
-                        {
-                            UID = learner.UID,
-                            ProgressID = stage.ProgressID,
-                        };
-                        models.GetTable<Player>().InsertOnSubmit(player);
-                    }
-                    player.PlayerLevel = levelID;
-                    models.SubmitChanges();
+                    ApplyLevel(learner, levelID.Value, stage);
                 }
             }
             else
@@ -109,6 +114,7 @@
                                     .Where(c => c.CourseContractMember.Any(m => m.UID == learner.UID));
                 if (contracts.Any())
                 {
+                    ApplyLevel(learner, 0, stage);
                 }
                 else if (learner.ServingCoach != null)
                 {
