@@ -38,7 +38,7 @@
     ViewBag.Player = currentLevel;
     PromotionAppraisalDataModel appraisal = new PromotionAppraisalDataModel
     {
-        PromotionLevel = models.GetTable<GameLevel>().Where(l => l.LevelID == 1).FirstOrDefault(),
+        PromotionLevel = models.GetTable<GameLevel>().Where(l => l.LevelID == (int)GameLevel.LevelType.DefaultPromotion).FirstOrDefault(),
     };     //[0]: promotion level
            //[2]: promotion check
     ViewBag.Appraisal = appraisal;
@@ -101,7 +101,7 @@
                                 else
                                 {
                                     var levels = models.GetTable<GameLevel>().ToArray();
-                                    int idx = 0, promotionID = 1;
+                                    int idx = 0, promotionID = (int)GameLevel.LevelType.DefaultPromotion;
                                     for (; idx < levels.Length; idx++)
                                     {
                                         if (levels[idx].LevelID == currentLevel?.PlayerLevel)

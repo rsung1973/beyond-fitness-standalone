@@ -47,18 +47,18 @@
     var feedbackItem = models.GetTable<LessonFeedBack>()
                                 .Where(f => f.LessonID == _model.LessonID)
                                 .Where(f => f.RegisterID == registerID).FirstOrDefault();
-    int feedback = -1;
+    decimal? feedback = null;
 
     if (feedbackItem != null)
     {
         var feedbackItems = models.GetTable<LessonFeedbackSurvey>()
             .Where(s => s.LessonID == feedbackItem.LessonID)
             .Where(s => s.RegisterID == feedbackItem.RegisterID)
-            .Where(s=>s.Score.HasValue);
+            .Where(s => s.Score.HasValue);
 
-        if(feedbackItems.Any())
+        if (feedbackItems.Any())
         {
-            feedback = (int)(feedbackItems.Sum(s => s.Score) / feedbackItems.Count());
+            feedback = (decimal)feedbackItems.Sum(s => s.Score) / feedbackItems.Count();
         }
     }
 }
@@ -72,65 +72,108 @@
 
         <!-- <p class="text-center font-30" onclick="javascript:gotoRank('1');">
 
-        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+            <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
 
-        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+            <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
 
-        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+            <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
 
-        <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
+            <i class="fa fa-star color-beyondsunny-light opacity-20"></i>
 
-    </p> -->
+        </p> -->
+        @if (!feedback.HasValue)
+        {
+            <div class="d-flex justify-content-center">
 
-        <div class="d-flex justify-content-center">
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 5 ? "show" : null)">
 
-            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 5 ? "show" : null)">
+                    <h1 class="font-40">😃</h1>
 
-                <h1 class="font-40">😃</h1>
+                    <strong class="font-14 opacity-50 color-white letter-spacing-1">非常滿意</strong>
 
-                <strong class="font-14 opacity-50 color-white letter-spacing-1">非常滿意</strong>
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 4 ? "show" : null)">
+
+                    <h1 class="font-40">😊</h1>
+
+                    <strong class="font-14 opacity-50 color-white letter-spacing-1">滿意</strong>
+
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 3 ? "show" : null)">
+
+                    <h1 class="font-40">😐</h1>
+
+                    <strong class="font-14 opacity-50 color-white letter-spacing-1">及格</strong>
+
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 2 ? "show" : null)">
+
+                    <h1 class="font-40">😠</h1>
+
+                    <strong class="font-14 opacity-50 color-white letter-spacing-1">不滿意</strong>
+
+                </div>
+
+                <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 1 ? "show" : null)">
+
+                    <h1 class="font-40">😡</h1>
+
+                    <strong class="font-14 opacity-50 color-white letter-spacing-1">非常不滿意</strong>
+
+                </div>
 
             </div>
+        }
+        else
+        {
+            <div class="my-5">
 
-            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 4 ? "show" : null)">
+                <div class="d-flex mt-4">
 
-                <h1 class="font-40">😊</h1>
+                    <div class="me-auto text-center">
 
-                <strong class="font-14 opacity-50 color-white letter-spacing-1">滿意</strong>
+                        <img src="@Html.Raw(profile.PictureID.HasValue
+                              ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource/")}{profile.PictureID}?stretch=true"
+                              : profile.UserProfileExtension.Gender == "F"
+                                ? "../images/avatars/default-fxs.png"
+                                : "../images/avatars/default-mxs.png")" width="45" height="45" class="rounded-circle mx-1 d-block mt-n1 mb-2">
+
+                        <strong class="@($"font-14 {(feedback == 5  ? null : "opacity-50")} color-white letter-spacing-1")">非常滿意<small class="d-block">5</small></strong>
+
+                    </div>
+
+                    <div class="m-auto text-center">
+
+                        <h1 class="font-35">😐</h1>
+
+                        <strong class="@($"font-14 {(feedback > 1 && feedback < 5  ? null : "opacity-50")} color-white letter-spacing-1")">及格<small class="d-block">@(feedback > 1 && feedback < 5 ? feedback : 3)</small></strong>
+
+                    </div>
+
+                    <div class="ms-auto text-center">
+
+                        <h1 class="font-35">😡</h1>
+
+                        <strong class="@($"font-14 {(feedback == 1 ? null : "opacity-50")} color-white letter-spacing-1")">非常不滿意<small class="d-block">1</small></strong>
+
+                    </div>
+
+                </div>
+
+                <div class="divider mx-4 bg-beyondwhite-dark opacity-10" style="margin-top:-75px"></div>
 
             </div>
+        }
 
-            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 3 ? "show" : null)">
 
-                <h1 class="font-40">😐</h1>
-
-                <strong class="font-14 opacity-50 color-white letter-spacing-1">及格</strong>
-
-            </div>
-
-            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 2 ? "show" : null)">
-
-                <h1 class="font-40">😠</h1>
-
-                <strong class="font-14 opacity-50 color-white letter-spacing-1">不滿意</strong>
-
-            </div>
-
-            <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 1 ? "show" : null)">
-
-                <h1 class="font-40">😡</h1>
-
-                <strong class="font-14 opacity-50 color-white letter-spacing-1">非常不滿意</strong>
-
-            </div>
-
-        </div>
-
-        @if (feedbackItem?.FeedBackDate.HasValue != true 
-            && _model.LessonAttendance != null
-            && _model.ClassTime >= current?.StartDate
-            && _model.ClassTime < current?.EndExclusiveDate
-            && _model.GroupingLesson.RegisterLesson.Any(r=>r.UID == profile.UID))
+        @if (feedbackItem?.FeedBackDate.HasValue != true
+         && _model.LessonAttendance != null
+         && _model.ClassTime >= current?.StartDate
+         && _model.ClassTime < current?.EndExclusiveDate
+         && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
         {
             <p class="text-center pt-2">
                 <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("TakeFeedbackSurvey", "LearnerActivity"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())', 'from': '@Html.Raw(Url.Action("Events", "LearnerActivity"))' });" class="font-500 px-3 py-2 font-15 mt-5 fst-italic letter-spacing-2 color-beyondred-dark">Now Feedback<i class="fa-solid fa-chevron-right ps-2"></i></a>

@@ -114,13 +114,13 @@
                             <div class="row clearfix">
                                 <div class="col-12">
                                     <label class="fancy-radio custom-color-pink">
-                                        <input name="CheckTerms" value="true" type="radio" id="checkTerms" onclick="return false;" />
+                                        <input name="CheckTerms" value="true" type="radio" id="checkTerms" onclick="return false;" checked="@(assessment.Any())" />
                                         <span><i></i><a href="javascript:showHealthyTerms();" class="col-red"><u>課前健康狀況自我檢視聲明書</u></a></span>
                                     </label>
                                 </div>
                                 <div class="col-12">
                                     <label class="fancy-radio custom-color-pink">
-                                        <input name="Agree" value="true" type="radio" id="agree" onclick="return false;" />
+                                        <input name="Agree" value="true" type="radio" id="agree" onclick="return false;" checked="@(assessment.Any())" />
                                         <span><i></i>本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</span>
                                     </label>
                                 </div>

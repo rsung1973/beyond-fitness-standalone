@@ -1167,4 +1167,12 @@ namespace WebHome.Models.DataEntity
         }
     }
 
+    public partial class GameLevel
+    {
+        public enum LevelType
+        {
+            DefaultPromotion = 1,
+        }
+    }
+
 }

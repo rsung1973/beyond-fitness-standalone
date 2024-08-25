@@ -36,7 +36,9 @@
     Player currentLevel = current != null ? profile.Player.Where(p => p.ProgressID == current.ProgressID).FirstOrDefault() : null;
     ViewBag.Player = currentLevel;
 
-    var promotion = models.GetTable<GameLevel>().FirstOrDefault();
+    var promotion = models.GetTable<GameLevel>()
+                        .Where(l=>l.LevelID == (int)GameLevel.LevelType.DefaultPromotion)
+                        .FirstOrDefault();
     if (currentLevel != null)
     {
         promotion = models.GetTable<GameLevel>().Where(l => l.LevelID > currentLevel.PlayerLevel).FirstOrDefault();

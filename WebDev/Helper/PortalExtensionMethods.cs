@@ -389,14 +389,13 @@ namespace WebHome.Helper
             if (current != null)
             {
                 var items = models.GetTable<LessonTime>()
+                        .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b=>b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
                         .Where(l => l.ClassTime >= current.StartDate)
                         .Where(l => l.ClassTime < current.EndExclusiveDate)
                         .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
-                        .Where(l => !l.LessonFeedBack.Any()
-                                || l.LessonFeedBack
+                        .Where(l => !l.LessonFeedBack
                                         .Where(f => f.RegisterLesson.UID == profile.UID)
-                                        .Where(f => !f.CommitAssessment.HasValue)
-                                        .Where(f => BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(f.RegisterLesson.LessonPriceType.Status))
+                                        .Where(f => f.CommitAssessment.HasValue)
                                         .Any())
                         .Where(l => DateTime.Now.AddHours(2.5) >= l.ClassTime);
 
@@ -437,15 +436,14 @@ namespace WebHome.Helper
             if (current != null)
             {
                 var items = models.GetTable<LessonTime>()
+                            .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.FeedbackSurvey))
                             .Where(l => l.ClassTime >= current.StartDate)
                             .Where(l => l.ClassTime < current.EndExclusiveDate)
                             .Where(l => l.LessonAttendance != null)
                             .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
-                            .Where(l => !l.LessonFeedBack.Any()
-                                    || l.LessonFeedBack
+                            .Where(l => !l.LessonFeedBack
                                             .Where(f => f.RegisterLesson.UID == profile.UID)
-                                            .Where(f => !f.FeedBackDate.HasValue)
-                                            .Where(f => BusinessConsoleExtensions.SessionScopeForSelfAssessment.Contains(f.RegisterLesson.LessonPriceType.Status))
+                                            .Where(f => f.FeedBackDate.HasValue)
                                             .Any());
 
                 if (items.Any())
