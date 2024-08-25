@@ -1,0 +1,134 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+@using System.Data
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using CommonLib.DataAccess
+@using CommonLib.Core.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    int? AppraiseLevel(UserProfile learner,IQueryable<LessonTime> lessons, IQueryable<IGrouping<int, GameLevelRequirement>> requirements)
+    {
+        //var appraised = lessons.Where(l =>
+        //                    l.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem
+        //                        .Where(b => b.CampaignMission.GameLevelRequirement
+        //                                .Where(r => r.Threshold > 0)
+        //                                .Any())
+        //                        .Any());
+        var appraisedItems = lessons
+                                .SelectMany(l => l.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem)
+                                .SelectMany(t => t.CampaignMission.GameLevelRequirement)
+                                .Where(r => r.Threshold > 0)
+                                .ToList();
+
+        int? levelID = 0;
+        foreach (var g in requirements)
+        {
+            var toCheck = g.Any(r => appraisedItems
+                                .Where(l => l.LevelID == g.Key)
+                                .Where(l => l.MissionID == r.MissionID)
+                                .Count() < r.Threshold);
+            if(!toCheck)
+            {
+                levelID = g.Key;
+                break;
+            }
+        }
+
+        return levelID;
+    }
+
+}
+@{
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    var Response = ViewContext.HttpContext.Response;
+
+    DateTime start = new DateTime(2024, 7, 1);
+    DateTime exclusiveEnd = new DateTime(2024, 10, 1);
+    var stage = models.GetTable<StageProgress>()
+                    .Where(s=>s.ProgressID == 1)
+                    .FirstOrDefault();
+
+    if (stage != null)
+    {
+        IQueryable<GameLevelRequirement> requirements = models.GetTable<GameLevelRequirement>().Where(r => r.Threshold > 0);
+        var levelRequirements = requirements.GroupBy(r => r.LevelID).OrderByDescending(r => r.Key);
+        IQueryable<UserProfile> items = models.GetTable<UserProfile>()
+                                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
+                                                || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister);
+
+        foreach (var learner in items)
+        {
+            var lessons = models.GetTable<LessonTime>()
+                    .Where(l => l.LessonAttendance != null)
+                    .Where(l => l.ClassTime >= start)
+                    .Where(l => l.ClassTime < exclusiveEnd)
+                    .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
+
+            if (lessons.Any())
+            {
+                var levelID = AppraiseLevel(learner, lessons, levelRequirements);
+                if(levelID.HasValue)
+                {
+                    var player = models.GetTable<Player>()
+                                    .Where(p => p.UID == learner.UID)
+                                    .Where(p => p.ProgressID == stage.ProgressID).FirstOrDefault();
+                    if (player == null)
+                    {
+                        player = new Player
+                        {
+                            UID = learner.UID,
+                            ProgressID = stage.ProgressID,
+                        };
+                        models.GetTable<Player>().InsertOnSubmit(player);
+                    }
+                    player.PlayerLevel = levelID;
+                    models.SubmitChanges();
+                }
+            }
+            else
+            {
+                var contracts = models.PromptEffectiveContract()
+                                    .Where(c => c.CourseContractMember.Any(m => m.UID == learner.UID));
+                if (contracts.Any())
+                {
+                }
+                else if (learner.ServingCoach != null)
+                {
+
+                }
+                else if (learner.UserRoleAuthorization.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
+                {
+
+                }
+                else if (learner.UserRole.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
+                {
+
+                }
+                else
+                {
+                    learner.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
+                    models.SubmitChanges();
+                }
+            }
+        }
+    }
+}
+<div>OK!!</div>

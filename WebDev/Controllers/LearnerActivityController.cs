@@ -1419,5 +1419,13 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerActivity/TransferBonusCreditNew.cshtml");
         }
 
+        public async Task<ActionResult> AppraisePlayerLevelAsync(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            return View("~/Views/LearnerActivity/AppraisePlayerLevel.cshtml");
+        }
+
     }
 }
