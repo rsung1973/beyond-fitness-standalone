@@ -28,6 +28,17 @@
             : "ja";
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    var cssStyle = "color-highlight";
+    if (ViewBag.From == "Campaign" || ViewBag.From == "Wall")
+    {
+        cssStyle = "color-beyond-dark opacity-50";
+    }
+
+    if (ViewBag.From == "Index")
+    {
+        cssStyle = "color-beyondwhite-dark opacity-50";
+    }
+
 }
 
 <!-- header and footer bar go here-->
@@ -39,7 +50,7 @@
 <div class="page-content @(ViewBag.MenuDark == true ? "bg-beyond-dark" : "")">
     <div class="page-title page-title-small">
         <h2 class="letter-spacing-2 color-white">
-            從喜歡自己開始<small class="font-15 font-600 color-highlight d-block custom-font-secondary fst-italic">
+            從喜歡自己開始<small class="font-15 font-600 @(cssStyle) d-block custom-font-secondary fst-italic">
                 Start from Liking Yourself
             </small>
         </h2>

@@ -28,6 +28,7 @@
             : "ja";
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
+    ViewBag.From = "Wall";
 
     StageProgress current = models.PromptCurrentStage();
 
