@@ -24,7 +24,7 @@ namespace TestConsole
                 //AppSettings.Default.BFDbConnection = "Password=beyond;Persist Security Info=True;User ID=bf;Initial Catalog=BeyondFitnessProd2;Data Source=vm-titan\\sqlexpress,1433;MultipleActiveResultSets=true;";
             }
 
-            //test03();
+            test03();
 
             //test02(args);
             //test01();
@@ -48,7 +48,7 @@ namespace TestConsole
             //    }
             //}
 
-            test12();
+            //test12();
 
         }
 
@@ -207,12 +207,12 @@ namespace TestConsole
             using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoice = models.GetTable<InvoiceItem>()
-                        .Where(i => i.TrackCode == "XA")
-                        .Where(i => i.No == "95118096").FirstOrDefault();
+                        .Where(i => i.TrackCode == "CY")
+                        .Where(i => i.No == "95117512").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 14000, "退款", DateTime.Now);
+                    var allowance = models.PrepareAllowanceForPayment(payment, 3750, "退款", DateTime.Now);
                 }
             }
         }

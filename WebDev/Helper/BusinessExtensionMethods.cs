@@ -47,13 +47,25 @@ namespace WebHome.Helper
 
             if (!item.LessonPlan.CommitAttendance.HasValue)
             {
-                foreach (var feedback in item.LessonFeedBack)
+                foreach(var lesson in item.GroupingLesson.RegisterLesson)
                 {
-                    if (feedback.RegisterLesson.UserProfile.UserProfileExtension.LineID != null)
+                    var feedback = lesson.LessonFeedBack.Where(f => f.RegisterID == lesson.RegisterID).FirstOrDefault();
+                    if(feedback == null)
+                    {
+                        feedback = new LessonFeedBack
+                        {
+                            LessonTime = item,
+                            RegisterLesson = lesson,
+                        };
+                        models.SubmitChanges();
+                    }
+
+                    if (lesson.UserProfile.UserProfileExtension.LineID != null)
                     {
                         var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToTakeFeedbackSurvey.cshtml", feedback);
                         jsonData.PushLineMessage();
                     }
+
                 }
             }
 
