@@ -17,14 +17,9 @@
 
 
     _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];
+    _model = (LessonFeedBack)this.Model;
     LessonTime item = _model.LessonTime;
-    //Response.ContentType = "application/json";
-    //String sendBtnImg = "sign_b";
-    //if (_model.RegisterLesson.UserProfile.UserProfileExtension.Gender == "F")
-    //{
-    //    sendBtnImg = "sign_g";
-    //}
 }
 {
     "to": "@Html.Raw(item.RegisterLesson.UserProfile.UserProfileExtension.LineID)",
