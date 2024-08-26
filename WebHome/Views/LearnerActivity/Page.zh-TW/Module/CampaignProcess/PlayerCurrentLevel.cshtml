@@ -32,13 +32,13 @@
 
 <div class="content">
     <!--Beyond幣與會員等級-->
-    <div class="card bg-transparent mb-0 mx-auto" data-card-height="115" style="width: 250px; background-color: #333333; box-shadow: none !important;">
+    <div class="card bg-transparent mb-0 mx-auto" data-card-height="115" style="width: 300px; background-color: #333333; box-shadow: none !important;">
         <div class="card-top text-center py-2 align-self-center">
             <span class="icon icon-xl rounded-s"><img src="@($"../images/icons/sports/hiking{(ViewBag.Golden == true ? "" : "-dark")}.svg")" width="60"></span>
         </div>
 
         <div class="card-bottom">
-            <h1 class="font-800 text-center color-beyondred-dark font-24 mb-n1 letter-spacing-2">@(currentLevel?.GameLevel.DisplayName ?? "初心者")<span class="color-white-dark px-2">·</span><small>@(currentLevel?.GameLevel.Description ?? "Newcomer")</small></h1>
+            <h1 class="font-800 text-center color-beyondred-dark font-24 mb-n1 letter-spacing-2">@(currentLevel?.GameLevel.DisplayName ?? "新手上路")<span class="color-white-dark px-2">·</span><small>@(currentLevel?.GameLevel.Description ?? "Newcomer")</small></h1>
             <p class="text-center z-index-10 font-14 @(ViewBag.Golden == true ? "color-white" : "color-beyond-dark" ) opacity-50">@($"{current?.StartDate:yyyy/MM/dd}")~@($"{current?.EndExclusiveDate:yyyy/MM/dd}")</p>
         </div>
 
