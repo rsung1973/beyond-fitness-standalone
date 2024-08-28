@@ -65,6 +65,12 @@ u {
   font-weight: 500;
 }
 
+u.beyondred-underline {
+  text-underline-offset: 4px;
+  font-weight: 500;
+  text-decoration-color: #E76751;
+}
+
 .table th,
 .table td {
   vertical-align: middle;

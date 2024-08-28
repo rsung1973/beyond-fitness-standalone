@@ -64,7 +64,7 @@
                                 <div class="card card-style shadow-l preload-img" data-src="../images/card/mission-01.jpg"
                                     data-card-height="250">
                                     <div class="card-top p-3">
-                                        <h5 class="color-beyondwhite-dark font-600">1/3 Missions</h5>
+                                        <h5 class="color-beyondwhite-dark font-600">1/3 Tasks</h5>
                                     </div>
                                     <div class="card-bottom p-3">
                                         <h1 class="font-24 font-700 color-white letter-spacing-2">每季挑戰</h1>
@@ -79,7 +79,7 @@
                                 <div class="card card-style shadow-l preload-img" data-src="../images/card/mission-02.jpg"
                                     data-card-height="250">
                                     <div class="card-top p-3">
-                                        <h5 class="color-beyondwhite-dark font-600">2/3 Missions</h5>
+                                        <h5 class="color-beyondwhite-dark font-600">2/3 Tasks</h5>
                                     </div>
                                     <div class="card-bottom p-3">
                                         <h1 class="font-24 font-700 color-white letter-spacing-2">固定任務</h1>
@@ -94,7 +94,7 @@
                                 <div class="card card-style shadow-l preload-img" data-src="../images/card/mission-03.jpg"
                                     data-card-height="250">
                                     <div class="card-top p-3">
-                                        <h5 class="color-beyondwhite-dark font-600">3/3 Missions</h5>
+                                        <h5 class="color-beyondwhite-dark font-600">3/3 Tasks</h5>
                                     </div>
                                     <div class="card-bottom p-3">
                                         <h1 class="font-24 font-700 color-white letter-spacing-2">特殊任務</h1>
@@ -116,8 +116,10 @@
                 <div class="content text-center mx-4 mx-lg-5 mx-md-5 my-5">
                 <h4 class="text-uppercase letter-spacing-2 d-inline font-24 color-beyondred-dark my-3">點數<img
                         src="../images/icons/beyond_coin.svg" width="50" class="px-2 mt-n1">專區<small
-                        class="ps-2 font-18 font-400 text-capitalize color-white d-block pt-3">@(account?.DepositPoint)
-                        Point</small></h4>
+                        class="ps-2 font-18 font-400 text-capitalize color-white d-block pt-3">@(account?.DepositPoint) Points</small></h4>
+                        @{ 
+                            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BonusExpire.cshtml", account);
+                        } 
                     <div class="clearfix"></div>
                     <div class="row mt-5">
                         <a href="BonusPointQuery" class="col-6">
@@ -155,5 +157,12 @@
                 </div>
             </div>
         </div>
+    </div>
+}
+@section PopupBox
+{
+    <!--任務點數回饋說明注意事項-->
+    <div id="popup-pointInfo" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
+        data-menu-effect="menu-over" data-menu-load="PopupCampainPointNotice" style="background-color: #fff !important;">
     </div>
 }

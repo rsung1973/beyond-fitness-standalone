@@ -34,7 +34,7 @@
 
     LearnerViewModel _viewModel = ViewBag.ViewModel as LearnerViewModel;
 
-    int exchangeRate = 50;
+    int exchangeRate = 100;
 
     UserProfile learner = this.Model as UserProfile;
 
@@ -67,7 +67,7 @@
                 UID = account.UID,
                 TransactionPoint = settlementPoints,
                 TransactionDate = DateTime.Now,
-                Reason = $"舊Beyond幣點數轉換({totalPoints})",
+                Reason = $"舊Beyond幣({totalPoints})交換Beyond Points",
                 LearnerAward = new LearnerAward
                 {
                     UID = account.UID,

@@ -17,7 +17,7 @@
 @using WebHome.Models.Resources
 @using WebHome.Properties;
 @{
-    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+    Layout = "~/Views/LearnerActivity/Template/MainPage.cshtml";
 
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -48,147 +48,146 @@
 
 }
 
-@section CustomHeader
+@section MainContent
 {
     <link rel="stylesheet" type="text/css" href="../styles/starrating.css">
-}
 
-@if (lessonItem != null)
-{
-    var registerID = lessonItem.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
-                        .FirstOrDefault()?.RegisterID;
-
-    <div class="card">
-        <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
-            <div class="d-flex">
-                <div>
-                    <h1 class="mb-2 color-theme letter-spacing-2">
-                        @if (lessonItem.IsPTSession())
-                        {
-                            <text>訓練感受</text>
-                        }
-                        else 
-                        {
-                             <text>恢復感受</text>
-                        }
-                        ·<small class="ps-2 font-12 font-400 text-capitalize opacity-60">FeedBack</small></h1>
-                </div>
-            </div>
-
-            <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="my-4">
-                <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
-            </svg>
-
-            <div class="row -mb-5">
-                <p class="color-theme font-16">
-                    為了更好地了解您的需求，提升 Beyond 服務質量，希望能聽取您寶貴的意見，所有回饋均為匿名，您的回答將對我們非常重要，請安心填寫真實感受。                
-                </p>
-                <div class="d-block mt-2">
-                    <a href="#" data-menu="popup-info">
-                        <small class="color-beyondred-dark pe-3"><i
-                                class="fa-solid fa-circle-info pe-1"></i>星評說明</small></a>
-                    <a href="javascript:gotoCourse('@Html.Raw(lessonItem.LessonID.EncryptKey())');">
-                        <small class="color-theme opacity-60"><i
-                                class="fa-solid fa-magnifying-glass pe-1"></i>查看課表內容</small>
-                    </a>
-                </div>
-            </div>
-
-            @{
-                if (lessonItem.IsPTSession())
-                {
-                    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPT.cshtml", lessonItem);
-                }
-                else if (lessonItem.IsPISession())
-                {
-                    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPI.cshtml", lessonItem);
-
-                }
-                else if (lessonItem.IsSRSession())
-                {
-                    await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveySR.cshtml", lessonItem);
-                }
-            }
-            <a href="javascript:commitAnswer();" class="btn btn-full border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2 letter-spacing-1">送出</a>
-        </div>
+    <div class="card header-card" data-card-height="310">
+        <div class="card-overlay bg-beyond-dark opacity-95"></div>
     </div>
 
-    <script>
+    @if (lessonItem != null)
+    {
+        var registerID = lessonItem.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
+                            .FirstOrDefault()?.RegisterID;
+        <div class="card">
+            <div class="content mx-4 mx-lg-5 mx-md-4 my-5">
+                <div class="d-flex">
+                    <div>
+                        <h1 class="mb-0 pb-0 color-theme letter-spacing-2">職人質量檢視·<small
+                                class="ps-2 font-12 font-400 text-capitalize opacity-60">Assessment</small></h1>
+                    </div>
+                </div>
+                <div class="mt-0 mb-5">
+                    <i class="fa-solid fa-star color-beyondsunny-dark font-15 pe-1"></i><i
+                        class="fa-solid fa-star color-beyondsunny-dark font-15 pe-1"></i><i
+                        class="fa-solid fa-star color-beyondsunny-dark font-15 pe-1"></i><i
+                        class="fa-solid fa-star color-beyondsunny-dark font-15 pe-1"></i><i
+                        class="fa-solid fa-star color-beyondsunny-dark font-15"></i>
+                </div>
 
-        function commitAnswer() {
-            var viewModel = {
-                'KeyID': '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())',
-                'Answer': $('input,select,textArea').serializeArray()
-            };
+                <div class="row -mb-5">
+                    <p class="color-theme font-16 mb-0 letter-spacing-2 line-height-l">
+                        為了更好地了解您的需求，提升 Beyond 服務品質，希望能聽取您寶貴的意見，所有回饋均為<u class="beyondred-underline">匿名</u>，您的回答將對我們非常重要，請安心填寫真實感受。
+                    </p>
+                    <div class="d-block mt-2">
+                        <a href="#" data-menu="popup-info">
+                            <small class="color-beyondred-dark pe-3"><i
+                                    class="fa-solid fa-circle-info pe-1"></i>星評說明</small></a>
+                        <a href="javascript:gotoCourse('@Html.Raw(lessonItem.LessonID.EncryptKey())');">
+                            <small class="color-theme opacity-60"><i
+                                    class="fa-solid fa-magnifying-glass pe-1"></i>查看課表內容</small>
+                        </a>
+                    </div>
+                </div>
 
-            clearErrors();
-            doPost('@Html.Raw(Url.Action("CommitSurveyAnswer", "LearnerActivity"))', viewModel,
-                function (data) {
-                    if (data.result) {
-                        var msg = '';
-                        if (data.point) {
-                            msg = `恭喜您獲得 ${data.point} 點 Beyond 幣`;
-                        }
-                        Swal.fire({
-                            title: "感謝您的回饋！",
-                            text: msg,
-                            icon: "success",
-                            showCancelButton: false,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "運動小學堂Tips",
-                            allowOutsideClick: false,
-                            allowEscapeKey: false,
-                        }).then((result) => {
-                            window.location.href = '@Url.Action("ShowExerciseTips", "LearnerActivity")';
-                        });
-
-                    } else {
-                        $(data).appendTo($('body')).remove();
+                @{
+                    if (lessonItem.IsPTSession())
+                    {
+                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPT.cshtml", lessonItem);
                     }
-                },
-                function () {
-                    $('.menu-active').removeClass('menu-active');
-                });
+                    else if (lessonItem.IsPISession())
+                    {
+                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPI.cshtml", lessonItem);
 
-        }
-
-        function gotoCourse(keyID) {
-            $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("Events","LearnerActivity"))' });
-        }
-    </script>
-
-    <!--星級說明-->
-
-    <div id="popup-info" class="menu menu-box-modal menu-box-detached rounded-m" data-menu-width="350"
-         data-menu-height="350" data-menu-effect="menu-over">
-        <div class="menu-title text-center">
-            <h1 class="text-center mt-4">
-                <i class="fa-solid fa-star fa-3x color-beyondwhite-dark rounded-circle"></i>
-            </h1>
-            <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-beyond-dark pt-2">星評說明</h1>
+                    }
+                    else if (lessonItem.IsSRSession())
+                    {
+                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveySR.cshtml", lessonItem);
+                    }
+                }
+                <a href="javascript:commitAnswer();" class="btn btn-full border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2 letter-spacing-1">送出</a>
+            </div>
         </div>
 
-        <div class="content mx-4">
-            <div class="row justify-content-center">
-                <div class="col-6 feelbutton show">
-                    <h1 class="font-30">😃 <strong class="font-14 opacity-50 color-theme letter-spacing-1">非常贊成〔5〕</strong></h1>
-                </div>
+        <script>
 
-                <div class="col-6 feelbutton show">
-                    <h1 class="font-30">😊 <strong class="font-14 opacity-50 color-theme letter-spacing-1">有贊成〔4〕</strong></h1>
-                </div>
+            function commitAnswer() {
+                var viewModel = {
+                    'KeyID': '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())',
+                    'Answer': $('input,select,textArea').serializeArray()
+                };
 
-                <div class="col-6 feelbutton show">
-                    <h1 class="font-30">😐 <strong class="font-14 opacity-50 color-theme letter-spacing-1">及格〔3〕</strong></h1>
-                </div>
-                <div class="col-6 feelbutton show">
-                    <h1 class="font-30">😠 <strong class="font-14 opacity-50 color-theme letter-spacing-1">不太贊成〔2〕</strong></h1>
-                </div>
-                <div class="col-12 feelbutton show">
-                    <h1 class="font-30">😡 <strong class="font-14 opacity-50 color-theme letter-spacing-1">非常不贊成〔1〕</strong></h1>
+                clearErrors();
+                doPost('@Html.Raw(Url.Action("CommitSurveyAnswer", "LearnerActivity"))', viewModel,
+                    function (data) {
+                        if (data.result) {
+                            var msg = '';
+                            if (data.point) {
+                                msg = `恭喜您獲得 ${data.point} 點 Beyond 幣`;
+                            }
+                            Swal.fire({
+                                title: "感謝您的回饋！",
+                                text: msg,
+                                icon: "success",
+                                showCancelButton: false,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "運動小學堂Tips",
+                                allowOutsideClick: false,
+                                allowEscapeKey: false,
+                            }).then((result) => {
+                                window.location.href = '@Url.Action("ShowExerciseTips", "LearnerActivity")';
+                            });
+
+                        } else {
+                            $(data).appendTo($('body')).remove();
+                        }
+                    },
+                    function () {
+                        $('.menu-active').removeClass('menu-active');
+                    });
+
+            }
+
+            function gotoCourse(keyID) {
+                $('').launchDownload('@Html.Raw(Url.Action("CourseItem", "LearnerActivity"))', { 'keyID': keyID, 'from': '@Html.Raw(Url.Action("Events","LearnerActivity"))' });
+            }
+        </script>
+
+        <!--星級說明-->
+
+        <div id="popup-info" class="menu menu-box-modal menu-box-detached rounded-m" data-menu-width="350"
+            data-menu-height="350" data-menu-effect="menu-over">
+            <div class="menu-title text-center">
+                <h1 class="text-center mt-4">
+                    <i class="fa-solid fa-star fa-3x color-beyondwhite-dark rounded-circle"></i>
+                </h1>
+                <h1 class="text-center pt-1 pb-2 text-uppercase font-700 color-beyond-dark pt-2">星評說明</h1>
+            </div>
+
+            <div class="content mx-4">
+                <div class="row justify-content-center">
+                    <div class="col-6 feelbutton show">
+                        <h1 class="font-30">😃 <strong class="font-14 opacity-50 color-theme letter-spacing-1">非常贊成〔5〕</strong></h1>
+                    </div>
+
+                    <div class="col-6 feelbutton show">
+                        <h1 class="font-30">😊 <strong class="font-14 opacity-50 color-theme letter-spacing-1">有贊成〔4〕</strong></h1>
+                    </div>
+
+                    <div class="col-6 feelbutton show">
+                        <h1 class="font-30">😐 <strong class="font-14 opacity-50 color-theme letter-spacing-1">及格〔3〕</strong></h1>
+                    </div>
+                    <div class="col-6 feelbutton show">
+                        <h1 class="font-30">😠 <strong class="font-14 opacity-50 color-theme letter-spacing-1">不太贊成〔2〕</strong></h1>
+                    </div>
+                    <div class="col-12 feelbutton show">
+                        <h1 class="font-30">😡 <strong class="font-14 opacity-50 color-theme letter-spacing-1">非常不贊成〔1〕</strong></h1>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    }
 
 }

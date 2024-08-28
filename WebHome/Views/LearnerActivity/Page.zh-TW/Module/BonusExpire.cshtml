@@ -32,14 +32,4 @@
     BonusDepositAccount account = this.Model as BonusDepositAccount;
 
 }
-<div class="content">
-    <!--Beyond幣-->
-    <div class="card bg-transparent mb-4 mx-auto" data-card-height="80" style="width: 210px;box-shadow:none">
-        <div class="card-bottom">
-            <h1 class="font-700 text-center color-white font-32 mb-2">@(account?.DepositPoint ?? 0)<img src="../images/icons/beyond_coin.svg" width="48" class="px-2 mt-n1"></h1>
-            @{ 
-                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/BonusExpire.cshtml", account);
-            }                        
-        </div>
-    </div>
-</div>
+<p class="text-center font-14 color-grey-light mt-1">2025/12/31到期點數0點 <a href="#" data-menu="popup-pointInfo"><small class="color-beyondblue-dark pe-3"><i class="fa-regular fa-circle-question pe-1"></i></small></a></p>
