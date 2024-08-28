@@ -191,7 +191,7 @@
                             "action": {
                                 "type": "uri",
                                 "label": "立即完成打卡",
-                                "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?KeyID={_model.RegisterLesson.UserProfile.UserProfileExtension.LineID.EncryptKey()}")"
+                                "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?KeyID={HttpUtility.UrlEncode(_model.RegisterLesson.UserProfile.UserProfileExtension.LineID.EncryptKey())}")"
                             },
                             "margin": "0px",
                             "gravity": "center",

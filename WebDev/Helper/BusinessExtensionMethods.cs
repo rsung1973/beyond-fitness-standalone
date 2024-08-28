@@ -39,6 +39,16 @@ namespace WebHome.Helper
 
         public static async Task<LessonTime> LineNotifyLessonAttendanceAsync(this LessonTime item, SampleController<UserProfile> controller)
         {
+            return await item.LineNotifyLessonFeedbackAsync(controller, "~/Views/LineEvents/Message/NotifyLearnerToTakeFeedbackSurvey.cshtml");
+        }
+
+        public static async Task<LessonTime> LineNotifyLessonSelfAssessmentAsync(this LessonTime item, SampleController<UserProfile> controller)
+        {
+            return await item.LineNotifyLessonFeedbackAsync(controller, "~/Views/LineEvents/Message/NotifyLearnerToTakeSelfAssessment.cshtml");
+        }
+
+        public static async Task<LessonTime> LineNotifyLessonFeedbackAsync(this LessonTime item, SampleController<UserProfile> controller, String jsonViewPath)
+        {
             var Request = controller.Request;
             var ModelState = controller.ModelState;
             var ViewBag = controller.ViewBag;
@@ -47,10 +57,10 @@ namespace WebHome.Helper
 
             if (!item.LessonPlan.CommitAttendance.HasValue)
             {
-                foreach(var lesson in item.GroupingLesson.RegisterLesson)
+                foreach (var lesson in item.GroupingLesson.RegisterLesson)
                 {
-                    var feedback = lesson.LessonFeedBack.Where(f => f.RegisterID == lesson.RegisterID).FirstOrDefault();
-                    if(feedback == null)
+                    var feedback = item.LessonFeedBack.Where(f => f.RegisterID == lesson.RegisterID).FirstOrDefault();
+                    if (feedback == null)
                     {
                         feedback = new LessonFeedBack
                         {
@@ -62,10 +72,9 @@ namespace WebHome.Helper
 
                     if (lesson.UserProfile.UserProfileExtension.LineID != null)
                     {
-                        var jsonData = await controller.RenderViewToStringAsync("~/Views/LineEvents/Message/NotifyLearnerToTakeFeedbackSurvey.cshtml", feedback);
+                        var jsonData = await controller.RenderViewToStringAsync(jsonViewPath, feedback);
                         jsonData.PushLineMessage();
                     }
-
                 }
             }
 

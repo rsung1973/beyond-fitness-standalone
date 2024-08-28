@@ -202,6 +202,7 @@ namespace WebHome.Models.Locale
             已讀 = 4,
             拒答 = 5,
             教練代答 = 6,
+            已通知 = 7,
         }
 
         public enum LessonQueryType

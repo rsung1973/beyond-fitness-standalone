@@ -471,6 +471,50 @@ namespace WebHome.Controllers
             return result;
         }
 
+        public async Task<ActionResult> TakeSelfAssessmentAsync(RegisterViewModel viewModel, LessonTimeViewModel lessonViewModel)
+        {
+            ActionResult CheckResult(UserProfile profile)
+            {
+                var feedback = models.GetTable<LessonFeedBack>()
+                                .Where(f => f.LessonID == lessonViewModel.LessonID)
+                                .Where(f => f.RegisterLesson.UID == profile.UID)
+                                .FirstOrDefault();
+
+                if (feedback!=null)
+                {
+                    if(feedback.CommitAssessment.HasValue)
+                    {
+                        return RedirectToAction("CourseItem", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("ContactBook", "LearnerActivity") });
+                    }
+                    else
+                    {
+                        return RedirectToAction("TakeSelfAssessment", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("Events", "LearnerActivity") });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Events", "LearnerActivity");
+                }
+            }
+
+            UserProfile item = await HttpContext.GetUserAsync();
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            ViewResult result = (ViewResult)await NoticeAsync(viewModel);
+            item = result.Model as UserProfile;
+
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            return result;
+        }
+
+
         [Authorize]
         public async Task<ActionResult> LearnerToCheckAttendance()
         {

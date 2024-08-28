@@ -1,49 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net;
-using System.Security.Cryptography;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc.Rendering;
-
-using CommonLib.DataAccess;
-
-using Newtonsoft.Json;
+﻿using CommonLib.Core.Utility;
 using CommonLib.Utility;
-using WebHome.Controllers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewEngines;
+using Newtonsoft.Json;
+using System.Data;
+using System.Text.Json.Nodes;
+using System.Text.RegularExpressions;
 using WebHome.Helper;
+using WebHome.Helper.BusinessOperation;
+using WebHome.Helper.MessageOperation;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
-
-using WebHome.Security.Authorization;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Mvc.Filters;
-using WebHome.Properties;
-using System.Net.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Http;
-using CommonLib.Core.Utility;
-using Microsoft.AspNetCore.Mvc.ViewEngines;
-using Newtonsoft.Json.Linq;
-using System.Text.Json.Nodes;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using LineMessagingAPISDK.Models;
-using WebHome.Helper.MessageOperation;
-using WebHome.Helper.BusinessOperation;
-using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace WebHome.Controllers
 {
@@ -1426,6 +1395,31 @@ namespace WebHome.Controllers
 
             return View("~/Views/LearnerActivity/AppraisePlayerLevel.cshtml");
         }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> NotifyToTakeSelfAssessmentAsync()
+        {
+            DateTime now = DateTime.Now;
+            DateTime start = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+            start = start.AddHours(2);
+
+            var items = models.GetTable<LessonTime>()
+                    .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
+                    .Where(l => l.ClassTime >= start)
+                    .Where(l => l.ClassTime < start.AddHours(1));
+                    //.Where(l => !l.LessonFeedBack
+                    //                .Where(f => f.Status == (int)Naming.IncommingMessageStatus.已通知
+                    //                    || f.CommitAssessment.HasValue)
+                    //                .Any());
+
+            foreach (var item in items) 
+            {
+                await item.LineNotifyLessonSelfAssessmentAsync(this);
+            }
+
+            return Json(new { result = true, done = now });
+        }
+
 
     }
 }

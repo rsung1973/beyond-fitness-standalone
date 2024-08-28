@@ -344,6 +344,12 @@ namespace WebHome.Models.ViewModel
         public int? BranchID { get; set; }
 
         public int? LessonID { get; set; }
+        public String EncLessonID
+        {
+            get => LessonID.HasValue ? LessonID.Value.EncryptKey() : null;
+            set => LessonID = (value != null ? value.DecryptKeyValue() : null);
+        }
+
         public int? CurrentTrial { get; set; }
         public Naming.LessonPriceStatus? SessionStatus { get; set; }
         public int[] AttendeeID { get; set; }
