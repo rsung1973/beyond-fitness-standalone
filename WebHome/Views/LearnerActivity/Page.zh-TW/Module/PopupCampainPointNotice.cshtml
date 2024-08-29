@@ -36,7 +36,7 @@
     <div class="row">
         <div class="col-12">
             <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">注意事項</h1>
-            <ul class="ps-3">
+            <ul class="ps-3 mb-0">
                 <li>為免文字產生歧義，將舊制Beyond幣統稱舊幣，新制下統稱Beyond Points或Beyond Points點數。</li>
                 <li>凡Beyond會員即可參與Beyond Points FunRun點數累積活動，相關點數累積說明事項如下，有關點數使用方式及會員權益請另參照Beyond會員權益約定條款。Beyond
                     Fitness保留隨時修改、變更、終止以上任務之權利，其他未盡事宜將於後續公告並實施。</li>
@@ -45,12 +45,11 @@
                 </li>
                 <li>Beyond
                     Points有效期限至點數產生次年12/31止，未兌換完畢之點數逾期後將全數消除，並不得要求變現、轉換其他點數、商品等。(例如：2024年所產生之點數，點數有效期限至2025/12/31止，未兌換點數於2026/1/1全數消除。)
-                </li>
-                <li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 <a
-                        href="mailto:pr@beyond-fitness.com.tw">pr@beyond-fitness.com.tw</a></li>
-                <li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
-                <li>本活動記錄均以本行電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+                </li>               
             </ul>
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/PopupCampainCommonNotice.cshtml");
+            }
         </div>
     </div>
 </div>

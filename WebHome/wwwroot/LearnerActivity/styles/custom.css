@@ -49,6 +49,10 @@
   width: 150px;
   height: 150px;
 }
+.avatar-rounded-circle.small {
+  width: 45px;
+  height: 45px;
+}
 
 /*卡片頭尾弧度加大*/
 .custom-rounded-card.top-100 {
