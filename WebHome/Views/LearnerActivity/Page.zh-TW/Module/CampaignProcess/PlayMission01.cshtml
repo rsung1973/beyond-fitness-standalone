@@ -39,30 +39,20 @@
 
 }
 @{
-    LessonTimeAchievementHelper helper = new LessonTimeAchievementHelper(models)
-    {
-        LessonItems = models.GetTable<V_Tuition>()
-                        .Where(l => l.ClassTime >= current.StartDate)
-                        .Where(l => l.ClassTime < current.EndExclusiveDate)
-    };
-
-    var lessons = models.GetTable<RegisterLesson>().Where(r => r.UID == profile.UID);
     var lessonItems = models.GetTable<LessonTime>()
-        .Join(helper.LessonItems, l => l.LessonID, v => v.LessonID, (l, v) => l)
-        .Join(lessons, l => l.GroupID, r => r.RegisterGroupID, (l, r) => new { Lesson = l, l.RegisterID });
+            .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
+            .Where(f => f.RegisterLesson.UID == profile.UID)
+            .Where(l => l.ClassTime >= current.StartDate)
+            .Where(l => l.ClassTime < current.EndExclusiveDate);
 
     var feedbackItems = lessonItems
-                            .Select(l => l.Lesson.LessonFeedBack
-                                .Where(f => f.RegisterID == l.RegisterID)
-                                .Where(f => f.CommitAssessment.HasValue)
-                                .FirstOrDefault())
-                            .ToList();
+                            .SelectMany(l => l.LessonFeedBack)
+                            .Where(f => f.RegisterLesson.UID == profile.UID)
+                            .Where(f => f.CommitAssessment.HasValue);
 
-    var result = !feedbackItems.Any(f => f == null);
-
-    mission.Goal = lessonItems.Count();
-    mission.ResultModel = feedbackItems.Where(f => f != null).Count();
-    mission.CheckResult = _model == null ? true : result;
+    mission.Goal = _model?.Threshold ?? 0;
+    mission.ResultModel = feedbackItems.Count();
+    mission.CheckResult = _model == null ? true : (int)mission.ResultModel >= (int)mission.Goal;
 }
 
 <div class="card bg-beyond-dark text-center">

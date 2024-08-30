@@ -43,34 +43,35 @@
     <div class="clearfix"></div>
     <div class="card card-style bg-beyond-dark mb-0 mt-5 mx-3 mx-lg-5 mx-md-5">
         <div class="card-body mx-3 mx-lg-5 mx-md-5 my-2">
-            <h4 class="mb-5 text-capitalize letter-spacing-1 d-inline font-16 color-white">@(promotion.Description)<span class="font-400 color-white opacity-50 ps-1 letter-spacing-2">·@(promotion.DisplayName)</span><small
-                                        class="ps-1 font-14 font-400 text-capitalize color-beyondred-dark letter-spacing-2" id="gameResult"></small></h4>            
-            <script>
-                $(function () {
-                    $('#gameResult').text('(已完成@(appraisal.Missions.Where(c => c.CheckResult == true).Count())/@(appraisal.Missions.Count))');
-                });
-            </script>
+            <h4 class="mb-5 text-capitalize letter-spacing-1 d-inline font-16 color-white">
+                @(promotion.Description)<span class="font-400 color-white opacity-50 ps-1 letter-spacing-2">·@(promotion.DisplayName)</span><small class="ps-1 font-14 font-400 text-capitalize color-beyondred-dark letter-spacing-2" id="gameResult"></small>
+            </h4>
         </div>
         <div class="complete-container mt-3">
-                @{
-                    var missions = models.GetTable<CampaignMission>().ToArray();
-                    int[] idx = new int[] { 2, 0, 1 };
+            @{
+                var missions = models.GetTable<CampaignMission>().ToArray();
+                int[] idx = new int[] { 2, 0, 1 };
 
-                    foreach (var id in idx)
+                foreach (var id in idx)
+                {
+                    var mission = missions[id];
+                    CampaignMissionDataModel dataModel = new CampaignMissionDataModel
                     {
-                        var mission = missions[id];
-                        CampaignMissionDataModel dataModel = new CampaignMissionDataModel 
-                        {
-                            MissionID = mission,
-                        };
-                        ViewBag.CurrentMission = dataModel;
-                        appraisal.Missions.Add(dataModel);
-                        await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PlayMission{mission.MissionID:00}.cshtml", promotion.GameLevelRequirement.Where(r => r.MissionID == mission.MissionID).FirstOrDefault());
-                    }
+                        MissionID = mission,
+                    };
+                    ViewBag.CurrentMission = dataModel;
+                    appraisal.Missions.Add(dataModel);
+                    await Html.RenderPartialAsync($"~/Views/LearnerActivity/Page.zh-TW/Module/CampaignProcess/PlayMission{mission.MissionID:00}.cshtml", promotion.GameLevelRequirement.Where(r => r.MissionID == mission.MissionID).FirstOrDefault());
                 }
+            }
 
         </div>
 
     </div>
 
 </div>
+<script>
+    $(function () {
+        $('#gameResult').text('(已完成@(appraisal.Missions.Where(c => c.CheckResult == true).Count())/@(appraisal.Missions.Count))');
+    });
+</script>
