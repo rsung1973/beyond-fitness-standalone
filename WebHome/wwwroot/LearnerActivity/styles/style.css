@@ -2128,21 +2128,21 @@ body {
 }
 
 .color-beyondsunny-light {
-  color: #FFCC81 !important;
+  color: #F4C075 !important;
 }
 
 .bg-beyondsunny-light {
-  background-color: #FFCC81 !important;
+  background-color: #F4C075 !important;
   color: #FFF !important;
 }
 
 .bg-fade-beyondsunny-dark {
-  background-color: rgba(246, 187, 66, 0.7) !important;
+  background-color: rgba(244, 192, 117, 0.7) !important;
   color: #FFF !important;
 }
 
 .bg-fade-beyondsunny-light {
-  background-color: rgba(145, 112, 62, 0.3) !important;
+  background-color: rgba(244, 192, 117, 0.3) !important;
   color: #FFF !important;
 }
 
@@ -2152,7 +2152,7 @@ body {
 
 .color-icon-beyondsunny {
   stroke: #FFC46D !important;
-  fill: rgba(145, 112, 62, 0.3) !important;
+  fill: rgba(244, 192, 117, 0.3) !important;
 }
 
 .bg-beyondsunny-dark {
@@ -2161,7 +2161,7 @@ body {
 }
 
 .border-beyondsunny-light {
-  border-color: #FFCC81 !important;
+  border-color: #F4C075 !important;
 }
 
 .border-beyondsunny-dark {
@@ -2173,11 +2173,11 @@ body {
 }
 
 .gradient-beyondsunny {
-  background-image: linear-gradient(to bottom, #FFCC81, #FFC46D);
+  background-image: linear-gradient(to bottom, #F4C075, #FFC46D);
 }
 
 .underline-beyondsunny-light {
-  border-bottom: 0.2em solid #FFCC81 !important;
+  border-bottom: 0.2em solid #F4C075 !important;
   padding-bottom: 0.05em;
 }
 
@@ -2187,7 +2187,7 @@ body {
 }
 
 [data-feather-color=beyondsunny-dark] {
-  stroke: #FFCC81;
+  stroke: #F4C075;
 }
 
 [data-feather-color=beyondsunny-light] {
@@ -2195,11 +2195,11 @@ body {
 }
 
 [data-feather-bg=beyondsunny-fade-dark] {
-  fill: rgba(246, 187, 66, 0.7);
+  fill: rgba(244, 192, 117, 0.7);
 }
 
 [data-feather-bg=beyondsunny-fade-light] {
-  fill: rgba(145, 112, 62, 0.3);
+  fill: rgba(244, 192, 117, 0.3);
 }
 
 .color-beyondblue-light {
@@ -7736,7 +7736,7 @@ input[type=number] {
 }
 
 .tabs-line[line-color=color-beyondsunny] a.no-click {
-  border-bottom-color: #FFCC81 !important;
+  border-bottom-color: #F4C075 !important;
 }
 
 .tabs-line[line-color=color-beyondblue] a.no-click {

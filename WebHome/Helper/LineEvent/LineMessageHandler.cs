@@ -125,63 +125,75 @@ namespace WebHome.Helper.LineEvent
             //    replyMessage = new TemplateMessage("Buttons", buttonsTemplate);
             //}
             //else 
-            if (message == "個人化" || message.Contains("專屬服務") || message.Contains("會員專屬服務，查詢快速又簡單"))
+            // if (message == "個人化" || message.Contains("專屬服務") || message.Contains("會員專屬服務，查詢快速又簡單"))
+            // {
+            //     var imageUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapImage")}";
+            //     List<ImageMapAction> actions = new List<ImageMapAction>();
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(375, 0, 325, 1040)));
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/TodayLesson")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 375, 590)));
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Notice")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 590, 375, 450)));
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckBonusPointByLine")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 0, 350, 590)));
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 590, 350, 450)));
+            //     //actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
+            //     replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
+            // }
+            if (message == "個人化" || message.Contains("專屬服務") || message.Contains("會員專屬服務，查詢簡單又快速"))
             {
                 var imageUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapImage")}";
                 List<ImageMapAction> actions = new List<ImageMapAction>();
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(375, 0, 325, 1040)));
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/TodayLesson")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 375, 590)));
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Notice")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 590, 375, 450)));
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckBonusPointByLine")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 0, 350, 590)));
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}", new ImageMapArea(700, 590, 350, 450)));
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/ActivateAccount")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 350, 850))); //綁定帳號
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Events")}?X001={CurrentProfile.UserId}", new ImageMapArea(350, 0, 339, 425))); //健康自評與回饋
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/CampaignStrategy")}?X001={CurrentProfile.UserId}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Calendar")}?X001={CurrentProfile.UserId}", new ImageMapArea(350, 425, 339, 425))); //運動行事曆
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(689, 425, 351, 425))); //任務集點
                 //actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
-                replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
+                replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢簡單又快速", new BaseSize(1040, 850), actions);
             }
-            else if (message.Contains("帳號串連即可獲得beyond幣") || message.Contains("帳號串連") 
-                || message.Contains("beyond幣") || message.Contains("帳號beyond幣") || message.Contains("帳號活動"))
-            {
-                var imageUrl = $"{WebApp.Properties["HostDomain"]}/LineEvents/GetBeyondCoinMap";
-                List<ImageMapAction> actions = new List<ImageMapAction>();
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 1040, 1040)));
-                replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
-            }
-            else if (message == "check" || message == "打卡")
-            {
+            // else if (message.Contains("帳號串連即可獲得beyond幣") || message.Contains("帳號串連") 
+            //     || message.Contains("beyond幣") || message.Contains("帳號beyond幣") || message.Contains("帳號活動"))
+            // {
+            //     var imageUrl = $"{WebApp.Properties["HostDomain"]}/LineEvents/GetBeyondCoinMap";
+            //     List<ImageMapAction> actions = new List<ImageMapAction>();
+            //     actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 1040, 1040)));
+            //     replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢快速又簡單", new BaseSize(1040, 1040), actions);
+            // }
+            // else if (message == "check" || message == "打卡")
+            // {
 
-                var item = models.GetTable<UserProfileExtension>().Where(u => u.LineID == CurrentProfile.UserId)
-                        .Select(u => u.UserProfile).FirstOrDefault();
-                if (item == null)
-                {
-                    List<TemplateAction> actions = new List<TemplateAction>();
-                    ButtonsTemplate buttonsTemplate = new ButtonsTemplate();
+            //     var item = models.GetTable<UserProfileExtension>().Where(u => u.LineID == CurrentProfile.UserId)
+            //             .Select(u => u.UserProfile).FirstOrDefault();
+            //     if (item == null)
+            //     {
+            //         List<TemplateAction> actions = new List<TemplateAction>();
+            //         ButtonsTemplate buttonsTemplate = new ButtonsTemplate();
 
-                    buttonsTemplate.Title = "此支裝置尚未設定過專屬服務";
-                    buttonsTemplate.Text = "請點選下方更多資訊/專屬服務/帳號設定才可使用！";
-                    actions.Add(new UriTemplateAction("帳號設定", $"{WebApp.Properties["HostDomain"]}{ VirtualPathUtility.ToAbsolute("~/CornerKick/Register")}?X001={ CurrentProfile.UserId}"));
-                    buttonsTemplate.Actions = actions;
-                    replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
-                }
-                else
-                {
-                    var checkAttendance = item.CheckLessonAttendanceEvent(models);
-                    if (checkAttendance == null)
-                    {
-                        replyMessage = new TextMessage($"{(item.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟")}, 目前課程都有確實打卡喔！");
-                    }
-                    else
-                    {
-                        List<TemplateAction> actions = new List<TemplateAction>();
-                        ButtonsTemplate buttonsTemplate = new ButtonsTemplate();
+            //         buttonsTemplate.Title = "此支裝置尚未設定過專屬服務";
+            //         buttonsTemplate.Text = "請點選下方更多資訊/專屬服務/帳號設定才可使用！";
+            //         actions.Add(new UriTemplateAction("帳號設定", $"{WebApp.Properties["HostDomain"]}{ VirtualPathUtility.ToAbsolute("~/CornerKick/Register")}?X001={ CurrentProfile.UserId}"));
+            //         buttonsTemplate.Actions = actions;
+            //         replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
+            //     }
+            //     else
+            //     {
+            //         var checkAttendance = item.CheckLessonAttendanceEvent(models);
+            //         if (checkAttendance == null)
+            //         {
+            //             replyMessage = new TextMessage($"{(item.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟")}, 目前課程都有確實打卡喔！");
+            //         }
+            //         else
+            //         {
+            //             List<TemplateAction> actions = new List<TemplateAction>();
+            //             ButtonsTemplate buttonsTemplate = new ButtonsTemplate();
 
-                        buttonsTemplate.Title = item.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟";
-                        buttonsTemplate.Text = $"還有{checkAttendance.CheckCount}堂課沒打卡";
-                        actions.Add(new UriTemplateAction("👉立即打卡", $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}"));
-                        buttonsTemplate.Actions = actions;
-                        replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
-                    }
-                }
+            //             buttonsTemplate.Title = item.UserProfileExtension.Gender == "F" ? "親愛的" : "兄弟";
+            //             buttonsTemplate.Text = $"還有{checkAttendance.CheckCount}堂課沒打卡";
+            //             actions.Add(new UriTemplateAction("👉立即打卡", $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/CheckAttendance")}?X001={CurrentProfile.UserId}"));
+            //             buttonsTemplate.Actions = actions;
+            //             replyMessage = new TemplateMessage("上課打卡", buttonsTemplate);
+            //         }
+            //     }
 
-            }
+            // }
             //else if (textMessage.Text.ToLower() == "confirm")
             //{
             //    List<TemplateAction> actions = new List<TemplateAction>();

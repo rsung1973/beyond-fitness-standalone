@@ -124,11 +124,13 @@
     <!--固定任務-->
     <div class="card content pt-3 mt-5 shadow-l mx-0 mb-0" id="tasks" style="background-color: #333333;">
         <div class="card-body mx-4 mx-lg-5 mx-md-5">
-            <a href="#" data-menu="popup-missionPoint">
-                <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">
-                    固定任務·<small class="ps-2 font-14 font-400 text-capitalize">Routin Tasks</small> <i data-feather="info"
-                        data-feather-line="2" data-feather-size="24" data-feather-color="beyondsunny-dark" class="ms-1"></i>
-                </h4>
+            <a href="#" data-menu="popup-missionPoint">                
+                <a href="CampaignMissionPoints">
+                    <h4 class="mb-5 text-uppercase letter-spacing-2 d-inline font-20 color-white">固定任務·<small
+                            class="ps-2 font-14 font-400 text-capitalize">Routin Tasks<i
+                                class="fa-regular fa-circle-question px-1 color-beyondblue-dark"></i></small>
+                    </h4>
+                </a>
             </a>            
             <div class="list-group list-custom-large me-2 mt-5">
                 <a data-menu="menu-task-item" href="Events">
@@ -171,13 +173,5 @@
                 </div>
             </div>
         </div>
-    </div>
-}
-
-@section PopupBox
-{
-    <!--任務點數回饋說明-->
-    <div id="popup-missionPoint" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
-        data-menu-effect="menu-over" data-menu-load="PopupCampainMissionPoint">
     </div>
 }

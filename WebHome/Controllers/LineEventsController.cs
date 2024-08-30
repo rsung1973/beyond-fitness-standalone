@@ -144,6 +144,13 @@ namespace WebHome.Controllers
 
             return new PhysicalFileResult(path, "image/png");
         }
+        public ActionResult GetMapMenuImage(String id)
+        {
+            var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+            var path = WebApp.MapPath($"~/ConsoleHome/images/line/map/mapmenu-{id}.jpg");
+
+            return new PhysicalFileResult(path, "image/png");
+        }        
 
         public ActionResult GetBeyondCoinMap(String id)
         {

@@ -63,7 +63,8 @@
     </svg>
     <div class="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "card" : "card opacity-60")">
         <div class="level letter-spacing-1">
-            <img src="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "../images/icons/beyond_coin.svg" : "../images/icons/beyond_coin_grey.svg")" width="50" class="mt-1 mb-2">
+            <img src="@Html.Raw(!(currentPlayer?.PlayerLevel > _model.LevelID) ? "../images/icons/bpoints/points.svg" : "../images/icons/bpoints/points-grey.svg")"
+                width="50" class="mt-1 mb-2">
             @(_model.DisplayName)<span class="mt-n1">@(_model.Description)</span>
             @if (currentPlayer?.PlayerLevel == _model.LevelID)
             {

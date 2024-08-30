@@ -835,4 +835,43 @@ input::placeholder {
   color: #fff;
   background-color: #3E3E3E;
   border: 0px;
+}
+
+.faq-card {
+  border-radius: 60px !important;
+  background-color: #3E3E3E !important;
+  color: #fff !important;
+}
+
+/**玩家等級注意事項**/
+.level-notice-card {
+  border-radius: 0px !important;
+  background-color: #fff !important;
+  color: #3E3E3E !important;
+  border: 0px;
+  box-shadow: none;
+}
+.level-notice-card ul {
+  list-style: decimal;
+}
+.level-notice-card ul ul {
+  list-style: square;
+}
+
+.tab-controls.campaign a {
+  border-radius: 50%;
+  border: 1px solid rgb(244, 192, 117) !important;
+  color: #555555 !important;
+  background-color: #fff;
+  border: 0px;
+  width: 130px;
+  height: 130px;
+}
+
+.tab-controls.missionpoint a {
+  border-radius: 50%;
+  color: #555555 !important;
+  background-color: #fff;
+  width: 85px;
+  height: 85px;
 }/*# sourceMappingURL=custom.css.map */

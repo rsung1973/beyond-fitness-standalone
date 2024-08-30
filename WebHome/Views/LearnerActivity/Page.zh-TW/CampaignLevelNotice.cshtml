@@ -1,0 +1,106 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    Layout = "~/Views/LearnerActivity/Template/SimplePage.cshtml";
+    ViewBag.From = "Campaign";
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+        ? "tw"
+        : lang == "en-US"
+            ? "en"
+            : "ja";
+
+}
+<div class="page-content" style="background-color: #fff !important;">
+    <div class="menu-title pb-5">
+        <a href="CampaignStrategy#faqs" class="close-menu color-beyond-dark"><i class="fa fa-times"></i>&nbsp;</a>
+    </div>
+    <div class="content mx-0 mt-5" id="notice">
+        <div class="mx-4 mx-lg-5 mx-md-5 ">
+            <div class="tab-controls tabs-medium campaign" data-highlight="bg-beyondsunny-light"
+                style="background: transparent!important">
+                <a href="#" data-active data-bs-toggle="collapse" data-bs-target="#cycle"
+                    class="mx-auto me-lg-5 ms-lg-auto me-md-5 ms-md-auto letter-spacing-2 pb-0 font-16 font-600 d-flex flex-column align-items-center">
+                    <img src="../images/icons/faqs/cycle.svg" class="img-fluid mx-auto my-auto" width="80" height="80">
+                </a>
+                <a href="#" data-bs-toggle="collapse" data-bs-target="#rights"
+                    class="mx-auto ms-lg-5 me-lg-auto ms-md-5 me-md-auto letter-spacing-2 pb-0 font-16 font-600 d-flex flex-column align-items-center">
+                    <img src="../images/icons/faqs/rights.svg" class="img-fluid mx-auto my-auto" width="80" height="80">
+                </a>
+            </div>
+            <div class="clearfix my-5"></div>
+        </div>
+
+        <div data-bs-parent="#notice" class="collapse show mx-0" id="cycle">
+            <div class="card shadow-0 mb-3 mx-1 level-notice-card">
+                <div class="py-5 px-3 px-lg-5 px-md-5">
+                    <h4 class="color-beyondred-dark ps-3 pb-2">玩家等級週期注意事項</h4>
+                    <ul class="line-height-l letter-spacing-1 font-15">
+                        <li>活動期間：2024/10/01~2025/12/31</li>
+                        <li>玩家等級週期：每次等級週期為三個月，分別為1~3月、4~6月、7~9月、10~12月。
+                            <b class="font-400 d-block">舉例：玩家於1~3月達成冒險家· Adventurer門檻，將會於4~6月升級為冒險家· Adventurer
+                                (4/1起可查詢)。</b>
+                        </li>
+                        <li>玩家等級升降：玩家等級週期第一日至會員等級週期結束當日晚上22:30，為玩家等級門檻計算區間(1/1 05:00 ~ 3/31 22:30、4/1 05:00 ~ 6/30
+                            22:30、7/1 05:00 ~ 9/30
+                            22:30、10/1 05:00 ~ 12/31 22:30)，於每季底針對玩家是否達成各等級門檻進行判斷，並於次一玩家等級週期第一日(1/1、4/1、7/1、10/1)進行等級調整。
+                        </li>
+                        <li>若有任一顧客新加入Beyond Points Taskathon玩家，皆將從新手上路 ·
+                            Newcomer開始，待該玩家週期結束，計算該週期交易情形於次一週期調整至新的等級。(新玩家第一個玩家週期之計算區間仍為該等級週期第一日至該等級週期結束當日晚上22:30。例如顧客10/31加入玩家，該玩家週期計算區間仍為10/01~12/31)
+                            。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div data-bs-parent="#notice" class="collapse mx-0" id="rights">
+            <div class="card card-style shadow-0 mb-3 level-notice-card mx-1">
+                <div class="py-5 ps-3 pe-5">
+                    <h4 class="color-beyondred-dark ps-3 pb-2">玩家等級權益注意事項</h4>
+                    <ul class="line-height-l letter-spacing-1 font-15">
+                        <li>活動期間：2024/10/01~2025/12/31</li>
+                        <li>Beyond Points任務牆加碼
+                            <ul class="ps-3">
+                                <li>探險家 · Explorer玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼1倍之 Beyond Points。</li>
+                                <li>挑戰家 · Challenger玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼2倍之Beyond Points。</li>
+                                <li>大師· Master玩家於該週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼3倍之 Beyond Points。</li>
+                                <li>傳奇英雄· Hero玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼4倍之 Beyond Points。</li>
+                                <li>Beyond Points加碼將視週期期間內原任務牆點數之玩家等級做為計算依據。</li>
+                                <li>每一玩家週期點數任務牆加碼回饋上限最高3,000點Beyond Points。</li>
+                                <li>Beyond 固定型任務包含首次S.R體驗。</li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="px-5 py-2 font-13">
+            <div class="divider bg-beyondwhite-dark mt-4 mb-4"></div>
+            <p class="mb-0 color-beyond-dark opacity-70">注意事項：</p>
+            @{
+                await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CampainCommonNotice.cshtml");
+            }
+        </div>
+    </div>
+    <a href="CampaignStrategy#faqs"
+        class="color-beyondred-dark text-uppercase font-700 text-center p-3 w-100 d-block opacity-60 font-14">關閉視窗，狠心離開</a>
+</div>
+<!-- end of page content-->
