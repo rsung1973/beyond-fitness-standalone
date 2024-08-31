@@ -12,7 +12,9 @@ using WebHome.Models.DataEntity;
 using WebHome.Helper;
 using CommonLib.Utility;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebHome.Controllers;
 
 namespace WebHome.Helper.LineEvent
 {
@@ -43,12 +45,14 @@ namespace WebHome.Helper.LineEvent
         private Event lineEvent;
         private LineClient lineClient = new LineClient(WebApp.Properties["ChannelToken"]);
         private HttpContext currentContext;
+        private SampleController<UserProfile> controller;
 
-        public LineMessageHandler(Event lineEvent,ModelSource<UserProfile> models,HttpContext context)
+        public LineMessageHandler(Event lineEvent, SampleController<UserProfile> controller)
         {
             this.lineEvent = lineEvent;
-            this.models = models;
-            this.currentContext = context;
+            this.controller = controller;
+            this.models = controller.DataSource;
+            this.currentContext = controller.HttpContext;
         }
 
         public Profile CurrentProfile
@@ -107,6 +111,17 @@ namespace WebHome.Helper.LineEvent
             return CurrentProfile;
         }
 
+        private RegisterViewModel BuildViewModel(String lineID, String controllerName, String actionName)
+        {
+            return new RegisterViewModel
+            {
+                LineID = lineID,
+                Controller = controllerName,
+                Action = actionName,
+                NotAfter = DateTime.Now.AddHours(6),
+            };
+        }
+
         public async Task HandleTextMessage()
         {
             var textMessage = JsonConvert.DeserializeObject<TextMessage>(lineEvent.Message.ToString());
@@ -139,13 +154,13 @@ namespace WebHome.Helper.LineEvent
             // }
             if (message == "個人化" || message.Contains("專屬服務") || message.Contains("會員專屬服務，查詢簡單又快速"))
             {
-                var imageUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapImage")}";
+                var imageUrl = $"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LineEvents/GetMapMenuImage")}";
                 List<ImageMapAction> actions = new List<ImageMapAction>();
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/ActivateAccount")}?X001={CurrentProfile.UserId}", new ImageMapArea(0, 0, 350, 850))); //綁定帳號
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Events")}?X001={CurrentProfile.UserId}", new ImageMapArea(350, 0, 339, 425))); //健康自評與回饋
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/CampaignStrategy")}?X001={CurrentProfile.UserId}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Calendar")}?X001={CurrentProfile.UserId}", new ImageMapArea(350, 425, 339, 425))); //運動行事曆
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/Index")}?X001={CurrentProfile.UserId}", new ImageMapArea(689, 425, 351, 425))); //任務集點
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth","LearnerActivity",new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Settings").JsonStringify().EncryptKey() })}", new ImageMapArea(0, 0, 350, 850))); //綁定帳號
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Events").JsonStringify().EncryptKey() })}", new ImageMapArea(350, 0, 339, 425))); //健康自評與回饋
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "CampaignStrategy").JsonStringify().EncryptKey() })}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Calendar").JsonStringify().EncryptKey() })}", new ImageMapArea(350, 425, 339, 425))); //運動行事曆
+                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Index").JsonStringify().EncryptKey() })}", new ImageMapArea(689, 425, 351, 425))); //任務集點
                 //actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));
                 replyMessage = new ImageMapMessage(imageUrl, "會員專屬服務，查詢簡單又快速", new BaseSize(1040, 850), actions);
             }

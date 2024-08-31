@@ -607,13 +607,13 @@ namespace WebHome.Controllers
                 {
                     ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
                 }
-                else if (item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
-                {
-                    if (item.PID.IsEmail())
-                    {
-                        ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
-                    }
-                }
+                //else if (item.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                //{
+                //    if (item.PID.IsEmail())
+                //    {
+                //        ModelState.AddModelError("PID", "輸入資料錯誤[XA006]，請重新確認！");
+                //    }
+                //}
                 else if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
                 {
                     ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
@@ -653,11 +653,11 @@ namespace WebHome.Controllers
                 return View(viewResult.ViewName, item);
             }
 
-            if (item.PID != viewModel.PID)
+            if (!item.PID.IsEmail())
             {
                 item.PID = viewModel.PID;
+                models.SubmitChanges();
             }
-            models.SubmitChanges();
 
             viewResult = CheckView("CheckRegistrationOTP");
             return View(viewResult.ViewName, item);
@@ -668,14 +668,18 @@ namespace WebHome.Controllers
         public ActionResult Login(RegisterViewModel viewModel)
         {
             ViewBag.ViewModel = viewModel;
+
+            this.HttpContext.Logout();
+
             var viewResult = CheckView("Login");
             return CheckLanguageRoute() ?? View(viewResult.ViewName);
 
         }
 
         [AllowAnonymous]
-        public ActionResult ActivateAccount(RegisterViewModel viewModel)
+        public async Task<ActionResult> ActivateAccountAsync(RegisterViewModel viewModel)
         {
+            await Request.SaveAsAsync(System.IO.Path.Combine(FileLogger.Logger.LogDailyPath, $"{Guid.NewGuid()}.txt"));
             ViewBag.ViewModel = viewModel;
             var viewResult = CheckView("ActivateAccount");
             return CheckLanguageRoute() ?? View(viewResult.ViewName);
@@ -685,7 +689,6 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult Logout(RegisterViewModel viewModel, String message = null)
         {
-            this.HttpContext.Logout();
             ViewBag.Message = message;
             return Login(viewModel);
         }
@@ -1418,6 +1421,18 @@ namespace WebHome.Controllers
             }
 
             return Json(new { result = true, done = now });
+        }
+
+        [AllowAnonymous]
+        public ActionResult LineAuth(RegisterViewModel viewModel)
+        {
+            if (viewModel.KeyID != null)
+            {
+                viewModel = JsonConvert.DeserializeObject<RegisterViewModel>(viewModel.KeyID.DecryptKey());
+            }
+            Url.Action("test");
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/LearnerActivity//LineAuth.cshtml");
         }
 
 

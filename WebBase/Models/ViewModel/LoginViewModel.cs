@@ -95,6 +95,9 @@ namespace WebHome.Models.ViewModel
             get => LineID != null ? LineID.EncryptKey() : null;
             set => LineID = (value != null ? value.DecryptKey() : null);
         }
+        public String Controller { get;set; }
+        public String Action { get; set; }
+        public DateTime? NotAfter { get; set; }
 
     }
 

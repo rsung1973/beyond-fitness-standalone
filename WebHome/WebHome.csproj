@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Helper\LineEvent\LineEventsController.cs" />
     <Compile Remove="Models\DataEntity\BFDataContext.cs" />
   </ItemGroup>
 

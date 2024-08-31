@@ -62,7 +62,7 @@ namespace WebHome.Controllers
                         //    return new EmptyResult();
                         //}
 
-                        LineMessageHandler handler = new LineMessageHandler(lineEvent, DataSource, HttpContext);
+                        LineMessageHandler handler = new LineMessageHandler(lineEvent, this);
 
                         Profile profile = await handler.GetProfile(lineEvent.Source.UserId);
 
@@ -147,7 +147,7 @@ namespace WebHome.Controllers
         public ActionResult GetMapMenuImage(String id)
         {
             var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var path = WebApp.MapPath($"~/ConsoleHome/images/line/map/mapmenu-{id}.jpg");
+            var path = WebApp.MapPath($"~/ConsoleHome/images/line/map/mapmenu-{id}.png");
 
             return new PhysicalFileResult(path, "image/png");
         }        

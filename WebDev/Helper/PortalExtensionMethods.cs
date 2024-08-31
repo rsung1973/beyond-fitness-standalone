@@ -46,7 +46,7 @@ namespace WebHome.Helper
             {
                 if (item.IsLearner())
                 {
-                    return controller.Url.Action("LearnerIndex", "CornerKick");
+                    return controller.Url.Action("Index", "LearnerActivity");
                 }
             }
 
@@ -83,7 +83,7 @@ namespace WebHome.Helper
                     return controller.Url.Action("Index", "CoachFacet");
 
                 case Naming.RoleID.Learner:
-                    return controller.Url.Action("LearnerIndex", "CornerKick");
+                    return controller.Url.Action("Index", "LearnerActivity");
                     //return fromLine ? controller.Url.Action("LearnerIndex", "CornerKick") : controller.Url.Action("LearnerIndex", "LearnerFacet");
 
                 case Naming.RoleID.Manager:

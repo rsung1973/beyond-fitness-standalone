@@ -43,7 +43,7 @@ namespace WebHome.Controllers
         [AllowAnonymous]
         public ActionResult Login(bool? autoLogin = true)
         {
-            return new RedirectToActionResult("Login", "CornerKick", null);
+            return new RedirectToActionResult("Login", "LearnerActivity", null);
             //return RedirectToAction("Index", "CornerKick");
         }
 
