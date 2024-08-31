@@ -33,9 +33,9 @@
         <img id="image-data" src="@(profile.PictureID.HasValue
                 ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource")}/{profile.PictureID}?stretch=true"
                 : profile.UserProfileExtension.Gender == "M" 
-                    ? VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatars/default-mm.png")
-                    : VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatars/default-fm.png"))"
-             class="avatar-rounded-circle large mt-5" width="150" height="150" />
+                    ? VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatars/default-mm.svg")
+                    : VirtualPathUtility.ToAbsolute("~/LearnerActivity/images/avatars/default-fm.svg"))"
+             class="avatar-rounded-circle large mt-5 bg-white" width="150" height="150" />
         <div class="file-data">
             <input type="file" id="file-upload" class="upload-photostick" accept="image/*">
             <p class="upload-file-text font-15 color-theme opacity-80">點選更換圖片</p>

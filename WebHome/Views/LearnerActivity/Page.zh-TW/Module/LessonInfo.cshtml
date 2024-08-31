@@ -46,8 +46,8 @@
                 <img src="@Html.Raw(u.PictureID.HasValue
                               ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource/")}{u.PictureID}?stretch=true"
                               : u.UserProfileExtension.Gender == "F" 
-                                ? "../images/avatars/default-fm.png"
-                                : "../images/avatars/default-mm.png")" class="rounded-xl avatar-rounded-circle bg-beyondwhite-light" />
+                                ? "../images/avatars/default-fm.svg"
+                                : "../images/avatars/default-mm.svg")" class="rounded-xl avatar-rounded-circle bg-white" />
             }
         </div>
     </div>
