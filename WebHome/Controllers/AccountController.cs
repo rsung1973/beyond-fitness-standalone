@@ -523,7 +523,7 @@ namespace WebHome.Controllers
             {
                 ModelState.AddModelError("pid", "登入資料錯誤!!");
                 ViewBag.ModelState = ModelState;
-                return RedirectToAction("Login", "CornerKick");
+                return RedirectToAction("Login", "LearnerActivity");
             }
 
             await HttpContext.SignOnAsync(item, viewModel.RememberMe);

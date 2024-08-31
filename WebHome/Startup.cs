@@ -214,6 +214,12 @@ namespace WebHome
                     pattern: "LearnerActivity/ja/{*actionName}",
                     defaults: new { controller = "LearnerActivity", action = "HandleUnknownAction", lang = "ja" });
 
+                //endpoints.MapControllerRoute(
+                //    name: "CornerKick",
+                //    pattern: "CornerKick/{*actionName}",
+                //    defaults: new { controller = "LearnerActivity", action = "Main" });
+
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

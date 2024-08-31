@@ -150,7 +150,7 @@ namespace WebHome.Controllers
 
             if (Request.Host.HasValue && Request.Host.Host.ToLower().Contains("beyond-fitness.com.tw"))
             {
-                return RedirectToAction("Login", "CornerKick");
+                return RedirectToAction("Login", "LearnerActivity");
             }
 
             //var items = models.DataContext.UserProfile
