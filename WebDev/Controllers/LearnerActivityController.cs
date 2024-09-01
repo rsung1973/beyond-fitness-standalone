@@ -1164,6 +1164,17 @@ namespace WebHome.Controllers
                         recipientID = users.First().UID;
                     }
                 }
+
+                var monthStart = DateTime.Today.FirstDayOfMonth();
+                var awardingLessonsThisMonth =
+                        models.GetTable<BonusTransaction>()
+                            .Where(t => t.UID == profile.UID)
+                            .Where(t => t.TransactionDate >= monthStart)
+                            .Where(t => t.LearnerAward.BonusAwardingItem.BonusAwardingLesson != null);
+                if (awardingLessonsThisMonth.Count() >= 2)
+                {
+                    ModelState.AddModelError("WriteoffCode", "本月可兌換課程總堂數2堂已用完");
+                }
             }
             else
             {
@@ -1221,7 +1232,8 @@ namespace WebHome.Controllers
                         UID = recipientID.Value,
                         AdvisorID = lesson?.RegisterLessonContract.CourseContract.FitnessConsultant,
                         Attended = (int)Naming.LessonStatus.準備上課,
-                        GroupingLesson = new GroupingLesson { }
+                        GroupingLesson = new GroupingLesson { },
+                        Expiration = DateTime.Today.AddDays(181),
                     };
                     award.AwardingLessonGift = new AwardingLessonGift
                     {
@@ -1240,7 +1252,8 @@ namespace WebHome.Controllers
                         UID = profile.UID,
                         AdvisorID = lesson?.AdvisorID,
                         Attended = (int)Naming.LessonStatus.準備上課,
-                        GroupingLesson = new GroupingLesson { }
+                        GroupingLesson = new GroupingLesson { },
+                        Expiration = DateTime.Today.AddDays(181),
                     };
                     award.AwardingLesson = new AwardingLesson
                     {
