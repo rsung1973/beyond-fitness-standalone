@@ -1,0 +1,56 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+    ? "tw"
+    : lang == "en-US"
+    ? "en"
+    : "ja";
+
+}
+<div class="menu-title">
+    <a href="#" class="close-menu color-beyond-dark"><i class="fa fa-times"></i>&nbsp;</a>
+</div>
+<div class="content mx-4 mx-lg-5 mx-md-5 mt-5 color-beyond-dark">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">注意事項</h1>
+            <ul class="ps-3">
+                <li class="mb-2">兌換課程上課期限：<u class="beyondred-underline">兌換後起算180天</u></li>
+                <li>以Beyond Points兌換之課程(以下簡稱兌換課程)僅限台灣地區使用，可於兌換課程上課期限內指定使用，逾期無效。</li>
+                <li>兌換課程除部分公告不適用門市外，恕不得更換現金或其他商品，禁止轉讓、轉售予退換貨。公告不適用門市列表如下：忠孝分店(S.R 兌換課程)。</li>
+                <li>兌換課程無法兌換現金或找零，不得與其他行銷活動合併使用，且以Beyond Points兌換之課程不適用Beyond Points Taskathon任務累積Beyond Points活動。</li>
+                <li>Beyond Points可兌換之課程分為三類(P.T、S.R、P.T禮物包)。會員至多每月可兌換每類別課程至多2堂。</li>
+                <li>對換課程需於兌換當日起算180日內使用完畢，使用後立即失效，不得重複使用或撤回兌換項目。</li>
+                <li>以Beyond Points兌換課程時，不另行開立發票。</li>
+                <li>兌換課程僅適用於實體課程使用。若會員選擇參加線上課程，不得要求補償線上/線下價格差額或其他形式的補償。</li>
+                <li>Beyond Points使用方式及限制悉依本公司規定，請於使用前務必詳細閱讀兌換課程之注意事項及使用須知，以保障自身權益。</li>
+                <li>本公司保有各類課程之兌換條件及其他調整Beyond Points使用限制之權利。</li>
+                <li>兌換課程一經兌換，一律不受理退換。</li>
+                <li>詳細活動辦法依本公司公告為主。凡參與本活動，即視同承認及接受本活動注意事項及相關規定，本公司保有隨時修正、暫停或終止本活動之權利，若有未盡事宜，悉依本公司之相關公告辦理；本公司保留最終解釋及決定權利。
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
