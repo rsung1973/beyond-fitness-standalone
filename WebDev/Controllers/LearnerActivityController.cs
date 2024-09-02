@@ -1083,6 +1083,12 @@ namespace WebHome.Controllers
             item.LessonFeedbackSurvey.AddRange(surveyItems);
             item.FeedBackDate = DateTime.Now;
 
+            if(!lessonItem.LessonPlan.CommitAttendance.HasValue)
+            {
+                lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
+                lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
+
             models.SubmitChanges();
 
             BonusTransaction txn = null;
@@ -1173,7 +1179,7 @@ namespace WebHome.Controllers
                             .Where(t => t.LearnerAward.BonusAwardingItem.BonusAwardingLesson != null);
                 if (awardingLessonsThisMonth.Count() >= 2)
                 {
-                    ModelState.AddModelError("WriteoffCode", "本月可兌換課程總堂數2堂已用完");
+                    return Json(new { result = false, message = "本月可兌換課程總堂數2堂已用完!!" });
                 }
             }
             else
