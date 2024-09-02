@@ -1,0 +1,56 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    ViewBag.MainClass = "home";
+    ViewBag.MenuDark = false;
+    String lang = ViewBag.Lang ?? "zh-TW";
+    var langPath = lang == "zh-TW"
+    ? "tw"
+    : lang == "en-US"
+    ? "en"
+    : "ja";
+
+}
+<div class="menu-title">
+    <a href="#" class="close-menu color-beyond-dark"><i class="fa fa-times"></i>&nbsp;</a>
+</div>
+<div class="content mx-4 mx-lg-5 mx-md-5 mt-5 color-beyond-dark">
+    <div class="row">
+        <div class="col-12">
+            <h1 class="mb-3 letter-spacing-2 color-beyondred-dark">注意事項</h1>
+            <ul class="ps-3">
+                <li>實體商品一經兌換即無法變更、取消及退換。</li>
+                <li>Beyond Points可兌換商品種類依現場供應為準，圖片僅供參考，實際商品請以店內為準。</li>
+                <li>為免因缺貨造成不便，建議您於兌換前詳洽您的專屬教練或致電於前往兌換商品門市詢問。</li>
+                <li>會員於兌換商品時，如遇門市無法供應或門市系統問題無法核銷序號，請至鄰近門市或擇日再行兌換。</li>
+                <li>如遇門市不可抗拒之因素導致無法提供某項商品，將以該門市店內公告為主。</li>
+                <li>各門市在兌換商品時不另行開立發票。</li>
+                <li>每個Beyond Point於兌領商品後即失效，請勿重複兌領。領取商品前請出示系統兌換查詢畫面，不接受手抄、口說商品方式兌換（特殊情況除外）、截圖方式兌領。</li>
+                <li>兌換所得商品無法兌換現金或找零，不得與其他行銷活動合併使用。</li>
+                <li>如部分商品因上下架因素無法供兌換，本公司有權更換等值商品替代。</li>
+                <li>各門市所有之實體商品種類、存貨、數量皆有不同，建議兌換前詳洽您的專屬教練。</li>
+                <li>詳細活動辦法依本公司公告為主。凡參與本活動，即視同承認及接受本活動注意事項及相關規定，本公司保有隨時修正、暫停或終止本活動之權利，若有未盡事宜，悉依本公司之相關公告辦理；條款文字有疑義者本公司保留最終解釋及決定權利；條款漏未規範者，本公司保有增修、補充解釋之權利。</li>
+                <li>兌換商品使用方式及限制悉依本公司規定，請於兌換及使用前務必詳細閱讀兌換課程之注意事項及使用須知，以保障自身權益。</li>
+                <li>本公司保有各類兌換商品上下架及其他使用限制調整之權利。</li>
+            </ul>
+        </div>
+    </div>
+</div>

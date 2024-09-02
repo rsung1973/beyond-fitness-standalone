@@ -42,6 +42,10 @@
 
     var profile = (await Context.GetUserAsync()).LoadInstance(models);
     var account = profile.BonusDepositAccount;
+    var notice = "popup-exchangeSessionNotice";
+    if (id != (int)MerchandiseTransactionType.MainAwardingCategory.TrainingCourse) {
+        notice = "popup-exchangeGoodsNotice";
+    }
 }
 
 @section MainContent
@@ -55,8 +59,8 @@
     @if (typeItem != null)
     {
         <div class="content z-index-10">
-            <h1 class="boxed-text-xl font-28 color-beyondwhite-dark z-index-10 pt-5">@Html.Raw(typeItem.TransactionType)</h1>
-            <p class="text-center z-index-10">@Html.Raw(typeItem.Subtitle)</p>
+            <h1 class="boxed-text-xl font-28 color-beyondsunny-dark z-index-10 pt-5">@Html.Raw(typeItem.TransactionType)</h1>
+            <a href="#" data-menu="@(notice)"><p class="text-center z-index-10">@Html.Raw(typeItem.Subtitle)<i class="fa-regular fa-circle-question px-2 color-beyondblue-light"></i></p></a>                
         </div>
         <div class="row gx-0">
             <div class="col-12">
@@ -93,10 +97,16 @@
                                             }
                                         </div>
                                     </div>
+                                    <div class="col-12 text-end">                                    
+                                </div>
                                     <div class="divider my-4"></div>
                                 </div>
                             }
-                        </div>
+                             <div class="col-12 text-end">
+                            <a href="#" data-menu="@(notice)" class="d-block color-beyondblue-light"><span><i
+                                                class="fa-regular fa-circle-question pe-2 color-beyondblue-light"></i>兌換注意事項</span></a>
+                         </div>
+                        </div>                       
                     </div>
                 </div>
             </div>
@@ -234,8 +244,16 @@
 
 @section PopupBox
 {
-    <div id="exchange-item" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="400">
-
-
+    <div id="exchange-item" class="menu menu-box-bottom menu-box-detached rounded-m" data-menu-height="450">
     </div>
+    <!--兌換課程注意事項-->
+    <div id="popup-exchangeSessionNotice" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
+        data-menu-effect="menu-over" data-menu-load="PopupPointsExchangeSessionNotice"
+        style="background-color: #fff !important;">
+    </div>    
+    <!--兌換運動商品注意事項-->
+    <div id="popup-exchangeGoodsNotice" class="menu menu-box-modal auto menu-box-detached rounded-m" data-menu-height="600"
+        data-menu-effect="menu-over" data-menu-load="PopupPointsExchangeGoodsNotice"
+        style="background-color: #fff !important;">
+    </div>       
 }
