@@ -389,7 +389,7 @@ namespace WebHome.Helper
             if (current != null)
             {
                 var items = models.GetTable<LessonTime>()
-                        .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b=>b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
+                        .Where(f => f.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
                         .Where(l => l.ClassTime >= current.StartDate)
                         .Where(l => l.ClassTime < current.EndExclusiveDate)
                         .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))

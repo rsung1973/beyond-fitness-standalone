@@ -106,12 +106,54 @@
                                 hasSlideItem = true;
                                 <li><a href="javascript:attendLesson();">完成上課</a></li>
                             }
-                            @if (learner.UserProfileExtension?.AttendanceSignature == true && !lessonItem.LessonPlan.CommitAttendance.HasValue
+                            @if ((learner.UserProfileExtension?.AttendanceSignature == true || lessonItem.IsSRSession())
+                                  && !lessonItem.LessonPlan.CommitAttendance.HasValue
                                   && DateTime.Now.AddHours(1) >= lessonItem.ClassTime)
                             {
                                 hasSlideItem = true;
                                 <li>
-                                    <a href="javascript:signaturePanel();">學生現場打卡簽名</a>
+                                    <a href="javascript:attendSignaturePanel();">學生現場打卡簽名</a>
+                                    <script>
+                                        function attendSignaturePanel() {
+                                            $global.commitSignature = function (sigData) {
+                                                showLoading();
+                                                var viewModel = {
+                                                    keyID: '@Html.Raw(lessonItem.LessonID.EncryptKey())',
+                                                    Signature: sigData
+                                                };
+                                                $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', viewModel, function (data) {
+                                                    hideLoading();
+                                                    if ($.isPlainObject(data)) {
+                                                        if (data.result) {
+                                                            Swal.fire({
+                                                                title: "全部打卡成功!",
+                                                                text: "資料已經完成打卡 Bye!",
+                                                                icon: "success",
+                                                                showCancelButton: false,
+                                                                closeOnConfirm: true
+                                                            }).then((result) => {
+                                                                refreshTrainingContent();
+                                                            });
+                                                        } else {
+                                                            Swal.fire(
+                                                                'Oops...',
+                                                                data.message,
+                                                                'warning'
+                                                            );
+                                                        }
+                                                    } else {
+                                                        $(data).appendTo($('body'));
+                                                    }
+                                                });
+                                            };
+
+                                            showLoading();
+                                            $.post('@Html.Raw(Url.Action("SignaturePanel", "LessonConsole"))', { 'KeyID': '@Html.Raw((new { lessonItem.LessonID, LearnerID = learner.UID }).JsonStringify().EncryptKey())' }, function (data) {
+                                                hideLoading();
+                                                $(data).appendTo($('body'));
+                                            });
+                                        }
+                                    </script>
                                 </li>
                             }
                             @if (!hasSlideItem)

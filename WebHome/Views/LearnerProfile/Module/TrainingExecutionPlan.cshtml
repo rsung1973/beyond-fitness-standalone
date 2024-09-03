@@ -90,7 +90,7 @@
                     await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/LessonEmphasis.cshtml", _model);
                 }
             </li>
-            @if (DateTime.Now.AddHours(2.5) >= _model.ClassTime)
+            @if (DateTime.Now.AddHours(2.5) >= _model.ClassTime && !_model.IsSRSession())
             {
                 <li>
                     @{

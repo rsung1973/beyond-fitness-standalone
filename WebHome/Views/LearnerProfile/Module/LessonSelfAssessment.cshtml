@@ -81,3 +81,65 @@
         });
     }
 </script>
+@{
+    if (_model.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
+    {
+        foreach (var item in lessonItem.GroupingLesson.RegisterLesson)
+        {
+            var feedback = lessonItem.LessonFeedBack.Where(r => r.RegisterID == item.RegisterID).FirstOrDefault();
+            if (feedback == null)
+            {
+                lessonItem.LessonFeedBack.Add(new LessonFeedBack
+                {
+                    LessonID = lessonItem.LessonID,
+                    RegisterID = item.RegisterID,
+                });
+                models.SubmitChanges();
+            }
+        }
+
+        var notAssessed = lessonItem.LessonFeedBack.Where(f => !f.CommitAssessment.HasValue).FirstOrDefault();
+        if (notAssessed != null)
+        {
+            if (notAssessed.RegisterID != registerID)
+            {
+                <script>
+                    $(function () {
+                        $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', @Html.Raw((new { KeyID = _model.LessonID.EncryptKey(), LearnerID = notAssessed.RegisterLesson.UID }).JsonStringify()));
+                    });
+                </script>
+            }
+            else
+            {
+                <script>
+                    var timeToCheck = new Date('@Html.Raw($"{lessonItem.ClassTime.Value.AddMinutes(-5)}")');
+                    function checkAssessment() {
+                        var now = new Date();
+                        if (now - timeToCheck >= 0) {
+                            var viewModel = {
+                                'KeyID': '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())'
+                            };
+                            doPost('@Html.Raw(Url.Action("CheckSelfAssessment", "LearnerActivity"))', viewModel,
+                                function (data) {
+                                    if (data.done) {
+
+                                    } else {
+                                        signaturePanel();
+                                    }
+                                },
+                                function () {
+                                });
+
+                        } else {
+                            setTimeout(checkAssessment, 30000);
+                        }
+                    }
+
+                    $(function () {
+                        checkAssessment();
+                    });
+                </script>
+            }
+        }
+    }
+}

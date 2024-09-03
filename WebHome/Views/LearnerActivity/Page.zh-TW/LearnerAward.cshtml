@@ -64,7 +64,7 @@
                                     
                                 </h5>
                                 <span class="font-14 color-theme opacity-60 letter-spacing-1">@Html.Raw($"{item.AwardDate:yyyy/MM/dd}")</span>
-                                <span class="font-14 color-theme opacity-60 letter-spacing-1 d-block">兌換課程上課期限：2025/02/01</span>
+                                <span class="font-14 color-theme opacity-60 letter-spacing-1 d-block">兌換課程上課期限：@Html.Raw($"{(item.AwardingLesson?.RegisterLesson.Expiration ?? item.AwardingLessonGift?.RegisterLesson.Expiration):yyyy/MM/dd}")</span>
                             </div>
                             <div class="align-self-center ms-auto me-3">
                             </div>

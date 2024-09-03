@@ -1176,10 +1176,10 @@ namespace WebHome.Controllers
                         models.GetTable<BonusTransaction>()
                             .Where(t => t.UID == profile.UID)
                             .Where(t => t.TransactionDate >= monthStart)
-                            .Where(t => t.LearnerAward.BonusAwardingItem.BonusAwardingLesson != null);
+                            .Where(t => t.LearnerAward.ItemID == item.ItemID);
                 if (awardingLessonsThisMonth.Count() >= 2)
                 {
-                    return Json(new { result = false, message = "本月可兌換課程總堂數2堂已用完!!" });
+                    return Json(new { result = false, message = "本月可兌換課程堂數2堂已用完!!" });
                 }
             }
             else
@@ -1454,6 +1454,141 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerActivity//LineAuth.cshtml");
         }
 
+        [HttpPost]
+        public ActionResult CheckSelfAssessment([FromBody] SelfAssessmentViewModel viewModel)
+        {
+            if (viewModel == null)
+            {
+                viewModel = PrepareViewModel<SelfAssessmentViewModel>(viewModel);
+                ModelState.Clear();
+            }
+
+            if (viewModel.KeyID != null)
+            {
+                SelfAssessmentViewModel tmpModel = JsonConvert.DeserializeObject<SelfAssessmentViewModel>(viewModel.KeyID.DecryptKey());
+                viewModel.LessonID = tmpModel.LessonID;
+                viewModel.RegisterID = tmpModel.RegisterID;
+            }
+
+            var item = models.GetTable<LessonFeedBack>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+
+            return Json(new { result = true, done = item?.CommitAssessment.HasValue == true });
+
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LineToTakeSelfAssessmentAsync(RegisterViewModel viewModel, LessonTimeViewModel lessonViewModel)
+        {
+            ActionResult CheckResult(UserProfile profile)
+            {
+                var feedback = models.GetTable<LessonFeedBack>()
+                                .Where(f => f.LessonID == lessonViewModel.LessonID)
+                                .Where(f => f.RegisterLesson.UID == profile.UID)
+                                .FirstOrDefault();
+
+                if (feedback != null)
+                {
+                    if (feedback.CommitAssessment.HasValue)
+                    {
+                        return RedirectToAction("CourseItem", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("ContactBook", "LearnerActivity") });
+                    }
+                    else
+                    {
+                        return RedirectToAction("TakeSelfAssessment", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("Events", "LearnerActivity") });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Events", "LearnerActivity");
+                }
+            }
+
+            UserProfile item = await HttpContext.GetUserAsync();
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            ViewResult result = (ViewResult)await SignOnByLineAsync(viewModel);
+            item = result.Model as UserProfile;
+
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            return result;
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> LineToTakeFeedbackSurveyAsync(RegisterViewModel viewModel, LessonTimeViewModel lessonViewModel)
+        {
+            ActionResult CheckResult(UserProfile profile)
+            {
+                var feedback = models.GetTable<LessonFeedBack>()
+                                .Where(f => f.LessonID == lessonViewModel.LessonID)
+                                .Where(f => f.RegisterLesson.UID == profile.UID)
+                                .FirstOrDefault();
+
+                if (feedback != null)
+                {
+                    if (feedback.FeedBackDate.HasValue)
+                    {
+                        return RedirectToAction("CourseItem", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("ContactBook", "LearnerActivity") });
+                    }
+                    else
+                    {
+                        return RedirectToAction("TakeFeedbackSurvey", "LearnerActivity", new { KeyID = feedback.LessonID.EncryptKey(), from = Url.Action("Events", "LearnerActivity") });
+                    }
+                }
+                else
+                {
+                    return RedirectToAction("Events", "LearnerActivity");
+                }
+            }
+
+            UserProfile item = await HttpContext.GetUserAsync();
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            ViewResult result = (ViewResult)await SignOnByLineAsync(viewModel);
+            item = result.Model as UserProfile;
+
+            if (item != null)
+            {
+                return CheckResult(item);
+            }
+
+            return result;
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> SignOnByLineAsync(RegisterViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            if (viewModel.KeyID != null)
+            {
+                viewModel.LineID = viewModel.KeyID.DecryptKey();
+            }
+            var item = models.GetTable<UserProfileExtension>().Where(u => u.LineID == viewModel.LineID)
+                    .Select(u => u.UserProfile)
+                    .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked)
+                    .FirstOrDefault();
+
+            if (item != null)
+            {
+                await HttpContext.SignOnAsync(item);
+                return View("Views/LearnerActivity/Page.zh-TW/Index.cshtml", item);
+            }
+            else
+            {
+                ViewBag.Message = "此支裝置尚未設定過專屬服務，請點選下方更多資訊/專屬服務/帳號設定才可使用！";
+                return Login(viewModel);
+            }
+
+        }
 
     }
 }

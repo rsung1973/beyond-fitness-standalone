@@ -159,7 +159,7 @@
                             "action": {
                                 "type": "uri",
                                 "label": "填寫健康聲明",
-                                "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CornerKick/TakeSelfAssessment")}?KeyID={HttpUtility.UrlEncode(_model.RegisterLesson.UserProfile.UserProfileExtension.LineID.EncryptKey())}&EncLessonID={HttpUtility.UrlEncode(_model.LessonID.EncryptKey())}")"
+                                "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/LineToTakeSelfAssessment")}?KeyID={HttpUtility.UrlEncode(_model.RegisterLesson.UserProfile.UserProfileExtension.LineID.EncryptKey())}&EncLessonID={HttpUtility.UrlEncode(_model.LessonID.EncryptKey())}")"
                             },
                             "margin": "0px",
                             "gravity": "center",
