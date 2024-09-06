@@ -55,26 +55,23 @@ namespace WebHome.Helper
             var HttpContext = controller.HttpContext;
             var models = controller.DataSource;
 
-            if (!item.LessonPlan.CommitAttendance.HasValue)
+            foreach (var lesson in item.GroupingLesson.RegisterLesson)
             {
-                foreach (var lesson in item.GroupingLesson.RegisterLesson)
+                var feedback = item.LessonFeedBack.Where(f => f.RegisterID == lesson.RegisterID).FirstOrDefault();
+                if (feedback == null)
                 {
-                    var feedback = item.LessonFeedBack.Where(f => f.RegisterID == lesson.RegisterID).FirstOrDefault();
-                    if (feedback == null)
+                    feedback = new LessonFeedBack
                     {
-                        feedback = new LessonFeedBack
-                        {
-                            LessonTime = item,
-                            RegisterLesson = lesson,
-                        };
-                        models.SubmitChanges();
-                    }
+                        LessonTime = item,
+                        RegisterLesson = lesson,
+                    };
+                    models.SubmitChanges();
+                }
 
-                    if (lesson.UserProfile.UserProfileExtension.LineID != null)
-                    {
-                        var jsonData = await controller.RenderViewToStringAsync(jsonViewPath, feedback);
-                        jsonData.PushLineMessage();
-                    }
+                if (lesson.UserProfile.UserProfileExtension.LineID != null)
+                {
+                    var jsonData = await controller.RenderViewToStringAsync(jsonViewPath, feedback);
+                    jsonData.PushLineMessage();
                 }
             }
 

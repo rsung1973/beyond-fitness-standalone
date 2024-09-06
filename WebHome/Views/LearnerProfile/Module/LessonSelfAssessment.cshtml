@@ -82,7 +82,7 @@
     }
 </script>
 @{
-    if (_model.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
+    if (_model.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.PT))
     {
         foreach (var item in lessonItem.GroupingLesson.RegisterLesson)
         {
@@ -112,7 +112,7 @@
             else
             {
                 <script>
-                    var timeToCheck = new Date('@Html.Raw($"{lessonItem.ClassTime.Value.AddMinutes(-5)}")');
+                    var timeToCheck = new Date('@Html.Raw($"{lessonItem.ClassTime.Value.AddMinutes(-5):yyyy/MM/dd HH:mm:ss}")');
                     function checkAssessment() {
                         var now = new Date();
                         if (now - timeToCheck >= 0) {

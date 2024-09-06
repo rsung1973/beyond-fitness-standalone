@@ -39,120 +39,126 @@
                 .Where(s => s.LessonID == _model.LessonID)
                 .Where(s => s.RegisterID == registerID);
 
-    <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5>課前健康自評</h5>
+        var useSignature = _model.LessonPlan?.Signature == null
+                            && !_model.LessonPlan.CommitAttendance.HasValue;
+
+        <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>課前健康自評</h5>
+                        @*<a class="closebutton" data-dismiss="modal"></a>*@
+                    </div>
                     @*<a class="closebutton" data-dismiss="modal"></a>*@
-                </div>
-                @*<a class="closebutton" data-dismiss="modal"></a>*@
-                <div class="modal-body">
-                    <div class="row">
-                        <div class="col-12 col-lg-6 col-md-12">
-                            <div class="row clearfix">
-                                <div class="col-12 col-lg-4 col-md-5">睡眠時間</div>
-                                <div class="col-12 col-lg-8 col-md-7">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control form-control-danger" placeholder="小時" name="SleepDuration" value="@($"{GetItem(assessment,"SleepDuration")?.Score:.}")" />
-                                        <span class="input-group-addon">
-                                            <i class="zmdi zmdi-hourglass-alt"></i>
-                                        </span>
-                                    </div>
-                                    @*<label class="material-icons help-error-text">clear 請輸入睡眠時間</label>*@
-                                </div>
-                            </div>
-                            @{
-                                var assessmentItem = GetItem(assessment, "WaterIntake");
-                            }
-                            <div class="row clearfix">
-                                <div class="col-12 col-lg-4 col-md-5">攝取水分 <i class="zmdi zmdi-info-outline col-blue"></i></div>
-                                <div class="col-12 col-lg-8 col-md-7">
-                                    <select class="form-control show-tick" name="WaterIntake">
-                                        <option value="" disabled selected>近8小時水分攝取</option>
-                                        <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">極度缺乏(目前馬上補充也還是缺乏)</option>
-                                        <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">有點缺乏(即時補充可以接近正常狀態)</option>
-                                        <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">及格(差不多正常)</option>
-                                        <option value="4" selected="@(assessmentItem?.SelectedIndex == 4)">良好(有補充並且有多攝取一些)</option>
-                                    </select>
-                                    @*<label class="material-icons help-error-text">clear 請輸入攝取水分</label>*@
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-12 col-lg-4 col-md-5">心理壓力 <i class="zmdi zmdi-info-outline col-blue"></i></div>
-                                <div class="col-12 col-lg-8 col-md-7">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control form-control-danger" placeholder="1-10" name="StressIndex" value="@($"{GetItem(assessment,"StressIndex")?.Score:.}")" />
-                                        <span class="input-group-addon">
-                                            <i class="zmdi zmdi-favorite"></i>
-                                        </span>
-                                    </div>
-                                    @*<label class="material-icons help-error-text">clear 請輸入心理壓力</label>*@
-                                </div>
-                            </div>
-                            <div class="row clearfix">
-                                <div class="col-lg-4 col-lg-4 col-md-5">生理疲勞 <i class="zmdi zmdi-info-outline col-blue"></i></div>
-                                <div class="col-12 col-lg-8 col-md-7">
-                                    <div class="input-group">
-                                        <input type="number" class="form-control form-control-danger" placeholder="1-10" name="FatigueIndex" value="@($"{GetItem(assessment,"FatigueIndex")?.Score:.}")" />
-                                        <span class="input-group-addon">
-                                            <i class="zmdi zmdi-hospital"></i>
-                                        </span>
-                                    </div>
-                                    @*<label class="material-icons help-error-text">clear 請輸入生理疲勞</label>*@
-                                </div>
-                            </div>
-                            <div class="row clearfix m-t-10">
-                                <div class="col-12">
-                                    <div class="input-group">
-                                        <textarea rows="3" class="form-control no-resize" placeholder="請輸入任何想補充之健康事項..." name="SupplementaryStatement">@Html.Raw(GetItem(assessment,"SupplementaryStatement")?.Answer)</textarea>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-12 col-lg-6 col-md-12">
+                                <div class="row clearfix">
+                                    <div class="col-12 col-lg-4 col-md-5">睡眠時間</div>
+                                    <div class="col-12 col-lg-8 col-md-7">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-control-danger" placeholder="小時" name="SleepDuration" value="@($"{GetItem(assessment,"SleepDuration")?.Score:.}")" />
+                                            <span class="input-group-addon">
+                                                <i class="zmdi zmdi-hourglass-alt"></i>
+                                            </span>
+                                        </div>
+                                        @*<label class="material-icons help-error-text">clear 請輸入睡眠時間</label>*@
                                     </div>
                                 </div>
+                                @{
+                                    var assessmentItem = GetItem(assessment, "WaterIntake");
+                                }
+                                <div class="row clearfix">
+                                    <div class="col-12 col-lg-4 col-md-5">攝取水分</div>
+                                    <div class="col-12 col-lg-8 col-md-7">
+                                        <select class="form-control show-tick" name="WaterIntake">
+                                            <option value="" disabled selected>近8小時水分攝取</option>
+                                            <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">極度缺乏(目前馬上補充也還是缺乏)</option>
+                                            <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">有點缺乏(即時補充可以接近正常狀態)</option>
+                                            <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">及格(差不多正常)</option>
+                                            <option value="4" selected="@(assessmentItem?.SelectedIndex == 4)">良好(有補充並且有多攝取一些)</option>
+                                        </select>
+                                        @*<label class="material-icons help-error-text">clear 請輸入攝取水分</label>*@
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div class="col-12 col-lg-4 col-md-5">心理壓力 <i class="zmdi zmdi-info-outline col-blue"></i></div>
+                                    <div class="col-12 col-lg-8 col-md-7">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-control-danger" placeholder="1-10" name="StressIndex" value="@($"{GetItem(assessment,"StressIndex")?.Score:.}")" />
+                                            <span class="input-group-addon">
+                                                <i class="zmdi zmdi-favorite"></i>
+                                            </span>
+                                        </div>
+                                        @*<label class="material-icons help-error-text">clear 請輸入心理壓力</label>*@
+                                    </div>
+                                </div>
+                                <div class="row clearfix">
+                                    <div class="col-lg-4 col-lg-4 col-md-5">生理疲勞 <i class="zmdi zmdi-info-outline col-blue"></i></div>
+                                    <div class="col-12 col-lg-8 col-md-7">
+                                        <div class="input-group">
+                                            <input type="number" class="form-control form-control-danger" placeholder="1-10" name="FatigueIndex" value="@($"{GetItem(assessment,"FatigueIndex")?.Score:.}")" />
+                                            <span class="input-group-addon">
+                                                <i class="zmdi zmdi-hospital"></i>
+                                            </span>
+                                        </div>
+                                        @*<label class="material-icons help-error-text">clear 請輸入生理疲勞</label>*@
+                                    </div>
+                                </div>
+                                <div class="row clearfix m-t-10">
+                                    <div class="col-12">
+                                        <div class="input-group">
+                                            <textarea rows="3" class="form-control no-resize" placeholder="請輸入任何想補充之健康事項..." name="SupplementaryStatement">@Html.Raw(GetItem(assessment,"SupplementaryStatement")?.Answer)</textarea>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-12 col-lg-6 col-md-12">
-                            <div class="row clearfix">
-                                <div class="col-12">
-                                    <label class="fancy-radio custom-color-pink">
-                                        <input name="CheckTerms" value="true" type="radio" id="checkTerms" onclick="return false;" checked="@(assessment.Any())" />
-                                        <span><i></i><a href="javascript:showHealthyTerms();" class="col-red"><u>課前健康狀況自我檢視聲明書</u></a></span>
-                                    </label>
+                            <div class="col-12 col-lg-6 col-md-12">
+                                <div class="row clearfix">
+                                    <div class="col-12">
+                                        <label class="fancy-radio custom-color-pink">
+                                            <input name="CheckTerms" value="true" type="radio" id="checkTerms" onclick="return false;" checked="@(assessment.Any())" />
+                                            <span><i></i><a href="javascript:showHealthyTerms();" class="col-red"><u>課前健康狀況自我檢視聲明書</u></a></span>
+                                        </label>
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="fancy-radio custom-color-pink">
+                                            <input name="Agree" value="true" type="radio" id="agree" onclick="return false;" checked="@(assessment.Any())" />
+                                            <span><i></i>本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</span>
+                                        </label>
+                                    </div>
+                                    @if (_model.LessonPlan?.Signature != null)
+                                    {
+                                        <div class="col-12 text-right">
+                                            <img src="@Html.Raw(_model.LessonPlan.Signature)" width="400px" />
+                                        </div>
+                                    }
                                 </div>
-                                <div class="col-12">
-                                    <label class="fancy-radio custom-color-pink">
-                                        <input name="Agree" value="true" type="radio" id="agree" onclick="return false;" checked="@(assessment.Any())" />
-                                        <span><i></i>本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</span>
-                                    </label>
-                                </div>
-                                @if (_model.LessonPlan?.Signature != null)
+                                @if (useSignature)
                                 {
-                                    <div class="col-12 text-right">
-                                        <img src="@Html.Raw(_model.LessonPlan.Signature)" width="400px" />
+                                    <div id="signatureparent">
+                                        <div id="signature"></div>
                                     </div>
                                 }
                             </div>
-                            <div id="signatureparent">
-                                <div id="signature"></div>
-                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
-                    @if (_model.LessonPlan?.Signature == null)
-                    {
-                        <button type="button"
-                                class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red resign">
-                            重新簽名
-                        </button>
-                    }
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-darkteal btn-round waves-effect btnConfirm">確定，不後悔</button>
+                        @if (useSignature)
+                        {
+                            <button type="button"
+                                    class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red resign">
+                                重新簽名
+                            </button>
+                        }
+                    </div>
                 </div>
             </div>
-        </div>
-        @if (_model.LessonPlan?.Signature == null)
-        {
-            <script>
+            @if (useSignature)
+            {
+                <script>
                     $(function () {
                         $('#@(_dialogID)').on('shown.bs.modal', function (e) {
                             $("#signature").empty();
@@ -184,11 +190,11 @@
                             }
                         });
                     });
-            </script>
-        }
-        else
-        {
-            <script>
+                </script>
+            }
+            else
+            {
+                <script>
                     $(function () {
                         $("#@(_dialogID) button.btnConfirm").on('click', function (event) {
                             var viewModel = $("#@(_dialogID)").find('input,select,textarea').serializeObject();
@@ -199,9 +205,9 @@
                             }
                         });
                     });
-            </script>
-        }
-        <script>
+                </script>
+            }
+            <script>
 
             $(function () {
                 $global.$currentModal = $('#@(_dialogID)');
@@ -243,13 +249,13 @@
                 $('#indexInfoModal').modal('show');
             });
 
-        </script>
-        @{
-            ViewBag.ReuseModal = true;
-            await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
-        }
+            </script>
+            @{
+                ViewBag.ReuseModal = true;
+                await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);
+            }
 
-    </div>
+        </div>
         <!-- 健康聲明 -->
         <div class="modal" id="termsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
              aria-hidden="true">

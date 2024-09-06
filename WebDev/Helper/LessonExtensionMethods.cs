@@ -1116,7 +1116,8 @@ namespace WebHome.Helper
                 alertMessage = "請選擇上課時間!!";
                 return;
             }
-            else if(item.ClassTime.Value.Date != viewModel.ClassTimeStart.Value.Date)
+            else if(item.LessonPlan.CommitAttendance.HasValue
+                && item.ClassTime.Value.Date != viewModel.ClassTimeStart.Value.Date)
             {
                 alertMessage = "上課日期不允許變更!!";
                 return;
