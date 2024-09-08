@@ -2533,6 +2533,161 @@ u {
   line-height: 1.5;
 }
 
+/*Beyond Points Taskathon*/
+.tasathon {
+  background-color: #FFF;
+  color: #282828;
+  /*表格*/
+  /*切換Tab*/
+  /*切換Tab*/
+  /*條款顯示*/
+}
+.tasathon .banner {
+  /*Banner背景照片*/
+}
+.tasathon .banner.container-background {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/campaign-lg.jpg");
+  background-size: cover;
+  background-position: top;
+  height: 100vh;
+  /*iPad橫板*/
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 1199px) and (min-width: 991px) {
+  .tasathon .banner.container-background {
+    background-position: top right -90px;
+  }
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .tasathon .banner.container-background {
+    background-image: url("../images/banner/campaign-md.jpg");
+  }
+}
+@media (max-width: 767px) {
+  .tasathon .banner.container-background {
+    background-image: url("../images/banner/campaign-sm.jpg") !important;
+  }
+}
+.tasathon .diff-table {
+  border-radius: 10px;
+}
+.tasathon .tabs-vertical {
+  border-top: 0px !important;
+}
+.tasathon .tabs.tabs-custom .nav-tabs {
+  justify-content: center;
+  border: 0;
+  margin-bottom: 10px;
+}
+.tasathon .tabs.tabs-custom .nav-tabs > li {
+  margin-left: 0;
+  margin-bottom: 20px;
+}
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link,
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link:hover,
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link:focus {
+  padding: 25px 30px;
+  background: #3E3E3E;
+  border: 0;
+  border-radius: 20px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link.active,
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link:hover.active,
+.tasathon .tabs.tabs-custom .nav-tabs > li .nav-link:focus.active {
+  background: rgb(99, 136, 219);
+  color: #fff;
+}
+.tasathon .tabs.tabs-custom .tab-content {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+}
+.tasathon .tabs.tabs-campaign .nav-tabs {
+  justify-content: center;
+  border: 0;
+  margin-bottom: 10px;
+}
+.tasathon .tabs.tabs-campaign .nav-tabs > li {
+  margin-left: 0;
+  margin-bottom: 20px;
+  box-shadow: none;
+  /* 手機版 */
+}
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link:hover,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link:focus {
+  padding: 15px 15px;
+  width: 150px;
+  height: 150PX;
+  background: #fff;
+  border-bottom: 0px !important;
+  box-shadow: none;
+  color: #3E3E3E;
+  font-size: 16px;
+  text-align: center;
+  letter-spacing: 3px;
+}
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.active,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link:hover.active,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link:focus.active {
+  background: rgb(248, 210, 123);
+  border-radius: 50%;
+  color: #282828;
+}
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium:hover,
+.tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium:focus {
+  width: 120px;
+  height: 120px;
+}
+@media (max-width: 767px) {
+  .tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium,
+  .tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium:hover,
+  .tasathon .tabs.tabs-campaign .nav-tabs > li .nav-link.medium:focus {
+    width: 100px;
+    height: 100px;
+  }
+}
+.tasathon .tabs.tabs-campaign .tab-content {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: none;
+}
+.tasathon p {
+  color: #5E5E5E;
+  line-height: 1.5;
+  font-size: 1.2em;
+}
+.tasathon p a {
+  color: #8DA4CF !important;
+}
+.tasathon ul {
+  color: #5E5E5E !important;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+.tasathon ul.terms {
+  list-style: decimal;
+}
+.tasathon ul.terms .list {
+  list-style: square;
+  font-size: 1em;
+}
+.tasathon ul li {
+  line-height: 2;
+  letter-spacing: 1px;
+}
+
 /*標準Section內使用*/
 section.section-policy h4 {
   color: #282828;

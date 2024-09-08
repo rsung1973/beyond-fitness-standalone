@@ -23,5 +23,11 @@
     "BookDesc2": "即刻前往預約體驗 ， <br class=\"d-block d-lg-block d-md-none\" />讓Beyond成為與您一起<br class=\"d-block d-lg-none d-md-none\" />實現改變之旅的最佳夥伴！",
     "BookButton": "Let’s get started!",
     "Location": "Location•",
-    "LocationDesc": "分店資訊"
+    "LocationDesc": "分店資訊",
+    "NewsItem": [
+        {
+            "ImgName": "event02-img",
+            "Link": "Campaign"
+        }
+    ]    
 }

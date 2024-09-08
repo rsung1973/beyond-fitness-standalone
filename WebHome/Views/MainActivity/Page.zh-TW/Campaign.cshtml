@@ -1,0 +1,998 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using CommonLib.Utility
+
+@{
+   ModelSource<UserProfile> models;
+   ModelStateDictionary _modelState;
+
+   models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+   _modelState = ViewContext.ModelState;
+   ViewBag.MainClass = "tasathon";
+   ViewBag.MenuDark = false;
+
+   Layout = "~/Views/MainActivity/Template/MainPage.cshtml";
+
+   await Html.RenderPartialAsync("~/Views/MainActivity/Template/GlobalResource.cshtml");
+   dynamic globalResource = ViewContext.HttpContext.Items["GlobalResource"] as dynamic;
+   String lang = ViewBag.Lang ?? "zh-TW";
+   String langPath = lang == "zh-TW"
+      ? "tw"
+      : lang == "en-US"
+      ? "en"
+      : "ja";
+
+    dynamic policyAll = globalResource["Policy"][lang] as dynamic;
+    dynamic policies = policyAll.Items;
+    JArray policy = policies as JArray;
+    dynamic[] item = policy.ToArray();
+}
+
+@section CustomHeader {
+<meta name="description"
+    content="預約體驗教練課程，直接透過線上訊息，電話，E-Mail 預約體驗時間以及了解更多內容。專業教練暖心指導、安全的訓練環境、物理治療、營養規劃、運動防護一次包辦! 個人健康分析資料庫+雲端數據化紀錄,更有效率的為您增進心肺、肌力與體能,新手也能達成理想的體態與健康目標。" />
+
+}
+<!--Banner-->
+<section class="section border-0 m-0 p-0 banner container-background">
+   <div class="container pt-5 h-100">
+      <div class="row align-items-center pt-5 h-100 text-center">
+         <div class="col-12">
+         </div>
+      </div>
+   </div>
+</section>
+<div class="container container-xl-custom container-xl-custom py-5 my-5" id="main">
+				<div class="row">
+					<!--Tab切換-->
+					<div class="col-12 col-lg-auto col-md-12 order-2 order-lg-1 order-md-2 mt-5 mt-lg-1 mt-md-5">
+						<div class="mx-5 mx-lg-0 mx-md-5">
+							<div class="tabs tabs-vertical tabs-custom">
+								<ul class="nav nav-tabs">
+									<li class="nav-item mb-3">
+										<a class="nav-link active" href="#guide" data-bs-toggle="tab"
+											onclick="javascript:scrollToTop();">玩家攻略</a>
+									</li>
+									<li class="nav-item mb-3">
+										<a class="nav-link" href="#threshold" data-bs-toggle="tab" onclick="javascript:scrollToTop();">玩家等級</a>
+									</li>
+									<li class="nav-item mb-3">
+										<a class="nav-link" href="#points" data-bs-toggle="tab"
+											onclick="javascript:scrollToTop();">任務點數回饋</a>
+									</li>
+									<li class="nav-item mb-3">
+										<a class="nav-link" href="#faqs" data-bs-toggle="tab" onclick="javascript:scrollToTop();">常見問題</a>
+									</li>
+								</ul>
+							</div>
+						</div>						
+					</div>
+					<div class="col-12 col-lg-8 col-md-12 px-0 order-1 order-lg-2 order-md-1">
+						<div class="tab-pane tab-pane-navigation active" id="guide">
+							<div class="row px-5 pb-5 pb-lg-0 pb-md-0">
+								<div class="col-12">
+									<h2 class="text-color-tertiary font-weight-normal mb-2 text-uppercase">
+										Player Guide•
+									</h2>
+									<span class="text-3-4 font-weight-medium title-tag-ls d-block ">玩家攻略</span>
+									<div class="divider divider-tertiary divider-small divider-xxs py-4">
+										<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>
+								</div>
+							</div>
+							<div class="row px-0 px-lg-5 px-md-5">
+								<div class="tabs tabs-bottom tabs-center tabs-simple tabs-campaign">
+									<ul class="nav nav-tabs" role="tablist">
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link active" href="#cycle" data-bs-toggle="tab" aria-selected="true"
+												role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/cycle.svg" class="img-fluid mx-auto mt-2">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link" href="#rights" data-bs-toggle="tab" aria-selected="false"
+												tabindex="-1" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/rights.svg" class="img-fluid mx-auto mt-2">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>										
+									</ul>
+									<div class="tab-content mx-5">
+										<div class="tab-pane active" id="cycle" role="tabpanel">
+											<h3 class="font-weight-bold line-height-5 text-center mt-5">
+												玩家等級週期注意事項
+											</h3>
+											<ul class="text-start terms">
+												<li>活動期間：2024/10/01~2025/12/31</li>
+												<li>玩家等級週期：每次等級週期為三個月，分別為1~3月、4~6月、7~9月、10~12月。
+													<span class="font-400 d-block">舉例：玩家於1~3月達成冒險家· Adventurer門檻，將會於4~6月升級為冒險家· Adventurer
+														(4/1起可查詢)。</span>
+												</li>
+												<li>玩家等級升降：玩家等級週期第一日至會員等級週期結束當日晚上22:30，為玩家等級門檻計算區間(1/1 05:00 ~ 3/31 22:30、4/1 05:00 ~ 6/30
+													22:30、7/1 05:00 ~ 9/30
+													22:30、10/1 05:00 ~ 12/31 22:30)，於每季底針對玩家是否達成各等級門檻進行判斷，並於次一玩家等級週期第一日(1/1、4/1、7/1、10/1)進行等級調整。
+												</li>
+												<li>若有任一顧客新加入Beyond Points Taskathon玩家，皆將從新手上路 ·
+													Newcomer開始，待該玩家週期結束，計算該週期交易情形於次一週期調整至新的等級。(新玩家第一個玩家週期之計算區間仍為該等級週期第一日至該等級週期結束當日晚上22:30。例如顧客10/31加入玩家，該玩家週期計算區間仍為10/01~12/31)
+													。</li>
+											</ul>
+										</div>
+										<div class="tab-pane" id="rights" role="tabpanel">
+											<div class="text-center">
+												<h3 class="font-weight-bold line-height-5 text-center mt-5">
+													玩家等級權益注意事項
+												</h3>
+												<ul class="text-start terms">
+													<li>活動期間：2024/10/01~2025/12/31</li>
+													<li>Beyond Points任務牆加碼
+														<ul class="ps-3 list">
+															<li>探險家 · Explorer玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼1倍之 Beyond Points。</li>
+															<li>挑戰家 · Challenger玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼2倍之Beyond Points。</li>
+															<li>大師· Master玩家於該週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼3倍之 Beyond Points。</li>
+															<li>傳奇英雄· Hero玩家於週期期間進行 Beyond 任務牆及固定型任務，將獲得加碼4倍之 Beyond Points。</li>
+															<li>Beyond Points加碼將視週期期間內原任務牆點數之玩家等級做為計算依據。</li>
+															<li>每一玩家週期點數任務牆加碼回饋上限最高3,000點Beyond Points。</li>
+															<li>Beyond 固定型任務包含首次S.R體驗。</li>
+														</ul>
+													</li>												
+												</ul>
+											</div>
+										</div>										
+									</div>
+
+									<hr class="solid my-5 text-color-secondary">
+									<div class="mx-5 px-2">
+										<p class="mb-3 text-3 text-color-dark opacity-7">注意事項：</p>
+										<ul class="ps-3 text-3">
+											<li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 pr@beyond-fitness.com.tw
+											</li>
+											<li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+											<li>本活動記錄均以本公司電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+										</ul>
+									</div>
+								</div>								
+							</div>
+						</div>
+						<div class="tab-pane tab-pane-navigation" id="threshold">
+							<div class="row px-5 pb-5 pb-lg-0 pb-md-0">
+								<div class="col-12">
+									<h2 class="text-color-tertiary font-weight-normal mb-2 text-uppercase">
+										Player Level•
+									</h2>
+									<span class="text-3-4 font-weight-medium title-tag-ls d-block ">玩家等級</span>
+									<div class="divider divider-tertiary divider-small divider-xxs py-4">
+										<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>
+								</div>
+							</div>
+							<div class="row px-0 px-lg-5 px-md-5">
+								<!--新手上路Level0-->
+								<div class="col-12 mt-5">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level0">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms0">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel0" aria-expanded="false" aria-controls="termslevel0">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span
+																class="beyond-toggle-title">新手上路 · Newcomer</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel0" class="collapse show" aria-labelledby="headingTerms0" data-bs-parent="#headingTerms0">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】、【條件二】擇一完成</li>
+														<li>【條件一】
+															<ul>
+																<li>條件名稱：Beyond生效中合約之正式會員。</li>
+																<li>條件說明：擁有本公司生效中合約之正式會員，始符合此條件。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>擁有本公司正式會員帳戶並於會員系統註冊登入成功，且為生效中帳戶，即符合該項條件。</li>
+																		<li>該項條件符合與否，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：Beyond於前一季有單次購買課程(P.T/S.R/P.I)之正式會員。</li>
+																<li>條件說明：擁有本公司單次購買課程之正式會員，始符合此條件。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>擁有本公司正式會員帳戶並於會員系統註冊登入成功，且單次購買課程，即符合該項條件。</li>
+																		<li>該項條件符合與否，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--冒險家Level1-->
+								<div class="col-12 mt-3">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level1">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms1">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel1" aria-expanded="false"
+														aria-controls="termslevel1">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span class="beyond-toggle-title">冒險家· Adventurer</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel1" class="collapse" aria-labelledby="headingTerms1" data-bs-parent="#headingTerms1">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】滿足會員等級至為新手上路 · Newcomer</li>														
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：當季累積P.T 上課數達 6 堂以上。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>複合式顧問合約P.T 課程。</li>
+																		<li>單堂購買P.T課程。</li>
+																		<li>兌換/贈送P.T課程。</li>
+																		<li>企業合作 P.T 課程。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，累計當季P.T上課數達<u class="px-1">6</u>堂（含）以上，始符合此條件（上課數計算項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>完成課前健康自評，即視為確認上課之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件三】
+															<ul>
+																<li>條件名稱：完成活動期間內之固定任務。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>當季完成<u class="px-1">6</u>次健康自評（含PT、PI）。</li>
+																		<li>當季完成<u class="px-1">3</u>次之課後職人質量檢視（含PT、PI、SR）。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，完成活動期間內之固定任務，始符合此條件（固定任務項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>必須透過本公司提供之學生會員系統完成課前健康自評，視為固定任務完成之證明。</li>
+																		<li>必須透過本公司提供之學生會員系統完成課後職人質量檢視，視為固定任務完成之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--探險家Level2-->
+								<div class="col-12 mt-3">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level2">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms2">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel2" aria-expanded="false"
+														aria-controls="termslevel2">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span class="beyond-toggle-title">探險家 · Explorer</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel2" class="collapse" aria-labelledby="headingTerms2" data-bs-parent="#headingTerms2">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】滿足會員等級至為新手上路 · Newcomer</li>
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：當季累積P.T 上課數達<u class="px-1">12</u>堂以上。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>複合式顧問合約P.T 課程。</li>
+																		<li>單堂購買P.T課程。</li>
+																		<li>兌換/贈送P.T課程。</li>
+																		<li>企業合作 P.T 課程。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，累計當季P.T上課數達<u class="px-1">12</u>堂（含）以上，始符合此條件（上課數計算項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>完成課前健康自評，即視為確認上課之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件三】
+															<ul>
+																<li>條件名稱：完成活動期間內之固定任務。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>當季完成<u class="px-1">12</u>次健康自評（含PT、PI）。</li>
+																		<li>當季完成<u class="px-1">6</u>次之課後職人質量檢視（含PT、PI、SR）。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，完成活動期間內之固定任務，始符合此條件（固定任務項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>必須透過本公司提供之學生會員系統完成課前健康自評，視為固定任務完成之證明。</li>
+																		<li>必須透過本公司提供之學生會員系統完成課後職人質量檢視，視為固定任務完成之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--挑戰家Level3-->
+								<div class="col-12 mt-3">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level3">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms3">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel3" aria-expanded="false"
+														aria-controls="termslevel3">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span class="beyond-toggle-title">挑戰家 · Challenger</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel3" class="collapse" aria-labelledby="headingTerms3" data-bs-parent="#headingTerms3">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】滿足會員等級至為新手上路 · Newcomer</li>
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：當季累積P.T 上課數達<u class="px-1">18</u>堂以上。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>複合式顧問合約P.T 課程。</li>
+																		<li>單堂購買P.T課程。</li>
+																		<li>兌換/贈送P.T課程。</li>
+																		<li>企業合作 P.T 課程。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，累計當季P.T上課數達<u class="px-1">18</u>堂（含）以上，始符合此條件（上課數計算項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>完成課前健康自評，即視為確認上課之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件三】
+															<ul>
+																<li>條件名稱：完成活動期間內之固定任務。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>當季完成<u class="px-1">18</u>次健康自評（含PT、PI）。</li>
+																		<li>當季完成<u class="px-1">9</u>次之課後職人質量檢視（含PT、PI、SR）。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，完成活動期間內之固定任務，始符合此條件（固定任務項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>必須透過本公司提供之學生會員系統完成課前健康自評，視為固定任務完成之證明。</li>
+																		<li>必須透過本公司提供之學生會員系統完成課後職人質量檢視，視為固定任務完成之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--挑戰家Level4-->
+								<div class="col-12 mt-3">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level4">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms4">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel4" aria-expanded="false"
+														aria-controls="termslevel4">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span class="beyond-toggle-title">大師 · Master</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel4" class="collapse" aria-labelledby="headingTerms4" data-bs-parent="#headingTerms4">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】滿足會員等級至為新手上路 · Newcomer</li>
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：當季累積P.T 上課數達<u class="px-1">20</u>堂以上。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>複合式顧問合約P.T 課程。</li>
+																		<li>單堂購買P.T課程。</li>
+																		<li>兌換/贈送P.T課程。</li>
+																		<li>企業合作 P.T 課程。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，累計當季P.T上課數達<u class="px-1">20</u>堂（含）以上，始符合此條件（上課數計算項目及方式請見注意事項）。
+																</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>完成課前健康自評，即視為確認上課之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件三】
+															<ul>
+																<li>條件名稱：完成活動期間內之固定任務。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>當季完成<u class="px-1">20</u>次健康自評（含PT、PI）。</li>
+																		<li>當季完成<u class="px-1">10</u>次之課後職人質量檢視（含PT、PI、SR）。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，完成活動期間內之固定任務，始符合此條件（固定任務項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>必須透過本公司提供之學生會員系統完成課前健康自評，視為固定任務完成之證明。</li>
+																		<li>必須透過本公司提供之學生會員系統完成課後職人質量檢視，視為固定任務完成之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!--傳奇英雄Level5-->
+								<div class="col-12 mt-3">
+									<div class="accordion accordion-modern-status accordion-modern3-status-borders accordion-modern3-status-arrow"
+										id="level5">
+										<div class="card card-custom">
+											<div class="card-header" id="headingTerms5">
+												<h4 class="card-title m-0">
+													<a class="accordion-toggle collapsed py-4 px-4 font-weight-medium text-color-dark"
+														data-bs-toggle="collapse" data-bs-target="#termslevel5" aria-expanded="false"
+														aria-controls="termslevel5">
+														<div class="d-inline-flex ps-3 text-3-4">
+															<i class="fa-solid fa-mountain text-color-tertiary pe-2 align-self-center"></i>
+															<span class="beyond-toggle-title">傳奇英雄 · Hero</span>
+														</div>
+													</a>
+												</h4>
+											</div>
+											<div id="termslevel5" class="collapse" aria-labelledby="headingTerms5" data-bs-parent="#headingTerms5">
+												<div class="card-body py-2 px-4 mx-4">
+													<ul>
+														<li>【條件一】滿足會員等級至為新手上路 · Newcomer</li>
+														<li>【條件二】
+															<ul>
+																<li>條件名稱：當季累積P.T 上課數達<u class="px-1">24</u>堂以上。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>複合式顧問合約P.T 課程。</li>
+																		<li>單堂購買P.T課程。</li>
+																		<li>兌換/贈送P.T課程。</li>
+																		<li>企業合作 P.T 課程。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，累計當季P.T上課數達<u class="px-1">24</u>堂（含）以上，始符合此條件（上課數計算項目及方式請見注意事項）。
+																</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>完成課前健康自評，即視為確認上課之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+														<li>【條件三】
+															<ul>
+																<li>條件名稱：完成活動期間內之固定任務。</li>
+																<li>條件狀態：
+																	<ul class="terms">
+																		<li>當季完成<u class="px-1">24</u>次健康自評（含PT、PI）。</li>
+																		<li>當季完成<u class="px-1">12</u>次之課後職人質量檢視（含PT、PI、SR）。</li>
+																	</ul>
+																</li>
+																<li>條件說明：於當期會員等級計算期間，完成活動期間內之固定任務，始符合此條件（固定任務項目及方式請見注意事項）。</li>
+																<li>注意事項：
+																	<ul class="terms">
+																		<li>必須透過本公司提供之學生會員系統完成課前健康自評，視為固定任務完成之證明。</li>
+																		<li>必須透過本公司提供之學生會員系統完成課後職人質量檢視，視為固定任務完成之證明。</li>
+																		<li>該項條件符合與否及累積進度，更新顯示時間依本公司系統批次，以每日顯示之前日資料為準，如有例外狀況，將依照系統更新調整。</li>
+																	</ul>
+																</li>
+															</ul>
+														</li>
+													</ul>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>								
+								<div class="col-12">
+									<hr class="solid my-5 text-color-secondary d-none d-lg-block d-md-block">
+									<p class="mb-3 text-3 text-color-dark opacity-7 mt-5 mt-lg-0 mt-md-0 mx-5 mx-lg-0 mx-md-0">注意事項：</p>
+									<ul class="ps-3 text-3 mx-5 mx-lg-0 mx-md-0">
+										<li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 pr@beyond-fitness.com.tw
+										</li>
+										<li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+										<li>本活動記錄均以本公司電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+									</ul>
+								</div>
+
+							</div>
+						</div>
+						<div class="tab-pane tab-pane-navigation" id="points">
+							<div class="row px-5 pb-5 pb-lg-0 pb-md-0">
+								<div class="col-12">
+									<h2 class="text-color-tertiary font-weight-normal mb-2 text-uppercase">
+										Tasks and <br class="d-block d-lg-none d-md-none" />Points•
+									</h2>
+									<span class="text-3-4 font-weight-medium title-tag-ls d-block ">任務點數回饋</span>
+									<div class="divider divider-tertiary divider-small divider-xxs py-4">
+										<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>
+								</div>
+							</div>
+							<div class="row px-0 px-lg-5 px-md-5">
+								<div class="tabs tabs-bottom tabs-center tabs-simple tabs-campaign">
+									<ul class="nav nav-tabs" role="tablist">
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link medium p-0 active" href="#PT" data-bs-toggle="tab" aria-selected="true" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/PT.svg" class="img-fluid mx-auto mt-2">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link medium p-0" href="#SR" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/SR.svg" class="img-fluid mx-auto mt-2">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link medium p-0" href="#PI" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/PI.svg" class="img-fluid mx-auto mt-2">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+									</ul>
+									<div class="tab-content mx-5 faq">
+										<div class="tab-pane active" id="PT" role="tabpanel">
+											<table class="table py-0 my-5 diff-table align-self-center px-0 py-0 border-0">
+												<thead class="border-0">
+													<tr class="bg-color-dark text-color-primary">
+														<th colspan="9" class="text-center text-color-light text-5 py-3">
+															Beyond Points
+														</th>
+													</tr>
+													<tr class="text-4 py-3">
+														<th class="bg-gold-01 ps-3">條件狀態</th>
+														<th class="text-center bg-gold-03 text-3" width="30%">
+															健康自評
+														</th>
+														<th class="text-center bg-gold-02 text-3"  width="40%">
+															職人質量檢視
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="text-start bg-pink-01 text-4 font-weight-medium py-3 ps-3">
+															複合式顧問合約P.T課程
+														</td>
+														<td class="text-center bg-pink-03 font-weight-semi-bold text-4">10 P</i>
+														</td>
+														<td class="text-center bg-pink-02 font-weight-semi-bold text-4">10 P</i>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start bg-gold-01 text-4 font-weight-medium py-3 ps-3">單堂購買P.T課程
+														</td>
+														<td class="text-center font-weight-semi-bold text-4">10 P</span>
+														</td>
+														<td class="text-center bg-gold-03 font-weight-semi-bold text-4">10 P</i>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="tab-pane" id="SR" role="tabpanel">
+											<table class="table py-0 my-5 diff-table align-self-center px-0 py-0 border-0">
+												<thead class="border-0">
+													<tr class="bg-color-dark text-color-primary">
+														<th colspan="9" class="text-center text-color-light text-5 py-3">
+															Beyond Points
+														</th>
+													</tr>
+													<tr class="text-4 py-3">
+														<th class="bg-gold-01 ps-3">條件狀態</th>
+														<th class="text-center bg-gold-02 text-3" width="40%">
+															職人質量檢視
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="text-start bg-pink-01 text-4 font-weight-medium py-3 ps-3">
+															運動恢復合約課程
+														</td>
+														<td class="text-center bg-pink-02 font-weight-semi-bold text-4">10 P</i>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start bg-gold-01 text-4 font-weight-medium py-3 ps-3">複合式顧問合約S.R課程（含加購）</td>
+														<td class="text-center bg-gold-03 font-weight-semi-bold text-4">10 P</i>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start bg-pink-01 text-4 font-weight-medium py-3 ps-3">
+															單堂購買S.R課程
+														</td>
+														<td class="text-center bg-pink-02 font-weight-semi-bold text-4">10 P</i>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start bg-gold-01 text-4 font-weight-medium py-3 ps-3">複合式顧問合約S.R課程（含加購）
+														</td>
+														<td class="text-center bg-gold-03 font-weight-semi-bold text-4">5 P</i>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+										<div class="tab-pane" id="PI" role="tabpanel">
+											<table class="table py-0 my-5 diff-table align-self-center px-0 py-0 border-0">
+												<thead class="border-0">
+													<tr class="bg-color-dark text-color-primary">
+														<th colspan="9" class="text-center text-color-light text-5 py-3">
+															Beyond Points
+														</th>
+													</tr>
+													<tr class="text-4 py-3">
+														<th class="bg-gold-01 ps-3">條件狀態</th>
+														<th class="text-center bg-gold-03 text-3" width="30%">
+															健康自評
+														</th>
+														<th class="text-center bg-gold-02 text-3" width="40%">
+															職人質量檢視
+														</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<td class="text-start bg-pink-01 text-4 font-weight-medium py-3 ps-3">
+															全方位自主體能訓練課程
+														</td>
+														<td class="text-center bg-pink-03 font-weight-semi-bold text-4">5 P</i>
+														</td>
+														<td class="text-center bg-pink-02 font-weight-semi-bold text-4">5 P</i>
+														</td>
+													</tr>
+													<tr>
+														<td class="text-start bg-gold-01 text-4 font-weight-medium py-3 ps-3">有氧自主體能訓練課程
+														</td>
+														<td class="text-center font-weight-semi-bold text-4">3 P</span>
+														</td>
+														<td class="text-center bg-gold-03 font-weight-semi-bold text-4">3 P</i>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+								
+									<hr class="solid my-5 text-color-secondary">
+									<div class="mx-5 px-2">
+										<p class="mb-3 text-3 text-color-dark opacity-7">注意事項：</p>
+										<ul class="ps-3 text-3">
+											<li>為免文字產生歧義，將舊制Beyond幣統稱舊幣，新制下統稱Beyond Points(以下亦稱為點數)。</li>
+											<li>凡Beyond會員即可參與Beyond Points Taskathon點數累積活動，相關點數累積說明事項如下，有關點數使用方式及會員權益請另參照Beyond會員權益約定條款。Beyond Fitness保留隨時修改、變更、終止以上任務之權利，其他未盡事宜將於後續公告並實施。</li>
+											<li>Beyond Points累積乃自成為Beyond Points Taskathon後始啟動累點機制，如為加入Beyond舊會員系統前之交易恕無法溯及既往，惟2024/10/01之前，每1點舊制Beyond幣(以下簡稱「舊幣」)，得交換100點Beyond Points。</li>
+											<li>Beyond Points有效期限至點數產生次年12/31止，未兌換完畢之點數逾期後將全數消除，並不得要求變現、轉換其他點數、商品等。(例如：2024年所產生之點數，點數有效期限至2025/12/31止，未兌換點數於2026/1/1全數消除。)</li>
+											<li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 pr@beyond-fitness.com.tw</li>
+											<li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+											<li>本活動記錄均以本公司電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="tab-pane tab-pane-navigation" id="faqs">
+							<div class="row px-5 pb-5 pb-lg-0 pb-md-0">
+								<div class="col-12">
+									<h2 class="text-color-tertiary font-weight-normal mb-2 text-uppercase">
+										FAQ•
+									</h2>
+									<span class="text-3-4 font-weight-medium title-tag-ls d-block ">常見問題</span>
+									<div class="divider divider-tertiary divider-small divider-xxs py-4">
+										<hr class="my-0" style="width: 50px; height: 3px;">
+									</div>
+								</div>
+							</div>
+							<div class="row px-0 px-lg-5 px-md-5">
+								<div class="tabs tabs-bottom tabs-center tabs-simple tabs-campaign">
+									<ul class="nav nav-tabs" role="tablist">
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link p-0 active" href="#faqMembers" data-bs-toggle="tab" aria-selected="true" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/member.svg" class="img-fluid mx-auto">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+										<li class="nav-item mx-2 mx-lg-auto md-md-auto" role="presentation">
+											<a class="nav-link p-0 nospace" href="#faqPoints" data-bs-toggle="tab" aria-selected="false" tabindex="-1" role="tab">
+												<span class="featured-boxes featured-boxes-style-6 p-0 m-0">
+													<span class="featured-box featured-box-primary featured-box-effect-6 p-0 m-0">
+														<span class="box-content p-0 m-0">
+															<img src="../images/icons/campaign/points.svg" class="img-fluid mx-auto">
+														</span>
+													</span>
+												</span>
+											</a>
+										</li>
+									</ul>
+									<div class="tab-content mx-5 mt-5">
+										<div class="tab-pane active" id="faqMembers" role="tabpanel">
+											<div class="toggle toggle-campaign mx-0 my-4" data-plugin-toggle
+												data-plugin-options="{ 'isAccordion': true }">
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">		
+															<i class="pe-1 text-color-dark">1.</i>
+															<span class="beyond-toggle-title">Beyond Points Taskathon是什麼？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">
+															Beyond Points Taskathon是Beyond Fitness提供顧客全方位的任務累積點數全新活動。加入Beyond Points
+															Taskathon會員後，完成指定任務可獲得點數，並將依照各會員週期門檻達成狀態，於下個週期更新會員等級，等級越高點數累積速度越快，Beyond
+															Points可用於商品兌換，還可兌換不同課程類型上課使用卷等，讓每次任務成為後續往來基礎，打造點數循環。
+														</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">2.</i>
+															<span class="beyond-toggle-title">誰可以加入Beyond Points Taskathon會員？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">只要購買Beyond合約或是於前一季有單次購買課程（P.T/P.I/S.R）之正式會員，即可透過Beyond學生會員系統加入Beyond Points Taskathon 會員。</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">3.</i>
+															<span class="beyond-toggle-title">Beyond Points Taskathon會員專區在哪裡？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">您可以透過以下連結， 進入Beyond Points Taskathon 會員專區喔！<br/><a href="https://bpoints.beyond-fitness.com.tw" target="_blank">https://www.beyond-fitness.com.tw/Member/</a></p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">4.</i>
+															<span class="beyond-toggle-title">什麼情形會喪失會員資格？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">如果您未擁有本公司生效中合約或於前一季未有任何單次購買課程者（P.T/P.I/S.R），則無法再使用Beyond Points Taskathon會員服務。</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">5.</i>
+															<span class="beyond-toggle-title">Beyond Points Taskathon會員等級是什麼？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">Beyond Points Taskathon推出全新會員等級機制，希望透過不同等級回饋及權益，鼓勵會員頻繁完成各項任務，目前等級機制共有六級，除了會員基本權益外，也將不定期推出任務限時加碼活動喔！</p>
+														<p class="ps-4">加入Beyond Points Taskathon會員初始等級為新手上路 · Newcomer，並享以下Beyond Points Taskathon會員基本權益</p>
+														<ul class="mx-4">
+															<li>任務牆點數回饋</li>
+														</ul>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">6.</i>
+															<span class="beyond-toggle-title">Beyond Points Taskathon會員等級多久調整一次？怎麼調整？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<ul class="mx-4">
+															<li>會員等級週期：每次等級週期為三個月，分別為1~3月、4~6月、7~9月、10~12月。</li>
+															<li>會員等級升降：會員等級週期第一日至會員等級週期結束前一日，為會員等級門檻計算區間(1/1 05:00 ~ 3/31 22:30、4/1 05:00 ~ 6/30 22:30、7/1 05:00 ~ 9/30 22:30、10/1
+															05:00 ~ 12/31 22:30)，於每季底針對會員是否達成各等級門檻進行判斷，並於次一會員等級週期第一日(1/1、4/1、7/1、10/1)進行等級調整。</li>
+															<li>若有任一顧客新加入Beyond Points Taskathon會員，皆將從新手上路 · Newcomer開始，待該會員週期結束，計算該週期交易情形，於次一週期調整至新的等級。</li>
+														</ul>
+													</div>
+												</section>
+											</div>											
+										</div>
+										<div class="tab-pane" id="faqPoints" role="tabpanel">
+											<div class="toggle toggle-campaign mx-0 my-4" data-plugin-toggle
+												data-plugin-options="{ 'isAccordion': true }">
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">1.</i>
+															<span class="beyond-toggle-title">什麼是Beyond Points？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">															
+															Beyond Points Taskathon會員的點數服務，可以從各項指定任務活動獲得點數，並可兌換超過15項商品或兌換各類課程，未來將持續新增獲得及使用點數的地方唷！
+														</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">2.</i>
+															<span class="beyond-toggle-title">該如何集點？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">Beyond Points Taskathon會員完成任務可獲得相對應點數(例如：健康自評、課後職人質量檢視、指定特殊任務等)，另外將不定期推出活動可累積Beyond Points唷！</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">3.</i>
+															<span class="beyond-toggle-title">Beyond Points有使用期限嗎？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">Beyond Points有效期限至點數產生次年12/31止，未兌換完畢之點數逾期後將全數消除，並不得要求變現、轉換其他點數、商品等。(例如：2024年所產生之點數，點數有效期限至2025/12/31止，未兌換點數於2026/1/1全數消除。)</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">4.</i>
+															<span class="beyond-toggle-title">Beyond Points點數專區在哪裡？</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">登入Beyond Points Taskathon會員專區→進入任務集點，就可以看到【點數專區】囉！即可體驗點數各項服務，包含查詢加扣點紀錄、兌換商品！</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">5.</i>
+															<span class="beyond-toggle-title">Beyond Points使用明細可以在哪邊查詢?</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">登入Beyond Points Taskathon會員專區→進入任務集點，就可以看到【點數專區】囉！點選點數專區中的【查詢】按鈕，就可以查到累點及兌點紀錄囉！</p>
+													</div>
+												</section>
+												<section class="toggle">
+													<a class="toggle-title text-color-dark">
+														<div class="d-inline-flex ps-1">
+															<i class="pe-1 text-color-dark">6.</i>
+															<span class="beyond-toggle-title">舊制Beyond幣(以下簡稱「舊幣」交換Beyond Points規則</span>
+														</div>
+													</a>
+													<div class="toggle-content">
+														<p class="ps-4">2024/10/01之前，每1點舊制Beyond幣(以下簡稱「舊幣」)，得交換100點Beyond Points。</p>
+													</div>
+												</section>
+											</div>
+										</div>
+									</div>							
+									<div class="mx-5 px-2">
+										<p class="mb-3 text-3 text-color-dark opacity-7">注意事項：</p>
+										<ul class="ps-3 text-3">
+											<li>本公司保留隨時修改、變更、暫停或終止本活動及替換其他等值贈品之權利，且無須為事前通知。若有其他未盡事宜，悉依本公司相關規定或解釋。若有相關活動問題請留言本公司Email信箱 pr@beyond-fitness.com.tw</li>
+											<li>如有任何因電腦、網路、電話、技術或不可歸責本行之事由，而使參加活動者，所提供之資料有遺失、錯誤、無法辨識或毀損等情況，本公司不負任何法律責任，參與本活動者亦不得因此異議。</li>
+											<li>本活動記錄均以本公司電腦系統紀錄為準。本公司有權檢視各項交易紀錄，若參加人有違反活動注意事項之行為或涉及不正當得利及非法行為，本公司將公告排除其參與活動及回饋資格。</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+</div>
+@section TailPageJavaScriptInclude {
+   <script>
+      function scrollToTop() {
+         // 讓捲軸用動畫的方式移動到 #header 的 top 位置並加入動畫效果
+         $([document.documentElement, document.body]).animate({
+            scrollTop: $("#main").offset().top
+         }, 2000);
+      }
+   </script>
+}

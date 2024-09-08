@@ -15268,6 +15268,44 @@ section.timeline .timeline-box .owl-carousel {
 .toggle.toggle-commitment .toggle:last-child {
   border-bottom: 1px solid #EBD7BF;
 }
+.toggle.toggle-campaign .toggle {
+  margin: 0;
+}
+.toggle.toggle-campaign .toggle > label,
+.toggle.toggle-campaign .toggle > .toggle-title {
+  background: transparent;
+  color: #282828;
+  border-left: 0;
+  border-top: 1px solid #EBD7BF;
+  border-radius: 0;
+  margin: 0;
+  padding: 30px 20px 30px 0;
+  font-weight: 500;
+  font-size: 1.3em;
+  letter-spacing: 2px;
+}
+.toggle.toggle-campaign .toggle > label:before,
+.toggle.toggle-campaign .toggle > .toggle-title:before {
+  border-top: 2px solid rgba(0, 0, 0, 0.25);
+  border-right: 2px solid rgba(0, 0, 0, 0.25);
+}
+.toggle.toggle-campaign .toggle > label i,
+.toggle.toggle-campaign .toggle > .toggle-title i {
+  color: #fff;
+}
+.toggle.toggle-campaign .toggle .toggle-content > p {
+  font-size: 1.2em !important;
+  padding: 20px 0 40px 0;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  line-height: 28px;
+}
+.toggle.toggle-campaign .toggle.active > .toggle-title:before {
+  right: 10px !important;
+}
+.toggle.toggle-campaign .toggle:last-child {
+  border-bottom: 1px solid #EBD7BF;
+}
 
 /* Blockquotes */
 blockquote {
