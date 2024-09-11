@@ -729,7 +729,7 @@ input::placeholder {
 
 /*Level Strategy表格*/
 .theme-dark .level-table {
-  border-radius: 30px;
+  border-radius: 10px;
   overflow: hidden;
   border: 1px solid #EBD7B4 !important;
 }
@@ -782,7 +782,7 @@ input::placeholder {
 }
 
 .level-table {
-  border-radius: 30px;
+  border-radius: 10px;
   overflow: hidden;
 }
 .level-table > :not(caption) > * > * {
