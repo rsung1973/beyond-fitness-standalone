@@ -35,7 +35,8 @@ namespace WebHome.Controllers
             //};
 
             //var json = jsonData.JsonStringify();
-            return RedirectToAction("Main", "MainActivity");
+            //return RedirectToAction("Main", "MainActivity");
+            return Redirect(AppSettings.Default.WebHomePage);
             //return View("~/Views/Home/Index.cshtml");
         }
 

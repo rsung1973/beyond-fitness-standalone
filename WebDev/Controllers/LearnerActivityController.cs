@@ -1470,7 +1470,10 @@ namespace WebHome.Controllers
                 viewModel.RegisterID = tmpModel.RegisterID;
             }
 
-            var item = models.GetTable<LessonFeedBack>().Where(l => l.LessonID == viewModel.LessonID).FirstOrDefault();
+            var item = models.GetTable<LessonFeedBack>()
+                        .Where(l => l.LessonID == viewModel.LessonID)
+                        .Where(l => l.RegisterID == viewModel.RegisterID)
+                        .FirstOrDefault();
 
             return Json(new { result = true, done = item?.CommitAssessment.HasValue == true });
 
