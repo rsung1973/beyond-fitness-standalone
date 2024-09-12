@@ -126,9 +126,11 @@ namespace WebHome.Properties
 
         public String BFDbConnection { get; set; }
 
-        public String GA_Key { get; set; } = "G-Y4MTSQRG5E";
-
         public String GTM_Key { get; set; } = "GTM-MPFS89SL";
+
+        public String BPointsGTM_Key { get; set; } = "GTM-PFN8CHCM";
+
+        public String EIPGTM_Key { get; set; } = "GTM-PHVLDDJ8";
 
         public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList");
         public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyLog";

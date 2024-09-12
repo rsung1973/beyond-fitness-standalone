@@ -36,7 +36,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover" />
-    <title>Beyond Fitness</title>
+    <title>Beyond Points Taskathon 任務馬拉送</title>
     <link rel="manifest" href="../_manifest.json" data-pwa-version="set_in_manifest_and_pwa_js">
     <meta name="author" content="beyond-fitness.com.tw">
     <!-- Favicon -->
@@ -70,8 +70,9 @@
 
 <body class="detect-dark-mode" data-highlight="beyond">
     <!-- Google Tag Manager (noscript) -->
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=@Html.Raw(WebHome.Properties.AppSettings.Default.GTM_Key)" height="0" width="0"
-            style="display:none;visibility:hidden"></iframe></noscript>
+    <noscript><iframe
+            src="@Html.Raw($"https://www.googletagmanager.com/ns.html?id={WebHome.Properties.AppSettings.Default.BPointsGTM_Key}")"
+            height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
     <div id="preloader" class="color-beyondwhite-dark">
         <div class="preloader-body">
