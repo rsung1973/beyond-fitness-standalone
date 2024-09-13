@@ -291,7 +291,7 @@
                                                 <div class="list_td rt">
                                                     @foreach (var trial in TrialConsoleController.Assigned)
                                                     {
-                                                        <label class="fancy-radio custom-color-darkteal">
+                                                        <label class="fancy-radio custom-color-pink">
                                                             <input name="Status" value="@(trial)" type="radio" checked="@(_model.Status == trial || (!_model.Status.HasValue && trial == (int)TrialLearner.TrialStatusDefinition.尚未聯繫))" />
                                                             <span><i></i>@((TrialLearner.TrialStatusDefinition)trial)</span>
                                                         </label>
@@ -371,7 +371,7 @@
                                                 <div class="list_td rt">
                                                     @foreach (var trial in TrialConsoleController.AssignedTrial)
                                                     {
-                                                        <label class="fancy-radio custom-color-darkteal">
+                                                        <label class="fancy-radio custom-color-pink">
                                                             <input name="Status" value="@(trial)" type="radio" checked="@(_model.Status == trial)" />
                                                             <span><i></i>@((TrialLearner.TrialStatusDefinition)trial)</span>
                                                         </label>
