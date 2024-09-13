@@ -75,8 +75,14 @@
             </div>
         </div>
     </div>
-    <!--本月發票卡片-->
-    <div class="container-fluid">
+    <!--我的發票卡片-->
+    @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/AboutInvoice.cshtml", _model);
+    }    
+    <!--當期電子發票-->
+    <div class="container-fluid">     
+        <h4 class="card-outbound-header">當期電子發票</h4>   
         <div class="row clearfix">            
             <div class="col-lg-12">
                 <div class="card">

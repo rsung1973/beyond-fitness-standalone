@@ -35,7 +35,7 @@
 }
 
 <div class="container-fluid">
-    <h4 class="card-outbound-header">我的電子發票</h4>
+    <h4 class="card-outbound-header">本日電子發票</h4>
     <div class="card widget_3" onclick="$('').launchDownload('@Html.Raw(Url.Action("InvoiceOverview", "ConsoleHome"))', { });">
         <ul class="row clearfix list-unstyled m-b-0">
             @foreach (var branch in models.GetTable<BranchStore>())

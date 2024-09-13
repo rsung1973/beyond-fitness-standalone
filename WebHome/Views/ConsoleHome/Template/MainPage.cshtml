@@ -344,7 +344,7 @@
                     {
                         <li>
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });">
-                                <i class="zmdi zmdi-accounts"></i><span>我的考核</span>
+                                <i class="zmdi zmdi-assignment-account"></i><span>我的考核</span>
                             </a>
                         </li>
                     }
@@ -370,6 +370,12 @@
                         <a href="@(Url.Action("ReportIndex","ConsoleHome"))"><i class="zmdi zmdi-download"></i><span>我的下載</span> </a>
                     </li>
 
+                }
+                @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin())
+                {
+                    <li>
+                        <a href="@(Url.Action("InvoiceOverview","ConsoleHome"))"><i class="zmdi zmdi-battery-flash"></i><span>電子發票</span> </a>
+                    </li>
                 }
                 @if (_model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
                 {
