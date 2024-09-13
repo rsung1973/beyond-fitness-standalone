@@ -93,7 +93,7 @@
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
                             <i class="fa fa-moon color-magenta-light"></i>
                             <input type="number" class="form-control validate-number" id="SleepDuration" placeholder="8" name="SleepDuration" value="@($"{GetItem(assessment,"SleepDuration")?.Score:.}")" />
-                            <label for="SleepDuration" class="color-theme font-500 font-15">睡眠時間(小時)</label>
+                        <label for="SleepDuration" class="color-theme font-500 font-15">睡眠時間 Sleeping hours</label>
                             <i class="fa fa-times disabled invalid color-red-dark"></i>
                             <i class="fa fa-check disabled valid color-green-dark"></i>
                             <em class="font-13">(必要輸入)</em>
@@ -107,13 +107,13 @@
                         <div class="input-style has-borders input-style-always-active has-icon validate-field mb-4">
                             <i class="fa fa-tint color-blue-dark"></i>
                             @*<input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />*@
-                            <label for="Hydration" class="color-theme font-500 font-15">水分攝取</label>
+                            <label for="Hydration" class="color-theme font-500 font-15">水分攝取 Fluid intake</label>
                             <select id="Hydration" class="font-15" name="WaterIntake">
                                 <option value="" disabled selected>近8小時水分攝取</option>
-                                <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">極度缺乏(目前馬上補充也還是缺乏)</option>
-                                <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">有點缺乏(即時補充可以接近正常狀態)</option>
-                                <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">及格(差不多正常)</option>
-                                <option value="4" selected="@(assessmentItem?.SelectedIndex == 4)">良好(有補充並且有多攝取一些)</option>
+                                <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">1 - 極度缺乏(目前馬上補充也還是缺乏)</option>
+                                <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">3 - 有點缺乏(即時補充可以接近正常狀態)</option>
+                                <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">6 - 及格(差不多正常)</option>
+                                <option value="4" selected="@(assessmentItem?.SelectedIndex == 4)">8 - 良好(有補充並且有多攝取一些)</option>
                             </select>
                             <i class="fa fa-times disabled invalid color-red-dark"></i>
                             <i class="fa fa-check disabled valid color-green-dark"></i>
@@ -124,8 +124,9 @@
                     <div class="col-6 col-lg-6 col-md-6 my-2">
                         <a href="#" data-menu="health-info">
                             <span class="color-theme font-500 font-15">
-                                生理疲勞<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
+                                生理疲勞<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
                             </span>
+                            <span class="color-theme font-13">Physical fatigue</span>
                         </a>
                         <div class="mx-auto mt-2">
                             <div class="stepper rounded-s float-start">
@@ -143,8 +144,9 @@
                     <div class="col-6 col-lg-6 col-md-6 my-2">
                         <a href="#" data-menu="health-info">
                             <span class="color-theme font-500 font-15">
-                                心理壓力<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="blue-dark" class="ms-1"></i>
+                                心理壓力<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
                             </span>
+                            <span class="color-theme font-13">Mental stress</span>
                         </a>
                         <div class="mx-auto mt-2">
                             <div class="stepper rounded-s float-start">
@@ -177,7 +179,7 @@
             <div class="d-flex">
                 <div class="me-auto">
                     <h4 class="font-600">請詳閱並同意以下聲明事項</h4>
-                    <p class="font-11 mt-n2 mb-3">版本更新日期：2024/04/30</p>
+                <p class="font-11 mt-n2 mb-3">Read and Agree to the Following Statement</p>
                 </div>
                 <div class="ms-auto">
                     <i data-feather="file-text" data-feather-line="1" data-feather-size="40" data-feather-color="green-dark" data-feather-bg="green-fade-light">
@@ -190,7 +192,7 @@
                 <input class="form-check-input" type="checkbox" value="true" id="checkTerms" onclick="return false;" name="CheckTerms" />
                 <label class="form-check-label font-15 ms-n1 bg- mx-0" for="checkTerms">
                     <a href="#"
-                       data-menu="health-declaration-terms" class="color-highlight"><u>課前健康狀況自我檢視聲明書</u></a>
+                       data-menu="health-declaration-terms" class="color-highlight"><u>課前健康狀況自我檢視聲明書<small class="font-13 pe-1">Waiver</small></u></a>
                 </label>
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2"></i>
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2"></i>
@@ -199,7 +201,7 @@
             <div class="pt-4"></div>
             <div class="form-check icon-check py-2">
                 <input class="form-check-input" type="checkbox" value="true" id="agree" name="Agree" />
-                <label class="form-check-label font-15 ms-n1 bg- mx-0 color-theme" for="agree">本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</label>
+                <label class="form-check-label font-15 ms-n1 bg- mx-0 color-theme" for="agree">本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。<small class="d-block">I hereby declare and certify the above personal health information as true.</small></label>
                 <i style="margin-top:-1px;" class="icon-check-1 fa fa-circle color-gray-dark font-20 py-2"></i>
                 <i style="margin-top:-1px;" class="icon-check-2 fa fa-check-circle font-20 color-highlight py-2"></i>
             </div>
