@@ -410,17 +410,30 @@ input::placeholder {
 }
 
 .splide__slide .splide01 .container-background {
-  height: 100vh;
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
   background-image: url("../images/walkthrough/splide-01-lg.jpg");
+  /* iPad直板 */
   /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide01 .container-background {
+    background-image: url("../images/walkthrough/splide-01-md.jpg");
+  }
 }
 @media (max-width: 767px) {
   .splide__slide .splide01 .container-background {
     background-image: url("../images/walkthrough/splide-01-sm.jpg");
   }
 }
+.splide__slide .splide01 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0) 33%, rgb(40, 40, 40) 50%, rgba(40, 40, 40, 0.1) 65%, rgba(40, 40, 40, 0.23) 80%, rgb(40, 40, 40) 100%) !important;
+}
 .splide__slide .splide02 .container-background {
-  height: 100vh;
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
   background-image: url("../images/walkthrough/splide-02-lg.jpg");
   /* iPad直板 */
   /* 手機版 */
@@ -435,18 +448,34 @@ input::placeholder {
     background-image: url("../images/walkthrough/splide-02-sm.jpg");
   }
 }
+.splide__slide .splide02 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0.1) 50%, rgba(40, 40, 40, 0.8) 70%, rgb(40, 40, 40) 100%) !important;
+}
 .splide__slide .splide03 .container-background {
-  height: 100vh;
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
   background-image: url("../images/walkthrough/splide-03-lg.jpg");
+  /* iPad直板 */
   /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide03 .container-background {
+    background-image: url("../images/walkthrough/splide-03-md.jpg");
+  }
 }
 @media (max-width: 767px) {
   .splide__slide .splide03 .container-background {
     background-image: url("../images/walkthrough/splide-03-sm.jpg");
   }
 }
+.splide__slide .splide03 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0.3) 20%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
+}
 .splide__slide .splide04 .container-background {
-  height: 100vh;
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
   background-image: url("../images/walkthrough/splide-04-lg.jpg");
   /* iPad直板 */
   /* 手機版 */
@@ -460,6 +489,93 @@ input::placeholder {
   .splide__slide .splide04 .container-background {
     background-image: url("../images/walkthrough/splide-04-sm.jpg");
   }
+}
+.splide__slide .splide04 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0) 68%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
+}
+.splide__slide .splide05 .container-background {
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
+  background-image: url("../images/walkthrough/splide-05-lg.jpg");
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide05 .container-background {
+    background-image: url("../images/walkthrough/splide-05-md.jpg");
+  }
+}
+@media (max-width: 767px) {
+  .splide__slide .splide05 .container-background {
+    background-image: url("../images/walkthrough/splide-05-sm.jpg");
+  }
+}
+.splide__slide .splide05 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0) 68%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
+}
+.splide__slide .splide06 .container-background {
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
+  background-image: url("../images/walkthrough/splide-06-lg.jpg");
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide06 .container-background {
+    background-image: url("../images/walkthrough/splide-06-md.jpg");
+  }
+}
+@media (max-width: 767px) {
+  .splide__slide .splide06 .container-background {
+    background-image: url("../images/walkthrough/splide-06-sm.jpg");
+  }
+}
+.splide__slide .splide06 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0.3) 40%, rgba(40, 40, 40, 0) 45%, rgba(40, 40, 40, 0) 70%, rgb(40, 40, 40) 100%) !important;
+}
+.splide__slide .splide07 .container-background {
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
+  background-image: url("../images/walkthrough/splide-07-lg.jpg");
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide07 .container-background {
+    background-image: url("../images/walkthrough/splide-07-md.jpg");
+  }
+}
+@media (max-width: 767px) {
+  .splide__slide .splide07 .container-background {
+    background-image: url("../images/walkthrough/splide-07-sm.jpg");
+  }
+}
+.splide__slide .splide07 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0.8) 20%, rgba(40, 40, 40, 0.1) 30%, rgba(40, 40, 40, 0) 70%, rgba(40, 40, 40, 0) 100%) !important;
+}
+.splide__slide .splide08 .container-background {
+  background-size: 100% 100vh !important;
+  background-repeat: no-repeat !important;
+  background-position: top center;
+  background-image: url("../images/walkthrough/splide-08-lg.jpg");
+  /* iPad直板 */
+  /* 手機版 */
+}
+@media (max-width: 990px) and (min-width: 768px) {
+  .splide__slide .splide08 .container-background {
+    background-image: url("../images/walkthrough/splide-08-md.jpg");
+  }
+}
+@media (max-width: 767px) {
+  .splide__slide .splide08 .container-background {
+    background-image: url("../images/walkthrough/splide-08-sm.jpg");
+  }
+}
+.splide__slide .splide08 .card-overlay.bg-gradient {
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0.1) 30%, rgba(40, 40, 40, 0) 70%, rgb(40, 40, 40) 100%) !important;
 }
 
 .card-overlay-infinite.login {
