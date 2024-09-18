@@ -309,7 +309,7 @@
                             </a>
                         </div>
                         <div class="detail">
-                            <h4 style="cursor:pointer;" onclick="showLoading(); $('').launchDownload('@Url.Action("OfficeLogin","Account")', {});">
+                            <h4 style="cursor:pointer;" onclick="showLoading(); $('').launchDownload('@Url.Action("OfficeLogin","Account")', { 'Logout': true });">
                                 @(_model.RealName)
                                 <i class="zmdi zmdi-power"></i>
                             </h4>
@@ -411,7 +411,7 @@
     @RenderBody()
     @RenderSection("TailPageJavaScriptInclude", false)
 
-    <script src="bundles/mainscripts.bundle.js"></script>
+    <script src="bundles/mainscripts.bundle.js?1.0"></script>
     <script type="text/javascript">
         $(function () {
             $(window).bind("pageshow", function (event) {

@@ -98,6 +98,7 @@ namespace WebHome.Models.ViewModel
         public String Controller { get;set; }
         public String Action { get; set; }
         public DateTime? NotAfter { get; set; }
+        public bool? Logout { get; set; }
 
     }
 

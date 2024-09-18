@@ -26,7 +26,15 @@
 
 
 <head>
-
+    <!-- Google Tag Manager -->
+    <script>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+                })(window, document, 'script', 'dataLayer', '@Html.Raw(WebHome.Properties.AppSettings.Default.EIPGTM_Key)');
+    </script>
+    <!-- End Google Tag Manager -->
     <meta charset="utf-8">
 
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
@@ -35,7 +43,7 @@
 
     <meta name="description" content="Responsive Bootstrap 4 and web Application ui kit.">
 
-    <title>BEYOND FITNESS 全方位雲端管理</title>
+    <title>Beyond Fitness企業內部雲端管理平台</title>
 
     <!-- Favicon-->
 
@@ -117,7 +125,12 @@
 
 
 <body class="">
-
+    <!-- Google Tag Manager (noscript) -->
+    <noscript>
+        <iframe src="@Html.Raw($"https://www.googletagmanager.com/ns.html?id={WebHome.Properties.AppSettings.Default.EIPGTM_Key}")"
+                height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <!-- WRAPPER -->
 
     <div id="wrapper">
@@ -188,7 +201,7 @@
             $('').launchDownload('@(Url.Action("SignOn", "Account"))', $formData);
         }
     </script>
-    @{ 
+    @{
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/ReportInputError.cshtml");
     }
 </body>

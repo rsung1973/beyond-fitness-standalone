@@ -20,6 +20,8 @@
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
+    StageProgress currentStage;
+
     int? AppraiseLevel(UserProfile learner,IQueryable<LessonTime> lessons, IQueryable<IGrouping<int, GameLevelRequirement>> requirements)
     {
         //var appraised = lessons.Where(l =>
@@ -65,7 +67,52 @@
             };
             models.GetTable<Player>().InsertOnSubmit(player);
         }
+
         player.PlayerLevel = levelID;
+        models.SubmitChanges();
+    }
+
+    void ApplyLevelReward(UserProfile learner)
+    {
+        //任務牆點數回饋加碼
+        if (currentStage != null)
+        {
+            var player = models.GetTable<Player>()
+                .Where(p => p.UID == learner.UID)
+                .Where(p => p.ProgressID == currentStage.ProgressID)
+                .FirstOrDefault();
+
+            var totalPoints = models.GetTable<BonusTransaction>()
+                .Where(t => t.UID == learner.UID)
+                .Where(t => t.TransactionDate >= currentStage.StartDate)
+                .Where(t => t.TransactionDate < currentStage.EndExclusiveDate)
+                .Where(t => t.CampaignMissionBonus != null)
+                .Sum(t => t.TransactionPoint);
+
+            if (totalPoints > 0)
+            {
+                var rewardItem = player?.GameLevel.GameLevelReward
+                        .Where(r => r.RewardID == (int)GameLevelReward.RewardDefinition.任務牆點數回饋加碼)
+                        .FirstOrDefault();
+
+                if (rewardItem?.Reward > 0)
+                {
+                    var account = learner.UID.PromptDepositAccount(models);
+                    int awardPoints = totalPoints * rewardItem.Reward / 100;
+                    var txn = new BonusTransaction
+                    {
+                        UID = account.UID,
+                        TransactionPoint = awardPoints,
+                        TransactionDate = DateTime.Now,
+                        Reason = $"{GameLevelReward.RewardDefinition.任務牆點數回饋加碼}:{awardPoints}({totalPoints}*{rewardItem.Reward}%)",
+                    };
+                    models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
+                    models.SubmitChanges();
+
+                    account.CommitBonusSettlement(models);
+                }
+            }
+        }
         models.SubmitChanges();
     }
 
@@ -78,6 +125,7 @@
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
     var Response = ViewContext.HttpContext.Response;
 
+    currentStage = models.PromptCurrentStage();
     DateTime start = new DateTime(2024, 7, 1);
     DateTime exclusiveEnd = new DateTime(2024, 10, 1);
     var stage = models.GetTable<StageProgress>()
@@ -94,11 +142,14 @@
 
         foreach (var learner in items)
         {
+
+            ApplyLevelReward(learner);
+
             var lessons = models.GetTable<LessonTime>()
-                    .Where(l => l.LessonAttendance != null)
-                    .Where(l => l.ClassTime >= start)
-                    .Where(l => l.ClassTime < exclusiveEnd)
-                    .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
+            .Where(l => l.LessonAttendance != null)
+            .Where(l => l.ClassTime >= start)
+            .Where(l => l.ClassTime < exclusiveEnd)
+            .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
 
             if (lessons.Any())
             {

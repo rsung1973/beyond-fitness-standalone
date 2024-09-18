@@ -48,8 +48,18 @@ namespace WebHome.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult OfficeLogin(LoginViewModel viewModel)
+        public async Task<ActionResult> OfficeLoginAsync(LoginViewModel viewModel)
         {
+            if(!(viewModel.Logout == true))
+            {
+                var profile = await HttpContext.GetUserAsync();
+
+                if (profile != null)
+                {
+                    return Redirect(this.ProcessLogin(profile, false));
+                }
+            }
+
             this.HttpContext.Logout();
             this.HttpContext.Session.Clear();
 
