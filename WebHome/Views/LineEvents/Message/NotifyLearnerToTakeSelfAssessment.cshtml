@@ -158,7 +158,7 @@
                             "height": "sm",
                             "action": {
                                 "type": "uri",
-                                "label": "填寫健康聲明",
+                                "label": "填寫健康自評",
                                 "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/LearnerActivity/LineToTakeSelfAssessment")}?KeyID={HttpUtility.UrlEncode(_model.RegisterLesson.UserProfile.UserProfileExtension.LineID.EncryptKey())}&EncLessonID={HttpUtility.UrlEncode(_model.LessonID.EncryptKey())}")"
                             },
                             "margin": "0px",
