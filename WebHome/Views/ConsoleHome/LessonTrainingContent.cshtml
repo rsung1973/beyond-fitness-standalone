@@ -254,12 +254,12 @@
 
     <script>
 
-        function refreshTrainingContent() {
-            editTrainingContent('@Html.Raw(lessonItem.LessonID.EncryptKey())');
+        function refreshTrainingContent(dialogID) {
+            editTrainingContent('@Html.Raw(lessonItem.LessonID.EncryptKey())', dialogID);
         }
 
-        function editTrainingContent(keyID) {
-            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome",new { LearnerID = learner.UID }))', { 'keyID': keyID });
+        function editTrainingContent(keyID, dialogID) {
+            $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', { 'keyID': keyID, 'LearnerID': @(learner.UID), 'DialogID': dialogID });
         }
 
 

@@ -1,0 +1,44 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+@using System.Data
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using CommonLib.DataAccess
+@using CommonLib.Core.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@using WebHome.Helper.MessageOperation 
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+
+    var expiringDate = DateTime.Today.AddDays(30);
+    var items =  models.PromptEffectiveContract()
+                    .Where(c => c.Expiration >= expiringDate)
+                    .Where(c => c.Expiration < expiringDate.AddDays(1));
+
+    foreach(var item in items)
+    {
+        if (item.ContractOwner.UserProfileExtension.LineID != null)
+        {
+            var body = await Html.PartialAsync("~/Views/LineEvents/Message/NotifyLearnerContractOverdue.cshtml", item);
+            var jsonData = body.GetHtmlString();
+            jsonData.PushLineMessage(true);
+        }
+    }
+
+}
+<div>OK!!</div>

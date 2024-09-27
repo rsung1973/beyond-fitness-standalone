@@ -143,13 +143,13 @@
         foreach (var learner in items)
         {
 
-            ApplyLevelReward(learner);
+            //ApplyLevelReward(learner);
 
             var lessons = models.GetTable<LessonTime>()
-            .Where(l => l.LessonAttendance != null)
-            .Where(l => l.ClassTime >= start)
-            .Where(l => l.ClassTime < exclusiveEnd)
-            .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
+                .Where(l => l.LessonAttendance != null)
+                .Where(l => l.ClassTime >= start)
+                .Where(l => l.ClassTime < exclusiveEnd)
+                .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
 
             if (lessons.Any())
             {

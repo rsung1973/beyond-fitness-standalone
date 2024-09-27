@@ -38,9 +38,9 @@ namespace WebHome.Helper.MessageOperation
             jsonData.ToString().PushLineMessage();
         }
 
-        public static void PushLineMessage(this String dataItem)
+        public static void PushLineMessage(this String dataItem, bool synchronous = false)
         {
-            Task.Run(() =>
+            var t = Task.Run(() =>
             {
                 try
                 {
@@ -65,6 +65,11 @@ namespace WebHome.Helper.MessageOperation
                         .LogError(ex, ex.Message);
                 }
             });
+
+            if (synchronous) 
+            {
+                t.Wait();
+            }
         }
 
         //public static JObject CreateLineReadyToSignContract(this CourseContract item, GenericManager<BFDataContext> models)

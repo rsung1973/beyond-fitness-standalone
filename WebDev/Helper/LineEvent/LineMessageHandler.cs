@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using WebHome.Controllers;
+using WebHome.Properties;
 
 namespace WebHome.Helper.LineEvent
 {
@@ -158,7 +159,8 @@ namespace WebHome.Helper.LineEvent
                 List<ImageMapAction> actions = new List<ImageMapAction>();
                 actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth","LearnerActivity",new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Settings").JsonStringify().EncryptKey() })}", new ImageMapArea(0, 0, 350, 850))); //綁定帳號
                 actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Events").JsonStringify().EncryptKey() })}", new ImageMapArea(350, 0, 339, 425))); //健康自評與回饋
-                actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "CampaignStrategy").JsonStringify().EncryptKey() })}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
+                //actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "CampaignStrategy").JsonStringify().EncryptKey() })}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
+                actions.Add(new UriImageMapAction($"{AppSettings.Default.LineAuth.CampaignUrl}", new ImageMapArea(689, 0, 351, 425))); //玩家攻略
                 actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Calendar").JsonStringify().EncryptKey() })}", new ImageMapArea(350, 425, 339, 425))); //運動行事曆
                 actions.Add(new UriImageMapAction($"{WebApp.Properties["HostDomain"]}{controller.Url.Action("LineAuth", "LearnerActivity", new { KeyID = BuildViewModel(CurrentProfile.UserId, "LearnerActivity", "Index").JsonStringify().EncryptKey() })}", new ImageMapArea(689, 425, 351, 425))); //任務集點
                 //actions.Add(new MessageImageMapAction("I love LINE!", new ImageMapArea(520, 0, 520, 1040)));

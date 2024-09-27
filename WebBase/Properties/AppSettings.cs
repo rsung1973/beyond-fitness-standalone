@@ -169,5 +169,6 @@ namespace WebHome.Properties
         public string ChannelSecret { get; set; } = "1b36aa193695a91d6d6c2937f78f9a02";
         public string LineAuthUrl { get; set; } = "https://access.line.me/oauth2/v2.1/authorize";
         public string ReturnUrl { get; set; } = "https://test.beyond-fitness.com.tw/WebHome/LineEvents/Auth";
+        public string CampaignUrl { get; set; } = "https://test.beyond-fitness.com.tw/WebHome/Official/tw/Campaign";
     }
 }

@@ -947,7 +947,7 @@ namespace WebHome.Controllers
 
             var profile = await HttpContext.GetUserAsync();
 
-            var item = viewModel.CommitSelfAssessment(this);
+            var item = viewModel.CommitSelfAssessment(this, out bool updateOnly);
 
             if (!ModelState.IsValid)
             {
@@ -1591,6 +1591,13 @@ namespace WebHome.Controllers
                 return Login(viewModel);
             }
 
+        }
+
+        [AllowAnonymous]
+        public ActionResult LineNotifyExpiringCourseContract(CourseContractQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View("~/Views/LearnerActivity/LineNotifyExpiringCourseContract.cshtml");
         }
 
     }

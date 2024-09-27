@@ -218,7 +218,7 @@ namespace WebHome.Controllers
 
         public ActionResult LearnerAttendLesson2024(SelfAssessmentViewModel viewModel, DailyBookingQueryViewModel signatureViewModel)
         {
-            var item = viewModel.CommitSelfAssessment(this);
+            var item = viewModel.CommitSelfAssessment(this, out bool updateOnly);
 
             if (!ModelState.IsValid)
             {
@@ -231,7 +231,7 @@ namespace WebHome.Controllers
                 models.SubmitChanges();
             }
 
-            return Json(new { result = true, message = "資料存檔完成!!" });
+            return Json(new { result = true, message = "資料存檔完成!!", updateOnly });
 
         }
 

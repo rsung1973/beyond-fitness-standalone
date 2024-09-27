@@ -1750,7 +1750,7 @@ namespace WebHome.Helper
                             * salary.GradeIndex / 100M * 0.08M + 0.5M
                         ) ?? 0;
 
-                    salary.AchievementBonus = (int?)(netAchievement * shareRatio / 100M * 0.05M + 0.5M );
+                    salary.AchievementBonus = (int?)(netAchievement * shareRatio / 100M * 0.08M + 0.5M );
                     salary.AchievementShareRatio = shareRatio;
                     models.SubmitChanges();
                 }

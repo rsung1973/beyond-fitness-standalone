@@ -185,7 +185,7 @@
                                 if ($global.commitSignature) {
                                     $global.commitSignature(viewModel, function () {
                                         $('#@(_dialogID)').modal('hide');
-                                    });
+                                    }, '@(_dialogID)');
                                 }
                             }
                         });
@@ -194,18 +194,18 @@
             }
             else
             {
-                <script>
+        <script>
                     $(function () {
                         $("#@(_dialogID) button.btnConfirm").on('click', function (event) {
                             var viewModel = $("#@(_dialogID)").find('input,select,textarea').serializeObject();
                             if ($global.commitSignature) {
                                 $global.commitSignature(viewModel, function () {
                                     $('#@(_dialogID)').modal('hide');
-                                });
+                                }, '@(_dialogID)');
                             }
                         });
                     });
-                </script>
+        </script>
             }
             <script>
 

@@ -1716,12 +1716,13 @@ namespace WebHome.Helper
             return timeItem;
         }
 
-        public static LessonFeedBack CommitSelfAssessment(this SelfAssessmentViewModel viewModel, SampleController<UserProfile> controller)
+        public static LessonFeedBack CommitSelfAssessment(this SelfAssessmentViewModel viewModel, SampleController<UserProfile> controller,out bool updateOnly)
         {
             var ModelState = controller.ModelState;
             var ViewBag = controller.ViewBag;
             var HttpContext = controller.HttpContext;
             var models = controller.DataSource;
+            updateOnly = false;
 
             ViewBag.ViewModel = viewModel;
 
@@ -1828,11 +1829,18 @@ namespace WebHome.Helper
                 Answer = viewModel.SupplementaryStatement.GetEfficientString(),
             });
 
-            item.CommitAssessment = DateTime.Now;
-            item.CommitAssessmentIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (lessonItem.LessonPlan.CommitAttendance.HasValue)
+            {
+                updateOnly = true;
+            }
+            else
+            {
+                item.CommitAssessment = DateTime.Now;
+                item.CommitAssessmentIP = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
-            lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+                lessonItem.LessonPlan.CommitAttendance = DateTime.Now;
+                lessonItem.LessonPlan.CommitAttendanceIP = HttpContext.Connection.RemoteIpAddress?.ToString();
+            }
 
             models.SubmitChanges();
 
