@@ -21,6 +21,7 @@
     _model = (UserProfile)this.Model;
     _viewModel = (DailyBookingQueryViewModel)ViewBag.ViewModel;
     UserProfile _learner = (UserProfile)ViewBag.DataItem;
+    var account = _learner.BonusDepositAccount;
 }
 <!--本月運動時間-->
 <div class="container-fluid">
@@ -70,6 +71,9 @@
                         }
                     </div>
                     <div class="displayblock col-grey">
+                        <img src="images/points.SVG" width="30" class="p-r-5"><a href="javascript:showBonusDetails();" class="col-tiffany font-underline">目前已累積 @(account?.DepositPoint ?? 0) Beyond Points</a>
+                    </div>
+                    @*<div class="displayblock col-grey">
                         @{
                             var answers = models.GetTable<PDQTask>()
                                             .Where(t => t.UID == _learner.UID)
@@ -88,7 +92,7 @@
                         {
                             <text>答題正確率已達 <span class="f-green">0%</span>，就讀運動幼幼班，再接再厲！</text>
                         }
-                    </div>
+                    </div>*@
                 </div>
             </div>
         </div>

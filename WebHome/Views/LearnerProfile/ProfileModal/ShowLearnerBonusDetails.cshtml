@@ -29,6 +29,7 @@
                 <div class="body">
                     <ul class="nav nav-tabs-new2 p-t-0" id="@(_tabID)">
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="0" href="@($"#{_tabID}_0")">已兌換商品</a></li>
+                        <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="3" href="@($"#{_tabID}_3")"><img src="images/points.SVG" width="30" class="p-r-5">列表</a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="1" href="@($"#{_tabID}_1")">Beyond💰彙總</a></li>
                         <li class="nav-item"><a class="nav-link" data-toggle="tab" data-id="2" href="@($"#{_tabID}_2")">運動小學堂答案卷</a></li>
                     </ul>
@@ -42,6 +43,9 @@
                         <div class="tab-pane" id="@($"{_tabID}_2")">
 
                         </div>
+                        <div class="tab-pane" id="@($"{_tabID}_3")">
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,12 +54,13 @@
 
     @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/BSModalScript.cshtml", model: _dialogID);}
 
-    <script>
+<script>
             var tabs = [];
             var tabUrl = [
                 '@Html.Raw(Url.Action("ShowLearnerBonusAwards", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))',
                 '@Html.Raw(Url.Action("ShowLearnerBonusCredits", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))',
-                '@Html.Raw(Url.Action("ShowLearnerDailyAnswers", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))'];
+                '@Html.Raw(Url.Action("ShowLearnerDailyAnswers", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))',
+                '@Html.Raw(Url.Action("ShowLearnerAwardingBonusPoints", "LearnerProfile",new { KeyID = _model.UID.EncryptKey()}))'];
 
             function loadTabContent(idx) {
                 if (tabs[idx] != undefined) {
@@ -88,6 +93,6 @@
                 loadTabContent(idx);
                 $($(e.target).attr('href')).resize();
             });
-    </script>
+</script>
 </div>
 

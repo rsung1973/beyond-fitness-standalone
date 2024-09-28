@@ -59,56 +59,86 @@
                     </div>
                     <div class="clearfix my-5"></div>
                     <div class="card card-style mb-0 py-5 mx-2">
-                        <div data-bs-parent="#point_query" class="collapse show mx-3 mx-lg-5 mx-md-5" id="add">
+                        <div data-bs-parent="#point_query" class="collapse show mx-2 mx-lg-3 mx-md-3" id="add">
                             @{
+                                DateTime start = new DateTime(DateTime.Today.Year - 1, 1, 1);
                                 var transactionItems = models.GetTable<BonusTransaction>()
                                     .Where(t => t.UID == profile.UID)
+                                    .Where(t => t.TransactionDate >= start)
                                     .Where(t => t.TransactionPoint > 0)
                                     .OrderByDescending(t => t.TransactionDate);
-                            }
-                            @foreach (var item in transactionItems)
-                            {
-                                <div class="d-flex my-3">
-                                    <div class="align-self-start ms-3 me-3">
-                                        <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
-                                        <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd HH:mm}")</span>
-                                    </div>
-                                    <div class="align-self-center ms-auto me-3">
-                                    </div>
-                                    <div class="align-self-center">
-                                        <b class="color-beyondred-dark justify-content-center font-500">+@(item.TransactionPoint)</b>
-                                    </div>
-                                </div>
-                                <div class="divider mt-4 mb-4"></div>
 
+                                var grouping = transactionItems
+                                                .GroupBy(t => t.TransactionDate.Year * 100 + t.TransactionDate.Month);
+
+                                int collapseID = 0;
                             }
+                            @foreach (var g in grouping.OrderByDescending(g => g.Key))
+                            {
+                                collapseID++;
+                                <div class="card card-style my-4 pb-2 mx-2">
+                                    <div class="list-group list-custom-small list-icon-0 bg-beyondwhite-dark">
+                                        <h4 class="color-beyond-dark pt-3 pb-2 text-center">@(g.Key/100)年@($"{g.Key%100:00}")月</h4>
+                                    </div>
+                                    <div class="collapse mx-3 mx-lg-5 mx-md-5 pt-3 show" id="@($"collapse-{collapseID}")">
+                                        @foreach (var item in g.OrderByDescending(v => v.TransactionDate))
+                                        {
+                                            <div class="d-flex my-3">
+                                                <div class="align-self-start ms-3 me-3">
+                                                    <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
+                                                    <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd HH:mm}")</span>
+                                                </div>
+                                                <div class="align-self-center ms-auto me-3">
+                                                </div>
+                                                <div class="align-self-center">
+                                                    <b class="color-beyondred-dark justify-content-center font-500">+@(item.TransactionPoint)</b>
+                                                </div>
+                                            </div>
+                                            <div class="divider mt-4 mb-4"></div>
+                                        }
+                                    </div>
+                                    <a data-bs-toggle="collapse" href="@($"#collapse-{collapseID}")"
+                                       class="btn border-0 fst-italic border-lightgray-dark color-theme opacity-50 bg-theme px-3 py-1 font-14 mt-2">
+                                        Read More<i class="fa-solid fa-angles-up px-2"></i>
+                                    </a>
+                                </div>
+                            }
+                            <p class="mx-4 mx-lg-5 mx-md-5 font-13 color-highlight">※本系統提供查詢時間的前一年度起至當年度的資料，但僅限2024年10月1日（含）之後的紀錄。</p>
+                            <div class="clearfix my-5"></div>
                         </div>
-                        <div data-bs-parent="#point_query" class="collapse mx-4 mx-lg-5 mx-md-5" id="minus">
+                        <div data-bs-parent="#point_query" class="collapse mx-2 mx-lg-3 mx-md-3" id="minus">
                             @{
                                 transactionItems = models.GetTable<BonusTransaction>()
                                     .Where(t => t.UID == profile.UID)
+                                    .Where(t => t.TransactionDate >= start)
                                     .Where(t => t.TransactionPoint < 0)
                                     .OrderByDescending(t => t.TransactionID);
                             }
-                            @foreach (var item in transactionItems)
-                            {
-                                <div class="d-flex my-3">
-                                    <div class="align-self-start ms-3 me-3">
-                                        <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
-                                        <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd HH:mm}")</span>
-                                    </div>
-                                    <div class="align-self-center ms-auto me-3">
-                                    </div>
-                                    <div class="align-self-center">
-                                        <b class="color-beyondred-dark justify-content-center font-500">@(item.TransactionPoint)</b>
-                                    </div>
+                            <div class="card card-style mb-3 pt-3 pb-2 mx-2">
+
+                                <div class="mx-3 mx-lg-5 mx-md-5">
+
+                                    @foreach (var item in transactionItems)
+                                    {
+                                        <div class="d-flex my-3">
+                                            <div class="align-self-start ms-3 me-3">
+                                                <h5 class="letter-spacing-2 font-500">@Html.Raw(item.Reason)</h5>
+                                                <span class="font-14 color-theme opacity-60 letter-spacing-1">@($"{item.TransactionDate:yyyy/MM/dd HH:mm}")</span>
+                                            </div>
+                                            <div class="align-self-center ms-auto me-3">
+                                            </div>
+                                            <div class="align-self-center">
+                                                <b class="color-beyondred-dark justify-content-center font-500">@(item.TransactionPoint)</b>
+                                            </div>
+                                        </div>
+                                        <div class="divider mt-4 mb-4"></div>
+                                    }
                                 </div>
-                                <div class="divider mt-4 mb-4"></div>
-                            }
+                            </div>
+                            <p class="mx-4 mx-lg-5 mx-md-5 font-13 color-highlight">※本系統提供查詢時間的前一年度起至當年度的資料，但僅限2024年10月1日（含）之後的紀錄。</p>
+                            <div class="clearfix my-5"></div>
                         </div>
-                        <p class="mx-4 mx-lg-5 mx-md-5 color-beyond-dark opacity-40 font-12">※僅提供2024/10/01之後之點數查詢</p>
                     </div>
-                    <div class="clearfix my-5"></div>
                 </div>
             </div>
         </div>

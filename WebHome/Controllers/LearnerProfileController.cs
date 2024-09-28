@@ -671,6 +671,16 @@ namespace WebHome.Controllers
 
             return View("~/Views/LearnerProfile/Module/ShowLearnerBonusCredits.cshtml", item);
         }
+        public ActionResult ShowLearnerAwardingBonusPoints(LearnerCharacterViewModel viewModel)
+        {
+            var result = ShowLearnerBonusDetails(viewModel);
+            UserProfile item = ViewBag.DataItem as UserProfile;
+            if (item == null)
+                return result;
+
+            return View("~/Views/LearnerProfile/Module/ShowLearnerAwardingBonusPoints.cshtml", item);
+        }
+
         public ActionResult ShowLearnerDailyAnswers(LearnerCharacterViewModel viewModel)
         {
             var result = ShowLearnerBonusDetails(viewModel);
