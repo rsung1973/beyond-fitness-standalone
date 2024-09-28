@@ -33,6 +33,16 @@
     LessonTime _model = this.Model as LessonTime;
     TrainingExecution _training = _model.TrainingPlan.Select(p => p.TrainingExecution).FirstOrDefault();
     var total = _training.TrainingExecutionStage.Sum(t => t.TotalMinutes) ?? 1;
+
+    var profile = await Context.GetUserAsync();
+    var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
+        .FirstOrDefault()?.RegisterID;
+
+    StageProgress current = models.PromptCurrentStage();
+
+    var feedbackItem = models.GetTable<LessonFeedBack>()
+    .Where(f => f.LessonID == _model.LessonID)
+    .Where(f => f.RegisterID == registerID).FirstOrDefault();
 }
 
 @section MainContent
@@ -71,7 +81,12 @@
         </div>
 
     </div>
-    @{
+    @if (feedbackItem?.FeedBackDate.HasValue != true
+        && _model.LessonAttendance != null
+        && _model.ClassTime >= current?.StartDate
+        && _model.ClassTime < current?.EndExclusiveDate
+        && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
+    {
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseFeedback.cshtml", _model);
     }
     @{
