@@ -64,9 +64,15 @@
                                     
                                 </h5>
                                 <span class="font-14 color-theme opacity-60 letter-spacing-1">@Html.Raw($"{item.AwardDate:yyyy/MM/dd}")</span>
-                                <span class="font-14 color-theme opacity-60 letter-spacing-1 d-block">兌換課程上課期限：@Html.Raw($"{(item.AwardingLesson?.RegisterLesson.Expiration ?? item.AwardingLessonGift?.RegisterLesson.Expiration):yyyy/MM/dd}")</span>
+                                <span class="font-14 color-theme opacity-60 letter-spacing-1 d-block">使用期限：
+                                    @{
+                                        var expiration = item.AwardingLesson?.RegisterLesson.Expiration ?? item.AwardingLessonGift?.RegisterLesson.Expiration;
+                                    }
+                                    @Html.Raw(expiration!=null ? $"{expiration:yyyy/MM/dd}" : "--")
+                                </span>
                             </div>
                             <div class="align-self-center ms-auto me-3">
+
                             </div>
 
                             <div class="align-self-center">
