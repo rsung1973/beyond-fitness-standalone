@@ -44,13 +44,17 @@
         {
             SRItems.Add(item);
         }
+        else if (item.IsSRSession())
+        {
+            SRItems.Add(item);
+        }
         else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程)
         {
         }
         else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
         {
         }
-        else if (item.IsPTOrSRSession())
+        else if (item.IsPTSession())
         {
             PTItems.Add(item);
         }
