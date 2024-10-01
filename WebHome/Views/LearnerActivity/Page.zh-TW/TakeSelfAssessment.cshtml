@@ -124,7 +124,7 @@
                     <div class="col-6 col-lg-6 col-md-6 my-2">
                         <a href="#" data-menu="health-info">
                             <span class="color-theme font-500 font-15">
-                                生理疲勞<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
+                                生理疲勞<small>(1-5)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
                             </span>
                             <span class="color-theme font-13">Physical fatigue</span>
                         </a>
@@ -133,7 +133,7 @@
                                 <a href="#" class="stepper-sub">
                                     <i class="fa fa-minus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-                                <input type="number" min="1" max="10" placeholder="5" id="FatigueIndex" name="FatigueIndex" value="@($"{GetItem(assessment,"FatigueIndex")?.Score:.}")" />
+                                <input type="number" min="1" max="5" placeholder="3" id="FatigueIndex" name="FatigueIndex" value="@($"{GetItem(assessment,"FatigueIndex")?.Score:.}")" />
                                 <a href="#" class="stepper-add">
                                     <i class="fa fa-plus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
@@ -144,7 +144,7 @@
                     <div class="col-6 col-lg-6 col-md-6 my-2">
                         <a href="#" data-menu="health-info">
                             <span class="color-theme font-500 font-15">
-                                心理壓力<small>(1-10)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
+                                心理壓力<small>(1-5)</small><i data-feather="info" data-feather-line="3" data-feather-size="15" data-feather-color="beyondred-dark" class="ms-1"></i>
                             </span>
                             <span class="color-theme font-13">Mental stress</span>
                         </a>
@@ -153,7 +153,7 @@
                                 <a href="#" class="stepper-sub">
                                     <i class="fa fa-minus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
-                                <input type="number" min="1" max="10" placeholder="5" id="StressIndex" name="StressIndex" value="@($"{GetItem(assessment,"StressIndex")?.Score:.}")" />
+                                <input type="number" min="1" max="5" placeholder="3" id="StressIndex" name="StressIndex" value="@($"{GetItem(assessment,"StressIndex")?.Score:.}")" />
                                 <a href="#" class="stepper-add">
                                     <i class="fa fa-plus color-theme opacity-40 font-15"></i>&nbsp;
                                 </a>
@@ -352,19 +352,19 @@
             </div>
             <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
                 <h1 class="font-40">😊</h1>
-                <strong class="font-14 opacity-50 color-theme letter-spacing-1">3分</strong>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">2分</strong>
             </div>
             <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
                 <h1 class="font-40">😐</h1>
-                <strong class="font-14 opacity-50 color-theme letter-spacing-1">5分</strong>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">3分</strong>
             </div>
             <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
                 <h1 class="font-40">😖</h1>
-                <strong class="font-14 opacity-50 color-theme letter-spacing-1">8分</strong>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">4分</strong>
             </div>
             <div class="m-auto m-lg-4 m-md-3 text-center feelbutton show">
                 <h1 class="font-40">😫</h1>
-                <strong class="font-14 opacity-50 color-theme letter-spacing-1">10分</strong>
+                <strong class="font-14 opacity-50 color-theme letter-spacing-1">5分</strong>
             </div>
         </div>
         </p>
