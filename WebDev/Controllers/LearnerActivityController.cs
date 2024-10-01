@@ -1451,7 +1451,7 @@ namespace WebHome.Controllers
             }
             Url.Action("test");
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/LearnerActivity//LineAuth.cshtml");
+            return View("~/Views/LearnerActivity/LineAuth.cshtml");
         }
 
         [HttpPost]

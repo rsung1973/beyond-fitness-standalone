@@ -147,7 +147,7 @@ namespace WebHome.Controllers
         public ActionResult GetMapMenuImage(String id)
         {
             var root = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
-            var path = WebApp.MapPath($"~/ConsoleHome/images/line/map/mapmenu-{id}.png");
+            var path = WebApp.MapPath($"~/LearnerActivity/images/lineevent/map/mapmenu-{id}.png");
 
             return new PhysicalFileResult(path, "image/png");
         }        
