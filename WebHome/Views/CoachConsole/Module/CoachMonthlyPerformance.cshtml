@@ -60,7 +60,9 @@
             <th>Level</th>
             <th>本季升級業績達成率</th>
             <th>本季升級課數達成率</th>
+            <th>本月業績金額</th>
             <th>本月業績達成率</th>
+            <th>本月上課金額</th>
             <th>本月課數達成率</th>
             <th>本月BR開發率</th>
             <th>本月BR成交率</th>
@@ -99,6 +101,8 @@
                     </td>
                     @if (item.IsLeaved)
                     {
+                        <td>--</td>
+                        <td>--</td>
                         <td>--</td>
                         <td>--</td>
                         <td>--</td>
@@ -261,6 +265,8 @@
         {
             <td>--</td>
             <td>--</td>
+            <td>--</td>
+            <td>--</td>
             return;
         }
 
@@ -268,11 +274,17 @@
         decimal actualCount = coachItem.AttendanceCount;
         var shareSummary = indicator.GetPaymentAchievementSummary(models, coachItem.CoachID);
         var voidItems = indicator.GetVoidShare(models, coachItem.CoachID);
-
+        
+        <td>
+            @(shareSummary - (voidItems.Sum(t => t.VoidShare) ?? 0))
+        </td>
         <td>
             @(coachItem.AchievementGoal > 0
                 ? Math.Round((shareSummary - (voidItems.Sum(t => t.VoidShare) ?? 0)) * 100M / coachItem.AchievementGoal.Value,1).ToString() + " %"
                 : "--")
+        </td>
+        <td>
+            @(coachItem.ActualLessonAchievement)
         </td>
         <td>
             @(coachItem.CompleteLessonsGoal > 0
