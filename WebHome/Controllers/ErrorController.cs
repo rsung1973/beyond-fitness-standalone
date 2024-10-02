@@ -5,6 +5,8 @@ using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using WebHome.Models.DataEntity;
 using CommonLib.Utility;
+using WebHome.Models.ViewModel;
+using WebHome.Properties;
 
 namespace WebHome.Controllers
 {
@@ -40,6 +42,12 @@ namespace WebHome.Controllers
             {
                 return Content($"<script>alert('{HttpUtility.JavaScriptStringEncode(message)}');window.history.go(-1);</script>");
             }
+        }
+
+        public ActionResult Error(QueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            return View(AppSettings.Default.CommonErrorView, model: viewModel);
         }
 
     }
