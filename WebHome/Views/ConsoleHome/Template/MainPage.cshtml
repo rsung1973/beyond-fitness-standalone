@@ -152,11 +152,7 @@
                             }
                         </div>
                     </li>
-                }
-                @if (_model.IsLearner() || (_model.EmployeeWelfare != null && _model.EmployeeWelfare.MonthlyGiftLessons > 0))
-                {
-                    <li><a href="@(Url.Action("Index","LearnerActivity"))" class="mega-menu" data-close="true" target="_blank"><i class="zmdi livicon-evo" data-options="name: dashboard.svg; size: 30px; style: linesAlt; strokeColor:#fff; strokeWidth:2px; autoPlay:true"></i></a></li>
-                }
+                }               
                 <li class="dropdown">
                     <a href="javascript:void(0);" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                         <i class="zmdi livicon-evo livicon-evo-holder" data-options="name: brush.svg; size: 30px; style: linesAlt; strokeColor:#fff; strokeWidth:1px; autoPlay:true" style="visibility: visible; width: 30px;">
