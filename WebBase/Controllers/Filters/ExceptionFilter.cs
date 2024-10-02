@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.InkML;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
@@ -10,6 +13,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using WebHome.Helper;
+using WebHome.Properties;
 
 namespace WebHome.Controllers.Filters
 {
@@ -32,7 +36,16 @@ namespace WebHome.Controllers.Filters
                 {
                     ApplicationLogging.CreateLogger<ExceptionFilter>().LogError(filterContext.Exception, filterContext.Exception.Message);
                 }
-                filterContext.Result = new RedirectToActionResult("Error", "LearnerActivity", null);
+
+                filterContext.Result = new ViewResult 
+                {
+                    ViewName = AppSettings.Default.CommonErrorView,
+                    ViewData = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
+                    {
+                        Model = filterContext.Exception,
+                    },
+                };
+                //filterContext.Result = new RedirectToActionResult("Error", "LearnerActivity", null);
                 //filterContext.Result = new RedirectToActionResult("Error", "CornerKick", null);
                 //filterContext.HttpContext.Response.Redirect(urlHelper.Action("Error", "CornerKick"));
             }

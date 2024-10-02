@@ -136,6 +136,7 @@ namespace WebHome.Properties
         public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyLog";
         public LineAuthInfo LineAuth { get; set; } = new LineAuthInfo { };
         public String WebHomePage { get; set; } = "~/MainActivity/Main";
+        public String CommonErrorView { get; set; } = "~/Views/Error/Error.cshtml";
     }
 
     public class Settings
