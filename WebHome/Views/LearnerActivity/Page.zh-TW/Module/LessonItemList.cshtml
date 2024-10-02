@@ -22,8 +22,10 @@
     var profile = await Context.GetUserAsync();
     int currentIndex = (ViewBag.ViewModel as QueryViewModel)?.CurrentIndex ?? 0;
 
+    DateTime start = new DateTime(2019, 1, 1);
     var lessons = profile.UID.PromptLearnerLessons(models)
-                        .Where(l => l.LessonAttendance != null);
+                        .Where(l => l.LessonAttendance != null)
+                        .Where(l => l.ClassTime >= start);
     var items = lessons.OrderByDescending(l => l.ClassTime)
                     .Skip(currentIndex * 6)
                     .Take(6);

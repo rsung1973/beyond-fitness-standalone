@@ -1829,7 +1829,7 @@ namespace WebHome.Helper
                 Answer = viewModel.SupplementaryStatement.GetEfficientString(),
             });
 
-            if (lessonItem.LessonPlan.CommitAttendance.HasValue)
+            if (item.CommitAssessment.HasValue)
             {
                 updateOnly = true;
             }
