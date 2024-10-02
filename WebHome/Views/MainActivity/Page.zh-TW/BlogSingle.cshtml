@@ -60,7 +60,8 @@
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Beyond Fitness | 專業與科學化的私人教練" />
     <meta property="og:url" content="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{UriHelper.GetEncodedUrl(Context.Request)}")" />
-    <meta property="og:image" content="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{_model.BlogID}/images/Title.jpg")}")" />
+    <meta property="og:image"
+        content="@Html.Raw($"{WebHome.WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute($"~/Official/Blog/{_model.BlogID}/images/Title.jpg")}")" />
     <meta property="og:description" content="@Html.Raw(_model.Subtitle)" />
     <meta property="fb:app_id" content="1729720864007103" />
 }
@@ -112,7 +113,8 @@
                 <a class="text-decoration-none popup-youtube" href="@Html.Raw(_model.Youtube)">
                     <span class="thumb-info thumb-info-lighten border-radius-0">
                         <span class="thumb-info-wrapper border-radius-0">
-                            <img class="card-img-top" alt="BeyondFitness|精選文章" src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />
+                            <img class="card-img-top" alt="BeyondFitness|精選文章"
+                                src="@VirtualPathUtility.ToAbsolute($"~/Official/Blog/{_model.BlogID}/images/Title.jpg")" />
                             <span class="thumb-info-title bg-transparent justify-content-center">
                                 <img class="custom-svg-1 icon-animated" width="40" src="../images/icons/play-button_f.svg" alt="BeyondFitness|youtube"
                                      data-icon data-plugin-options="{'color': '#EBD7BF', 'animated': true, 'delay': 600, 'strokeBased': true, 'extraClass': 'player'}" />
@@ -123,7 +125,8 @@
             }
             else
             {
-                 <img class="card-img-top" alt="BeyondFitness|精選文章" src="@VirtualPathUtility.ToAbsolute($"~/BlogContent/Blog/{_model.BlogID}/images/Title.jpg")" />	                	                         
+                <img class="card-img-top" alt="BeyondFitness|精選文章"
+                    src="@VirtualPathUtility.ToAbsolute($"~/Official/Blog/{_model.BlogID}/images/Title.jpg")" />
             }
             <div class="card-body">
                 <h2 class="subject-title">@Html.Raw(_model.Title)</h2>
@@ -135,7 +138,7 @@
 
                 <div id="artical-content">
                     @{
-                        String blogContent = WebApp.MapPath($"~/BlogContent/Blog/{_model.BlogID}/content.html");
+                        String blogContent = WebApp.MapPath($"~/Official/Blog/{_model.BlogID}/content.html");
                         if (File.Exists(blogContent))
                         {
                             Output.Write(File.ReadAllText(blogContent));
