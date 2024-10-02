@@ -71,7 +71,7 @@
                     {
                         var idx = (int)(DateTime.Now.Ticks % item.TipsArticleRelation.Count);
                         var b = item.TipsArticleRelation[idx];                        
-                        <a href="@Html.Raw($"https://www.beyond-fitness.com.tw{VirtualPathUtility.ToAbsolute($"~/Official/tw/BlogSingle")}?{(new { item.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank"
+                        <a href="@Html.Raw($"https://www.beyond-fitness.com.tw{VirtualPathUtility.ToAbsolute("~/Official/tw/BlogSingle")}?{(new { b.DocID }).JsonStringify().EncryptKeyNormal().UrlEncodeBase64String()}")" target="_blank"
                            class="btn btn-center-l rounded-xl btn-margins border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 px-3 py-2 font-15 mt-5 mx-auto letter-spacing-1">離開此頁面閱讀相關文章</a>
                     }
                 </div>

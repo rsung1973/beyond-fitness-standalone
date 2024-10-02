@@ -26,79 +26,13 @@
 
     var registerID = lessonItem.GroupingLesson.RegisterLesson.Where(r => r.UID == learner.UID)
                         .FirstOrDefault()?.RegisterID;
-}
-<a href="javascript:signaturePanel();">課前健康自評</a>
-<i class="zmdi livicon-evo"
-   data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
-<script>
-    function signaturePanel() {
 
-        if ($global.$currentModal) {
-            $global.$currentModal.modal('show');
-            return;
-        }
-
-        @*
-            $global.commitSignature = function (sigData) {
-            showLoading();
-            var viewModel = {
-                keyID: '@Html.Raw(lessonItem.LessonID.EncryptKey())',
-                Signature: sigData
-            };
-            $.post('@Html.Raw(Url.Action("LearnerAttendLesson", "Attendance"))', viewModel, function (data) {
-        *@
-        $global.commitSignature = function (viewModel, done, dialogID) {
-            showLoading();
-            viewModel.KeyID = '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())';
-            $.post('@Html.Raw(Url.Action("LearnerAttendLesson2024", "Attendance"))', viewModel, function (data) {
-                hideLoading();
-                if ($.isPlainObject(data)) {
-                    if (data.result) {
-                        if (data.updateOnly) {
-                            $global.$currentModal.modal('hide');
-                        } else {
-                            Swal.fire({
-                                title: "全部打卡成功!",
-                                text: "資料已經完成打卡 Bye!",
-                                icon: "success",
-                                showCancelButton: false,
-                                closeOnConfirm: true
-                            }).then((result) => {
-                                refreshTrainingContent(dialogID);
-                            });
-                        }
-                    } else {
-                        Swal.fire(
-                            'Oops...',
-                            data.message,
-                            'warning'
-                        );
-                    }
-                } else {
-                    $(data).appendTo($('body'));
-                }
-            });
-        };
-
-        showLoading();
-        $.post('@Html.Raw(Url.Action("SignaturePanel2024", "LessonConsole"))', {'KeyID' : '@Html.Raw((new { lessonItem.LessonID, LearnerID = learner.UID }).JsonStringify().EncryptKey())' }, function (data) {
-            hideLoading();
-            $(data).appendTo($('body'));
-        });
-    }
-
-</script>
-@if (_viewModel?.DialogID == null && _model.LessonPlan.CommitAttendance.HasValue)
-{
-    <script>
-        $(function () {
-            signaturePanel();
-        });
-    </script>
-}
-@{
-    if (_model.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.PT))
+    bool needSelfAssessment = false;
+    LessonFeedBack notAssessed = null;
+    LessonFeedBack current = null;
+    if (_model.RegisterLesson.LessonPriceType.LessonMissionBonusAwardingItem.Any(b => b.MissionID == (int)CampaignMission.CampaignMissionType.SelfAssessment))
     {
+        needSelfAssessment = true;
         foreach (var item in lessonItem.GroupingLesson.RegisterLesson)
         {
             var feedback = lessonItem.LessonFeedBack.Where(r => r.RegisterID == item.RegisterID).FirstOrDefault();
@@ -113,18 +47,76 @@
             }
         }
 
-        var notAssessed = lessonItem.LessonFeedBack.Where(f => !f.CommitAssessment.HasValue).FirstOrDefault();
+        notAssessed = lessonItem.LessonFeedBack.Where(f => !f.CommitAssessment.HasValue).FirstOrDefault();
+        current = lessonItem.LessonFeedBack.Where(f => f.RegisterID == registerID).FirstOrDefault();
+    }
+}
+@if (needSelfAssessment)
+{
+    if (notAssessed != null && notAssessed.RegisterID != registerID)
+    {
+        <script>
+            $(function () {
+                $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', @Html.Raw((new { KeyID = _model.LessonID.EncryptKey(), LearnerID = notAssessed.RegisterLesson.UID }).JsonStringify()));
+            });
+        </script>
+    }
+    else
+    {
+        <a href="javascript:signaturePanel();">課前健康自評</a>
+        <i class="zmdi livicon-evo"
+           data-options="name: pencil.svg; size: 20px; style: original; strokeStyle:round; strokeColor:#052333; strokeWidth:2px; autoPlay:true"></i>
+        <script>
+            function signaturePanel() {
+
+                if ($global.$currentModal) {
+                    $global.$currentModal.modal('show');
+                    return;
+                }
+
+                $global.commitSignature = function (viewModel, done, dialogID) {
+                    showLoading();
+                    viewModel.KeyID = '@Html.Raw((new { lessonItem.LessonID, RegisterID = registerID }).JsonStringify().EncryptKey())';
+                    $.post('@Html.Raw(Url.Action("LearnerAttendLesson2024", "Attendance"))', viewModel, function (data) {
+                        hideLoading();
+                        if ($.isPlainObject(data)) {
+                            if (data.result) {
+                                if (data.updateOnly) {
+                                    $global.$currentModal.modal('hide');
+                                } else {
+                                    Swal.fire({
+                                        title: "全部打卡成功!",
+                                        text: "資料已經完成打卡 Bye!",
+                                        icon: "success",
+                                        showCancelButton: false,
+                                        closeOnConfirm: true
+                                    }).then((result) => {
+                                        refreshTrainingContent(dialogID);
+                                    });
+                                }
+                            } else {
+                                Swal.fire(
+                                    'Oops...',
+                                    data.message,
+                                    'warning'
+                                );
+                            }
+                        } else {
+                            $(data).appendTo($('body'));
+                        }
+                    });
+                };
+
+                showLoading();
+                $.post('@Html.Raw(Url.Action("SignaturePanel2024", "LessonConsole"))', { 'KeyID': '@Html.Raw((new { lessonItem.LessonID, LearnerID = learner.UID }).JsonStringify().EncryptKey())' }, function (data) {
+                    hideLoading();
+                    $(data).appendTo($('body'));
+                });
+            }
+        </script>
+
         if (notAssessed != null)
         {
-            if (notAssessed.RegisterID != registerID)
-            {
-                <script>
-                    $(function () {
-                        $('').launchDownload('@Html.Raw(Url.Action("LessonTrainingContent", "ConsoleHome"))', @Html.Raw((new { KeyID = _model.LessonID.EncryptKey(), LearnerID = notAssessed.RegisterLesson.UID }).JsonStringify()));
-                    });
-                </script>
-            }
-            else
             {
                 <script>
                     var timeToCheck = new Date('@Html.Raw($"{lessonItem.ClassTime.Value.AddMinutes(-5):yyyy/MM/dd HH:mm:ss}")');
@@ -151,10 +143,18 @@
                     }
 
                     $(function () {
-                        setTimeout(checkAssessment, 30000);
+                        checkAssessment();
                     });
                 </script>
             }
+        }
+        else if (_viewModel?.DialogID == null && current.CommitAssessment.HasValue)
+        {
+            <script>
+                $(function () {
+                    signaturePanel();
+                });
+            </script>
         }
     }
 }
