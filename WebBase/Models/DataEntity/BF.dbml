@@ -577,25 +577,9 @@
       <Column Name="Illustration" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="Subtitle" Type="System.String" DbType="NVarChar(256)" CanBeNull="true" />
       <Association Name="Article_Publication" Member="Publication" ThisKey="DocID" OtherKey="DocID" Type="Publication" Cardinality="One" />
-      <Association Name="Article_ArticleCategory" Member="ArticleCategory" ThisKey="DocID" OtherKey="DocID" Type="ArticleCategory" />
       <Association Name="Attachment_Article" Member="Attachment" ThisKey="Illustration" OtherKey="AttachmentID" Type="Attachment" IsForeignKey="true" />
       <Association Name="Document_Article" Member="Document" ThisKey="DocID" OtherKey="DocID" Type="Document" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
       <Association Name="UserProfile_Article" Member="UserProfile" ThisKey="AuthorID" OtherKey="UID" Type="UserProfile" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ArticleCategory" Member="ArticleCategory">
-    <Type Name="ArticleCategory">
-      <Column Name="DocID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Category" Type="System.String" DbType="NVarChar(32) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Association Name="Article_ArticleCategory" Member="Article" ThisKey="DocID" OtherKey="DocID" Type="Article" IsForeignKey="true" />
-      <Association Name="ArticleCategoryDefinition_ArticleCategory" Member="ArticleCategoryDefinition" ThisKey="Category" OtherKey="Category" Type="ArticleCategoryDefinition" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ArticleCategoryDefinition" Member="ArticleCategoryDefinition">
-    <Type Name="ArticleCategoryDefinition">
-      <Column Name="Category" Type="System.String" DbType="NVarChar(32) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Association Name="ArticleCategoryDefinition_ArticleCategory" Member="ArticleCategory" ThisKey="Category" OtherKey="Category" Type="ArticleCategory" />
     </Type>
   </Table>
   <Table Name="dbo.LessonFitnessAssessment" Member="LessonFitnessAssessment">
@@ -3184,9 +3168,9 @@
     <Type Name="GameLevel">
       <Column Name="LevelID" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="LevelCode" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-		<Column Name="DisplayName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-		<Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-		<Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
+      <Column Name="DisplayName" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Association Name="GameLevel_Player" Member="Player" ThisKey="LevelID" OtherKey="PlayerLevel" Type="Player" />
       <Association Name="GameLevel_GameLevelRequirement" Member="GameLevelRequirement" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelRequirement" />
       <Association Name="GameLevel_GameLevelReward" Member="GameLevelReward" ThisKey="LevelID" OtherKey="LevelID" Type="GameLevelReward" />
     </Type>
