@@ -20,7 +20,7 @@
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
@@ -43,7 +43,7 @@
     @{ ViewBag.BlockHeader = _item.Status == (int)Naming.CourseContractStatus.待簽名 ? "學生簽名" : "主管審核";
         ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
         await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
-        }
+    }
 
     <div class="container-fluid">
         <div class="card white">
@@ -189,17 +189,12 @@
     @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
 
-    @{ String basePath = VirtualPathUtility.ToAbsolute("~/");}
+    <script src="plugins/jSignature/jSignature.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.UndoButton.js"></script>
+    <script src="plugins/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
 
-    <script src="@(basePath + "js/plugin/jSignature/jSignature.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorBase30.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorSVG.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.UndoButton.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js")"></script>
-
-    <script type="text/javascript">
-
-    </script>
 }
 
 

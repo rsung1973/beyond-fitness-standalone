@@ -21,7 +21,7 @@
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
@@ -35,18 +35,18 @@
             margin: 0;
             list-style-type: decimal;
             list-style-position: outside;
-            counter-reset: nested; 
+            counter-reset: nested;
             list-style-type: none;
         }
 
-        ol li li {
-            padding: 0 0 0 5px;
-        }
-     
-        ol li::before {
-            counter-increment: nested;
-            content: counters(nested, ".") " ";
-        }            
+            ol li li {
+                padding: 0 0 0 5px;
+            }
+
+            ol li::before {
+                counter-increment: nested;
+                content: counters(nested, ".") " ";
+            }
     </style>
 }
 <!-- Main Content -->
@@ -68,7 +68,7 @@
                             {
                                 <button type="button" class="btn btn-danger btn-round btn-simple btn-round waves-effect waves-red reedit" onclick="processContract(@(JsonConvert.SerializeObject(new { KeyID = _item.ContractID.EncryptKey(), Status = (int)Naming.CourseContractStatus.草稿, FromStatus = (int)Naming.CourseContractStatus.待簽名, Drawback = true, })));">內容錯誤，重新編輯</button>
                             }
-                                <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="confirmSignature();">確定同意購買此合約</button>
+                            <button type="button" class="btn btn-primary btn-round waves-effect float-right next" onclick="confirmSignature();">確定同意購買此合約</button>
                         }
                         else
                         {
@@ -186,14 +186,11 @@
     @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");}
 
 
-    @{ String basePath = VirtualPathUtility.ToAbsolute("~/");}
+    <script src="plugins/jSignature/jSignature.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorBase30.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.CompressorSVG.js"></script>
+    <script src="plugins/jSignature/plugins/jSignature.UndoButton.js"></script>
+    <script src="plugins/jSignature/plugins/signhere/jSignature.SignHere.js"></script>
 
-    <script src="@(basePath + "js/plugin/jSignature/jSignature.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorBase30.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.CompressorSVG.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/jSignature.UndoButton.js")"></script>
-    <script src="@(basePath + "js/plugin/jSignature/plugins/signhere/jSignature.SignHere.js")"></script>
-
-    <script type="text/javascript"></script>
 }
 

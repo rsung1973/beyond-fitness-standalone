@@ -151,7 +151,7 @@
 
     if (request.ContentType != null)
     {
-        if(forms.ContainsKey("BranchID"))
+        if (forms != null && forms.ContainsKey("BranchID"))
         {
             GetRequestValues(forms["BranchID"], forms["MemberCode"]);
         }
