@@ -619,6 +619,10 @@ namespace WebHome.Controllers
             }
 
             item.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
+            if (item.UserProfileExtension != null)
+            {
+                item.UserProfileExtension.LineID = null;
+            }
             models.SubmitChanges();
 
             try
@@ -648,6 +652,10 @@ namespace WebHome.Controllers
             }
 
             item.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
+            if (item.UserProfileExtension != null)
+            {
+                item.UserProfileExtension.LineID = null;
+            }
             models.SubmitChanges();
 
             try

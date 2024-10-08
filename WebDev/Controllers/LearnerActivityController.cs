@@ -550,8 +550,20 @@ namespace WebHome.Controllers
                 viewModel.UID = viewModel.DecryptKeyValue();
             }
 
-            UserProfile item = models.GetTable<UserProfile>().Where(l => l.UID == viewModel.UID).FirstOrDefault();
-            item ??= viewModel.ValiateLogin(models, ModelState);
+            UserProfile item = models.GetTable<UserProfile>()
+                .Where(l => l.UID == viewModel.UID)
+                .FirstOrDefault();
+
+            if (item == null)
+            {
+                item = viewModel.ValiateLogin(models, ModelState);
+            }
+            else if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+            {
+                ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
+                item = null;
+            }
+
 
             if (item == null)
             {
@@ -1449,7 +1461,7 @@ namespace WebHome.Controllers
             {
                 viewModel = JsonConvert.DeserializeObject<RegisterViewModel>(viewModel.KeyID.DecryptKey());
             }
-            Url.Action("test");
+            //Url.Action("test");
             ViewBag.ViewModel = viewModel;
             return View("~/Views/LearnerActivity/LineAuth.cshtml");
         }

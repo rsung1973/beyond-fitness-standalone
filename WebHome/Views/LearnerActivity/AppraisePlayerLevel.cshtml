@@ -182,6 +182,11 @@
                 else
                 {
                     learner.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
+                    learner.PID = learner.MemberCode;
+                    if (learner.UserProfileExtension != null)
+                    {
+                        learner.UserProfileExtension.LineID = null;
+                    }
                     models.SubmitChanges();
                 }
             }

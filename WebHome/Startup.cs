@@ -120,8 +120,8 @@ namespace WebHome
             }
             else
             {
-                //app.UseExceptionHandler("/Home/Error");
-                app.UseDeveloperExceptionPage();
+                app.UseExceptionHandler("/Error/Error");
+                //app.UseDeveloperExceptionPage();
                 app.UseHsts();
             }
             app.UseStaticFiles();

@@ -316,7 +316,7 @@ namespace WebHome.Controllers
                         if (lineID != null)
                         {
                             var profile = await HttpContext.GetUserAsync();
-                            if (profile != null)
+                            if (profile?.LevelID == (int)Naming.MemberStatusDefinition.Checked)
                             {
                                 profile = profile.LoadInstance(models);
                                 if (models.GetTable<UserProfileExtension>()
