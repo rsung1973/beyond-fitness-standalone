@@ -500,29 +500,32 @@
             "MRT":"Red line (Tamsui–Xinyi) • Xinyi Anhe Station Exit 2A",
             "MRTShort":"MRT Xinyi Anhe Station Exit <b>2A</b>",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 3,  
             "Slogan": "Immerse yourself in our energetic vibes of sports!",
             "SloganMessage": "<p>Beyond believes that exercise is more than just a physical activity. It is a way of life, a way of loving and caring for ourselves. For modern working professionals, Beyond offers a unique space to combine exercise with style.<br /><br />This is not just a gym, it is a sanctuary after work, a place where the mind and body can resonate. At here, exercise is no longer a burden, but a pleasure, like working out at home.<br /><br /></p><p class=\"hidden-lg-down\">Through personalized training, cutting-edge equipment, and a vibrant community, we empower you to carve out balance in your work-filled days. Let your confidence blossom, your energy ignite. Let exercise become your sanctuary, your fuel, your limitless potential. Beyond awaits, ready to unlock your best self.</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo07.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo08.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo09.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo10.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo12.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo12.png"
+                },
+                {
+                    "FileName": "Demo13.png"
                 }
-            ],              
+            ],             
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[

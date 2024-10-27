@@ -774,7 +774,7 @@ u {
 }
 .findus .banner .xinyianhe-1 {
   /* 預設的背景圖片 */
-  background-image: url("../images/banner/xinyianhe-lg.jpg");
+  background-image: url("../images/banner/xinyianhe-lg-1.jpg");
   background-size: cover;
   background-position: bottom center;
   height: 100vh;
@@ -782,7 +782,33 @@ u {
 }
 @media (max-width: 767px) {
   .findus .banner .xinyianhe-1 {
-    background-image: url("../images/banner/xinyianhe-sm.jpg") !important;
+    background-image: url("../images/banner/xinyianhe-sm-1.jpg") !important;
+  }
+}
+.findus .banner .xinyianhe-2 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/xinyianhe-lg-2.jpg");
+  background-size: cover;
+  background-position: bottom center;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .xinyianhe-2 {
+    background-image: url("../images/banner/xinyianhe-sm-2.jpg") !important;
+  }
+}
+.findus .banner .xinyianhe-3 {
+  /* 預設的背景圖片 */
+  background-image: url("../images/banner/xinyianhe-lg-3.jpg");
+  background-size: cover;
+  background-position: bottom center;
+  height: 100vh;
+  /* 手機版 */
+}
+@media (max-width: 767px) {
+  .findus .banner .xinyianhe-3 {
+    background-image: url("../images/banner/xinyianhe-sm-3.jpg") !important;
   }
 }
 .findus .banner .nanjing-1 {
@@ -1110,7 +1136,7 @@ u {
   }
 }
 .findus .slogan.container-background.xinyianhe {
-  background-image: url("../images/slogan/xinyianhe-lg.jpg");
+  background-image: url("../images/slogan/xinyianhe-lg-1.jpg");
   /* PC */
   /* iPad直板 */
   /* iPad直板+手機 */
@@ -1122,13 +1148,13 @@ u {
 }
 @media (max-width: 990px) and (min-width: 768px) {
   .findus .slogan.container-background.xinyianhe {
-    background-image: url("../images/slogan/xinyianhe-sm.jpg");
+    background-image: url("../images/slogan/xinyianhe-sm-1.jpg");
     height: 900px;
   }
 }
 @media (max-width: 767px) {
   .findus .slogan.container-background.xinyianhe {
-    background-image: url("../images/slogan/xinyianhe-sm.jpg");
+    background-image: url("../images/slogan/xinyianhe-sm-1.jpg");
   }
 }
 .findus .slogan.container-background.dazhi {
