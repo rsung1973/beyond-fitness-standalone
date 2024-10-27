@@ -9,8 +9,8 @@
             "Name": "功能性訓練",
             "NameDesc": "Functional <br />Training",
             "Desc": "運動訓練不僅僅是為了雕塑體態和燃燒脂肪，同時也能提升生活品質和運動表現。功能性訓練針對這需求而生，它不僅有效鍛鍊肌肉，還增強協調性、敏捷度、爆發力等等。<br/><br/>我們關注肌肉和動作的聯繫，有利於減少疲勞和提升協調能力，同時也能讓客戶們感受到身體的真正改變。",
-            "Items": "反應燈訓練 \\ Wall Ball \\ 風車",
-            "DemoImgCnt": 3,
+            "Items": "彈力帶單臂闊背伸展 \\ 反應燈訓練 \\ <br class=\"hidden-lg-up\"/>Wall Ball \\ 風車",
+            "DemoImgCnt": 5,
             "PlaceOrder": 1
 
         },
@@ -19,8 +19,8 @@
             "Name": "心肺功能重塑",
             "NameDesc": "Cardiorespiratory <br />Training",
             "Desc": "心臟和肺臟是我們身體最重要的器官，它們供應氧氣和養分，同時排除代謝產物。有效地專注於心肺功能訓練，通過特定的呼吸技巧和運動訓練，能夠強化心臟和肺臟的能力。包含提高體內細胞帶氧能力，減少疲勞，增加體力和專注力，使學生們更好地應對生活壓力和工作的挑戰。",
-            "Items": "戰繩 \\ 划船機 \\ <br class=\"hidden-sm-up\"/>登階機 \\ 跑步機",
-            "DemoImgCnt": 2,
+            "Items": "推雪橇 \\ 戰繩 \\ 划船機 \\ <br class=\"hidden-sm-up\"/>登階機 \\ 跑步機",
+            "DemoImgCnt": 4,
             "PlaceOrder": 1
 
         }, 
@@ -29,8 +29,8 @@
             "Name": "運動能力強化",
             "NameDesc": "Athletic Performance <br />Improvement",
             "Desc": "運動能力強化包括兩個向度：運動表現提升與傷害預防，這對於運動員與運動愛好者而言至關重要。透過專業能有效地訓練速度、力量、爆發力、敏捷度、協調性、平衡、反應與活動度等，這同時需要專業人員妥善計劃週期性訓練，便從而能提升專項的表現，同時減少在運動中造成傷害的風險。",
-            "Items": "各式壺鈴動作 \\  跳小跨欄  \\ <br class=\"hidden-sm-up\"/>藥球側拋",
-            "DemoImgCnt": 2,
+            "Items": "跳箱 \\ 各式壺鈴動作 \\  跳小跨欄  \\ <br class=\"hidden-sm-up\"/>藥球側拋",
+            "DemoImgCnt": 6,
             "PlaceOrder": 1
 
         },          
@@ -39,8 +39,8 @@
             "Name": "關節矯正訓練",
             "NameDesc": "Joint and Connective Tissue Conditioning",            
             "Desc": "長期的姿勢不良或關節傷害可能導致疼痛緊繃和身體的活動能力受限。有效的專業可提供的肌肉、關節和筋膜訓練，處理長期的不適，同時也可強化運動效果。這有助於改善活動能力，減少疼痛，並促進運動康復與進步的成果。",
-            "Items": "彈力帶肩關節鬆動術 \\ <br class=\"hidden-sm-up\"/>肋木架側線伸展",
-            "DemoImgCnt": 2,
+            "Items": "後腳抬高-單臂高位划船 \\ 彈力帶肩關節鬆動術 \\ <br/>肋木架側線伸展",
+            "DemoImgCnt": 5,
             "PlaceOrder": 1
 
         },
@@ -49,8 +49,8 @@
             "Name": "TRX懸吊訓練",
             "NameDesc": "Suspension <br />Training",
             "Desc": "TRX懸吊訓練是多功能的體能訓練方法，它通過懸吊和不穩定性提供更多核心和全身參與。改善整體體能、核心力量和柔韌性，適用於各種健身水平，並提供了靈活性與趣味性。不論是初學者還是有經驗的運動員，TRX 的懸吊訓練都能在訓練課表上提供更全面的選擇與變化性。",
-            "Items": "弓箭步伸展 \\ 划船 \\ 棒式",
-            "DemoImgCnt": 2,
+            "Items": "單腳TRX 划船 \\ 弓箭步伸展 \\ 划船 \\ 棒式",
+            "DemoImgCnt": 5,
             "PlaceOrder": 2
 
         },         
@@ -59,8 +59,8 @@
             "Name": "核心訓練",
             "NameDesc": "Core Muscle <br />Training",
             "Desc": "核心肌群對於身體的穩定性和運動表現至關重要，但時常被人們所忽略，人們往往強調了四肢的訓練，卻忽略了真正有效的核心訓練。<br/><br/>透過核心肌群的訓練，除了可以帶來均衡的曲線更可以強化自身運動訓練的基石。有效的核心訓練，除了能減少腰部與髖部的不適，更能增加運動成效。",
-            "Items": "俄羅斯扭轉 \\ 農夫走路 \\ <br class=\"hidden-sm-up\"/>瑜珈球棒式",
-            "DemoImgCnt": 3,
+            "Items": "Hanging Crunch \\ 俄羅斯扭轉 \\ 農夫走路 \\ <br class=\"hidden-sm-up\"/>瑜珈球棒式",
+            "DemoImgCnt": 5,
             "PlaceOrder": 2
         },
         {

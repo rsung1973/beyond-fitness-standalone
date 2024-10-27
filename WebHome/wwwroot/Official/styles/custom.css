@@ -1930,24 +1930,38 @@ u {
 }
 .session .demo-image .function .demo01-img {
   height: auto;
-  content: url("../images/session/function/lg-01.jpg");
+  content: url("../images/session/function/lg-04.jpg");
 }
 .session .demo-image .function .demo02-img {
   height: auto;
-  content: url("../images/session/function/lg-02.jpg");
+  content: url("../images/session/function/lg-05.jpg");
 }
 .session .demo-image .function .demo03-img {
+  height: auto;
+  content: url("../images/session/function/lg-01.jpg");
+}
+.session .demo-image .function .demo04-img {
+  height: auto;
+  content: url("../images/session/function/lg-02.jpg");
+}
+.session .demo-image .function .demo05-img {
   height: auto;
   content: url("../images/session/function/lg-03.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .function .demo01-img {
-    content: url("../images/session/function/sm-01.jpg");
+    content: url("../images/session/function/sm-04.jpg");
   }
   .session .demo-image .function .demo02-img {
-    content: url("../images/session/function/sm-02.jpg");
+    content: url("../images/session/function/sm-05.jpg");
   }
   .session .demo-image .function .demo03-img {
+    content: url("../images/session/function/sm-01.jpg");
+  }
+  .session .demo-image .function .demo04-img {
+    content: url("../images/session/function/sm-02.jpg");
+  }
+  .session .demo-image .function .demo05-img {
     content: url("../images/session/function/sm-03.jpg");
   }
 }
@@ -1955,16 +1969,28 @@ u {
   /*手機版*/
 }
 .session .demo-image .cardio .demo01-img {
-  content: url("../images/session/cardio/lg-01.jpg");
+  content: url("../images/session/cardio/lg-03.jpg");
 }
 .session .demo-image .cardio .demo02-img {
+  content: url("../images/session/cardio/lg-04.jpg");
+}
+.session .demo-image .cardio .demo03-img {
+  content: url("../images/session/cardio/lg-01.jpg");
+}
+.session .demo-image .cardio .demo04-img {
   content: url("../images/session/cardio/lg-02.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .cardio .demo01-img {
-    content: url("../images/session/cardio/sm-01.jpg");
+    content: url("../images/session/cardio/sm-03.jpg");
   }
   .session .demo-image .cardio .demo02-img {
+    content: url("../images/session/cardio/sm-04.jpg");
+  }
+  .session .demo-image .cardio .demo03-img {
+    content: url("../images/session/cardio/sm-01.jpg");
+  }
+  .session .demo-image .cardio .demo04-img {
     content: url("../images/session/cardio/sm-02.jpg");
   }
 }
@@ -1972,16 +1998,40 @@ u {
   /*手機版*/
 }
 .session .demo-image .athletic .demo01-img {
-  content: url("../images/session/athletic/lg-01.jpg");
+  content: url("../images/session/athletic/lg-03.jpg");
 }
 .session .demo-image .athletic .demo02-img {
+  content: url("../images/session/athletic/lg-04.jpg");
+}
+.session .demo-image .athletic .demo03-img {
+  content: url("../images/session/athletic/lg-05.jpg");
+}
+.session .demo-image .athletic .demo04-img {
+  content: url("../images/session/athletic/lg-06.jpg");
+}
+.session .demo-image .athletic .demo05-img {
+  content: url("../images/session/athletic/lg-01.jpg");
+}
+.session .demo-image .athletic .demo06-img {
   content: url("../images/session/athletic/lg-02.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .athletic .demo01-img {
-    content: url("../images/session/athletic/sm-01.jpg");
+    content: url("../images/session/athletic/sm-03.jpg");
   }
   .session .demo-image .athletic .demo02-img {
+    content: url("../images/session/athletic/sm-04.jpg");
+  }
+  .session .demo-image .athletic .demo03-img {
+    content: url("../images/session/athletic/sm-05.jpg");
+  }
+  .session .demo-image .athletic .demo04-img {
+    content: url("../images/session/athletic/sm-06.jpg");
+  }
+  .session .demo-image .athletic .demo05-img {
+    content: url("../images/session/athletic/sm-01.jpg");
+  }
+  .session .demo-image .athletic .demo06-img {
     content: url("../images/session/athletic/sm-02.jpg");
   }
 }
@@ -1989,16 +2039,34 @@ u {
   /*手機版*/
 }
 .session .demo-image .joint .demo01-img {
-  content: url("../images/session/joint/lg-01.jpg");
+  content: url("../images/session/joint/lg-03.jpg");
 }
 .session .demo-image .joint .demo02-img {
+  content: url("../images/session/joint/lg-04.jpg");
+}
+.session .demo-image .joint .demo03-img {
+  content: url("../images/session/joint/lg-05.jpg");
+}
+.session .demo-image .joint .demo04-img {
+  content: url("../images/session/joint/lg-01.jpg");
+}
+.session .demo-image .joint .demo05-img {
   content: url("../images/session/joint/lg-02.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .joint .demo01-img {
-    content: url("../images/session/joint/sm-01.jpg");
+    content: url("../images/session/joint/sm-03.jpg");
   }
   .session .demo-image .joint .demo02-img {
+    content: url("../images/session/joint/sm-04.jpg");
+  }
+  .session .demo-image .joint .demo03-img {
+    content: url("../images/session/joint/sm-05.jpg");
+  }
+  .session .demo-image .joint .demo04-img {
+    content: url("../images/session/joint/sm-01.jpg");
+  }
+  .session .demo-image .joint .demo05-img {
     content: url("../images/session/joint/sm-02.jpg");
   }
 }
@@ -2006,45 +2074,69 @@ u {
   /*手機版*/
 }
 .session .demo-image .trx .demo01-img {
-  content: url("../images/session/trx/lg-01.jpg");
+  content: url("../images/session/trx/lg-03.jpg");
 }
 .session .demo-image .trx .demo02-img {
-  content: url("../images/session/trx/lg-02.jpg");
+  content: url("../images/session/trx/lg-04.jpg");
 }
 .session .demo-image .trx .demo03-img {
-  content: url("../images/session/trx/lg-03.jpg");
+  content: url("../images/session/trx/lg-05.jpg");
+}
+.session .demo-image .trx .demo04-img {
+  content: url("../images/session/trx/lg-01.jpg");
+}
+.session .demo-image .trx .demo05-img {
+  content: url("../images/session/trx/lg-02.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .trx .demo01-img {
-    content: url("../images/session/trx/sm-01.jpg");
+    content: url("../images/session/trx/sm-03.jpg");
   }
   .session .demo-image .trx .demo02-img {
-    content: url("../images/session/trx/sm-02.jpg");
+    content: url("../images/session/trx/sm-04.jpg");
   }
   .session .demo-image .trx .demo03-img {
-    content: url("../images/session/trx/sm-03.jpg");
+    content: url("../images/session/trx/sm-05.jpg");
+  }
+  .session .demo-image .trx .demo04-img {
+    content: url("../images/session/trx/sm-01.jpg");
+  }
+  .session .demo-image .trx .demo05-img {
+    content: url("../images/session/trx/sm-02.jpg");
   }
 }
 .session .demo-image .core {
   /*手機版*/
 }
 .session .demo-image .core .demo01-img {
-  content: url("../images/session/core/lg-01.jpg");
+  content: url("../images/session/core/lg-04.jpg");
 }
 .session .demo-image .core .demo02-img {
-  content: url("../images/session/core/lg-02.jpg");
+  content: url("../images/session/core/lg-05.jpg");
 }
 .session .demo-image .core .demo03-img {
+  content: url("../images/session/core/lg-01.jpg");
+}
+.session .demo-image .core .demo04-img {
+  content: url("../images/session/core/lg-02.jpg");
+}
+.session .demo-image .core .demo05-img {
   content: url("../images/session/core/lg-03.jpg");
 }
 @media (max-width: 767px) {
   .session .demo-image .core .demo01-img {
-    content: url("../images/session/core/sm-01.jpg");
+    content: url("../images/session/core/sm-04.jpg");
   }
   .session .demo-image .core .demo02-img {
-    content: url("../images/session/core/sm-02.jpg");
+    content: url("../images/session/core/sm-05.jpg");
   }
   .session .demo-image .core .demo03-img {
+    content: url("../images/session/core/sm-01.jpg");
+  }
+  .session .demo-image .core .demo04-img {
+    content: url("../images/session/core/sm-02.jpg");
+  }
+  .session .demo-image .core .demo05-img {
     content: url("../images/session/core/sm-03.jpg");
   }
 }
