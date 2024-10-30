@@ -19,7 +19,7 @@
             "Name": "Cardio",
             "NameDesc": "Cardiorespiratory <br />Training",
             "Desc": "Within your vital organs, the heart and lungs hold the key to daily performance. Through targeted cardiorespiratory training, you strengthen them. This strength enhances your body's oxygen delivery, conquers fatigue, and unleashes a surge of physical and mental resilience. Equipping you to face any challenge with newfound stamina and focus.",
-            "Items": "Battlerope \\ Rowing machine <br/>\\ Mountain Climber",
+            "Items": "Sled push \\ Battlerope \\ Rowing machine <br/>\\ Mountain Climber",
             "DemoImgCnt": 4,
             "PlaceOrder": 1
 
@@ -29,7 +29,7 @@
             "Name": "Athletic",
             "NameDesc": "Athletic Performance <br />Improvement",
             "Desc": "Strengthening sporting ability has two dimensions: improving performance and preventing injury. This is essential for athletes and sports enthusiasts. By working with a professional, you can effectively train your speed, strength, power, agility, coordination, balance, reaction time, and range of motion. To achieve this, it requires a properly planned training schedule, so that you can improve performance and minimize injury risk for your specific sport.",
-            "Items": "Various Movements for Kettlebell \\  Hurdle Jumping",
+            "Items": "Box jump \\ Various Movements for Kettlebell \\  Hurdle Jumping",
             "DemoImgCnt": 6,
             "PlaceOrder": 1
 
