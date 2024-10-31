@@ -503,27 +503,30 @@
             "MRT":"淡水信義線(紅線) • 信義安和站2A號出口",
             "MRTShort":"捷運信義安和站<b>2A號</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 3,  
             "Slogan": "Beyond是家的另一個空間，<br class=\"hidden-md-down\" />讓運動圍繞著我們",
             "SloganMessage": "<p>在Beyond的運動不僅僅只是運動，更是生活的精髓。對於現代上班族的菁英們，Beyond為你打造了一個融合運動與品味的場所。<br/><br />這裡不僅是運動訓練的場所，更是工作後的另一片天地，一個讓心靈與身體共鳴的所在。在這個空間裡，運動不再是負擔，而是一種享受，享受如同在家運動的感覺。<br /><br />希望透過這個獨特的體驗，讓你在繁忙的工作生活中找到平衡，散發出更自信、更有活力的你。讓運動圍繞著你，成為你生活中不可或缺的一部分，展現出你無限可能的另一個空間。 </p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo07.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo08.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo09.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo10.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo12.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo12.png"
+                },
+                {
+                    "FileName": "Demo13.png"
                 }
             ],                    
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",

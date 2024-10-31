@@ -9,8 +9,8 @@
             "Name": "ファンクショナルト",
             "NameDesc": "Functional <br />Training",
             "Desc": "トレーニングは、体型を整え、脂肪を燃焼させるだけでなく、生活の質や身体能力を高めることができます。ファンクショナルトレーニングは、この需要に応えるために生まれました。筋肉を効果的に鍛えるだけでなく、協調性、俊敏性、爆発力などを向上させます。<br/><br/>我々は筋肉と動きの関連性に注目し、その知識を疲労緩和や協調能力の向上に活かせながら、お客様に身体の変化を実感できるようサポートいたします。",
-            "Items": "Reaction light \\ Wall Ball \\ Windmill",
-            "DemoImgCnt": 3,
+            "Items": "One arm lat stretch with band \\ <br class=\"hidden-lg-up\"/>Reaction light \\ Wall Ball \\ Windmill",
+            "DemoImgCnt": 5,
             "PlaceOrder": 1
 
         },
@@ -19,8 +19,8 @@
             "Name": "心肺機能の強化",
             "NameDesc": "Cardiorespiratory <br />Training",
             "Desc": "心臓と肺は私たちの体の最も重要な臓器であり、酸素や栄養を供給し、代謝産物を排出します。心肺機能トレーニングに取り組み、特定の呼吸法やトレーニングを行うことで、心肺機能を強化することができ、細胞の酸素供給力の増進や、疲労軽減、体力と集中力の向上につながり、生活のストレスや仕事の難題にもうまく対処できるようになります。",
-            "Items": "Battlerope \\ Rowing machine <br/>\\ Mountain Climber",
-            "DemoImgCnt": 2,
+            "Items": "Sled push \\ Battlerope \\ Rowing machine <br/>\\ Mountain Climber",
+            "DemoImgCnt": 4,
             "PlaceOrder": 1
 
         }, 
@@ -29,8 +29,8 @@
             "Name": "運動能力の強化",
             "NameDesc": "Athletic Performance <br />Improvement",
             "Desc": "運動能力の強化には、運動パフォーマンスの向上と怪我の予防という2つの側面が含まれており、これは選手やスポーツ愛好家にとって非常に重要です。専門家のサポートの元で、速度、筋力、爆発力、敏捷性、動きの協調性、バランス力、反応力、柔軟性などのトレーニングを効果的に行えます。専門家による適切なプランに沿って、周期的にトレーニングを繰り返すことで、特定のスポーツのパフォーマンスを向上させると同時に、怪我のリスクを抑えることができます。",
-            "Items": "Various Movements for Kettlebell \\  Hurdle Jumping",
-            "DemoImgCnt": 2,
+            "Items": "Box jump \\ Various Movements for Kettlebell \\  Hurdle Jumping",
+            "DemoImgCnt": 6,
             "PlaceOrder": 1
 
         },          
@@ -39,8 +39,8 @@
             "Name": "関節・筋膜矯正",
             "NameDesc": "Joint and Connective Tissue Conditioning",            
             "Desc": "長期間の姿勢の悪さや関節の損傷は、筋肉の痛みや緊張、身体の動作能力の制限を引き起こす可能性があります。専門家が提供する効果的な筋肉、関節、および筋膜のトレーニングは、長期的な不快感を改善するだけでなく、運動効果を強化することもできます。そうすることで、身体運動能力の改善や痛みの軽減、リカバリーの促進が期待されます。",
-            "Items": "Shoulder Joint Mobilization with Super-band",
-            "DemoImgCnt": 2,
+            "Items": "Rear feet elevated one arm high row \\ Shoulder Joint Mobilization with Super-band",
+            "DemoImgCnt": 5,
             "PlaceOrder": 1
 
         },
@@ -49,8 +49,8 @@
             "Name": "TRX",
             "NameDesc": "Suspension <br />Training",
             "Desc": "TRXサスペンショントレーニングは、複合的な体力トレーニング法であり、懸垂と不安定要素によって、より多くのコアマッスルや全身の筋肉を鍛えられます。身体能力を全般的に改善し、コアマッスルのパワーと柔軟性を向上させ、バラエティと楽しさが溢れ、様々なフィットネスレベルの方に適応可能です。初心者から経験豊富なアスリートまで適しており、TRXサスペンショントレーニングはトレーニンメニューをより幅広く、豊かにしてくれます。",
-            "Items": "Stretch with Lunge \\ Rowing \\ Plank",
-            "DemoImgCnt": 2,
+            "Items": "One leg TRX row \\ Stretch with Lunge \\ Rowing \\ Plank",
+            "DemoImgCnt": 5,
             "PlaceOrder": 2
 
         },         
@@ -59,8 +59,8 @@
             "Name": "コアマッスル",
             "NameDesc": "Core Muscle <br />Training",
             "Desc": "コアマッスルは体幹の安定性と運動パフォーマンスを大きく左右しますが、あまり重要視されていません。一般的には四肢のトレーニングに重点を置き、本当に効果的なコアトレーニングはおろそかにされがちです。コアトレーニングを通して、均整のとれたボディラインを手に入れるだけでなく、トレーニングの基盤を強化することもできます。効果的なコアトレーニングは、腰部や骨盤の痛みを軽減し、運動効果を高めることができます。",
-            "Items": "Russian Twist \\ Farmer walk \\ <br class=\"hidden-sm-up\"/>Plank on ball",
-            "DemoImgCnt": 3,
+            "Items": "Hanging Crunch \\ Russian Twist \\ Farmer walk \\ <br class=\"hidden-sm-up\"/>Plank on ball",
+            "DemoImgCnt": 5,
             "PlaceOrder": 2
         },
         {

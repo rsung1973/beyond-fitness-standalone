@@ -500,29 +500,32 @@
             "MRT":"淡水信義線(レッドライン) • MRT信義安和駅2A出口",
             "MRTShort":"MRT信義安和駅<b>2A</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/znEV7bS5twQZKwKo7",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 3,  
             "Slogan": "家の延長線にある空間にし、<br class=\"d-none d-lg-block d-md-block\" />どっぷりスポーツのある暮らしに浸りましょう",
             "SloganMessage": "<p>Beyondでは、スポーツは単なるスポーツではなく、生活のコアとなる部分でもあります。職場で活躍していらっしゃる皆様のために、Beyondは洗練されたフィットネス空間を創り出しました。</p><p class=\"d-block\">ここはトレーニングの場だけではなく、仕事が終わってから赴く別天地で、心と体を調和させるための場所でもあります。この空間では、スポーツはもはや体への負担ではなく、マイホームでスポーツするような楽しい体験です。</p><p>この特別な体験を通じて、多忙な生活の中でもバランスを取り、より自信やエネルギーに満ちた自分になれます。スポーツを身近に感じ、生活の欠かせない一部にして、自分の無限の可能性を示すもう一つの空間にしましょう！</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo07.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo08.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo09.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo10.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo12.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo12.png"
+                },
+                {
+                    "FileName": "Demo13.png"
                 }
-            ],                    
+            ],                     
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
