@@ -682,4 +682,10 @@ namespace WebHome.Models.ViewModel
 
     }
 
+    public class AccountingQueryViewModel : QueryViewModel
+    {
+        public DateTime? SettlementDate { get; set; }
+        public int? Year { get; set; }
+    }
+
 }

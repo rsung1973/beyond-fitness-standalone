@@ -558,12 +558,19 @@ namespace WebHome.Controllers
             {
                 item = viewModel.ValiateLogin(models, ModelState);
             }
-            else if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
-            {
-                ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
-                item = null;
-            }
 
+            if (item != null)
+            {
+                if (item.LevelID == (int)Naming.MemberStatusDefinition.Deleted)
+                {
+                    ModelState.AddModelError("PID", "帳號已停用[XA003]，請聯繫您的專屬顧問！");
+                    item = null;
+                }
+                else if (item.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister)
+                {
+                    return RedirectToAction("ActivateAccount", "LearnerActivity");
+                }
+            }
 
             if (item == null)
             {
@@ -1334,6 +1341,7 @@ namespace WebHome.Controllers
                 }
             }
 
+            profile.PID = viewModel.PID;
             profile.LevelID = (int)Naming.MemberStatusDefinition.Checked;
             models.SubmitChanges();
 
@@ -1610,6 +1618,28 @@ namespace WebHome.Controllers
         {
             ViewBag.ViewModel = viewModel;
             return View("~/Views/LearnerActivity/LineNotifyExpiringCourseContract.cshtml");
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ToSignCourseContractAsync(CourseContractQueryViewModel viewModel, String encUID)
+        {
+            int? uid = null;
+            if (encUID != null)
+            {
+                uid = encUID.DecryptKeyValue();
+            }
+
+            var item = models.GetTable<UserProfile>().Where(u => u.UID == uid).FirstOrDefault();
+            if (item != null)
+            {
+                await HttpContext.SignOnAsync(item);
+                return RedirectToAction("ContractEvents", "LearnerActivity");
+            }
+            else
+            {
+                //ViewBag.Message = "此支裝置尚未設定過專屬服務，請點選下方更多資訊/專屬服務/帳號設定才可使用！";
+                return RedirectToAction("Login");
+            }
         }
 
     }

@@ -24,6 +24,8 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
+    LoginViewModel _viewModel = ViewBag.ViewModel as LoginViewModel;
+
     String lang = ViewBag.Lang ?? "zh-TW";
     var langPath = lang == "zh-TW"
         ? "tw"
@@ -45,7 +47,7 @@
             MailMessage message = new MailMessage();
             message.ReplyToList.Add(WebApp.Properties["WebMaster"]);
             message.From = new MailAddress(WebApp.Properties["WebMaster"]);
-            message.To.Add(profile.PID);
+            message.To.Add(_viewModel?.PID ?? profile.PID);
             message.Subject = "Beyond Fitness 動態密碼密碼通知";
             message.IsBodyHtml = true;
 

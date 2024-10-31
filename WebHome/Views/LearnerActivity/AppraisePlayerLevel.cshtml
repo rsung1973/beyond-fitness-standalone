@@ -105,6 +105,7 @@
                         TransactionPoint = awardPoints,
                         TransactionDate = DateTime.Now,
                         Reason = $"{GameLevelReward.RewardDefinition.任務牆點數回饋加碼}:{awardPoints}({totalPoints}*{rewardItem.Reward}%)",
+                        ExpirationDate = new DateTime(DateTime.Today.Year + 1, 12, 31),
                     };
                     models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
                     models.SubmitChanges();
@@ -126,68 +127,73 @@
     var Response = ViewContext.HttpContext.Response;
 
     currentStage = models.PromptCurrentStage();
-    DateTime start = new DateTime(2024, 7, 1);
-    DateTime exclusiveEnd = new DateTime(2024, 10, 1);
-    var stage = models.GetTable<StageProgress>()
-                    .Where(s=>s.ProgressID == 1)
-                    .FirstOrDefault();
-
-    if (stage != null)
+    if (currentStage != null)
     {
-        IQueryable<GameLevelRequirement> requirements = models.GetTable<GameLevelRequirement>().Where(r => r.Threshold > 0);
-        var levelRequirements = requirements.GroupBy(r => r.LevelID).OrderByDescending(r => r.Key);
-        IQueryable<UserProfile> items = models.GetTable<UserProfile>()
-                                            .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
-                                                || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister);
+        DateTime start = currentStage.StartDate.Value;
+        DateTime exclusiveEnd = currentStage.EndExclusiveDate.Value;
 
-        foreach (var learner in items)
+        var stage = models.GetTable<StageProgress>()
+                .Where(s => s.ProgressID > currentStage.ProgressID)
+                .OrderBy(s => s.ProgressID)
+                .FirstOrDefault();
+
+        if (stage != null)
         {
+            IQueryable<GameLevelRequirement> requirements = models.GetTable<GameLevelRequirement>().Where(r => r.Threshold > 0);
+            var levelRequirements = requirements.GroupBy(r => r.LevelID).OrderByDescending(r => r.Key);
+            IQueryable<UserProfile> items = models.GetTable<UserProfile>()
+                                                .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
+                                                    || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister);
 
-            //ApplyLevelReward(learner);
-
-            var lessons = models.GetTable<LessonTime>()
-                .Where(l => l.LessonAttendance != null)
-                .Where(l => l.ClassTime >= start)
-                .Where(l => l.ClassTime < exclusiveEnd)
-                .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
-
-            if (lessons.Any())
+            foreach (var learner in items)
             {
-                var levelID = AppraiseLevel(learner, lessons, levelRequirements);
-                if(levelID.HasValue)
-                {
-                    ApplyLevel(learner, levelID.Value, stage);
-                }
-            }
-            else
-            {
-                var contracts = models.PromptEffectiveContract()
-                                    .Where(c => c.CourseContractMember.Any(m => m.UID == learner.UID));
-                if (contracts.Any())
-                {
-                    ApplyLevel(learner, 0, stage);
-                }
-                else if (learner.ServingCoach != null)
-                {
 
-                }
-                else if (learner.UserRoleAuthorization.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
-                {
+                //ApplyLevelReward(learner);
 
-                }
-                else if (learner.UserRole.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
-                {
+                var lessons = models.GetTable<LessonTime>()
+                    .Where(l => l.LessonAttendance != null)
+                    .Where(l => l.ClassTime >= start)
+                    .Where(l => l.ClassTime < exclusiveEnd)
+                    .Where(l => l.GroupingLesson.RegisterLesson.Any(r => r.UID == learner.UID));
 
+                if (lessons.Any())
+                {
+                    var levelID = AppraiseLevel(learner, lessons, levelRequirements);
+                    if (levelID.HasValue)
+                    {
+                        ApplyLevel(learner, levelID.Value, stage);
+                    }
                 }
                 else
                 {
-                    learner.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
-                    learner.PID = learner.MemberCode;
-                    if (learner.UserProfileExtension != null)
+                    var contracts = models.PromptEffectiveContract()
+                                        .Where(c => c.CourseContractMember.Any(m => m.UID == learner.UID));
+                    if (contracts.Any())
                     {
-                        learner.UserProfileExtension.LineID = null;
+                        ApplyLevel(learner, 0, stage);
                     }
-                    models.SubmitChanges();
+                    else if (learner.ServingCoach != null)
+                    {
+
+                    }
+                    else if (learner.UserRoleAuthorization.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
+                    {
+
+                    }
+                    else if (learner.UserRole.Any(r => r.RoleID != (int)Naming.RoleID.Learner))
+                    {
+
+                    }
+                    else
+                    {
+                        learner.LevelID = (int)Naming.MemberStatusDefinition.Deleted;
+                        learner.PID = learner.MemberCode;
+                        if (learner.UserProfileExtension != null)
+                        {
+                            learner.UserProfileExtension.LineID = null;
+                        }
+                        models.SubmitChanges();
+                    }
                 }
             }
         }

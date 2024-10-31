@@ -99,6 +99,12 @@ namespace WebHome.Models.ViewModel
         public String Action { get; set; }
         public DateTime? NotAfter { get; set; }
         public bool? Logout { get; set; }
+        public String EncPID
+        {
+            get => PID != null ? PID.EncryptKey() : null;
+            set => PID = (value != null ? value.DecryptKey() : null);
+        }
+
 
     }
 

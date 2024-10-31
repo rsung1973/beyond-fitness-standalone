@@ -18,29 +18,33 @@
 }
 @{
 
-    ModelStateDictionary _modelState;
-    ModelSource<UserProfile> models;
-    QueryViewModel _viewModel;
+        ModelStateDictionary _modelState;
+        ModelSource<UserProfile> models;
+        QueryViewModel _viewModel;
 
-    _modelState = ViewContext.ModelState;
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
-    _viewModel = (QueryViewModel)ViewBag.ViewModel;
-    String _dialogID = $"signature{DateTime.Now.Ticks}";
+        _modelState = ViewContext.ModelState;
+        models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+        _viewModel = (QueryViewModel)ViewBag.ViewModel;
+        String _dialogID = $"signature{DateTime.Now.Ticks}";
 
-    LessonTime _model = this.Model as LessonTime;
-    UserProfile learner = ViewBag.Learner as UserProfile;
+        LessonTime _model = this.Model as LessonTime;
+        UserProfile learner = ViewBag.Learner as UserProfile;
 
-    if (_model != null && learner != null)
-    {
-        var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == learner.UID)
-                        .FirstOrDefault()?.RegisterID;
+        if (_model != null && learner != null)
+        {
+            var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == learner.UID)
+                            .FirstOrDefault()?.RegisterID;
 
-        var assessment = models.GetTable<LessonSelfAssessment>()
-                .Where(s => s.LessonID == _model.LessonID)
-                .Where(s => s.RegisterID == registerID);
+            var assessment = models.GetTable<LessonSelfAssessment>()
+                    .Where(s => s.LessonID == _model.LessonID)
+                    .Where(s => s.RegisterID == registerID);
 
-        var useSignature = _model.LessonPlan?.Signature == null
-                            && !_model.LessonPlan.CommitAttendance.HasValue;
+            var feedback = _model.LessonFeedBack.Where(r => r.RegisterID == registerID).FirstOrDefault();
+
+            //var useSignature = _model.LessonPlan?.Signature == null
+            //            && !_model.LessonPlan.CommitAttendance.HasValue;
+            var useSignature = feedback?.AssessmentSignature == null
+                                && feedback?.CommitAssessment.HasValue == false;
 
         <div class="modal fade" id="@(_dialogID)" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog modal-lg" role="document">
@@ -127,10 +131,10 @@
                                             <span><i></i>本人謹此聲明上述個人身體健康狀況事項，並立此切結書以資證明。</span>
                                         </label>
                                     </div>
-                                    @if (_model.LessonPlan?.Signature != null)
+                                    @if (feedback?.AssessmentSignature != null)
                                     {
                                         <div class="col-12 text-right">
-                                            <img src="@Html.Raw(_model.LessonPlan.Signature)" width="400px" />
+                                            <img src="@Html.Raw(feedback.AssessmentSignature)" width="400px" />
                                         </div>
                                     }
                                 </div>

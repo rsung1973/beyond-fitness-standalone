@@ -28,6 +28,7 @@ using WebHome.Models.Timeline;
 using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace WebHome.Controllers
 {
@@ -1854,8 +1855,8 @@ namespace WebHome.Controllers
                         + (int)r[(int)ManagerBonusFields.特別獎金];
 
                     r[(int)ManagerBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
-                    r[(int)ManagerBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
-                    r[(int)ManagerBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
+                    r[(int)ManagerBonusFields.滾動式平均單價] = (int)((g.AttendedByOtherAvgPrice ?? 0) / 1.05M);
+                    r[(int)ManagerBonusFields.滾動式抽成] = (int)((g.AttendedShare ?? 0) / 1.05M);
                     r[(int)ManagerBonusFields.管理獎金抽成] = g.ManagementBonusGrade ?? 0M;
                     r[(int)ManagerBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0M) / 365M, 1);
                     r[(int)ManagerBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)ManagerBonusFields.底薪] + (int)r[(int)ManagerBonusFields.總獎金] + (int)r[(int)ManagerBonusFields.職務加給]) * 0.005M);
@@ -1944,8 +1945,8 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.PT_Session課數] = g.PTAttendanceCount ?? 0;
                     r[(int)CoachBonusFields.業績獎金] = g.AchievementBonus ?? 0;
                     r[(int)CoachBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
-                    r[(int)CoachBonusFields.滾動式平均單價] = g.AttendedByOtherAvgPrice ?? 0;
-                    r[(int)CoachBonusFields.滾動式抽成] = g.AttendedShare ?? 0;
+                    r[(int)CoachBonusFields.滾動式平均單價] = (int)((g.AttendedByOtherAvgPrice ?? 0) / 1.05M);
+                    r[(int)CoachBonusFields.滾動式抽成] = (int)((g.AttendedShare ?? 0) / 1.05M);
                     r[(int)CoachBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0) / 365M,1);
                     r[(int)CoachBonusFields.任職年資抽成百分比] = g.EmploymentDurationGradeIndex / 10M ?? 0M;
 
@@ -2932,7 +2933,7 @@ namespace WebHome.Controllers
                             r[(int)ManagerYearlyBonusFields.分店業績達成率百分比] = Math.Round(branchSummary.AchievementRatio ?? 0M, 2);
                         }
                     }
-                    r[(int)ManagerYearlyBonusFields.滾動式抽成] = reviewItem?.AttendedShare ?? 0;
+                    r[(int)ManagerYearlyBonusFields.滾動式抽成] = (int)((reviewItem?.AttendedShare ?? 0) / 1.05M);
 
                     r[(int)ManagerYearlyBonusFields.總獎金] = (int)r[(int)ManagerYearlyBonusFields.上課獎金]
                         + (int)r[(int)ManagerYearlyBonusFields.管理獎金]
@@ -3011,7 +3012,7 @@ namespace WebHome.Controllers
                     r[(int)CoachYearlyBonusFields.業績獎金] = g.AchievementBonus ?? 0;
                     r[(int)CoachYearlyBonusFields.年終上課加業績獎金] = (int)r[(int)CoachYearlyBonusFields.上課獎金] + (int)r[(int)CoachYearlyBonusFields.業績獎金];
                     r[(int)CoachYearlyBonusFields.工作月數] = reviewItem.DataCount ?? 0;
-                    r[(int)CoachYearlyBonusFields.滾動式抽成] = reviewItem?.AttendedShare ?? 0;
+                    r[(int)CoachYearlyBonusFields.滾動式抽成] = (int)((reviewItem?.AttendedShare ?? 0) / 1.05M);
 
                     if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
@@ -3107,7 +3108,18 @@ namespace WebHome.Controllers
             return new EmptyResult();
         }
 
+        public ActionResult HandleUnknownAction(string actionName, IFormCollection forms, AccountingQueryViewModel viewModel)
+        {
+            //if (actionName == "DBBatch")
+            //{
+            //    viewModel = new MonthlyIndicatorQueryViewModel { };
+            //    var result = await this.TryUpdateModelAsync<MonthlyIndicatorQueryViewModel>((MonthlyIndicatorQueryViewModel)viewModel);
+            //}
 
+            ViewBag.ViewModel = viewModel;
+            return View(actionName, forms);
+            //this.View(actionName).ExecuteResult(this.ControllerContext);
+        }
 
     }
 }

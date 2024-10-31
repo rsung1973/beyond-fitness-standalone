@@ -314,7 +314,7 @@
                 || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CGF
                 || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CRF
                 || contract.ContractType == (int)CourseContractType.ContractTypeDefinition.CVF
-                ? 3 : 1);
+                ? 3 : 2);
 
             viewModel.KeyID = '@Html.Raw(contract.ContractID.EncryptKey())';
 

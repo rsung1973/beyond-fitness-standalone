@@ -26,6 +26,7 @@ using CommonLib.Core.Utility;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Http;
+using static WebHome.Models.Locale.Naming;
 
 namespace WebHome.Helper.BusinessOperation
 {
@@ -1859,6 +1860,10 @@ namespace WebHome.Helper.BusinessOperation
 
                 models.ExecuteCommand(@"
                         update UserProfileExtension set CurrentTrial = null where UID = {0}", m.UID);
+
+                models.ExecuteCommand(@"UPDATE UserProfile
+                        SET        LevelID = {0}
+                        WHERE   (UID = {1}) AND (LevelID = {2})", (int)MemberStatusDefinition.ReadyToRegister, m.UID, (int)MemberStatusDefinition.Deleted);
             }
 
             if (!item.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.盤點))

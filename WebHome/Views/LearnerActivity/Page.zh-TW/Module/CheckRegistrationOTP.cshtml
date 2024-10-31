@@ -54,7 +54,8 @@
     <script>
             function sendOTP() {
                 var viewModel = {
-                    'KeyID': '@Html.Raw(profile.UID.EncryptKey())'
+                    'KeyID': '@Html.Raw(profile.UID.EncryptKey())',
+                    'EncPID': '@Html.Raw((_viewModel.PID ?? profile.PID).EncryptKey())'
                 };
                 doPost('@Html.Raw(Url.Action("SendOTP", "LearnerActivity"))', viewModel, function (data) {
                     Swal.fire(
@@ -79,7 +80,8 @@
             var viewModel = {
                 'KeyID': '@Html.Raw(profile.UID.EncryptKey())',
                 'EncLineID': '@Html.Raw(_viewModel?.EncLineID)',
-                'PIN': $('input[name="Code"]').serializeObject().Code.join('')
+                'PIN': $('input[name="Code"]').serializeObject().Code.join(''),
+                'EncPID': '@Html.Raw((_viewModel.PID ?? profile.PID).EncryptKey())'
             };
             doPost('@Html.Raw(Url.Action("ValidateRegistrationPIN", "LearnerActivity"))', viewModel,
                 function (data) {

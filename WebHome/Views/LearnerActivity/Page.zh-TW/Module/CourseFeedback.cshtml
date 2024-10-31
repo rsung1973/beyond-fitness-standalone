@@ -39,10 +39,10 @@
 
     LessonTime _model = this.Model as LessonTime;
 
-    var profile = await Context.GetUserAsync();
+    var profile = (await Context.GetUserAsync()).LoadInstance(models);
 
     var registerID = _model.GroupingLesson.RegisterLesson.Where(r => r.UID == profile.UID)
-                        .FirstOrDefault()?.RegisterID;
+                .FirstOrDefault()?.RegisterID;
 
     var feedbackItem = models.GetTable<LessonFeedBack>()
                                 .Where(f => f.LessonID == _model.LessonID)
@@ -66,10 +66,10 @@
 <div class="card card-style bg-beyond-dark">
     <div class="content">
         <div class="boxed-text-xl pb-3">
-            <h2 class="text-center mb-1 letter-spacing-2 color-white">訓練感受</h2>
+            <h2 class="text-center mb-1 letter-spacing-2 color-white">@Html.Raw(_model.IsSRSession() ? "恢復感受" : "訓練感受")</h2>
             <p class="text-center font-12 mb-4 color-white opacity-40">How you feel about our services</p>
             @if (!feedback.HasValue)
-            {
+                {
                 <div class="d-flex justify-content-center">
                     <div class="m-auto m-lg-4 m-md-3 text-center feelbutton @(feedback == 5 ? "show" : null)">
                         <h1 class="font-40">😃</h1>
@@ -104,7 +104,7 @@
                     <div class="d-flex mt-4">
                         <div class="me-auto text-center">
                             @if (feedback == 5)
-                            {
+            {
                                 <img src="@Html.Raw(profile.PictureID.HasValue
                               ? $"{VirtualPathUtility.ToAbsolute("~/Information/GetResource/")}{profile.PictureID}?stretch=true"
                               : profile.UserProfileExtension.Gender == "F"
@@ -166,10 +166,10 @@
 
 
             @if (feedbackItem?.FeedBackDate.HasValue != true
-            && _model.LessonAttendance != null
-            && _model.ClassTime >= current?.StartDate
-            && _model.ClassTime < current?.EndExclusiveDate
-            && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
+                && _model.LessonAttendance != null
+                && _model.ClassTime >= current?.StartDate
+                && _model.ClassTime < current?.EndExclusiveDate
+                && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
             {
                 <p class="text-center pt-3">
                     <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("TakeFeedbackSurvey", "LearnerActivity"))', { 'keyID': '@Html.Raw(_model.LessonID.EncryptKey())', 'from': '@Html.Raw(Url.Action("Events", "LearnerActivity"))' });"

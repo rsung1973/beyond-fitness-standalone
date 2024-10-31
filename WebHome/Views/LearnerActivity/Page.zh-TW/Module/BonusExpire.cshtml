@@ -14,7 +14,6 @@
 @using WebHome.Models.Resources
 @using WebHome.Properties
 @using WebHome.Models.Timeline
-
 @{
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
@@ -31,5 +30,34 @@
 
     BonusDepositAccount account = this.Model as BonusDepositAccount;
 
+    int year = DateTime.Today.Year;
+
+    DateTime start = new DateTime(year, 1, 1);
+    DateTime exclusiveEnd = start.AddYears(1);
+
+    IQueryable<BonusTransaction> yearlyConsumption;
+    IQueryable<BonusTransaction> expiringGained;
+
+    yearlyConsumption = models.GetTable<BonusTransaction>()
+                        .Where(b => b.UID == account.UID)
+                        .Where(b => b.TransactionPoint < 0)
+                        .Where(b => b.TransactionDate >= start)
+                        .Where(b => b.TransactionDate < exclusiveEnd);
+
+    expiringGained = models.GetTable<BonusTransaction>()
+                .Where(b => b.UID == account.UID)
+                .Where(b => b.TransactionPoint > 0)
+                .Where(b => b.ExpirationDate >= start)
+                .Where(b => b.ExpirationDate < exclusiveEnd);
+
+    var lastSettlement = models.GetTable<BonusYearlySettlement>()
+                            .Where(s => s.UID == account.UID)
+                            .Where(s => s.Year == year - 1).FirstOrDefault();
+
+    var expiringTotalGains = expiringGained.Sum(t => (int?)t.TransactionPoint) ?? 0;
+    var totalConsumption = yearlyConsumption.Sum(t => (int?)t.TransactionPoint) ?? 0;
+    int balance = expiringTotalGains + totalConsumption + (lastSettlement?.LastYearConsumptionDiscount ?? 0);
+
+
 }
-<p class="text-center font-14 color-grey-light mt-1">2025/12/31到期點數0點 <a href="#" data-menu="popup-pointInfo"><small class="color-beyondblue-dark pe-3"><i class="fa-regular fa-circle-question pe-1"></i></small></a></p>
+<p class="text-center font-14 color-grey-light mt-1">@(year)/12/31到期點數@(Math.Max(0, balance))點 <a href="#" data-menu="popup-pointInfo"><small class="color-beyondblue-dark pe-3"><i class="fa-regular fa-circle-question pe-1"></i></small></a></p>

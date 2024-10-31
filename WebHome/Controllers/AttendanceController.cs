@@ -182,7 +182,10 @@ namespace WebHome.Controllers
             item.LessonPlan.Remark = viewModel.Remark.GetEfficientString();
 
             models.AttendLesson(item, profile, viewModel.QuestionnaireGroupID);
-            await item.LineNotifyLessonAttendanceAsync(this);
+            if(!(item.IsCoachPISession() || item.IsSTSession() || item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.運動防護課程))
+            {
+                await item.LineNotifyLessonAttendanceAsync(this);
+            }
             //foreach (var r in item.GroupingLesson.RegisterLesson)
             //{
             //    models.CheckLearnerQuestionnaireRequest(r);
@@ -228,6 +231,7 @@ namespace WebHome.Controllers
             if (signatureViewModel.Signature != null)
             {
                 item.LessonTime.LessonPlan.Signature = signatureViewModel.Signature;
+                item.AssessmentSignature = signatureViewModel.Signature;
                 models.SubmitChanges();
             }
 

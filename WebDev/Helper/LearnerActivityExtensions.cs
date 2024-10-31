@@ -7,6 +7,7 @@ using System.Threading;
 using System.Web;
 using CommonLib.DataAccess;
 using CommonLib.Utility;
+using DocumentFormat.OpenXml.Bibliography;
 using WebHome.Models.DataEntity;
 using WebHome.Models.Locale;
 using WebHome.Models.ViewModel;
@@ -60,6 +61,7 @@ namespace WebHome.Helper
                         BonusStatus = (int?)status,
                     },
                 },
+                ExpirationDate = new DateTime(DateTime.Today.Year + 1, 12, 31),
             };
 
             models.GetTable<BonusTransaction>().InsertOnSubmit(txnItem);
@@ -76,7 +78,6 @@ namespace WebHome.Helper
                 feedback.AwardLessonMissionBonus(models, missionID, LessonMissionBonus.BonusBonusType.Rollback);
             }
         }
-
 
         public static BonusDepositAccount PromptDepositAccount(this int uid, GenericManager<BFDataContext> models)
         {
@@ -109,45 +110,51 @@ namespace WebHome.Helper
                 return null;
             }
 
-            var settlement = account.BonusDepositSettlement;
-            if (settlement == null)
+            lock (typeof(LearnerActivityExtensions))
             {
-                settlement = new BonusDepositSettlement
+                var settlement = models.GetTable<BonusDepositSettlement>()
+                    .Where(u => u.UID == account.UID).FirstOrDefault();
+
+                if (settlement == null)
                 {
-                    TransactionID = -1,
-                    UID = account.UID,
-                };
+                    settlement = new BonusDepositSettlement
+                    {
+                        TransactionID = -1,
+                        UID = account.UID,
+                    };
+                }
+
+                settlement.SettlementDate = DateTime.Now;
+
+                if (rebuild == true)
+                {
+                    settlement.TransactionID = -1;
+                    account.DepositPoint = 0;
+                }
+
+                var items = models.GetTable<BonusTransaction>()
+                                .Where(t => t.UID == account.UID)
+                                .Where(t => t.TransactionID > settlement.TransactionID);
+
+                if (items.Any())
+                {
+                    account.BonusDepositSettlement ??= settlement;
+
+                    var subtotal = items.Sum(t => t.TransactionPoint);
+                    account.DepositPoint += subtotal;
+                    settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
+                        .First().TransactionID;
+                }
+                else if (settlement.TransactionID < 0)
+                {
+                    account.DepositPoint = 0;
+                }
+
+                models.SubmitChanges();
+
+                return account;
             }
-
-            settlement.SettlementDate = DateTime.Now;
-
-            if (rebuild == true)
-            {
-                settlement.TransactionID = -1;
-                account.DepositPoint = 0;
-            }
-
-            var items = models.GetTable<BonusTransaction>()
-                            .Where(t => t.UID == account.UID)
-                            .Where(t => t.TransactionID > settlement.TransactionID);
-
-            if (items.Any())
-            {
-                account.BonusDepositSettlement ??= settlement;
-
-                var subtotal = items.Sum(t => t.TransactionPoint);
-                account.DepositPoint += subtotal;
-                settlement.TransactionID = items.OrderByDescending(t => t.TransactionID)
-                    .First().TransactionID;
-            }
-            else if (settlement.TransactionID < 0)
-            {
-                account.DepositPoint = 0;
-            }
-
-            models.SubmitChanges();
-
-            return account;
         }
+
     }
 }

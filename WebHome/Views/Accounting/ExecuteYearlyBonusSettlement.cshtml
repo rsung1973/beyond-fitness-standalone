@@ -1,0 +1,114 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using System.Web
+@using System.Data
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using CommonLib.Utility
+@using CommonLib.DataAccess
+@using CommonLib.Core.Utility
+@using Newtonsoft.Json
+@using Newtonsoft.Json.Linq
+@using WebHome.Models.Resources
+@using WebHome.Properties
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    YearlySettlement indicator;
+    IQueryable<BonusTransaction> yearlyConsumption;
+    IQueryable<BonusTransaction> expiringGained;
+
+    void ExecuteSettlement(BonusDepositAccount account)
+    {
+        var consumptionItems = yearlyConsumption.Where(t => t.UID == account.UID);
+        var expiringItems = expiringGained.Where(t => t.UID == account.UID);
+
+        if (consumptionItems.Any() || expiringGained.Any())
+        {
+            var yearSettlement = models.GetTable<BonusYearlySettlement>()
+                                    .Where(s => s.UID == account.UID)
+                                    .Where(s => s.Year == indicator.Year).FirstOrDefault();
+
+            if(yearSettlement == null)
+            {
+                yearSettlement = new BonusYearlySettlement
+                {
+                    UID = account.UID,
+                    Year = indicator.Year,
+                };
+                models.GetTable<BonusYearlySettlement>().InsertOnSubmit(yearSettlement);
+            }
+
+            var lastSettlement = models.GetTable<BonusYearlySettlement>()
+                                    .Where(s => s.UID == account.UID)
+                                    .Where(s => s.Year == indicator.Year - 1).FirstOrDefault();
+
+            yearSettlement.YearlyExpiringTotalGains = expiringGained.Sum(t => (int?)t.TransactionPoint) ?? 0;
+            yearSettlement.YearlyTotalConsumption = consumptionItems.Sum(t => (int?)t.TransactionPoint) ?? 0;
+            int balance = yearSettlement.YearlyExpiringTotalGains + yearSettlement.YearlyTotalConsumption + (lastSettlement?.LastYearConsumptionDiscount ?? 0);
+            yearSettlement.LastYearConsumptionDiscount = Math.Min(0, balance);
+            models.SubmitChanges();
+
+            if (balance > 0)
+            {
+                var txnItem = new BonusTransaction
+                {
+                    UID = account.UID,
+                    TransactionDate = DateTime.Now,
+                    TransactionPoint = -balance,
+                    Reason = $"{indicator.Year}年度剩餘點數未使用",
+                    BonusYearlyBalance = new BonusYearlyBalance
+                    {
+                        BonusYearlySettlement = yearSettlement,
+                    },
+                };
+
+                models.GetTable<BonusTransaction>().InsertOnSubmit(txnItem);
+                models.SubmitChanges();
+                account.CommitBonusSettlement(models);
+            }
+        }
+
+    }
+}
+@{
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+
+    AccountingQueryViewModel _viewModel = ViewBag.AccountingQueryViewModel as AccountingQueryViewModel;
+    var Response = ViewContext.HttpContext.Response;
+
+    int year = _viewModel.Year ?? DateTime.Today.Year;
+
+    indicator = models.GetTable<YearlySettlement>().Where(y => y.Year == year).FirstOrDefault();
+    if (indicator != null)
+    {
+        DateTime start = new DateTime(year, 1, 1);
+        DateTime exclusiveEnd = start.AddYears(1);
+
+        yearlyConsumption = models.GetTable<BonusTransaction>()
+                            .Where(b => b.TransactionPoint < 0)
+                            .Where(b => b.TransactionDate >= start)
+                            .Where(b => b.TransactionDate < exclusiveEnd);
+
+        expiringGained = models.GetTable<BonusTransaction>()
+                    .Where(b => b.TransactionPoint > 0)
+                    .Where(b => b.ExpirationDate >= start)
+                    .Where(b => b.ExpirationDate < exclusiveEnd);
+
+        var accountItems = models.GetTable<BonusDepositAccount>();
+        foreach (var account in accountItems)
+        {
+            ExecuteSettlement(account);
+        }
+
+    }
+
+}
+<div>OK!!</div>

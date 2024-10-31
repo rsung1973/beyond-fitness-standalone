@@ -109,7 +109,9 @@ namespace WebHome.Helper
             }
         }
 
-        public IQueryable<V_TuitionCoach> PTTuitionCoach => PTSession.Join(models.GetTable<V_TuitionCoach>(), p => p.LessonID, t => t.LessonID, (p, t) => t);
+        public IQueryable<V_TuitionCoach> PTTuitionCoach => LessonItems
+                    .Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.PriceStatus))
+                    .Join(models.GetTable<V_TuitionCoach>(), p => p.LessonID, t => t.LessonID, (p, t) => t);
 
         public IQueryable<V_Tuition> HSSession => LessonItems
             .Where(t => BusinessConsoleExtensions.HSSessionScope.Contains(t.PriceStatus));

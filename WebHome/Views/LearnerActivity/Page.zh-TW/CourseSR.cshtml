@@ -81,10 +81,7 @@
         </div>
 
     </div>
-    @if (feedbackItem?.FeedBackDate.HasValue != true
-        && _model.LessonAttendance != null
-        && _model.ClassTime >= current?.StartDate
-        && _model.ClassTime < current?.EndExclusiveDate
+    @if (_model.LessonAttendance != null
         && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
     {
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseFeedback.cshtml", _model);
@@ -93,20 +90,20 @@
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/LessonItemIndication.cshtml", _model);
     }
     <script>
-    function showContent(keyID) {
-        var viewModel = {
-            'KeyID': keyID
-        };
-        doPost('@Html.Raw(Url.Action("PopupCourseContent", "LearnerActivity"))', viewModel,
-            function (data) {
-                $('#course-content').html(data);
-                $('#course-content').addClass('menu-active');
-                $('.menu-hider').addClass('menu-active');
-            },
-            function () {
-                $('.menu-active').removeClass('menu-active');
-            });
-    }
+        function showContent(keyID) {
+            var viewModel = {
+                'KeyID': keyID
+            };
+            doPost('@Html.Raw(Url.Action("PopupCourseContent", "LearnerActivity"))', viewModel,
+                function (data) {
+                    $('#course-content').html(data);
+                    $('#course-content').addClass('menu-active');
+                    $('.menu-hider').addClass('menu-active');
+                },
+                function () {
+                    $('.menu-active').removeClass('menu-active');
+                });
+        }
 
     </script>
 

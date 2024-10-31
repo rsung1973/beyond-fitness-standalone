@@ -75,6 +75,7 @@
                     ItemID = CreditBonusSettlementID,
                     ActorID = account.UID,
                 },
+                ExpirationDate = new DateTime(DateTime.Today.Year + 1, 12, 31),
             };
             models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
             models.SubmitChanges();
