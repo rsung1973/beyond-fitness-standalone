@@ -25,8 +25,8 @@
 using System;
 using System.Data;
 using System.Xml;
-using System.Data.SqlClient;
 using System.Collections;
+using Microsoft.Data.SqlClient;
 
 namespace CommonLib.Core.DataWork
 {
