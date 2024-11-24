@@ -783,7 +783,7 @@ namespace WebHome.Controllers
                     questionnaire = learner.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
                 }
             }
-            ViewBag.CurrentQuestionnaire = questionnaire;
+            //ViewBag.CurrentQuestionnaire = questionnaire;
 
             ViewBag.ToCommitLessons = (new LessonOverviewQueryViewModel
             {

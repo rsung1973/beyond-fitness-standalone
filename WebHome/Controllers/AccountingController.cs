@@ -1744,6 +1744,8 @@ namespace WebHome.Controllers
             任職總年資 = 20,
             任職年資抽成百分比 = 21,
             職工薪資扣繳福利金 = 22,
+            //上課抽成加成百分比 = 23,
+            //體驗課上課數 = 24,
         }
 
         enum CoachYearlyBonusFields
@@ -1768,6 +1770,43 @@ namespace WebHome.Controllers
             工作月數 = 17,
             滾動式抽成 = 18,
         }
+
+        static decimal GetAdditionalBonusPercentage(decimal? value)
+        {
+            if (value >= 82 && value <= 92.5M)
+            {
+                return 2;
+            }
+            else if (value >= 93 && value <= 101.5M)
+            {
+                return 2.75M;
+            }
+            else if (value >= 102 && value <= 111.5M)
+            {
+                return 3.50M;
+            }
+            else if (value >= 112 && value <= 121.5M)
+            {
+                return 4.25M;
+            }
+            else if (value >= 122 && value <= 131.5M)
+            {
+                return 5.00M;
+            }
+            else if (value >= 132 && value <= 141.5M)
+            {
+                return 5.75M;
+            }
+            else if (value > 142)
+            {
+                return 6.50M;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
 
         public async Task<ActionResult> CreateMonthlyBonusXlsx2022Async(AchievementQueryViewModel viewModel)
         {
@@ -1902,6 +1941,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職總年資.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職年資抽成百分比.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
+                //table.Columns.Add(new DataColumn(CoachBonusFields.上課抽成加成百分比.ToString(), typeof(decimal)));
+                //table.Columns.Add(new DataColumn(CoachBonusFields.體驗課上課數.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1954,6 +1995,9 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.總獎金] = (int)r[(int)CoachBonusFields.管理獎金] + (int)r[(int)CoachBonusFields.特別獎金] + (int)r[(int)CoachBonusFields.月中上課加業績獎金];
                     r[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)r[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)r[(int)CoachBonusFields.任職年資抽成百分比];
                     r[(int)CoachBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)CoachBonusFields.底薪] + (int)r[(int)CoachBonusFields.總獎金] + (int)r[(int)CoachBonusFields.職務加給]) * 0.005M);
+
+                    //r[(int)CoachBonusFields.上課抽成加成百分比] = GetAdditionalBonusPercentage((decimal)r[(int)CoachBonusFields.總上課數] + (int)r[(int)CoachBonusFields.滾動式堂數]);
+                    //r[(int)CoachBonusFields.體驗課上課數] = g.TSAttendanceCount ?? 0;
 
                     if (salaryDetails != null)
                     {

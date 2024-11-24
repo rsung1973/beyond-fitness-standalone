@@ -92,18 +92,17 @@
                 </div>
 
                 @{
-                    if (lessonItem.IsPTSession())
+                    if (lessonItem.IsSRSession())
+                    {
+                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveySR.cshtml", lessonItem);
+                    }
+                    else if (lessonItem.IsPTSession())
                     {
                         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPT.cshtml", lessonItem);
                     }
                     else if (lessonItem.IsPISession())
                     {
                         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveyPI.cshtml", lessonItem);
-
-                    }
-                    else if (lessonItem.IsSRSession())
-                    {
-                        await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/FeedbackSurveySR.cshtml", lessonItem);
                     }
                 }
                 <a href="javascript:commitAnswer();" class="btn btn-full border-lightgray-dark color-beyondwhite-dark bg-beyond-dark font-500 rounded-xl font-500 px-4 px-lg-5 px-md-5 py-2 font-15 mt-5 mx-2 letter-spacing-1">送出</a>

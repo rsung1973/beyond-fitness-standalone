@@ -83,7 +83,7 @@
             }
             @{
                 var exchangeCount = _model.RevisionList.Where(r => r.Reason == "轉換課程堂數").Count();
-                if (exchangeCount > 2 && !forceToApply)
+                if (exchangeCount > 0 && !forceToApply)
                 {
                     applicable = false;
                     <span class="col-red"><i class="zmdi zmdi-block"></i>合約課程堂數已轉換</span>

@@ -63,9 +63,9 @@
                     </div>
                     <div class="align-self-center ps-2">
                         <h5 class="font-600 font-17 mb-1">職人質量檢視<small class="font-400 d-block">Assessment</small></h5>
-                        @if (item.IsPTSession())
+                        @if (item.IsSRSession())
                         {
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">P.T</small></span>
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">恢復按摩<small class="font-400 color-theme ps-1">S.R</small></span>
                         }
                         else if (item.IsPISession())
                         {
@@ -73,7 +73,7 @@
                         }
                         else
                         {
-                            <span class="font-15 color-theme opacity-60 letter-spacing-1">恢復按摩<small class="font-400 color-theme ps-1">S.R</small></span>
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">P.T</small></span>
                         }
                     </div>
                     <div class="align-self-center ms-auto me-3">

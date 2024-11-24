@@ -106,7 +106,13 @@
                                     .FirstOrDefault();
     if (price != null)
     {
-        BuildPriceItem(price, "S.R Session");
+        var trialLesson = models.GetTable<RegisterLesson>()
+            .Where(r => r.UID == _model.UID)
+            .Where(r => r.ClassLevel == price.PriceID);
+
+        var trialBookable = !trialLesson.Any();
+
+        BuildPriceItem(price, "S.R Session", trialBookable);
     }
 
     price = models.GetTable<LessonPriceType>()
@@ -122,14 +128,14 @@
 }
 @functions
 {
-    void BuildPriceItem(LessonPriceType price, String description)
+    void BuildPriceItem(LessonPriceType price, String description, bool bookable = true)
     {
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
                     <div class="controls">
                         <label class="fancy-checkbox">
-                            <input type="checkbox" name="RegisterID" value="" data-version="@((int)Naming.ContractVersion.Ver2022)" data-location="@(price.ForDietary ? "option.virtual-store" : "")"
+                            <input type="checkbox" name="RegisterID" disabled="@(bookable == false)" value="" data-version="@((int)Naming.ContractVersion.Ver2022)" data-location="@(price.ForDietary ? "option.virtual-store" : "")"
                                    onclick="selectBooking(this, '@(price.Status)',@(price.PriceID));">
                             <span></span>
                         </label>

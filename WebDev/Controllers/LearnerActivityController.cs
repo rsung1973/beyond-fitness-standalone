@@ -1014,17 +1014,17 @@ namespace WebHome.Controllers
 
             IQueryable<FeedbackSurveyType> questItems = models.GetTable<FeedbackSurveyType>().Where(s => false);
 
-            if (lessonItem.IsPTSession())
+            if (lessonItem.IsSRSession())
+            {
+                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.運動恢復課程);
+            }
+            else if (lessonItem.IsPTSession())
             {
                 questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.一般課程);
             }
             else if (lessonItem.IsPISession())
             {
                 questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.自主訓練);
-            }
-            if (lessonItem.IsSRSession())
-            {
-                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
 
             List<LessonFeedbackSurvey> surveyItems = new List<LessonFeedbackSurvey>();

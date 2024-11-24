@@ -207,7 +207,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            @{
+                            @*@{
                                 var quest = models.GetEffectiveQuestionnaireRequest(_learner.UID)
                                                 .FirstOrDefault();
                                 if (quest == null || quest.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
@@ -217,7 +217,7 @@
                             }
                             @{
                                 await Html.RenderPartialAsync("~/Views/ConsoleHome/LearnerProfile/LearnerCharacter.cshtml", _learner);
-                            }
+                            }*@
                         </div>
                     </div>
                     <div class="col-lg-7 col-md-7 col-sm-12">
