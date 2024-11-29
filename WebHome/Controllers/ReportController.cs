@@ -422,85 +422,85 @@ namespace WebHome.Controllers
             return View();
         }
 
-        public ActionResult InquireQuestionnaire(QuestionnaireQueryViewModel viewModel, int? qureyAction = null)
-        {
-            ViewBag.ViewModel = viewModel;
+        //public ActionResult InquireQuestionnaire(QuestionnaireQueryViewModel viewModel, int? qureyAction = null)
+        //{
+        //    ViewBag.ViewModel = viewModel;
 
-            //if (!viewModel.AchievementDateFrom.HasValue)
-            //{
-            //    ModelState.AddModelError("AchievementDateFrom", "請選擇查詢起日");
-            //}
+        //    //if (!viewModel.AchievementDateFrom.HasValue)
+        //    //{
+        //    //    ModelState.AddModelError("AchievementDateFrom", "請選擇查詢起日");
+        //    //}
 
-            if (!viewModel.AchievementDateTo.HasValue)
-            {
-                ModelState.AddModelError("AchievementDateTo", "請選擇查詢迄日");
-            }
+        //    if (!viewModel.AchievementDateTo.HasValue)
+        //    {
+        //        ModelState.AddModelError("AchievementDateTo", "請選擇查詢迄日");
+        //    }
 
-            //if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue
-            //    && (viewModel.AchievementDateTo.Value - viewModel.AchievementDateFrom.Value).TotalDays > 31)
-            //{
-            //    ModelState.AddModelError("AchievementDateFrom", "查詢區間只能是一個月內");
-            //    ModelState.AddModelError("AchievementDateTo", "查詢區間只能是一個月內");
-            //}
+        //    //if (viewModel.AchievementDateFrom.HasValue && viewModel.AchievementDateTo.HasValue
+        //    //    && (viewModel.AchievementDateTo.Value - viewModel.AchievementDateFrom.Value).TotalDays > 31)
+        //    //{
+        //    //    ModelState.AddModelError("AchievementDateFrom", "查詢區間只能是一個月內");
+        //    //    ModelState.AddModelError("AchievementDateTo", "查詢區間只能是一個月內");
+        //    //}
 
-            if (viewModel.ByCoachID == null || viewModel.ByCoachID.Length == 0)
-            {
-                ModelState.AddModelError("ByCoachID", "請勾選一位");
-            }
+        //    if (viewModel.ByCoachID == null || viewModel.ByCoachID.Length == 0)
+        //    {
+        //        ModelState.AddModelError("ByCoachID", "請勾選一位");
+        //    }
 
-            if (!ModelState.IsValid)
-            {
-                ViewBag.ModelState = this.ModelState;
-                return View("~/Views/Shared/ReportInputError.ascx");
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ViewBag.ModelState = this.ModelState;
+        //        return View("~/Views/Shared/ReportInputError.ascx");
+        //    }
 
-            IQueryable<QuestionnaireRequest> items = models.GetTable<QuestionnaireRequest>();
+        //    IQueryable<QuestionnaireRequest> items = models.GetTable<QuestionnaireRequest>();
 
-            if (viewModel.AchievementDateFrom.HasValue)
-                items = items.Where(t => t.RequestDate >= viewModel.AchievementDateFrom);
+        //    if (viewModel.AchievementDateFrom.HasValue)
+        //        items = items.Where(t => t.RequestDate >= viewModel.AchievementDateFrom);
 
-            if (viewModel.AchievementDateTo.HasValue)
-                items = items.Where(t => t.RequestDate < viewModel.AchievementDateTo.Value.AddDays(1));
+        //    if (viewModel.AchievementDateTo.HasValue)
+        //        items = items.Where(t => t.RequestDate < viewModel.AchievementDateTo.Value.AddDays(1));
 
-            if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
-            {
-                var uid = models.GetTable<LearnerFitnessAdvisor>().Where(l => viewModel.ByCoachID.Contains(l.CoachID));
-                var questID = models.GetTable<PDQTask>().Where(u => viewModel.ByCoachID.Contains(u.UID))
-                        .GroupBy(t => t.QuestionnaireID).Select(g => g.Key);
-                items = items.Join(uid, q => q.UID, u => u.UID, (q, u) => q)
-                    .Union(items.Join(questID, q => q.QuestionnaireID, t => t, (q, t) => q));
-            }
+        //    if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
+        //    {
+        //        var uid = models.GetTable<LearnerFitnessAdvisor>().Where(l => viewModel.ByCoachID.Contains(l.CoachID));
+        //        var questID = models.GetTable<PDQTask>().Where(u => viewModel.ByCoachID.Contains(u.UID))
+        //                .GroupBy(t => t.QuestionnaireID).Select(g => g.Key);
+        //        items = items.Join(uid, q => q.UID, u => u.UID, (q, u) => q)
+        //            .Union(items.Join(questID, q => q.QuestionnaireID, t => t, (q, t) => q));
+        //    }
 
-            if (viewModel.Status.HasValue)
-            {
-                switch (viewModel.Status)
-                {
-                    case 1:
-                        items = items.Where(q => !q.Status.HasValue);
-                        break;
-                    case 2:
-                        items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀
-                            || q.Status == (int)Naming.IncommingMessageStatus.未讀);
-                        break;
-                    case 3:
-                        items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.教練代答);
-                        break;
-                    case 4:
-                        items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.拒答);
-                        break;
-                }
-            }
+        //    if (viewModel.Status.HasValue)
+        //    {
+        //        switch (viewModel.Status)
+        //        {
+        //            case 1:
+        //                items = items.Where(q => !q.Status.HasValue);
+        //                break;
+        //            case 2:
+        //                items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀
+        //                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+        //                break;
+        //            case 3:
+        //                items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.教練代答);
+        //                break;
+        //            case 4:
+        //                items = items.Where(q => q.Status == (int)Naming.IncommingMessageStatus.拒答);
+        //                break;
+        //        }
+        //    }
 
-            viewModel.UserName = viewModel.UserName.GetEfficientString();
-            if (viewModel.UserName!=null)
-            {
-                var uid = models.GetTable<UserProfile>().Where(u => u.RealName.Contains(viewModel.UserName) || u.Nickname.Contains(viewModel.UserName))
-                    .Select(u => u.UID);
-                items = items.Where(q => uid.Contains(q.UID));
-            }
+        //    viewModel.UserName = viewModel.UserName.GetEfficientString();
+        //    if (viewModel.UserName!=null)
+        //    {
+        //        var uid = models.GetTable<UserProfile>().Where(u => u.RealName.Contains(viewModel.UserName) || u.Nickname.Contains(viewModel.UserName))
+        //            .Select(u => u.UID);
+        //        items = items.Where(q => uid.Contains(q.UID));
+        //    }
 
-            return View("~/Views/Report/Module/QuestionnaireList.ascx", items);
-        }
+        //    return View("~/Views/Report/Module/QuestionnaireList.ascx", items);
+        //}
 
         public async Task<ActionResult> GetContractLessonsSummaryAsync(CourseContractQueryViewModel viewModel)
         {

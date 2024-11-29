@@ -771,18 +771,18 @@ namespace WebHome.Controllers
 
             ViewBag.Learner = learner;
 
-            models.ExecuteCommand("delete QuestionnaireRequest where Status is null and UID = {0} and GroupID = {1}", learner.UID, (int)Naming.QuestionnaireGroup.身體心靈密碼);
+            //models.ExecuteCommand("delete QuestionnaireRequest where Status is null and UID = {0} and GroupID = {1}", learner.UID, (int)Naming.QuestionnaireGroup.身體心靈密碼);
 
-            QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner).FirstOrDefault();
-            if (questionnaire == null)
-            {
-                if (!learner.IsTrialLearner() && !models.GetTable<QuestionnaireRequest>()
-                    .Where(q => q.UID == learner.UID)
-                    .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼).Any())
-                {
-                    questionnaire = learner.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
-                }
-            }
+            //QuestionnaireRequest questionnaire = models.GetEffectiveQuestionnaireRequest(learner).FirstOrDefault();
+            //if (questionnaire == null)
+            //{
+            //    if (!learner.IsTrialLearner() && !models.GetTable<QuestionnaireRequest>()
+            //        .Where(q => q.UID == learner.UID)
+            //        .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼).Any())
+            //    {
+            //        questionnaire = learner.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+            //    }
+            //}
             //ViewBag.CurrentQuestionnaire = questionnaire;
 
             ViewBag.ToCommitLessons = (new LessonOverviewQueryViewModel
@@ -853,41 +853,41 @@ namespace WebHome.Controllers
 
             UserProfile item = ViewBag.DataItem = models.GetTable<UserProfile>().Where(u => u.UID == viewModel.UID).First();
 
-            QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
-                    .Where(r => r.UID == item.UID)
-                    .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();
+            //QuestionnaireRequest quest = models.GetTable<QuestionnaireRequest>()
+            //        .Where(r => r.UID == item.UID)
+            //        .Where(r => r.QuestionnaireID == viewModel.QuestionnaireID).FirstOrDefault();
 
-            if (quest == null)
-            {
-                quest = models.GetEffectiveQuestionnaireRequest(item).FirstOrDefault();
-            }
+            //if (quest == null)
+            //{
+            //    quest = models.GetEffectiveQuestionnaireRequest(item).FirstOrDefault();
+            //}
 
-            if (quest == null)
-            {
-                quest = item.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
-            }
+            //if (quest == null)
+            //{
+            //    quest = item.UID.AssertQuestionnaire(models, profile, Naming.QuestionnaireGroup.身體心靈密碼, QuestionnaireRequest.PartIDEnum.PartA);
+            //}
 
-            if (!quest.Status.HasValue)
-            {
-                ViewBag.ReferredTo = models.GetLastCompleteQuestionnaireRequest(item.UID, (Naming.QuestionnaireGroup)quest.GroupID);
-            }
+            //if (!quest.Status.HasValue)
+            //{
+            //    ViewBag.ReferredTo = models.GetLastCompleteQuestionnaireRequest(item.UID, (Naming.QuestionnaireGroup)quest.GroupID);
+            //}
 
-            viewModel.QuestionnaireID = quest.QuestionnaireID;
-            ViewBag.CurrentQuestionnaire = quest;
+            //viewModel.QuestionnaireID = quest.QuestionnaireID;
+            //ViewBag.CurrentQuestionnaire = quest;
 
-            if (quest.PartID.HasValue || quest.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
-            {
-                viewModel.ToPrepare = true;
-            }
-            else
-            {
-                if (viewModel.ToPrepare == true)
-                {
-                    models.ExecuteCommand("delete PDQTask where QuestionnaireID = {0}", quest.QuestionnaireID);
-                    quest.PartID = (int)QuestionnaireRequest.PartIDEnum.PartA;
-                    models.SubmitChanges();
-                }
-            }
+            //if (quest.PartID.HasValue || quest.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+            //{
+            //    viewModel.ToPrepare = true;
+            //}
+            //else
+            //{
+            //    if (viewModel.ToPrepare == true)
+            //    {
+            //        models.ExecuteCommand("delete PDQTask where QuestionnaireID = {0}", quest.QuestionnaireID);
+            //        quest.PartID = (int)QuestionnaireRequest.PartIDEnum.PartA;
+            //        models.SubmitChanges();
+            //    }
+            //}
 
             return View("~/Views/ConsoleHome/PrepareLearnerCharacter2021.cshtml", profile.LoadInstance(models));
         }

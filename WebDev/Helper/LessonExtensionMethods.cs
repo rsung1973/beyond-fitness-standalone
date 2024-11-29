@@ -847,14 +847,14 @@ namespace WebHome.Helper
                 .Join(models.GetTable<RegisterLessonEnterprise>(), r => r.RegisterID, t => t.RegisterID, (r, t) => r);
         }
 
-        public static IQueryable<QuestionnaireRequest> PromptLessonQuestionnaireRequest(this IQueryable<RegisterLesson> items, GenericManager<BFDataContext> models)
+        //public static IQueryable<QuestionnaireRequest> PromptLessonQuestionnaireRequest(this IQueryable<RegisterLesson> items, GenericManager<BFDataContext> models)
             
-        {
-            return items
-                .Join(models.GetTable<QuestionnaireRequest>(),
-                    r => r.RegisterID, q => q.RegisterID, (r, q) => q)
-                .Where(q => !q.Status.HasValue && !q.PDQTask.Any());
-        }
+        //{
+        //    return items
+        //        .Join(models.GetTable<QuestionnaireRequest>(),
+        //            r => r.RegisterID, q => q.RegisterID, (r, q) => q)
+        //        .Where(q => !q.Status.HasValue && !q.PDQTask.Any());
+        //}
 
         public static IQueryable<LessonTime> PromptLearnerLessons(this GenericManager<BFDataContext> models, IQueryable<RegisterLesson> lessons, IQueryable<LessonTime> lessonTimes)
         {

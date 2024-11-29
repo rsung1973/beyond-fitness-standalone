@@ -20,7 +20,7 @@
     _model = (UserProfile)this.Model;
 
 }
-@{
+@*@{
     var items = models.GetTable<QuestionnaireRequest>()
             .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼
                     || q.GroupID == (int)Naming.QuestionnaireGroup.滿意度問卷調查_2017)
@@ -38,4 +38,4 @@
             }
         }
     </div>
-</div>
+</div>*@

@@ -26,7 +26,7 @@ using System;
 using System.Data;
 using System.Xml;
 using System.Collections;
-using Microsoft.Data.SqlClient;
+using System.Data.SqlClient;
 
 namespace CommonLib.DataAccess
 {

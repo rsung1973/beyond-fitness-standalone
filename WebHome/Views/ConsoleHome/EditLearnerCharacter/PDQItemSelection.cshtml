@@ -19,7 +19,7 @@
     _model = (PDQQuestion)this.Model;
 
 }
-@{
+@*@{
     PDQTask taskItem = null;
     QuestionnaireRequest questionnaire = ViewBag.CurrentQuestionnaire as QuestionnaireRequest;
     PDQTask referredItem = null;
@@ -59,6 +59,6 @@ else
     <div class="form-group p-t-0">
         <textarea rows="1" cols="100" class="form-control" placeholder="@Html.Raw(referredItem?.PDQAnswer ?? "其他更多說明")" data-id="@(_model.QuestionID)" name="PDQAnswer">@(taskItem?.PDQAnswer)</textarea>
     </div>
-}
+}*@
 
 

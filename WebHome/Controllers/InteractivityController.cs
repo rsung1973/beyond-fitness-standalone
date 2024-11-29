@@ -31,192 +31,192 @@ namespace WebHome.Controllers
 
         }
         // GET: Interactivity
-        public ActionResult Questionnaire(int id)
-        {
-            var item = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == id).FirstOrDefault();
+        //public ActionResult Questionnaire(int id)
+        //{
+        //    var item = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == id).FirstOrDefault();
 
-            if (item==null)
-            {
-                ViewBag.Message = "問卷資料尚未建立!!";
-                return RedirectToAction("Vip", "Account");
-            }
+        //    if (item==null)
+        //    {
+        //        ViewBag.Message = "問卷資料尚未建立!!";
+        //        return RedirectToAction("Vip", "Account");
+        //    }
 
-            return View(item);
-        }
+        //    return View(item);
+        //}
 
-        public async Task<ActionResult> CommitQuestionnaire(int id)
-        {
-            UserProfile profile = await HttpContext.GetUserAsync();
-            if (profile == null)
-            {
-                return Json(new { result = false, message = "您的連線已中斷，請重新登入系統!!" });
-            }
+        //public async Task<ActionResult> CommitQuestionnaire(int id)
+        //{
+        //    UserProfile profile = await HttpContext.GetUserAsync();
+        //    if (profile == null)
+        //    {
+        //        return Json(new { result = false, message = "您的連線已中斷，請重新登入系統!!" });
+        //    }
 
-            var item = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
-            if (item == null /*|| item.UID!=profile.UID*/)
-            {
-                return Json(new { result = false, message = "問卷資料不存在!!" });
-            }
+        //    var item = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
+        //    if (item == null /*|| item.UID!=profile.UID*/)
+        //    {
+        //        return Json(new { result = false, message = "問卷資料不存在!!" });
+        //    }
 
-            models.ExecuteCommand(@"
-                DELETE FROM PDQTask
-                    WHERE   (QuestionnaireID = {0})", item.QuestionnaireID);
+        //    models.ExecuteCommand(@"
+        //        DELETE FROM PDQTask
+        //            WHERE   (QuestionnaireID = {0})", item.QuestionnaireID);
 
-            DateTime taskDate = DateTime.Now;
-            foreach (var key in Request.Form.Keys.Where(k => Regex.IsMatch(k, "_\\d")))
-            {
-                saveQuestionnaire(item, key, ref taskDate, profile);
-            }
+        //    DateTime taskDate = DateTime.Now;
+        //    foreach (var key in Request.Form.Keys.Where(k => Regex.IsMatch(k, "_\\d")))
+        //    {
+        //        saveQuestionnaire(item, key, ref taskDate, profile);
+        //    }
 
-            models.SubmitChanges();
+        //    models.SubmitChanges();
 
-            var questItems = item.PDQGroup.PDQQuestion;
-            var ansItems = item.PDQTask.Select(p => p.PDQQuestion.QuestionID);
+        //    var questItems = item.PDQGroup.PDQQuestion;
+        //    var ansItems = item.PDQTask.Select(p => p.PDQQuestion.QuestionID);
 
-            var voidAns = questItems
-                .Where(q => !ansItems.Contains(q.QuestionID))
-                .OrderBy(q => q.QuestionNo);
-            if (voidAns.Count() > 0)
-            {
+        //    var voidAns = questItems
+        //        .Where(q => !ansItems.Contains(q.QuestionID))
+        //        .OrderBy(q => q.QuestionNo);
+        //    if (voidAns.Count() > 0)
+        //    {
 
-                models.ExecuteCommand(@"
-                DELETE FROM PDQTask
-                    WHERE   (QuestionnaireID = {0})", item.QuestionnaireID);
-                return Json(new { result = false, message = "請填選第" + String.Join("、", voidAns.Select(q => q.QuestionNo)) + "題答案!!" });
-            }
-            else
-            {
-                item.Status = (int)Naming.IncommingMessageStatus.未讀;
-                models.SubmitChanges();
+        //        models.ExecuteCommand(@"
+        //        DELETE FROM PDQTask
+        //            WHERE   (QuestionnaireID = {0})", item.QuestionnaireID);
+        //        return Json(new { result = false, message = "請填選第" + String.Join("、", voidAns.Select(q => q.QuestionNo)) + "題答案!!" });
+        //    }
+        //    else
+        //    {
+        //        item.Status = (int)Naming.IncommingMessageStatus.未讀;
+        //        models.SubmitChanges();
 
-                var items = models.GetQuestionnaireRequest(profile);
-                return Json(new { result = true, message = items.Count() > 0 ? items.Count().ToString() : null });
-            }
+        //        var items = models.GetQuestionnaireRequest(profile);
+        //        return Json(new { result = true, message = items.Count() > 0 ? items.Count().ToString() : null });
+        //    }
 
-        }
+        //}
 
-        protected void saveQuestionnaire(QuestionnaireRequest item, string key,ref DateTime taskDate,UserProfile actor)
-        {
-            int questionID = int.Parse(key.Substring(1));
-            var quest = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == questionID).FirstOrDefault();
-            if (quest == null)
-                return;
+        //protected void saveQuestionnaire(QuestionnaireRequest item, string key,ref DateTime taskDate,UserProfile actor)
+        //{
+        //    int questionID = int.Parse(key.Substring(1));
+        //    var quest = models.GetTable<PDQQuestion>().Where(q => q.QuestionID == questionID).FirstOrDefault();
+        //    if (quest == null)
+        //        return;
 
-            StringValues values = Request.Form[key];
-            if (values == (String)null || values.Count == 0)
-                return;
+        //    StringValues values = Request.Form[key];
+        //    if (values == (String)null || values.Count == 0)
+        //        return;
 
-            switch ((Naming.QuestionType)quest.QuestionType)
-            {
-                case Naming.QuestionType.問答題:
-                    String strVal;
-                    if (values.Count > 0 && (strVal=values[0].GetEfficientString())!=null)
-                    {
-                        models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
-                        {
-                            QuestionID = quest.QuestionID,
-                            UID = actor.UID,
-                            PDQAnswer = strVal,
-                            QuestionnaireID = item.QuestionnaireID,
-                            TaskDate = taskDate
-                        });
-                        models.SubmitChanges();
-                    }
-                    break;
+        //    switch ((Naming.QuestionType)quest.QuestionType)
+        //    {
+        //        case Naming.QuestionType.問答題:
+        //            String strVal;
+        //            if (values.Count > 0 && (strVal=values[0].GetEfficientString())!=null)
+        //            {
+        //                models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
+        //                {
+        //                    QuestionID = quest.QuestionID,
+        //                    UID = actor.UID,
+        //                    PDQAnswer = strVal,
+        //                    QuestionnaireID = item.QuestionnaireID,
+        //                    TaskDate = taskDate
+        //                });
+        //                models.SubmitChanges();
+        //            }
+        //            break;
 
-                case Naming.QuestionType.單選題:
-                case Naming.QuestionType.單選其他:
-                    foreach (var v in values)
-                    {
-                        int suggestID;
-                        if (int.TryParse(v, out suggestID))
-                        {
-                            models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
-                            {
-                                QuestionID = quest.QuestionID,
-                                UID = actor.UID,
-                                SuggestionID = suggestID,
-                                QuestionnaireID = item.QuestionnaireID,
-                                TaskDate = taskDate
-                            });
-                        }
-                        else
-                        {
-                            models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
-                            {
-                                QuestionID = quest.QuestionID,
-                                UID = actor.UID,
-                                PDQAnswer = v,
-                                QuestionnaireID = item.QuestionnaireID,
-                                TaskDate = taskDate
-                            });
-                        }
-                        models.SubmitChanges();
-                    }
-                    break;
+        //        case Naming.QuestionType.單選題:
+        //        case Naming.QuestionType.單選其他:
+        //            foreach (var v in values)
+        //            {
+        //                int suggestID;
+        //                if (int.TryParse(v, out suggestID))
+        //                {
+        //                    models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
+        //                    {
+        //                        QuestionID = quest.QuestionID,
+        //                        UID = actor.UID,
+        //                        SuggestionID = suggestID,
+        //                        QuestionnaireID = item.QuestionnaireID,
+        //                        TaskDate = taskDate
+        //                    });
+        //                }
+        //                else
+        //                {
+        //                    models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
+        //                    {
+        //                        QuestionID = quest.QuestionID,
+        //                        UID = actor.UID,
+        //                        PDQAnswer = v,
+        //                        QuestionnaireID = item.QuestionnaireID,
+        //                        TaskDate = taskDate
+        //                    });
+        //                }
+        //                models.SubmitChanges();
+        //            }
+        //            break;
 
-                case Naming.QuestionType.多重選:
-                    break;
+        //        case Naming.QuestionType.多重選:
+        //            break;
 
-                case Naming.QuestionType.是非題:
-                    if (values.Count > 0)
-                    {
-                        models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
-                        {
-                            QuestionID = quest.QuestionID,
-                            UID = actor.UID,
-                            YesOrNo = values[0] == "1" ? true : false,
-                            QuestionnaireID = item.QuestionnaireID,
-                            TaskDate = taskDate
-                        });
-                        models.SubmitChanges();
-                    }
-                    break;
-            }
-        }
+        //        case Naming.QuestionType.是非題:
+        //            if (values.Count > 0)
+        //            {
+        //                models.GetTable<PDQTask>().InsertOnSubmit(new PDQTask
+        //                {
+        //                    QuestionID = quest.QuestionID,
+        //                    UID = actor.UID,
+        //                    YesOrNo = values[0] == "1" ? true : false,
+        //                    QuestionnaireID = item.QuestionnaireID,
+        //                    TaskDate = taskDate
+        //                });
+        //                models.SubmitChanges();
+        //            }
+        //            break;
+        //    }
+        //}
 
-        public async Task<ActionResult> RejectQuestionnaireAsync(int id, int? status)
-        {
-            UserProfile profile = await HttpContext.GetUserAsync();
-            if (profile == null)
-            {
-                return Json(new { result = false, message = "您的連線已中斷，請重新登入系統!!" });
-            }
+        //public async Task<ActionResult> RejectQuestionnaireAsync(int id, int? status)
+        //{
+        //    UserProfile profile = await HttpContext.GetUserAsync();
+        //    if (profile == null)
+        //    {
+        //        return Json(new { result = false, message = "您的連線已中斷，請重新登入系統!!" });
+        //    }
 
-            var item = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
-            if (item == null /*|| item.UID != profile.UID*/)
-            {
-                return Json(new { result = false, message = "問卷資料不存在!!" });
-            }
+        //    var item = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
+        //    if (item == null /*|| item.UID != profile.UID*/)
+        //    {
+        //        return Json(new { result = false, message = "問卷資料不存在!!" });
+        //    }
 
-            item.Status = status ?? (int)Naming.IncommingMessageStatus.拒答;
-            if(status==(int)Naming.IncommingMessageStatus.教練代答 && item.QuestionnaireCoachBypass==null)
-            {
-                item.QuestionnaireCoachBypass = new QuestionnaireCoachBypass
-                {
-                    UID = profile.UID
-                };
-            }
-            models.SubmitChanges();
+        //    item.Status = status ?? (int)Naming.IncommingMessageStatus.拒答;
+        //    if(status==(int)Naming.IncommingMessageStatus.教練代答 && item.QuestionnaireCoachBypass==null)
+        //    {
+        //        item.QuestionnaireCoachBypass = new QuestionnaireCoachBypass
+        //        {
+        //            UID = profile.UID
+        //        };
+        //    }
+        //    models.SubmitChanges();
 
-            var items = models.GetQuestionnaireRequest(item.UserProfile);
-            return Json(new { result = true, message = items.Count() > 0 ? items.Count().ToString() : null });
-        }
+        //    var items = models.GetQuestionnaireRequest(item.UserProfile);
+        //    return Json(new { result = true, message = items.Count() > 0 ? items.Count().ToString() : null });
+        //}
 
 
-        public ActionResult LearnerQuestionnaire(int id)
-        {
-            var model = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
+        //public ActionResult LearnerQuestionnaire(int id)
+        //{
+        //    var model = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
 
-            if (model == null)
-            {
-                ViewBag.Message = "問卷資料不存在!!";
-                return View("~/Views/Shared/ShowMessage.ascx");
-            }
+        //    if (model == null)
+        //    {
+        //        ViewBag.Message = "問卷資料不存在!!";
+        //        return View("~/Views/Shared/ShowMessage.ascx");
+        //    }
 
-            return View("~/Views/Interactivity/Questionnaire/LearnerQuestionnaire.ascx", model);
+        //    return View("~/Views/Interactivity/Questionnaire/LearnerQuestionnaire.ascx", model);
 
-        }
+        //}
 
         public async Task<ActionResult> LearnerPromptAsync()
         {

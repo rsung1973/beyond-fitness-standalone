@@ -27,10 +27,10 @@ namespace WebHome.Models.Timeline
 
     }
 
-    public class QuestionnaireRequestEvent : TimelineEvent
-    {
-        public QuestionnaireRequest Questionnaire { get; set; }
-    }
+    //public class QuestionnaireRequestEvent : TimelineEvent
+    //{
+    //    public QuestionnaireRequest Questionnaire { get; set; }
+    //}
 
     public class LessonAttendanceCheckEvent : TimelineEvent
     {

@@ -260,7 +260,7 @@ namespace WebHome.Controllers
             {
                 models.ExecuteCommand("delete PDQTask where UID = {0} and QuestionID = {1} and QuestionnaireID = {2}",
                         viewModel.UID, viewModel.QuestionID, viewModel.QuestionnaireID);
-                models.ExecuteCommand("update QuestionnaireRequest set Status = {0} where QuestionnaireID = {1} and Status is null", (int)Naming.IncommingMessageStatus.未讀, viewModel.QuestionnaireID);
+                //models.ExecuteCommand("update QuestionnaireRequest set Status = {0} where QuestionnaireID = {1} and Status is null", (int)Naming.IncommingMessageStatus.未讀, viewModel.QuestionnaireID);
             }
 
             var item = new PDQTask
@@ -502,21 +502,21 @@ namespace WebHome.Controllers
                 viewModel.UID = viewModel.DecryptKeyValue();
             }
 
-            if (viewModel.QuestionnaireID.HasValue)
-            {
-                var count = models.ExecuteCommand(@"
-                    UPDATE       QuestionnaireRequest
-                    SET                Status = {0}
-                    WHERE        (UID = {1}) AND (QuestionnaireID = {2})", 
-                    (int)Naming.IncommingMessageStatus.已讀, 
-                    viewModel.UID, 
-                    viewModel.QuestionnaireID);
+            //if (viewModel.QuestionnaireID.HasValue)
+            //{
+            //    var count = models.ExecuteCommand(@"
+            //        UPDATE       QuestionnaireRequest
+            //        SET                Status = {0}
+            //        WHERE        (UID = {1}) AND (QuestionnaireID = {2})", 
+            //        (int)Naming.IncommingMessageStatus.已讀, 
+            //        viewModel.UID, 
+            //        viewModel.QuestionnaireID);
 
-                models.ExecuteCommand("delete QuestionnaireCoachFinish where QuestionnaireID = {0}", viewModel.QuestionnaireID);
-                models.ExecuteCommand(@"
-                    INSERT INTO QuestionnaireCoachFinish  (QuestionnaireID, UID)
-                    values ({0},{1})", viewModel.QuestionnaireID, profile.UID);
-            }
+            //    models.ExecuteCommand("delete QuestionnaireCoachFinish where QuestionnaireID = {0}", viewModel.QuestionnaireID);
+            //    models.ExecuteCommand(@"
+            //        INSERT INTO QuestionnaireCoachFinish  (QuestionnaireID, UID)
+            //        values ({0},{1})", viewModel.QuestionnaireID, profile.UID);
+            //}
 
             return Json(new { result = true });
 
@@ -554,18 +554,18 @@ namespace WebHome.Controllers
                 return Json(new { result = false, message = "資料錯誤!" });
             }
 
-            var questionnaire = models.GetEffectiveQuestionnaireRequest(profile, Naming.QuestionnaireGroup.身體心靈密碼).FirstOrDefault();
-            if(questionnaire==null || !questionnaire.PDQTask.Any())
+            //var questionnaire = models.GetEffectiveQuestionnaireRequest(profile, Naming.QuestionnaireGroup.身體心靈密碼).FirstOrDefault();
+            //if(questionnaire==null || !questionnaire.PDQTask.Any())
             {
                 return Json(new { result = true });
             }
 
-            if (!questionnaire.PartID.HasValue && viewModel.PartID == QuestionnaireRequest.PartIDEnum.PartA)
-            {
-                return View("~/Views/ConsoleHome/EditLearnerCharacter/ResumeLearnerCharacterPartA.cshtml", questionnaire);
-            }
+            //if (!questionnaire.PartID.HasValue && viewModel.PartID == QuestionnaireRequest.PartIDEnum.PartA)
+            //{
+            //    return View("~/Views/ConsoleHome/EditLearnerCharacter/ResumeLearnerCharacterPartA.cshtml", questionnaire);
+            //}
 
-            return View("~/Views/LearnerProfile/Module/ResumeLearnerCharacter.cshtml", questionnaire);
+            //return View("~/Views/LearnerProfile/Module/ResumeLearnerCharacter.cshtml", questionnaire);
 
         }
 
@@ -577,16 +577,16 @@ namespace WebHome.Controllers
                 viewModel.UID = viewModel.DecryptKeyValue();
             }
 
-            var questionnaire = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == viewModel.QuestionnaireID)
-                                    .Where(q => q.UID == viewModel.UID).FirstOrDefault();
+            //var questionnaire = models.GetTable<QuestionnaireRequest>().Where(q => q.QuestionnaireID == viewModel.QuestionnaireID)
+            //                        .Where(q => q.UID == viewModel.UID).FirstOrDefault();
 
-            if (questionnaire == null)
-            {
-                return Json(new { result = false, message = "資料錯誤!" });
-            }
+            //if (questionnaire == null)
+            //{
+            //    return Json(new { result = false, message = "資料錯誤!" });
+            //}
 
-            questionnaire.Status = (int)Naming.IncommingMessageStatus.拒答;
-            models.SubmitChanges();
+            //questionnaire.Status = (int)Naming.IncommingMessageStatus.拒答;
+            //models.SubmitChanges();
 
             return Json(new { result = true });
 

@@ -803,46 +803,46 @@ namespace WebHome.Controllers
             return View("~/Views/CoachFacet/Module/DailyBookingList.ascx", items);
         }
 
-        public ActionResult QueryQuestionnaire(LessonQueryViewModel viewModel,bool? committed)
-        {
-            ViewBag.ViewModel = viewModel;
+        //public ActionResult QueryQuestionnaire(LessonQueryViewModel viewModel,bool? committed)
+        //{
+        //    ViewBag.ViewModel = viewModel;
 
-            IQueryable<QuestionnaireRequest> items = models.GetTable<QuestionnaireRequest>();
-            if(committed==true)
-            {
-                items = items.Where(q => q.PDQTask.Any());
-            }
-            else
-            {
-                items = items.Where(q => !q.PDQTask.Any());
-            }
+        //    IQueryable<QuestionnaireRequest> items = models.GetTable<QuestionnaireRequest>();
+        //    if(committed==true)
+        //    {
+        //        items = items.Where(q => q.PDQTask.Any());
+        //    }
+        //    else
+        //    {
+        //        items = items.Where(q => !q.PDQTask.Any());
+        //    }
 
-            if (viewModel.DateFrom.HasValue)
-            {
-                items = items.Where(q => q.RequestDate >= viewModel.DateFrom && q.RequestDate < viewModel.DateFrom.Value.AddMonths(1));
-            }
-            if (viewModel.CoachID.HasValue)
-            {
-                var uid = models.GetTable<LearnerFitnessAdvisor>().Where(l => l.CoachID == viewModel.CoachID).Select(l => l.UID);
-                items = items.Where(q => uid.Contains(q.UID));
-            }
+        //    if (viewModel.DateFrom.HasValue)
+        //    {
+        //        items = items.Where(q => q.RequestDate >= viewModel.DateFrom && q.RequestDate < viewModel.DateFrom.Value.AddMonths(1));
+        //    }
+        //    if (viewModel.CoachID.HasValue)
+        //    {
+        //        var uid = models.GetTable<LearnerFitnessAdvisor>().Where(l => l.CoachID == viewModel.CoachID).Select(l => l.UID);
+        //        items = items.Where(q => uid.Contains(q.UID));
+        //    }
 
-            return View("~/Views/CoachFacet/Module/QuestionnaireList.ascx", items);
-        }
+        //    return View("~/Views/CoachFacet/Module/QuestionnaireList.ascx", items);
+        //}
 
-        public ActionResult LearnerQuestionnaire(int id)
-        {
-            var model = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
+        //public ActionResult LearnerQuestionnaire(int id)
+        //{
+        //    var model = models.GetTable<QuestionnaireRequest>().Where(l => l.QuestionnaireID == id).FirstOrDefault();
 
-            if (model == null)
-            {
-                ViewBag.Message = "問卷資料不存在!!";
-                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
-            }
+        //    if (model == null)
+        //    {
+        //        ViewBag.Message = "問卷資料不存在!!";
+        //        return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml");
+        //    }
 
-            return View("~/Views/CoachFacet/Module/LearnerQuestionnaire.ascx", model);
+        //    return View("~/Views/CoachFacet/Module/LearnerQuestionnaire.ascx", model);
 
-        }
+        //}
 
         public ActionResult LessonComments(int? commentID)
         {

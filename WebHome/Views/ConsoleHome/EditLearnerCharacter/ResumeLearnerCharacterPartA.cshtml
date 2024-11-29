@@ -9,7 +9,7 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 
-@{
+@*@{
 
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
@@ -33,4 +33,4 @@
             $('').launchDownload('@(Html.Raw(Url.Action("EditLearnerCharacter","ConsoleHome",new { _model.QuestionnaireID, ToPrepare = true })))', { 'keyID': '@Html.Raw(_model.UID.EncryptKey())', 'partID': @((int)QuestionnaireRequest.PartIDEnum.PartA), 'Step': 1 });
         });
     });
-</script>
+</script>*@

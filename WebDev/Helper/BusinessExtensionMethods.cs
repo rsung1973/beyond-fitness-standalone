@@ -104,17 +104,17 @@ namespace WebHome.Helper
                         //{
                         //    models.CheckLearnerQuestionnaireRequest(r);
                         //}
-                        if (models.GetTable<QuestionnaireRequest>()
-                            .Where(q => q.UID == r.UID)
-                            .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
-                            .Any())
-                        {
-                            r.UID.CheckCurrentQuestionnaireRequest(models, actor, Naming.QuestionnaireGroup.滿意度問卷調查_2017);
-                        }
-                        else
-                        {
-                            r.UID.CheckCurrentQuestionnaireRequest(models, actor, Naming.QuestionnaireGroup.身體心靈密碼);
-                        }
+                        //if (models.GetTable<QuestionnaireRequest>()
+                        //    .Where(q => q.UID == r.UID)
+                        //    .Where(q => q.GroupID == (int)Naming.QuestionnaireGroup.身體心靈密碼)
+                        //    .Any())
+                        //{
+                        //    r.UID.CheckCurrentQuestionnaireRequest(models, actor, Naming.QuestionnaireGroup.滿意度問卷調查_2017);
+                        //}
+                        //else
+                        //{
+                        //    r.UID.CheckCurrentQuestionnaireRequest(models, actor, Naming.QuestionnaireGroup.身體心靈密碼);
+                        //}
                     }
 
                 }
@@ -232,136 +232,135 @@ namespace WebHome.Helper
         //    return null;
         //}
 
-        public static QuestionnaireRequest AssertQuestionnaire(this int learnerID, GenericManager<BFDataContext> models, UserProfile creator, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017, QuestionnaireRequest.PartIDEnum? partID = null)
+        //public static QuestionnaireRequest AssertQuestionnaire(this int learnerID, GenericManager<BFDataContext> models, UserProfile creator, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017, QuestionnaireRequest.PartIDEnum? partID = null)
+        //{
+        //    lock (typeof(BusinessExtensionMethods))
+        //    {
+        //        var item = models.GetEffectiveQuestionnaireRequest(learnerID, groupID)
+        //                    .FirstOrDefault();
 
-        {
-            lock (typeof(BusinessExtensionMethods))
-            {
-                var item = models.GetEffectiveQuestionnaireRequest(learnerID, groupID)
-                            .FirstOrDefault();
+        //        if (item == null)
+        //        {
+        //            item = new QuestionnaireRequest
+        //            {
+        //                GroupID = (int)groupID,
+        //                RequestDate = DateTime.Now,
+        //                UID = learnerID,
+        //                PartID = (int?)partID,
+        //                CreatorID = creator.UID,
+        //            };
+        //            models.GetTable<QuestionnaireRequest>().InsertOnSubmit(item);
+        //            models.SubmitChanges();
+        //        }
+        //        return item;
+        //    }
+        //}
 
-                if (item == null)
-                {
-                    item = new QuestionnaireRequest
-                    {
-                        GroupID = (int)groupID,
-                        RequestDate = DateTime.Now,
-                        UID = learnerID,
-                        PartID = (int?)partID,
-                        CreatorID = creator.UID,
-                    };
-                    models.GetTable<QuestionnaireRequest>().InsertOnSubmit(item);
-                    models.SubmitChanges();
-                }
-                return item;
-            }
-        }
+        //public static QuestionnaireRequest CheckCurrentQuestionnaireRequest(this int learnerID, GenericManager<BFDataContext> models, UserProfile actor, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
 
-        public static QuestionnaireRequest CheckCurrentQuestionnaireRequest(this int learnerID, GenericManager<BFDataContext> models, UserProfile actor, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+        //{
+        //    //IQueryable<LessonAttendance> attendance = models.GetTable<LessonAttendance>();
 
-        {
-            IQueryable<LessonAttendance> attendance = models.GetTable<LessonAttendance>();
+        //    //var PT = learnerID.PromptLearnerLessons(models)
+        //    //                .PTLesson();
 
-            var PT = learnerID.PromptLearnerLessons(models)
-                            .PTLesson();
+        //    //var PI = learnerID.PromptLearnerLessons(models)
+        //    //                .PILesson();
 
-            var PI = learnerID.PromptLearnerLessons(models)
-                            .PILesson();
+        //    //var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
+        //    //        .Where(q => q.Status.HasValue)
+        //    //        //.Where(q => q.GroupID == (int)groupID)
+        //    //        .OrderByDescending(q => q.QuestionnaireID)
+        //    //        .FirstOrDefault();
 
-            var item = models.GetTable<QuestionnaireRequest>().Where(q => q.UID == learnerID)
-                    .Where(q => q.Status.HasValue)
-                    //.Where(q => q.GroupID == (int)groupID)
-                    .OrderByDescending(q => q.QuestionnaireID)
-                    .FirstOrDefault();
+        //    //if (item != null)
+        //    //{
+        //    //    if (item.GroupID == (int)groupID)
+        //    //    {
+        //    //        if (item.Status == (int)Naming.IncommingMessageStatus.未讀)
+        //    //        {
+        //    //            return item;
+        //    //        }
+        //    //    }
 
-            if (item != null)
-            {
-                if (item.GroupID == (int)groupID)
-                {
-                    if (item.Status == (int)Naming.IncommingMessageStatus.未讀)
-                    {
-                        return item;
-                    }
-                }
+        //    //    var pdq = item.PDQTask.OrderByDescending(t => t.TaskID).FirstOrDefault();
 
-                var pdq = item.PDQTask.OrderByDescending(t => t.TaskID).FirstOrDefault();
+        //    //    if (pdq != null)
+        //    //    {
+        //    //        PT = PT.Where(l => l.ClassTime >= pdq.TaskDate);
+        //    //        PI = PI.Where(l => l.ClassTime >= pdq.TaskDate);
+        //    //    }
+        //    //    else
+        //    //    {
+        //    //        PT = PT.Where(l => l.ClassTime >= item.RequestDate);
+        //    //        PI = PI.Where(l => l.ClassTime >= item.RequestDate);
+        //    //    }
 
-                if (pdq != null)
-                {
-                    PT = PT.Where(l => l.ClassTime >= pdq.TaskDate);
-                    PI = PI.Where(l => l.ClassTime >= pdq.TaskDate);
-                }
-                else
-                {
-                    PT = PT.Where(l => l.ClassTime >= item.RequestDate);
-                    PI = PI.Where(l => l.ClassTime >= item.RequestDate);
-                }
+        //    //}
 
-            }
+        //    //PT = PT.Join(attendance, l => l.LessonID, a => a.LessonID, (l, a) => l);
+        //    //PI = PI.Join(attendance, l => l.LessonID, a => a.LessonID, (l, a) => l);
 
-            PT = PT.Join(attendance, l => l.LessonID, a => a.LessonID, (l, a) => l);
-            PI = PI.Join(attendance, l => l.LessonID, a => a.LessonID, (l, a) => l);
+        //    ////if (PT.Count() + PI.Count() >= 12)
+        //    //if (PT.Count() >= 15)
+        //    //{
+        //    //    return learnerID.AssertQuestionnaire(models, actor, groupID, QuestionnaireRequest.PartIDEnum.PartB);
+        //    //}
 
-            //if (PT.Count() + PI.Count() >= 12)
-            if (PT.Count() >= 15)
-            {
-                return learnerID.AssertQuestionnaire(models, actor, groupID, QuestionnaireRequest.PartIDEnum.PartB);
-            }
-
-            return null;
-        }
-
+        //    return null;
+        //}
 
 
-        public static bool CheckCurrentQuestionnaireRequest(this GenericManager<BFDataContext> models, RegisterLesson item)
 
-        {
-            if (item.LessonPriceType.ExcludeQuestionnaire.HasValue)
-                return false;
+        //public static bool CheckCurrentQuestionnaireRequest(this GenericManager<BFDataContext> models, RegisterLesson item)
 
-            if (item.Lessons <= 10)
-                return false;
+        //{
+        //    if (item.LessonPriceType.ExcludeQuestionnaire.HasValue)
+        //        return false;
 
-            int countBase;
-            //if (item.Lessons <= 10)
-            //{
-            //    countBase = item.Lessons;
-            //}
-            //else 
-            if (item.Lessons <= 51)
-            {
-                countBase = item.Lessons / 2;
-            }
-            else
-            {
-                countBase = item.Lessons / 3;
-            }
+        //    if (item.Lessons <= 10)
+        //        return false;
 
-            int totalAttendance =
-                models.GetTable<LessonTime>().Where(l => l.GroupID == item.RegisterGroupID && l.LessonAttendance != null).Count()
-                    + (item.AttendedLessons ?? 0) + 1;
-            int checkAttendance = totalAttendance;
-            bool underCount = true;
-            if (item.QuestionnaireRequest.Count > 0)
-            {
-                var questItem = item.QuestionnaireRequest.OrderByDescending(q => q.QuestionnaireID).First();
-                checkAttendance = models.GetTable<LessonTime>().Where(l => l.GroupID == item.RegisterGroupID
-                    && l.LessonAttendance != null && l.LessonAttendance.CompleteDate > questItem.RequestDate).Count();
-                underCount = totalAttendance < countBase * (item.QuestionnaireRequest.Count + 1)
-                        && item.Lessons >= countBase * (item.QuestionnaireRequest.Count + 1);
-            }
+        //    int countBase;
+        //    //if (item.Lessons <= 10)
+        //    //{
+        //    //    countBase = item.Lessons;
+        //    //}
+        //    //else 
+        //    if (item.Lessons <= 51)
+        //    {
+        //        countBase = item.Lessons / 2;
+        //    }
+        //    else
+        //    {
+        //        countBase = item.Lessons / 3;
+        //    }
 
-            if (((item.Lessons - totalAttendance >= countBase && checkAttendance >= countBase) || (totalAttendance + 1) == item.Lessons) && underCount)
-            {
-                var group = models.GetTable<QuestionnaireGroup>().OrderByDescending(q => q.GroupID).FirstOrDefault();
-                if (group != null && !item.QuestionnaireRequest.Any(q => q.PDQTask.Count == 0))
-                {
-                    return true;
-                }
-            }
+        //    int totalAttendance =
+        //        models.GetTable<LessonTime>().Where(l => l.GroupID == item.RegisterGroupID && l.LessonAttendance != null).Count()
+        //            + (item.AttendedLessons ?? 0) + 1;
+        //    int checkAttendance = totalAttendance;
+        //    bool underCount = true;
+        //    if (item.QuestionnaireRequest.Count > 0)
+        //    {
+        //        var questItem = item.QuestionnaireRequest.OrderByDescending(q => q.QuestionnaireID).First();
+        //        checkAttendance = models.GetTable<LessonTime>().Where(l => l.GroupID == item.RegisterGroupID
+        //            && l.LessonAttendance != null && l.LessonAttendance.CompleteDate > questItem.RequestDate).Count();
+        //        underCount = totalAttendance < countBase * (item.QuestionnaireRequest.Count + 1)
+        //                && item.Lessons >= countBase * (item.QuestionnaireRequest.Count + 1);
+        //    }
 
-            return false;
-        }
+        //    if (((item.Lessons - totalAttendance >= countBase && checkAttendance >= countBase) || (totalAttendance + 1) == item.Lessons) && underCount)
+        //    {
+        //        var group = models.GetTable<QuestionnaireGroup>().OrderByDescending(q => q.GroupID).FirstOrDefault();
+        //        if (group != null && !item.QuestionnaireRequest.Any(q => q.PDQTask.Count == 0))
+        //        {
+        //            return true;
+        //        }
+        //    }
+
+        //    return false;
+        //}
 
         public static bool CouldMarkToAttendLesson(this GenericManager<BFDataContext> models, LessonTime item)
 
@@ -400,17 +399,17 @@ namespace WebHome.Helper
 
             if (lessonItem.IsCoachPISession())
             {
-                if(models.GetEffectiveQuestionnaireRequest(lessonItem.RegisterLesson.UserProfile, Naming.QuestionnaireGroup.身體心靈密碼).Any())
-                {
-                    return false;
-                }
+                //if(models.GetEffectiveQuestionnaireRequest(lessonItem.RegisterLesson.UserProfile, Naming.QuestionnaireGroup.身體心靈密碼).Any())
+                //{
+                //    return false;
+                //}
             }
             else
             {
-                if(lessonItem.GetEffectiveQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼).Any())
-                {
-                    return false;
-                }
+                //if(lessonItem.GetEffectiveQuestionnaireRequest(models, Naming.QuestionnaireGroup.身體心靈密碼).Any())
+                //{
+                //    return false;
+                //}
 
                 if(lessonItem.RegisterLesson?.LessonPriceType.ForDietary == true)
                 {
@@ -810,56 +809,56 @@ namespace WebHome.Helper
                 .ToString();
         }
 
-        public static IQueryable<QuestionnaireRequest> GetQuestionnaireRequest(this GenericManager<BFDataContext> models, UserProfile profile, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
+        //public static IQueryable<QuestionnaireRequest> GetQuestionnaireRequest(this GenericManager<BFDataContext> models, UserProfile profile, Naming.QuestionnaireGroup groupID = Naming.QuestionnaireGroup.滿意度問卷調查_2017)
 
-        {
-            return models.GetTable<QuestionnaireRequest>().Where(q => q.UID == profile.UID)
-                .Where(q => q.PDQTask.Count == 0)
-                .Where(q => q.GroupID == (int)groupID)
-                .Where(q => !q.Status.HasValue);
-        }
+        //{
+        //    return models.GetTable<QuestionnaireRequest>().Where(q => q.UID == profile.UID)
+        //        .Where(q => q.PDQTask.Count == 0)
+        //        .Where(q => q.GroupID == (int)groupID)
+        //        .Where(q => !q.Status.HasValue);
+        //}
 
-        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this GenericManager<BFDataContext> models, UserProfile profile, Naming.QuestionnaireGroup? groupID = null)
+        //public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this GenericManager<BFDataContext> models, UserProfile profile, Naming.QuestionnaireGroup? groupID = null)
 
-        {
-            return models.GetEffectiveQuestionnaireRequest(profile.UID, groupID);
-        }
+        //{
+        //    return models.GetEffectiveQuestionnaireRequest(profile.UID, groupID);
+        //}
 
-        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this GenericManager<BFDataContext> models, int uid, Naming.QuestionnaireGroup? groupID = null)
+        //public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this GenericManager<BFDataContext> models, int uid, Naming.QuestionnaireGroup? groupID = null)
 
-        {
-            var items = models.GetTable<QuestionnaireRequest>()
-                .Where(q => q.UID == uid)
-                .Where(q => !q.Status.HasValue
-                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
-            if (groupID.HasValue)
-            {
-                items = items.Where(q => q.GroupID == (int?)groupID);
-            }
-            return items;
-        }
+        //{
+        //    var items = models.GetTable<QuestionnaireRequest>()
+        //        .Where(q => q.UID == uid)
+        //        .Where(q => !q.Status.HasValue
+        //            || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+        //    if (groupID.HasValue)
+        //    {
+        //        items = items.Where(q => q.GroupID == (int?)groupID);
+        //    }
+        //    return items;
+        //}
 
-        public static QuestionnaireRequest GetLastCompleteQuestionnaireRequest(this GenericManager<BFDataContext> models, int uid, Naming.QuestionnaireGroup groupID)
+        //public static QuestionnaireRequest GetLastCompleteQuestionnaireRequest(this GenericManager<BFDataContext> models, int uid, Naming.QuestionnaireGroup groupID)
 
-        {
-            return models.GetTable<QuestionnaireRequest>()
-                .Where(q => q.UID == uid)
-                .Where(q => q.GroupID == (int)groupID)
-                .Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀)
-                .OrderByDescending(q => q.QuestionnaireID)
-                .FirstOrDefault();
-        }
+        //{
+        //    return models.GetTable<QuestionnaireRequest>()
+        //        .Where(q => q.UID == uid)
+        //        .Where(q => q.GroupID == (int)groupID)
+        //        .Where(q => q.Status == (int)Naming.IncommingMessageStatus.已讀)
+        //        .OrderByDescending(q => q.QuestionnaireID)
+        //        .FirstOrDefault();
+        //}
 
 
-        public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this LessonTime item, GenericManager<BFDataContext> models, Naming.QuestionnaireGroup group)
+        //public static IQueryable<QuestionnaireRequest> GetEffectiveQuestionnaireRequest(this LessonTime item, GenericManager<BFDataContext> models, Naming.QuestionnaireGroup group)
 
-        {
-            return models.GetTable<RegisterLesson>().Where(r => r.RegisterGroupID == item.GroupID)
-                .Join(models.GetTable<QuestionnaireRequest>(), r => r.UID, q => q.UID, (r, q) => q)
-                .Where(q => q.GroupID == (int)group)
-                .Where(q => !q.Status.HasValue
-                    || q.Status == (int)Naming.IncommingMessageStatus.未讀);
-        }
+        //{
+        //    return models.GetTable<RegisterLesson>().Where(r => r.RegisterGroupID == item.GroupID)
+        //        .Join(models.GetTable<QuestionnaireRequest>(), r => r.UID, q => q.UID, (r, q) => q)
+        //        .Where(q => q.GroupID == (int)group)
+        //        .Where(q => !q.Status.HasValue
+        //            || q.Status == (int)Naming.IncommingMessageStatus.未讀);
+        //}
 
 
         public static int? BonusPoint(this UserProfile item, GenericManager<BFDataContext> models)

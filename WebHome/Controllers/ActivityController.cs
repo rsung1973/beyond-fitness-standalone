@@ -108,16 +108,16 @@ namespace WebHome.Controllers
                 }
             }
 
-            var questionnaire = profile.QuestionnaireRequest.Where(q => q.PDQTask.Count == 0).FirstOrDefault();
-            if(questionnaire!=null)
-            {
-                items.Add(new QuestionnaireRequestEvent
-                {
-                    EventTime = questionnaire.RequestDate.Value,
-                    Profile = profile,
-                    Questionnaire = questionnaire
-                });
-            }
+            //var questionnaire = profile.QuestionnaireRequest.Where(q => q.PDQTask.Count == 0).FirstOrDefault();
+            //if(questionnaire!=null)
+            //{
+            //    items.Add(new QuestionnaireRequestEvent
+            //    {
+            //        EventTime = questionnaire.RequestDate.Value,
+            //        Profile = profile,
+            //        Questionnaire = questionnaire
+            //    });
+            //}
         }
 
         public async Task<ActionResult> UpdateLessonFeedBackAsync(int lessonID, String feedBack)
