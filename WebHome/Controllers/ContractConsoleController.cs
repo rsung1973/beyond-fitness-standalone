@@ -392,9 +392,9 @@ namespace WebHome.Controllers
             }
 
 
-            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>()
-                .Where(l => !l.DurationInMinutes.HasValue 
-                    || l.DurationInMinutes == viewModel.DurationInMinutes);
+            IQueryable<LessonPriceType> items = models.GetTable<LessonPriceType>();
+                //.Where(l => !l.DurationInMinutes.HasValue
+                //    || l.DurationInMinutes == viewModel.DurationInMinutes);
 
             if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CNA)
             {
@@ -406,9 +406,9 @@ namespace WebHome.Controllers
                         || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRF)
             {
                 items = models.GetTable<LessonPriceType>()
-                    .Where(l => !l.DurationInMinutes.HasValue
-                        || l.DurationInMinutes == viewModel.DurationInMinutes
-                        || l.DurationInMinutes == 40)
+                    //.Where(l => !l.DurationInMinutes.HasValue
+                    //    || l.DurationInMinutes == viewModel.DurationInMinutes
+                    //    || l.DurationInMinutes == 40)
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.運動恢復課程);
             }
@@ -430,8 +430,8 @@ namespace WebHome.Controllers
                 //    }
                 //}
 
-                items = models.PromptEffectiveLessonPrice()
-                    .Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
+                items = models.PromptEffectiveLessonPrice();
+                    //.Where(l => !l.DurationInMinutes.HasValue || l.DurationInMinutes == viewModel.DurationInMinutes);
 
                 if (viewModel.ContractType is CourseContractType.ContractTypeDefinition.CVA
                     or CourseContractType.ContractTypeDefinition.CVB

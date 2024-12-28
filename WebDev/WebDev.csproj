@@ -22,6 +22,9 @@
     <Reference Include="LineMessagingAPISDK">
       <HintPath>..\WebHome\bin\Dependencies\LineMessagingAPISDK\netstandard2.0\LineMessagingAPISDK.dll</HintPath>
     </Reference>
+    <Reference Include="MessagingToolkit.QRCode">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

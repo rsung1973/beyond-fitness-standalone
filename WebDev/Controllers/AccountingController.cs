@@ -29,6 +29,7 @@ using WebHome.Models.ViewModel;
 using WebHome.Properties;
 using WebHome.Security.Authorization;
 using Microsoft.AspNetCore.Http;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 namespace WebHome.Controllers
 {
@@ -1699,6 +1700,8 @@ namespace WebHome.Controllers
             管理獎金抽成 = 16,
             任職總年資 = 17,
             職工薪資扣繳福利金 = 18,
+            PT_Session課數 = 19,
+            總PT上課金額 = 20,
         }
 
         enum ManagerYearlyBonusFields
@@ -1744,7 +1747,8 @@ namespace WebHome.Controllers
             任職總年資 = 20,
             任職年資抽成百分比 = 21,
             職工薪資扣繳福利金 = 22,
-            上課抽成加成百分比 = 23,
+            總上課金額 = 23,
+            //上課抽成加成百分比 = 23,
             體驗課上課數 = 24,
         }
 
@@ -1822,6 +1826,11 @@ namespace WebHome.Controllers
             var branchItems = models.GetTable<BranchStore>().ToArray();
             bool rule2020 = viewModel.AchievementDateFrom >= new DateTime(2020, 1, 1);
 
+            DateTime? idx = viewModel.AchievementDateFrom?.FirstDayOfMonth();
+            var indicator = models.GetTable<MonthlyIndicator>()
+                .Where(m => m.StartDate == idx)
+                .FirstOrDefault();
+
             DataTable buildManagerBonusList()
             {
                 //						
@@ -1845,6 +1854,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.管理獎金抽成.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.任職總年資.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.PT_Session課數.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.總PT上課金額.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1899,6 +1910,16 @@ namespace WebHome.Controllers
                     r[(int)ManagerBonusFields.管理獎金抽成] = g.ManagementBonusGrade ?? 0M;
                     r[(int)ManagerBonusFields.任職總年資] = Math.Round((g.JobTenureInDays ?? 0M) / 365M, 1);
                     r[(int)ManagerBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)ManagerBonusFields.底薪] + (int)r[(int)ManagerBonusFields.總獎金] + (int)r[(int)ManagerBonusFields.職務加給]) * 0.005M);
+                    r[(int)ManagerBonusFields.滾動式堂數] = g.AttendedByOther ?? 0;
+                    r[(int)ManagerBonusFields.PT_Session課數] = g.PTAttendanceCount ?? 0;
+                    if (indicator != null)
+                    {
+                        r[(int)ManagerBonusFields.總PT上課金額] =
+                            models.GetTable<MonthlyCoachRevenueIndicator>()
+                                .Where(m => m.PeriodID == indicator.PeriodID)
+                                .Where(m => m.CoachID == g.CoachID)
+                                .FirstOrDefault()?.ActualLessonAchievement ?? 0;
+                    }
 
                     if (salaryDetails != null)
                     {
@@ -1941,7 +1962,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職總年資.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.任職年資抽成百分比.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
-                table.Columns.Add(new DataColumn(CoachBonusFields.上課抽成加成百分比.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.總上課金額.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.體驗課上課數.ToString(), typeof(int)));
 
                 DataRow r;
@@ -1996,8 +2017,19 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.上課獎金抽成百分比] = (decimal)r[(int)CoachBonusFields.上課獎金抽成百分比] + (decimal)r[(int)CoachBonusFields.任職年資抽成百分比];
                     r[(int)CoachBonusFields.職工薪資扣繳福利金] = (int)Math.Round(((int)r[(int)CoachBonusFields.底薪] + (int)r[(int)CoachBonusFields.總獎金] + (int)r[(int)CoachBonusFields.職務加給]) * 0.005M);
 
-                    r[(int)CoachBonusFields.上課抽成加成百分比] = GetAdditionalBonusPercentage((decimal)r[(int)CoachBonusFields.總上課數] + (int)r[(int)CoachBonusFields.滾動式堂數]);
-                    r[(int)CoachBonusFields.體驗課上課數] = g.TSAttendanceCount ?? 0;
+                    //r[(int)CoachBonusFields.上課抽成加成百分比] = GetAdditionalBonusPercentage((decimal)r[(int)CoachBonusFields.總上課數] + (int)r[(int)CoachBonusFields.滾動式堂數]);
+                    if (indicator != null)
+                    {
+                        var c = models.GetTable<MonthlyCoachRevenueIndicator>()
+                                .Where(m => m.PeriodID == indicator.PeriodID)
+                                .Where(m => m.CoachID == g.CoachID)
+                                .FirstOrDefault();
+                        if (c != null)
+                        {
+                            r[(int)CoachBonusFields.總上課金額] = (c.ActualLessonAchievement ?? 0) + (c.ATAchievement ?? 0) + (c.SRAchievement ?? 0) + (c.SDAchievement ?? 0);
+                            r[(int)CoachBonusFields.體驗課上課數] = c.ActualCompleteTSCount ?? 0;
+                        }
+                    }
 
                     if (salaryDetails != null)
                     {

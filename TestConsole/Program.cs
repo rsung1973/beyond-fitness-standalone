@@ -7,7 +7,6 @@ using WebHome.Models.MIG3_1.C0401;
 using CommonLib.Utility;
 using CommonLib.Logger;
 using CommonLib.Core.Utility;
-using WebHome.Helper.Jobs;
 using System.Net;
 using System.Text;
 using System.Web;
@@ -207,12 +206,12 @@ namespace TestConsole
             using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoice = models.GetTable<InvoiceItem>()
-                        .Where(i => i.TrackCode == "CY")
-                        .Where(i => i.No == "95117512").FirstOrDefault();
+                        .Where(i => i.TrackCode == "GW")
+                        .Where(i => i.No == "95117583").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 3750, "退款", DateTime.Now);
+                    var allowance = models.PrepareAllowanceForPayment(payment, 23100, "退款", new DateTime(2024, 12, 23));
                 }
             }
         }

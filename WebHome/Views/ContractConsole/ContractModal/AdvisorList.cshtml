@@ -32,7 +32,16 @@
             {
                 <tr>
                     <td>@Html.Raw(item.ServingCoach.UserProfile.FullName())</td>
-                    <td>@*<i class="zmdi zmdi-flag zmdi-hc-2x col-pink"></i>*@</td>
+                    <td>
+                        @if (models.GetTable<LearnerCoachProperty>()
+                            .Where(p => p.PropertyID == (int)LearnerCoachProperty.PropertyType.PrimaryCoach)
+                            .Where(p => p.UID == _model.UID)
+                            .Where(p => p.CoachID == item.CoachID)
+                            .Any())
+                        {
+                            <i class="zmdi zmdi-flag zmdi-hc-2x col-pink"></i>
+                        }
+                    </td>
                 </tr>
             }
         }

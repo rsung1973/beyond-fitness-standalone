@@ -16,7 +16,8 @@
     <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj" />
     <ProjectReference Include="..\CommonLib.PlugInAdapter\CommonLib.PlugInAdapter.csproj" />
     <ProjectReference Include="..\CommonLib.Utility\CommonLib.Utility.csproj" />
-    <ProjectReference Include="..\WebHome\WebHome.csproj" />
+    <ProjectReference Include="..\WebBase\WebBase.csproj" />
+    <ProjectReference Include="..\WebDev\WebDev.csproj" />
   </ItemGroup>
 
   <ItemGroup>
