@@ -450,42 +450,7 @@
                         }
                     ],
                     "Experience": "<ul><li>大直高中演講講師（主題：青少年健康體適能）</li><li>仁愛國中演講講師（主題：運動產業發展與生涯）</li><li>華南銀行企業合作講師（主題：我該有氧還是重訓?）</li></ul>"                    
-                },
-                {
-                    "MemberCode": "VA69261948",
-                    "Name": "兵逸慈",
-                    "NameDesc": "Liza",
-                    "JobTitle": "トレーナー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(100.06 184.4)",
-                            "JobPosition": "translate(70.06 154.46)",
-                            "ImgXShifting": -40,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Ｗe are learning to accept the graceful and disappointment to improve ourself.",
-                    "SloganDesc": "為了成長，我們必須盡可能同時接納滿足和失望。",
-                    "Desc": "運動賦予自信與活力，享受見證人們透過運動開始相信自己，並熱愛自己。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }          
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"yoga",
-                        }
-                    ],
-                    "Experience": "<ul><li>國都汽車企業團課講師（教學正確運動方式和和提升心肺適能）</li><li>國都汽車企業拍攝教練（伸展動作教學）</li><li>偏鄉公益活動講師（瑜珈）</li><li>百岳攀登＃大小壩</li></ul>"                    
-                },                
+                }              
             ]         
         },
         {
@@ -2586,48 +2551,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2023 奇怪自由潛水運動會STA 冠軍</li><li>2023 CMAS全國自由潛水室內錦標賽STA 亞軍</li><li>2022 Beyond Fitness Trust 亞軍</li></ul>"                    
-                },    
-                {
-                    "MemberCode": "CJ29229466",
-                    "Name": "蔡恆易",
-                    "NameDesc": "Henry",
-                    "JobTitle": "トレーナー",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(242.76 184.4)",
-                            "JobPosition": "translate(242.76 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "The only difference between elites and normal is that elites are great at basic skills than others.",
-                    "SloganDesc": "菁英與一般人的唯一差別就是：菁英比其他人更擅長基本功。",
-                    "Desc": "熱愛多樣戶外運動，透過運動分享各式各樣的經歷的同時能激勵他人嘗試新事物，開拓不同的選擇，並一同體驗多元生活。",
-                    "License":[
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                          
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"basketball",
-                        },
-                        {
-                            "Name":"swimming",
-                        }
-                    ],
-                    "Experience": "<ul><li>功能性訓練企業團課教練（教學正確運動方式和和提升心肺適能）</li><li>內湖假日籃球聯賽C組冠軍</li><li>2023 Nike Workshop Trainer</li></ul>"                    
-                },                   
+                },                                     
                 {
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
