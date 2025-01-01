@@ -738,7 +738,7 @@ namespace WebHome.Helper
                 {
                     return false;
                 }
-                if (profile.IsAssistant() || profile.IsAuthorizedSysAdmin())
+                if (profile.IsAssistant() || profile.IsAuthorizedSysAdmin() || profile.IsManager() || profile.IsViceManager())
                 {
                     return true;
                 }

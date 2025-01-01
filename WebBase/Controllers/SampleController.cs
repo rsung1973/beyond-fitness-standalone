@@ -67,6 +67,7 @@ namespace WebHome.Controllers
 
             _dataSource = new ModelSource<TEntity>(models);
             HttpContext.Items["Models"] = DataSource;
+            HttpContext.Items["Controller"] = this;
 
             var lang = Request.Cookies["cLang"];
             lang.SelectUICulture();

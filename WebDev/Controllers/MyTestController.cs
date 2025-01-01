@@ -226,7 +226,8 @@ namespace WebHome.Controllers
             //    viewModel = new MonthlyIndicatorQueryViewModel { };
             //    var result = await this.TryUpdateModelAsync<MonthlyIndicatorQueryViewModel>((MonthlyIndicatorQueryViewModel)viewModel);
             //}
-
+            ViewBag.QueryString = Request.QueryString;
+            ViewBag.RequestBody = this.RequestBody;
             ViewBag.ViewModel = viewModel;
             return View(actionName, forms);
             //this.View(actionName).ExecuteResult(this.ControllerContext);

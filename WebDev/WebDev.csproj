@@ -25,6 +25,9 @@
     <Reference Include="MessagingToolkit.QRCode">
       <HintPath>..\WebHome\bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
     </Reference>
+    <Reference Include="QREncrypter">
+      <HintPath>..\WebHome\bin\Dependencies\Lib\QREncrypter.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

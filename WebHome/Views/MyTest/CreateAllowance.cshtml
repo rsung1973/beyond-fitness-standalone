@@ -1,0 +1,96 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+@using System.Net.Mail
+@using System.Net
+@using System.Text
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Http
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using WebHome.Properties
+@using WebHome.Helper.BusinessOperation
+@using CommonLib.Utility
+
+@using Newtonsoft.Json
+@{
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _viewModel = ViewBag.ViewModel as PaymentAllowanceViewModel;
+    Controller controller = (Controller)ViewContext.HttpContext.Items["Controller"];
+    _model = this.Model as IFormCollection;
+
+    var Response = ViewContext.HttpContext.Response;
+    Response.ContentType = "application/json";
+
+    if (_viewModel == null)
+    {
+        _viewModel = new PaymentAllowanceViewModel();
+        var test = await controller.TryUpdateModelAsync<PaymentAllowanceViewModel>(_viewModel);
+        if (!test)
+        {
+            _modelState.AddModelError("Message", "資料錯誤!!");
+        }
+    }
+
+    IQueryable<Payment> items = _viewModel.InvoiceNo?.Length == 10
+        ? _viewModel.InquirePayment(models)
+        : models.GetTable<Payment>().Where(p => false);
+
+    Payment payment = items.FirstOrDefault();
+    InvoiceItem invoice = payment?.InvoiceItem;
+    InvoiceAllowance allowance = null;
+
+    if (invoice == null)
+    {
+        _modelState.AddModelError("InvoiceNo", "發票不存在!!");
+    }
+    else
+    {
+        if (!(_viewModel.AllowanceAmount > 0))
+        {
+            _modelState.AddModelError("AllowanceAmount", "請輸入退款金額!!");
+        }
+        else if (_viewModel.AllowanceAmount > payment.PayoffAmount)
+        {
+            _modelState.AddModelError("AllowanceAmount", "退款金額大於收款金額!!");
+        }
+        else if (payment.VoidPayment != null)
+        {
+            _modelState.AddModelError("Message", "發票已折讓!!");
+        }
+    }
+
+    if (!_modelState.IsValid)
+    {
+        Output.Write((new { result = false, message = _modelState.ErrorMessage() }).JsonStringify());
+    }
+    else
+    {
+        if (payment != null)
+        {
+            allowance = models.PrepareAllowanceForPayment(payment, _viewModel.AllowanceAmount.Value, "退款", _viewModel.AllowanceDate ?? DateTime.Today);
+        }
+
+        if (allowance == null)
+        {
+            Output.Write((new { result = false, message = "折讓失敗!!" }).JsonStringify());
+        }
+        else
+        {
+            Output.Write((new { result = true, dataItem = allowance }).JsonStringify());
+        }
+    }
+
+}
+
+@functions
+{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    PaymentAllowanceViewModel _viewModel;
+    IFormCollection _model;
+}
