@@ -223,7 +223,7 @@
             "action": {
               "type": "uri",
               "label": "立即簽名",
-              "uri": "@Html.Raw($"{WebHome.Startup.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.AgentID.EncryptKey())}")"
+              "uri": "@Html.Raw($"{WebApp.Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/Account/ToSignContractService")}?KeyID={HttpUtility.UrlEncode(_model.ContractID.EncryptKey())}&encUID={HttpUtility.UrlEncode(_model.AgentID.EncryptKey())}")"
             },
             "margin": "0px",
             "gravity": "center",

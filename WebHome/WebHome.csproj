@@ -9,9 +9,81 @@
 
   <ItemGroup>
     <Compile Remove="Views\CommonHelper\**" />
+    <Compile Remove="wwwroot\Account\**" />
+    <Compile Remove="wwwroot\BlogContent\**" />
+    <Compile Remove="wwwroot\CommonHelper\**" />
+    <Compile Remove="wwwroot\ConsoleHome\**" />
+    <Compile Remove="wwwroot\ContractConsole\**" />
+    <Compile Remove="wwwroot\CornerKick\**" />
+    <Compile Remove="wwwroot\css\**" />
+    <Compile Remove="wwwroot\Error\**" />
+    <Compile Remove="wwwroot\fonts\**" />
+    <Compile Remove="wwwroot\img\**" />
+    <Compile Remove="wwwroot\js\**" />
+    <Compile Remove="wwwroot\LearnerActivity\**" />
+    <Compile Remove="wwwroot\LearnerProfile\**" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Compile Remove="wwwroot\MainActivity\**" />
+    <Compile Remove="wwwroot\Official\**" />
+    <Compile Remove="wwwroot\Profile\**" />
+    <Compile Remove="wwwroot\Scripts\**" />
     <Content Remove="Views\CommonHelper\**" />
+    <Content Remove="wwwroot\Account\**" />
+    <Content Remove="wwwroot\BlogContent\**" />
+    <Content Remove="wwwroot\CommonHelper\**" />
+    <Content Remove="wwwroot\ConsoleHome\**" />
+    <Content Remove="wwwroot\ContractConsole\**" />
+    <Content Remove="wwwroot\CornerKick\**" />
+    <Content Remove="wwwroot\css\**" />
+    <Content Remove="wwwroot\Error\**" />
+    <Content Remove="wwwroot\fonts\**" />
+    <Content Remove="wwwroot\img\**" />
+    <Content Remove="wwwroot\js\**" />
+    <Content Remove="wwwroot\LearnerActivity\**" />
+    <Content Remove="wwwroot\LearnerProfile\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <Content Remove="wwwroot\MainActivity\**" />
+    <Content Remove="wwwroot\Official\**" />
+    <Content Remove="wwwroot\Profile\**" />
+    <Content Remove="wwwroot\Scripts\**" />
     <EmbeddedResource Remove="Views\CommonHelper\**" />
+    <EmbeddedResource Remove="wwwroot\Account\**" />
+    <EmbeddedResource Remove="wwwroot\BlogContent\**" />
+    <EmbeddedResource Remove="wwwroot\CommonHelper\**" />
+    <EmbeddedResource Remove="wwwroot\ConsoleHome\**" />
+    <EmbeddedResource Remove="wwwroot\ContractConsole\**" />
+    <EmbeddedResource Remove="wwwroot\CornerKick\**" />
+    <EmbeddedResource Remove="wwwroot\css\**" />
+    <EmbeddedResource Remove="wwwroot\Error\**" />
+    <EmbeddedResource Remove="wwwroot\fonts\**" />
+    <EmbeddedResource Remove="wwwroot\img\**" />
+    <EmbeddedResource Remove="wwwroot\js\**" />
+    <EmbeddedResource Remove="wwwroot\LearnerActivity\**" />
+    <EmbeddedResource Remove="wwwroot\LearnerProfile\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="wwwroot\MainActivity\**" />
+    <EmbeddedResource Remove="wwwroot\Official\**" />
+    <EmbeddedResource Remove="wwwroot\Profile\**" />
+    <EmbeddedResource Remove="wwwroot\Scripts\**" />
     <None Remove="Views\CommonHelper\**" />
+    <None Remove="wwwroot\Account\**" />
+    <None Remove="wwwroot\BlogContent\**" />
+    <None Remove="wwwroot\CommonHelper\**" />
+    <None Remove="wwwroot\ConsoleHome\**" />
+    <None Remove="wwwroot\ContractConsole\**" />
+    <None Remove="wwwroot\CornerKick\**" />
+    <None Remove="wwwroot\css\**" />
+    <None Remove="wwwroot\Error\**" />
+    <None Remove="wwwroot\fonts\**" />
+    <None Remove="wwwroot\img\**" />
+    <None Remove="wwwroot\js\**" />
+    <None Remove="wwwroot\LearnerActivity\**" />
+    <None Remove="wwwroot\LearnerProfile\**" />
+    <None Remove="wwwroot\lib\**" />
+    <None Remove="wwwroot\MainActivity\**" />
+    <None Remove="wwwroot\Official\**" />
+    <None Remove="wwwroot\Profile\**" />
+    <None Remove="wwwroot\Scripts\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -20,6 +92,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\%2a%2a" />
+    <Content Remove="wwwroot\Profile.7z" />
   </ItemGroup>
 
   <ItemGroup>

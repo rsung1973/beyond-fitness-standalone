@@ -20,7 +20,7 @@
     ModelSource<UserProfile> models;
     ModelStateDictionary _modelState;
 
-    StageProgress currentStage;
+    StageProgress appraisalStage;
 
     int? AppraiseLevel(UserProfile learner,IQueryable<LessonTime> lessons, IQueryable<IGrouping<int, GameLevelRequirement>> requirements)
     {
@@ -75,17 +75,17 @@
     void ApplyLevelReward(UserProfile learner)
     {
         //任務牆點數回饋加碼
-        if (currentStage != null)
+        if (appraisalStage != null)
         {
             var player = models.GetTable<Player>()
                 .Where(p => p.UID == learner.UID)
-                .Where(p => p.ProgressID == currentStage.ProgressID)
+                .Where(p => p.ProgressID == appraisalStage.ProgressID)
                 .FirstOrDefault();
 
             var totalPoints = models.GetTable<BonusTransaction>()
                 .Where(t => t.UID == learner.UID)
-                .Where(t => t.TransactionDate >= currentStage.StartDate)
-                .Where(t => t.TransactionDate < currentStage.EndExclusiveDate)
+                .Where(t => t.TransactionDate >= appraisalStage.StartDate)
+                .Where(t => t.TransactionDate < appraisalStage.EndExclusiveDate)
                 .Where(t => t.CampaignMissionBonus != null)
                 .Sum(t => t.TransactionPoint);
 
@@ -126,16 +126,26 @@
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
     var Response = ViewContext.HttpContext.Response;
 
-    currentStage = models.PromptCurrentStage();
-    if (currentStage != null)
+    appraisalStage = models.PromptCurrentStage();
+    StageProgress stage = null;
+    if (appraisalStage != null)
     {
-        DateTime start = currentStage.StartDate.Value;
-        DateTime exclusiveEnd = currentStage.EndExclusiveDate.Value;
-
-        var stage = models.GetTable<StageProgress>()
-                .Where(s => s.ProgressID > currentStage.ProgressID)
-                .OrderBy(s => s.ProgressID)
+        stage = appraisalStage;
+        appraisalStage = models.GetTable<StageProgress>()
+                .Where(s => s.ProgressID < appraisalStage.ProgressID)
+                .OrderByDescending(s => s.ProgressID)
                 .FirstOrDefault();
+    }
+
+    if (appraisalStage != null)
+    {
+        DateTime start = appraisalStage.StartDate.Value;
+        DateTime exclusiveEnd = appraisalStage.EndExclusiveDate.Value;
+
+        //stage = models.GetTable<StageProgress>()
+        //        .Where(s => s.ProgressID > appraisalStage.ProgressID)
+        //        .OrderBy(s => s.ProgressID)
+        //        .FirstOrDefault();
 
         if (stage != null)
         {

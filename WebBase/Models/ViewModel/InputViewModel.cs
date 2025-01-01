@@ -468,6 +468,12 @@ namespace WebHome.Models.ViewModel
         public int? TrackID { get; set; }
     }
 
+    public class PaymentAllowanceViewModel : PaymentQueryViewModel
+    {
+        public DateTime? AllowanceDate { get; set; }
+        public decimal? AllowanceAmount { get; set; }
+    }
+
     public class AwardQueryViewModel : LoginViewModel
     {
         private DateTime? dateTo;

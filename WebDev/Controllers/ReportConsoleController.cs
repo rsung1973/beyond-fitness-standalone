@@ -109,9 +109,9 @@ namespace WebHome.Controllers
 
 
             Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
-            Response.Headers.Add("Cache-control", "max-age=1");
+            Response.Headers.Append("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractDetails"), DateTime.Now));
+            Response.Headers.Append("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -264,9 +264,9 @@ namespace WebHome.Controllers
             }
 
             Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
-            Response.Headers.Add("Cache-control", "max-age=1");
+            Response.Headers.Append("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractServiceDetails"), DateTime.Now));
+            Response.Headers.Append("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("ContractServiceDetails"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -322,9 +322,9 @@ namespace WebHome.Controllers
 
 
             Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
-            Response.Headers.Add("Cache-control", "max-age=1");
+            Response.Headers.Append("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAccumulation"), DateTime.Now));
+            Response.Headers.Append("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAccumulation"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {
@@ -392,9 +392,9 @@ namespace WebHome.Controllers
                 });
 
             Response.Cookies.Append("fileDownloadToken", viewModel.FileDownloadToken ?? "");
-            Response.Headers.Add("Cache-control", "max-age=1");
+            Response.Headers.Append("Cache-control", "max-age=1");
             Response.ContentType = "application/vnd.ms-excel";
-            Response.Headers.Add("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAward"), DateTime.Now));
+            Response.Headers.Append("Content-Disposition", String.Format("attachment;filename={0}({1:yyyy-MM-dd HH-mm-ss}).xlsx", HttpUtility.UrlEncode("BonusAward"), DateTime.Now));
 
             using (DataSet ds = new DataSet())
             {

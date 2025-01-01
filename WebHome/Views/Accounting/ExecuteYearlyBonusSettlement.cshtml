@@ -81,7 +81,7 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    AccountingQueryViewModel _viewModel = ViewBag.AccountingQueryViewModel as AccountingQueryViewModel;
+    AccountingQueryViewModel _viewModel = ViewBag.ViewModel as AccountingQueryViewModel;
     var Response = ViewContext.HttpContext.Response;
 
     int year = _viewModel.Year ?? DateTime.Today.Year;

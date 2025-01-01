@@ -1722,7 +1722,7 @@ namespace WebHome.Helper
                 {
                     var netAchievement = (int)Math.Max((reviewItem.PerformanceAchievement.Value - reviewItem.VoidShare.Value) / 1.05M + 0.5M, 0);
                     var monthlyAchievement = (int)Math.Max(netAchievement / reviewItem.DataCount.Value + 0.5M, 0);
-                    var attendanceCount = (int)(reviewItem.AchievementAttendanceCount / reviewItem.DataCount.Value + 0.5M);
+                    var attendanceCount = (int)((reviewItem.AchievementAttendanceCount ?? 0) / reviewItem.DataCount.Value + 0.5M);
 
                     decimal shareRatio = 3m;
                     for (int i = 0; i < PerformanceAchievementIndex.Length; i++)
