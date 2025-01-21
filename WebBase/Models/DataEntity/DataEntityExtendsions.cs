@@ -1029,7 +1029,7 @@ namespace WebHome.Models.DataEntity
     {
         public LessonPriceType CurrentPrice
         {
-            get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType;
+            get => this.CourseContractOrder?.Any() == true ? CourseContractOrder.OrderBy(o => o.SeqNo).First().LessonPriceType : this.LessonPriceType;
         }
     }
 
