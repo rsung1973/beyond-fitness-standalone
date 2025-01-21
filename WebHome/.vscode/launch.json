@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net8.0/WebHome.dll",
+            "program": "${workspaceFolder}/bin/Debug/net9.0/WebHome.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
@@ -21,7 +21,7 @@
             },
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
-                "ASPNETCORE_URLS": "http://GarfaildiMac.local:5050"
+                "ASPNETCORE_URLS": "http://GarfaildMac-mini.local:5050"
             },            
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

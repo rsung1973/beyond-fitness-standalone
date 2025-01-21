@@ -1,12 +1,25 @@
-<?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns="http://www.w3.org/2000/svg">
-<metadata>Copyright (C) 2015 by original authors @ fontello.com</metadata>
-<defs>
-<font id="minicart-font" horiz-adv-x="1000" >
-<font-face font-family="minicart-font" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
-<missing-glyph horiz-adv-x="1000" />
-<glyph glyph-name="glyph" unicode="&#xe800;" d="m225 600c0 25 19 45 43 45 25 0 45-20 45-45 0-23-20-43-45-43-24 0-43 20-43 43z m478 0c0 25 20 45 43 45 24 0 43-20 43-45 0-23-19-43-43-43-23 0-43 20-43 43z m-488 121c-65 0-115-55-115-121l-67-566c0-67 51-122 114-122l707 0c62 0 113 55 113 122l-67 566c0 66-50 121-115 121z m553 0c-26 110-135 192-266 192-131 0-240-82-266-192l80 0c24 70 98 123 186 123 88 0 162-53 186-123z" horiz-adv-x="1000" />
-</font>
-</defs>
-</svg>
+{
+    "Home": "首頁",
+    "AboutUs": "關於我們",
+    "FindUs": "分店一覽",
+    "Service": "專屬服務",
+    "Session": "訓練課程",
+    "FAQ": "常見問題",
+    "JoinUs": "加入我們",
+    "Booking": "預約體驗",
+    "Blog": "精選文章",
+    "BlogLink": "81295",
+
+    "PartnerMenu": "合作夥伴",    
+    "Partner": "Partner•",
+    "PartnerDesc": "合作夥伴",
+    "PartnerMessage": "在Beyond運動不僅是一瞬間，而是一生的身體養成。為實現目標，我們結合多個夥伴一同努力提供全面的服務與幫助他人的健康和運動目標。",    
+
+    "BookNow": "立即前往預約！",
+    "JoinUsGo": "Join Us!",
+    "ViewJobs": "View Job Openings",
+
+    "TEL": "電話",
+    "ReadMore": "Read More",
+
+    "Cookies": "Beyond Fitness為提供您更多優質的內容，採用網站分析技術。若您未點選我同意而繼續瀏覽本網站，則視為您已同意本站之隱私�
