@@ -72,51 +72,6 @@
         models.SubmitChanges();
     }
 
-    void ApplyLevelReward(UserProfile learner)
-    {
-        //任務牆點數回饋加碼
-        if (appraisalStage != null)
-        {
-            var player = models.GetTable<Player>()
-                .Where(p => p.UID == learner.UID)
-                .Where(p => p.ProgressID == appraisalStage.ProgressID)
-                .FirstOrDefault();
-
-            var totalPoints = models.GetTable<BonusTransaction>()
-                .Where(t => t.UID == learner.UID)
-                .Where(t => t.TransactionDate >= appraisalStage.StartDate)
-                .Where(t => t.TransactionDate < appraisalStage.EndExclusiveDate)
-                .Where(t => t.CampaignMissionBonus != null)
-                .Sum(t => t.TransactionPoint);
-
-            if (totalPoints > 0)
-            {
-                var rewardItem = player?.GameLevel.GameLevelReward
-                        .Where(r => r.RewardID == (int)GameLevelReward.RewardDefinition.任務牆點數回饋加碼)
-                        .FirstOrDefault();
-
-                if (rewardItem?.Reward > 0)
-                {
-                    var account = learner.UID.PromptDepositAccount(models);
-                    int awardPoints = totalPoints * rewardItem.Reward / 100;
-                    var txn = new BonusTransaction
-                    {
-                        UID = account.UID,
-                        TransactionPoint = awardPoints,
-                        TransactionDate = DateTime.Now,
-                        Reason = $"{GameLevelReward.RewardDefinition.任務牆點數回饋加碼}:{awardPoints}({totalPoints}*{rewardItem.Reward}%)",
-                        ExpirationDate = new DateTime(DateTime.Today.Year + 1, 12, 31),
-                    };
-                    models.GetTable<BonusTransaction>().InsertOnSubmit(txn);
-                    models.SubmitChanges();
-
-                    account.CommitBonusSettlement(models);
-                }
-            }
-        }
-        models.SubmitChanges();
-    }
-
 }
 @{
 
@@ -157,8 +112,6 @@
 
             foreach (var learner in items)
             {
-
-                //ApplyLevelReward(learner);
 
                 var lessons = models.GetTable<LessonTime>()
                     .Where(l => l.LessonAttendance != null)

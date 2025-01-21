@@ -78,6 +78,10 @@
                         + (reviewItem?.AttendedShare ?? 0)
                         + (item.SpecialBonus ?? 0));
                     }
+                    else
+                    {
+                        salary += (item.SpecialBonus ?? 0);
+                    }
                 }
             }
             else

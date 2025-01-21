@@ -21,6 +21,7 @@ using CommonLib.Core.Utility;
 using System.IO;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebHome.Helper.Jobs;
+using WebHome.Properties;
 //using WebHome.Helper.Jobs;
 
 namespace WebHome
@@ -46,7 +47,10 @@ namespace WebHome
             //    return $"{Properties["HostDomain"]}{VirtualPathUtility.ToAbsolute("~/CommonHelper/ViewContractService")}?pdf=1&revisionID={item.RevisionID}&t={DateTime.Now.Ticks}";
             //};
 
-            JobLauncher.StartUp();
+            if(AppSettings.Default.EnableJobScheduler)
+            {
+                JobLauncher.StartUp();
+            }
         }
 
         public IConfiguration Configuration { get; }

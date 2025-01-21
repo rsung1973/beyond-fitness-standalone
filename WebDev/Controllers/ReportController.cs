@@ -516,7 +516,7 @@ namespace WebHome.Controllers
                 return View("~/Views/Shared/JsAlert.cshtml", model: "資料錯誤!!");
             }
 
-            var items = item.AttendedLessonList();
+            IQueryable<V_Tuition> items = models.GetTable<V_Tuition>().Where(t => t.ContractID == item.ContractID);
 
             DataTable getSummary()
             {
@@ -524,7 +524,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("合約編號", typeof(String)));
                 table.Columns.Add(new DataColumn("姓名", typeof(String)));
                 table.Columns.Add(new DataColumn("月份", typeof(String)));
-                table.Columns.Add(new DataColumn("課程單價", typeof(int)));
+                //table.Columns.Add(new DataColumn("課程單價", typeof(int)));
                 table.Columns.Add(new DataColumn("上課數", typeof(int)));
                 table.Columns.Add(new DataColumn("上課金額", typeof(int)));
 
@@ -534,10 +534,20 @@ namespace WebHome.Controllers
                     r[0] = item.ContractNo();
                     r[1] = item.ContractLearner();
                     r[2] = $"{g.Key.Year:0000}{g.Key.Month:00}";
-                    r[3] = item.CurrentPrice.ListPrice;
-                    var count = g.Count();
-                    r[4] = count;
-                    r[5] = g.Sum(l => l.RegisterLesson.LessonPriceType.ListPrice) * item.CourseContractType.GroupingMemberCount * item.CourseContractType.GroupingLessonDiscount.PercentageOfDiscount / 100;
+
+                    //var lessons = g.OrderBy(l => l.PriceID).ToList();
+                    //if (lessons[^1].PriceID == lessons[0].PriceID)
+                    //{
+                    //    r[3] = lessons[0].ListPrice;
+                    //}
+                    //else
+                    //{
+
+                    //}
+
+                    r[3] = g.Count();
+                    r[4] = (g.Sum(t=> t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0 )
+                            + (g.Sum(t => t.EnterpriseListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0);
                     table.Rows.Add(r);
                 }
 
@@ -557,9 +567,12 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("體能顧問姓名", typeof(String)));
                 table.Columns.Add(new DataColumn("姓名", typeof(String)));
                 table.Columns.Add(new DataColumn("簽到時間", typeof(DateTime)));
+                table.Columns.Add(new DataColumn("課程單價", typeof(int)));
 
-                foreach (var lesson in items.OrderBy(l => l.ClassTime))
+
+                foreach (var t in items.OrderBy(l => l.ClassTime))
                 {
+                    LessonTime lesson = models.GetTable<LessonTime>().Where(l => l.LessonID == t.LessonID).First();
                     var r = table.NewRow();
                     r[0] = $"{lesson.ClassTime:yyyy/MM/dd}";
                     r[1] = $"{lesson.ClassTime:HH:mm}~{lesson.ClassTime.Value.AddMinutes(lesson.DurationInMinutes.Value):HH:mm}";
@@ -574,6 +587,7 @@ namespace WebHome.Controllers
                     {
                         r[6] = lesson.LessonPlan.CommitAttendance;
                     }
+                    r[7] = t.ListPrice;
                     table.Rows.Add(r);
                 }
 
