@@ -22,5 +22,10 @@
     "BookDesc1": "When you step into a gym, does the unfamiliar and uncertain environment make you doubt, \"Can I do this\" ?",
     "BookDesc2": "Make an appointment now and let Beyond be your best partner in your journey of change!",
     "Location": "Location•",
-    "LocationDesc": "Branches"
+    "LocationDesc": "Branches",
+    "NewsItem": [
+        {
+            "ImgName": "event03-img"
+        }
+    ]  
 }

@@ -23,5 +23,10 @@
     "BookDesc2": "すぐに予約をして！Beyondでの体験をお試しください。<br class=\"d-block d-lg-none d-md-none\" /><br class=\"d-block d-lg-none d-md-none\" />自分を変える旅に、Beyondはあなたのベストパートナーになります！",
     "BookButton": "Let’s get started!",
     "Location": "Location•",
-    "LocationDesc": "店舗一覧"
+    "LocationDesc": "店舗一覧",
+    "NewsItem": [
+        {
+            "ImgName": "event03-img"
+        }
+    ]   
 }
