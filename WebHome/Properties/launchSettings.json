@@ -17,14 +17,14 @@
         "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation"
       },
       "ancmHostingModel": "OutOfProcess",
-      "applicationUrl": "http://saturn:5000"
+      "applicationUrl": "http://GarfaildMac-mini.local:5050"
     }
   },
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://saturn:5000",
+      "applicationUrl": "http://GarfaildMac-mini.local:5050",
       "sslPort": 0
     }
   }
