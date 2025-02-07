@@ -418,6 +418,11 @@ namespace WebHome.Controllers
                     .Where(p => p.BranchID == viewModel.BranchID || !p.BranchID.HasValue)
                     .Where(p => p.Status == (int)Naming.LessonPriceStatus.自主訓練);
             }
+            else if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGX)
+            {
+                items = items
+                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.團體課程);
+            }
             else
             {
                 //if (viewModel.ContractType == CourseContractType.ContractTypeDefinition.CGA_Aux

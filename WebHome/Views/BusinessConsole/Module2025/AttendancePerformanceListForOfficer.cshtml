@@ -10,71 +10,48 @@
 @using WebHome.Controllers
 @using Microsoft.AspNetCore.Mvc.ModelBinding
 @using Newtonsoft.Json
-@using CommonLib.Utility
-@functions
-{
-    IQueryable<MonthlyIndicator> _model;
+@{
+
     ModelStateDictionary _modelState;
     ModelSource<UserProfile> models;
-    MonthlyIndicatorQueryViewModel _viewModel;
+    IGrouping<DateTime, MonthlyRevenueGoal>[] _model;
 
-    int BuildData(MonthlyIndicator i, Naming.SessionTypeDefinition sessionType)
-    {
 
-        switch (sessionType)
-        {
-            case Naming.SessionTypeDefinition.PT:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteLessonCount) ?? 0;
-            case Naming.SessionTypeDefinition.PI:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompletePICount) ?? 0;
-            case Naming.SessionTypeDefinition.ST:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.STCount) ?? 0;
-            case Naming.SessionTypeDefinition.TS:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.ActualCompleteTSCount) ?? 0;
-            case Naming.SessionTypeDefinition.AT:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.ATCount) ?? 0;
-            case Naming.SessionTypeDefinition.SR:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.SRCount) ?? 0;
-            case Naming.SessionTypeDefinition.SD:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.SDCount) ?? 0;
-            case Naming.SessionTypeDefinition.GX:
-                return i.MonthlyCoachRevenueIndicator.Sum(m => m.GroupXCount) ?? 0;
-        }
-        return 0;
-    }
-}
-@{
     _modelState = ViewContext.ModelState;
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
-    _model = (IQueryable<MonthlyIndicator>)this.Model;
-    _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
+    _model = (IGrouping<DateTime,MonthlyRevenueGoal>[])this.Model;
+
 }
 <table class="table table-striped table-custom nowrap dtAttendance" style="width:100%">
     <thead class="bg-darkteal">
         <tr>
             <th class="text-center">月份</th>
-            @foreach (var t in _viewModel.SessionType)
-            {
-                <th class="text-center">@(MonthlyCoachRevenueIndicatorQueryViewModel.__SessionName[(int)t])</th>
-            }
+            <th class="text-center">PT堂數</th>
+            <th class="text-center">PT上課金額</th>
+            <th class="text-center">SR堂數</th>
+            <th class="text-center">SR上課金額</th>
+            <th class="text-center">GX堂數</th>
+            <th class="text-center">GX上課金額</th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in _model)
+        @foreach (var g in _model)
         {
             <tr>
-                <td>@($"{item.StartDate:yyyyMM}")</td>
-                @foreach (var t in _viewModel.SessionType)
-                {
-                    <td class="text-right">@(BuildData(item,t))</td>
-                }
+                <td>@($"{g.Key:yyyyMM}")</td>
+                <td class="text-center">@((g.Sum(b => b.ActualCompleteLessonCount) ?? 0))</td>
+                <td class="text-right">@($"{g.Sum(b => (b.ActualLessonAchievement ?? 0)):##,###,###,##0}")</td>
+                <td class="text-center">@((g.Sum(b => b.SRCount) ?? 0))</td>
+                <td class="text-right">@($"{g.Sum(b => (b.SRAchievement ?? 0)):##,###,###,##0}")</td>
+                <td class="text-center">@((g.Sum(b => b.GroupXCount) ?? 0))</td>
+                <td class="text-right">@($"{g.Sum(b => (b.GroupXAchievement ?? 0)):##,###,###,##0}")</td>
             </tr>
         }
     </tbody>
 </table>
-
+    
 <script>
-    debugger;
+
     $(function () {
 
         if ($global.dtAttendance != undefined) {
@@ -112,10 +89,13 @@
             "columnDefs": [{
                 targets: [0],
                 className: "align-center"
-            }],
+
+            }
+            ],
         });
 
         $('.dtAttendance').resize();
+
     });
 
 </script>

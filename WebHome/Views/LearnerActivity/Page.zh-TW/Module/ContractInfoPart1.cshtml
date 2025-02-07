@@ -116,6 +116,9 @@
             case Naming.LessonPriceStatus.自主訓練:
                 <text>P.I Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
                 break;
+            case Naming.LessonPriceStatus.團體課程:
+                <text>G.X Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>
+                break;
 
             default:
                 <text>P.T Session<small class="font-13 font-400 d-block">@(priceItem.DurationInMinutes)Min</small></text>

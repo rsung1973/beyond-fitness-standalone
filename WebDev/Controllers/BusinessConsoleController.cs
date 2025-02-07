@@ -377,13 +377,27 @@ namespace WebHome.Controllers
                 };
                 models.GetTable<MonthlyCoachRevenueIndicator>().InsertOnSubmit(item);
 
-                models.GetTable<MonthlyCoachLearnerReview>()
-                    .InsertOnSubmit(new MonthlyCoachLearnerReview
-                    {
-                        PeriodID = indicator.PeriodID,
-                        CoachID = viewModel.CoachID.Value,
-                    });
+                //models.GetTable<MonthlyCoachLearnerReview>()
+                //    .InsertOnSubmit(new MonthlyCoachLearnerReview
+                //    {
+                //        PeriodID = indicator.PeriodID,
+                //        CoachID = viewModel.CoachID.Value,
+                //    });
             }
+
+            var reviewItem = models.GetTable<MonthlyCoachLearnerReview>()
+                .Where(c => c.PeriodID == viewModel.PeriodID)
+                .Where(c=>  c.CoachID == viewModel.CoachID).FirstOrDefault();
+
+            if (reviewItem == null) {
+                reviewItem = new MonthlyCoachLearnerReview
+                {
+                    PeriodID = indicator.PeriodID,
+                    CoachID = viewModel.CoachID.Value,
+                };
+                models.GetTable<MonthlyCoachLearnerReview>().InsertOnSubmit(reviewItem);
+            }
+
 
             item.AchievementGoal = viewModel.AchievementGoal;
             item.CompleteLessonsGoal = viewModel.CompleteLessonsGoal;

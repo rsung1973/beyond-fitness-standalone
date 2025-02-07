@@ -96,9 +96,16 @@ namespace WebHome.Helper.BusinessOperation
                 items = items.Where(t => !t.LessonPlan.CommitAttendance.HasValue);
             }
 
-            if(viewModel.LessonType.HasValue)
+            if (viewModel.LessonType.HasValue)
             {
-                items = items.ByLessonQueryType(viewModel.LessonType);
+                if (viewModel.LessonType == Naming.LessonQueryType.團體課程)
+                {
+                    items = items.Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程);
+                }
+                else
+                {
+                    items = items.ByLessonQueryType(viewModel.LessonType);
+                }
             }
 
             if (viewModel.CombinedStatus != null && viewModel.CombinedStatus.Length > 0)
@@ -1073,6 +1080,86 @@ namespace WebHome.Helper.BusinessOperation
             if (!hasConditon)
             {
                 if(profile==null)
+                {
+                    items = items.Where(l => false);
+                }
+                else if (profile.IsAssistant() || profile.IsAccounting() || profile.IsOfficer())
+                {
+
+                }
+                else if (profile.IsManager() || profile.IsViceManager())
+                {
+                    var coaches = profile.GetServingCoachInSameStore(models);
+                    items = items.Join(coaches, c => c.AttendingCoach, h => h.CoachID, (c, h) => c);
+                }
+                else if (profile.IsCoach())
+                {
+                    items = items.Where(c => c.AttendingCoach == profile.UID);
+                }
+            }
+
+            if (viewModel.AchievementDateFrom.HasValue)
+            {
+                items = items.Where(c => c.ClassTime >= viewModel.AchievementDateFrom);
+
+                if (!viewModel.AchievementDateTo.HasValue)
+                    viewModel.AchievementDateTo = viewModel.AchievementDateFrom;
+
+            }
+
+            if (viewModel.AchievementDateTo.HasValue)
+            {
+                items = items.Where(c => c.ClassTime < viewModel.AchievementDateTo.Value.AddMonths(1));
+            }
+
+            return items;
+        }
+
+        public static IQueryable<LessonTime> InquireLessonAchievement(this AchievementQueryViewModel viewModel, GenericManager<BFDataContext> models, UserProfile profile = null)
+        {
+
+            IQueryable<LessonTime> items = models.GetTable<LessonTime>()
+                                    .Where(v => v.RegisterLesson.LessonPriceType.Status != (int)Naming.LessonPriceStatus.教練PI);
+
+            if (viewModel.IgnoreAttendance == true)
+            {
+
+            }
+            else
+            {
+                items = items.Where(l => l.LessonAttendance != null);
+            }
+
+            bool hasConditon = false;
+            if (viewModel.BypassCondition == true)
+            {
+                hasConditon = true;
+            }
+
+            if (viewModel.CoachID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.AttendingCoach == viewModel.CoachID);
+            }
+
+            if (viewModel.ByCoachID != null && viewModel.ByCoachID.Length > 0)
+            {
+                items = items.Where(c => viewModel.ByCoachID.Contains(c.AttendingCoach));
+            }
+
+            //if (!hasConditon)
+            //{
+            if (viewModel.BranchID.HasValue)
+            {
+                hasConditon = true;
+                items = items.Where(c => c.BranchID == viewModel.BranchID);
+            }
+            //}
+
+
+            if (!hasConditon)
+            {
+                if (profile == null)
                 {
                     items = items.Where(l => false);
                 }

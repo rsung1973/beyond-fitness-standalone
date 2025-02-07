@@ -1182,75 +1182,114 @@ namespace WebHome.Helper
                     models.SubmitChanges();
                 }
 
+                //void calcManagerBonus(BranchStore branch, CoachBranchMonthlyBonus branchBonus)
+                //{
+                //    //var netAchievement = Math.Max(salary.PerformanceAchievement.Value - salary.VoidShare.Value, 0);
+
+                //    var attendanceCount = salary.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
+                //    int bonusIdx = 0;
+                //    for (; bonusIdx < ManagerAttendanceIndex.Length; bonusIdx++)
+                //    {
+                //        if (attendanceCount >= ManagerAttendanceIndex[bonusIdx])
+                //        {
+                //            break;
+                //        }
+                //    }
+
+                //    if (bonusIdx < ManagerAttendanceIndex.Length)
+                //    {
+                //        salary.AttendanceBonus = ManagerAttendanceBonus[bonusIdx];
+                //    }
+                //    else
+                //    {
+                //        salary.AttendanceBonus = 0;
+                //    }
+
+                //    salary.ManagerBonus = 0;
+                //    decimal achievementRatio = 0;
+
+                //    var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
+                //    if (indicator != null)
+                //    {
+                //        MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
+                //            .Where(r => r.MonthlyBranchRevenueGoal != null)
+                //            .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
+
+                //        if (item != null)
+                //        {
+                //            branchBonus.BranchTotalPTCount = 
+                //                (item.ActualCompleteLessonCount ?? 0) 
+                //                + (item.SRCount ?? 0)
+                //                + (item.SDCount ?? 0)
+                //                + (item.ATCount ?? 0);
+
+                //            var tuitionSubtotal = 
+                //            branchBonus.BranchTotalPTTuition =
+                //                (item.ActualLessonAchievement ?? 0)
+                //                + (item.SRAchievement ?? 0)
+                //                + (item.SDAchievement ?? 0)
+                //                + (item.ATAchievement ?? 0);
+
+                //            decimal indicatorAmt = (decimal)item.MonthlyBranchRevenueIndicator.RevenueGoal;
+                //            decimal basePercentage = item.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
+                //            int totalAchievementAmt = (tuitionSubtotal + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
+
+                //            achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
+                //            bonusIdx = 0;
+                //            for (; bonusIdx < ManagerManagementBonusIndex.Length; bonusIdx++)
+                //            {
+                //                if (achievementRatio >= ManagerManagementBonusIndex[bonusIdx])
+                //                {
+                //                    break;
+                //                }
+                //            }
+
+                //            if (bonusIdx < ManagerManagementBonusIndex.Length)
+                //            {
+                //                salary.ManagementBonusGrade = ManagerManagementBonusRatio[bonusIdx];
+                //                salary.ManagerBonus = (int)(tuitionSubtotal * ManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                //            }
+                //        }
+                //    }
+
+                //    var summaryItem = models.GetTable<BranchMonthlySummary>().Where(m => m.SettlementID == settlement.SettlementID && m.BranchID == branch.BranchID).FirstOrDefault();
+                //    if (summaryItem == null)
+                //    {
+                //        summaryItem = new BranchMonthlySummary
+                //        {
+                //            SettlementID = settlement.SettlementID,
+                //            BranchID = branch.BranchID
+                //        };
+                //        models.GetTable<BranchMonthlySummary>().InsertOnSubmit(summaryItem);
+                //    }
+
+                //    summaryItem.AchievementRatio = achievementRatio;
+
+                //    models.SubmitChanges();
+                //}
+
                 void calcManagerBonus(BranchStore branch, CoachBranchMonthlyBonus branchBonus)
                 {
-                    //var netAchievement = Math.Max(salary.PerformanceAchievement.Value - salary.VoidShare.Value, 0);
+                    salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    var attendanceCount = salary.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
-                    int bonusIdx = 0;
-                    for (; bonusIdx < ManagerAttendanceIndex.Length; bonusIdx++)
+                    if(salary.LevelID == (int)Naming.ProfessionLevelDefinition.RFM)
                     {
-                        if (attendanceCount >= ManagerAttendanceIndex[bonusIdx])
-                        {
-                            break;
-                        }
-                    }
-
-                    if (bonusIdx < ManagerAttendanceIndex.Length)
-                    {
-                        salary.AttendanceBonus = ManagerAttendanceBonus[bonusIdx];
+                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 80)
+                            * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                            * (salary.GradeIndex / 100M)
+                            + 0.5M) ?? 0;
                     }
                     else
                     {
-                        salary.AttendanceBonus = 0;
+                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 60)
+                            * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                            * (salary.GradeIndex / 100M)
+                            + 0.5M) ?? 0;
                     }
 
                     salary.ManagerBonus = 0;
+
                     decimal achievementRatio = 0;
-
-                    var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
-                    if (indicator != null)
-                    {
-                        MonthlyBranchRevenueGoal item = indicator.MonthlyBranchRevenueIndicator.Where(r => r.BranchID == branch.BranchID)
-                            .Where(r => r.MonthlyBranchRevenueGoal != null)
-                            .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
-
-                        if (item != null)
-                        {
-                            branchBonus.BranchTotalPTCount = 
-                                (item.ActualCompleteLessonCount ?? 0) 
-                                + (item.SRCount ?? 0)
-                                + (item.SDCount ?? 0)
-                                + (item.ATCount ?? 0);
-
-                            var tuitionSubtotal = 
-                            branchBonus.BranchTotalPTTuition =
-                                (item.ActualLessonAchievement ?? 0)
-                                + (item.SRAchievement ?? 0)
-                                + (item.SDAchievement ?? 0)
-                                + (item.ATAchievement ?? 0);
-
-                            decimal indicatorAmt = (decimal)item.MonthlyBranchRevenueIndicator.RevenueGoal;
-                            decimal basePercentage = item.MonthlyBranchRevenueIndicator.MonthlyRevenueGrade.IndicatorPercentage;
-                            int totalAchievementAmt = (tuitionSubtotal + item.ActualSharedAchievement - (item.VoidShare ?? 0)) ?? 0;
-
-                            achievementRatio = Math.Round(totalAchievementAmt * basePercentage / indicatorAmt);
-                            bonusIdx = 0;
-                            for (; bonusIdx < ManagerManagementBonusIndex.Length; bonusIdx++)
-                            {
-                                if (achievementRatio >= ManagerManagementBonusIndex[bonusIdx])
-                                {
-                                    break;
-                                }
-                            }
-
-                            if (bonusIdx < ManagerManagementBonusIndex.Length)
-                            {
-                                salary.ManagementBonusGrade = ManagerManagementBonusRatio[bonusIdx];
-                                salary.ManagerBonus = (int)(tuitionSubtotal * ManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
-                            }
-                        }
-                    }
 
                     var summaryItem = models.GetTable<BranchMonthlySummary>().Where(m => m.SettlementID == settlement.SettlementID && m.BranchID == branch.BranchID).FirstOrDefault();
                     if (summaryItem == null)
@@ -1267,6 +1306,7 @@ namespace WebHome.Helper
 
                     models.SubmitChanges();
                 }
+
 
                 void calcViceManagerBonus(BranchStore branch,CoachBranchMonthlyBonus branchBonus)
                 {
@@ -1361,31 +1401,46 @@ namespace WebHome.Helper
                     }
                 }
 
+                //void calcFESBonus()
+                //{
+                //    var netAchievement = Math.Max(salary.PerformanceAchievement.Value - salary.VoidShare.Value, 0);
+
+                //    var attendanceCount = salary.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
+                //    int bonusIdx = 0;
+                //    for (; bonusIdx < EducatorAttendanceIndex.Length; bonusIdx++)
+                //    {
+                //        if (attendanceCount >= EducatorAttendanceIndex[bonusIdx])
+                //        {
+                //            break;
+                //        }
+                //    }
+
+                //    if (bonusIdx < EducatorAttendanceIndex.Length)
+                //    {
+                //        salary.AttendanceBonus = EducatorAttendanceBonus[bonusIdx];
+                //    }
+                //    else
+                //    {
+                //        salary.AttendanceBonus = 0;
+                //    }
+
+                //    models.SubmitChanges();
+                //}
+
                 void calcFESBonus()
                 {
-                    var netAchievement = Math.Max(salary.PerformanceAchievement.Value - salary.VoidShare.Value, 0);
+                    salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    var attendanceCount = salary.CoachBranchMonthlyBonus.Sum(b => b.AchievementAttendanceCount);
-                    int bonusIdx = 0;
-                    for (; bonusIdx < EducatorAttendanceIndex.Length; bonusIdx++)
-                    {
-                        if (attendanceCount >= EducatorAttendanceIndex[bonusIdx])
-                        {
-                            break;
-                        }
-                    }
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 70)
+                        * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                        * (salary.GradeIndex / 100M)
+                        + 0.5M) ?? 0;
 
-                    if (bonusIdx < EducatorAttendanceIndex.Length)
-                    {
-                        salary.AttendanceBonus = EducatorAttendanceBonus[bonusIdx];
-                    }
-                    else
-                    {
-                        salary.AttendanceBonus = 0;
-                    }
+                    salary.ManagerBonus = 0;
 
                     models.SubmitChanges();
                 }
+
 
                 void calcHealthCareBonus()
                 {

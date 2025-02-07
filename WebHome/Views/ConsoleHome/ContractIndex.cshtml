@@ -72,14 +72,15 @@
             await ShowMyContractAsync(_model);
         }
 
-        if (_model.IsViceManager() || _model.IsManager())
-        {
-            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
-        }
-        else if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
+        if (_model.IsOfficer() || _model.IsAssistant() || _model.IsAuthorizedSysAdmin() || _model.IsServitor())
         {
             await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByOfficer.cshtml", _model);
         }
+        else if(_model.IsViceManager() || _model.IsManager())
+        {
+            await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractByBranch.cshtml", _model);
+        }
+
 
         await Html.RenderPartialAsync("~/Views/ContractConsole/Module/ContractDetails.cshtml", _model);
     }

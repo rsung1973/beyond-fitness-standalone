@@ -139,6 +139,11 @@ namespace WebHome.Controllers
 
             LessonTime item = models.GetTable<LessonTime>().Where(t => t.LessonID == viewModel.LessonID).FirstOrDefault();
 
+            if (item == null)
+            {
+                return Json(new { result = false, message = "未登記此上課時間!!" });
+            }
+
             var items = models.GetTable<TrainingPlan>().Where(p => p.LessonID == viewModel.LessonID)
                             .Where(p => p.TrainingExecution.Emphasis == null)
                             .Select(p => p.RegisterLesson);
@@ -154,7 +159,7 @@ namespace WebHome.Controllers
             }
             else
             {
-                return Json(new { result = true });
+                return Json(new { result = true, isGroup = item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程 });
             }
         }
 

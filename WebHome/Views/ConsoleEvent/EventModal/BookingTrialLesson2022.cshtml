@@ -64,7 +64,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">P.T Session(60分鐘) - 檢測</a>
-                        <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
+                        <small class="float-right text-muted"><time>NT @(price.ListPrice) @(trialBookable ? 1 : 0)/1</time></small>
                         <div class="msg">
                             <span class="float-right">
                                 <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
@@ -87,7 +87,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">P.T Session(60分鐘) - BR</a>
-                        <small class="float-right text-muted"><time>@(trialBookable ? 1 : 0)/1</time></small>
+                        <small class="float-right text-muted"><time>NT @(priceBR.ListPrice) @(trialBookable ? 1 : 0)/1</time></small>
                         <div class="msg">
                             <span class="float-right">
                                 <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
@@ -146,7 +146,7 @@
                         <a class="m-r-10">
                             @($"{description}({price.DurationInMinutes}分鐘)")
                         </a>
-                        <small class="float-right text-muted"><time>NT @(price.ListPrice)</time></small>
+                        <small class="float-right text-muted"><time>NT @(price.ListPrice) @(bookable ? 1 : 0)/1</time></small>
                         <div class="msg">
                             <span class="float-right">
                                 @if (price.IsDistanceLesson)
