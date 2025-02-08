@@ -54,24 +54,24 @@
                     "Content": "Near Breeze Center"
                 }
             ],   
-            "Coaches": [
+            "Coaches": [      
                 {
-                    "MemberCode": "CZ24609828",
-                    "Name": "黃伊婷",
-                    "NameDesc": "Doreen",
+                    "MemberCode": "IK16227216",
+                    "Name": "戴悟修",
+                    "NameDesc": "Bryant",
                     "JobTitle": "Manager",
                     "CoverInfo":[
                         {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(242.31 184.4)",
-                            "JobPosition": "translate(242.31 154.46)",
-                            "ImgXShifting": -100,
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(260.31 183.4)",
+                            "JobPosition": "translate(260.31 153.46)",
+                            "ImgXShifting": -75,
                             "ImgYShifting": -40,
                         }                        
                     ],
-                    "Slogan": "You just have to change your desires, some changes won't be the same.",
-                    "SloganDesc": "你不改變並不會怎麼樣。但你改變了，肯定會變得不一樣！",
-                    "Desc": "透過關心身邊的人，隨時留意他們的需求與想法並且樂於用同理心進行溝通，建立真正心與心的連結，讓彼此感受到真誠的支持和理解。",
+                    "Slogan": "Don’t let the past steal your present.",
+                    "SloganDesc": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
+                    "Desc": "熱衷於訓練的轉變，同時也熱愛將這份熱情分享給他人，希望能夠共同追求更美好的生活。",
                     "License":[
                         {
                             "Name": "ACE",
@@ -80,31 +80,34 @@
                             "Name": "TRX",
                         },
                         {
-                            "Name": "KBC",
+                            "Name": "EXOS",
                         }, 
                         {
-                            "Name": "Z-TSCA",
+                            "Name": "CrossFit",
                         },
                         {
                             "Name": "PTAG",
                         },
                         {
-                            "Name": "CPRAED",
-                        }                        
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "CPRAED"
+                        }                                
                     ],
                     "Sports":[
                         {
-                            "Name":"kettlebell",
+                            "Name":"swimming",
                         },
                         {
-                            "Name":"dance",
+                            "Name":"basketball",
                         },
                         {
-                            "Name":"tabletennis",
+                            "Name":"handball",
                         }
                     ],
-                    "Experience": "<h4>2022</h4><ul><li>BEYOND新人培訓 教官</li><li>偏鄉兒童足球活動指導</li></ul>"                    
-                },                                
+                    "Experience": "<h4>2022~2023</h4><ul><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2014</h4><ul><li>巧固球-亞洲盃中華隊</li></ul>"                    
+                },                                            
                 {
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
@@ -288,7 +291,7 @@
                     "MemberCode": "NU84688353",
                     "Name": "許若宸",
                     "NameDesc": "Zoe",
-                    "JobTitle": "Vice Manager",
+                    "JobTitle": "Manager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -327,7 +330,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2022 Beyond Fitness Influencer Award 亞軍🥈</li><li>百岳攀登＃雪山東峰＃雪山主峰</li></ul>"            
-                },            
+                },
                 {
                     "MemberCode": "DK80697151",
                     "Name": "蔣文寶",
@@ -368,89 +371,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2023 Beyond Fitness Thoughtfulness Award冠軍🥇 </li><li>2022 Beyond Fitness Thoughtfulness Award冠軍🥇</li><li>2008年全國運動會橄欖球項目金牌</li></ul>"                    
-                },
-                // {
-                //     "MemberCode": "PA57705810",
-                //     "Name": "謝宇傑",
-                //     "NameDesc": "Jay",
-                //     "JobTitle": "Coach",
-                //     "CoverInfo":[
-                //         {
-                //             "Shape": "avatar-half.svg",
-                //             "NamePosition": "translate(75.57 184.4)",
-                //             "JobPosition": "translate(63.57 154.46)",
-                //             "ImgXShifting": -40,
-                //             "ImgYShifting": -40,
-                //         }                        
-                //     ],
-                //     "Slogan": "Something you do today that you can do everything in other day.",
-                //     "SloganDesc": "今天你做了別人不想做的事，以後你可以做到別人做不到的事。",
-                //     "Desc": "擅長細緻入微的觀察，一旦融入事情之中，會投入超越百分之百的熱情。",
-                //     "License":[
-                //         {
-                //             "Name": "NASM",
-                //         },
-                //         {
-                //             "Name": "Z-TSCA",
-                //         },             
-                //         {
-                //             "Name": "EFA",
-                //         },
-                //         {
-                //             "Name": "CPRAED",
-                //         }  
-                //     ],
-                //     "Sports":[
-                //         {
-                //             "Name":"rowing",
-                //         },
-                //         {
-                //             "Name":"diving",
-                //         }
-                //     ],
-                //     "Experience": "<ul><li>全國運動會100-110年西式划船八人單槳前三名</li></ul>"                    
-                // },
-                {
-                    "MemberCode": "TB72554526",
-                    "Name": "張書瑋",
-                    "NameDesc": "Jeff",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(75.57 184.4)",
-                            "JobPosition": "translate(63.57 154.46)",
-                            "ImgXShifting": -45,
-                            "ImgYShifting": -50,
-                        }                        
-                    ],
-                    "Slogan": "When you want to give up, remember why you started.",
-                    "SloganDesc": "在你想要放棄的那一刻時，想想為什麼當初堅持走到了這裡。",
-                    "Desc": "性格內斂充滿深度， 透過生活儀式來表達對日常生活的重視，看似嚴肅的面孔下實則擁有一個幽默的靈魂。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        }, 
-                        {
-                            "Name": "NASM",
-                        }, 
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                 
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"diving",
-                        }
-                    ],
-                    "Experience": "<ul><li>大直高中演講講師（主題：青少年健康體適能）</li><li>仁愛國中演講講師（主題：運動產業發展與生涯）</li><li>華南銀行企業合作講師（主題：我該有氧還是重訓?）</li></ul>"                    
-                }            
+                }                       
             ]         
         },
         {
@@ -1757,50 +1678,12 @@
                     "Content": "Jinou Girls High School"
                 }
             ],
-            "Coaches": [
-                {
-                    "MemberCode": "FF68236586",
-                    "Name": "顏廷宇",
-                    "NameDesc": "Eugene",
-                    "JobTitle": "Manager",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(62.76 184.4)",
-                            "JobPosition": "translate(62.76 154.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -50,
-                        }                        
-                    ],
-                    "Slogan": "Rest at the end, Not in the middle.",
-                    "SloganDesc": "到終點再休息，不要半途而廢。",
-                    "Desc": "擅長於觀察、邏輯分析和推理能力能夠深入理解事物。在處理挑戰時，既大膽又細心，這讓我能夠全面而深入地處理各種情境。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                         
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"softball",
-                        }
-                    ],
-                    "Experience": "<ul><li>2023 全國大專校友盃壘球賽 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍🥇</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2008 總統盃壘球大專校隊組 第四名</li></ul>"                    
-                },
+            "Coaches": [                
                 {
                     "MemberCode": "HY495202",
                     "Name": "李玟融",
                     "NameDesc": "Michael",
-                    "JobTitle": "Vice Manager",
+                    "JobTitle": "Manager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -1836,60 +1719,7 @@
                         }
                     ],
                     "Experience": "<ul><li>2023 TMMA 男子拳擊館內賽</li><li>2015 新竹社會服務中心 年長者日間照顧實習生</li><li>2014 寧園安養院照顧服務臨床實習</li></ul>"                    
-                },
-                {
-                    "MemberCode": "IK16227216",
-                    "Name": "戴悟修",
-                    "NameDesc": "Bryant",
-                    "JobTitle": "Headcoach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(260.31 183.4)",
-                            "JobPosition": "translate(260.31 153.46)",
-                            "ImgXShifting": -75,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Don’t let the past steal your present.",
-                    "SloganDesc": "舒適圈就是失敗圈，成功者永遠走在恐懼的邊緣。",
-                    "Desc": "熱衷於訓練的轉變，同時也熱愛將這份熱情分享給他人，希望能夠共同追求更美好的生活。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "EXOS",
-                        }, 
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        },
-                        {
-                            "Name": "CPRAED"
-                        }                                
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"swimming",
-                        },
-                        {
-                            "Name":"basketball",
-                        },
-                        {
-                            "Name":"handball",
-                        }
-                    ],
-                    "Experience": "<h4>2022~2023</h4><ul><li>Beyond 新人培訓 教官</li><li>Beyond 月內訓 講師</li></ul><h4>2014</h4><ul><li>巧固球-亞洲盃中華隊</li></ul>"                    
-                },               
+                },                            
                 {
                     "MemberCode": "RX14099392",
                     "Name": "洪翎容",
@@ -2416,10 +2246,48 @@
             ],
             "Coaches": [
                 {
+                    "MemberCode": "FF68236586",
+                    "Name": "顏廷宇",
+                    "NameDesc": "Eugene",
+                    "JobTitle": "Manager",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-left.svg",
+                            "NamePosition": "translate(62.76 184.4)",
+                            "JobPosition": "translate(62.76 154.46)",
+                            "ImgXShifting": -60,
+                            "ImgYShifting": -50,
+                        }                        
+                    ],
+                    "Slogan": "Rest at the end, Not in the middle.",
+                    "SloganDesc": "到終點再休息，不要半途而廢。",
+                    "Desc": "擅長於觀察、邏輯分析和推理能力能夠深入理解事物。在處理挑戰時，既大膽又細心，這讓我能夠全面而深入地處理各種情境。",
+                    "License":[
+                        {
+                            "Name": "ACE",
+                        },
+                        {
+                            "Name": "Z-TSCA",
+                        },
+                        {
+                            "Name": "CrossFit",
+                        },
+                        {
+                            "Name": "CPRAED",
+                        }                         
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"softball",
+                        }
+                    ],
+                    "Experience": "<ul><li>2023 全國大專校友盃壘球賽 第五名</li><li>2022 全國大專校友盃壘球賽 冠軍🥇</li><li>2011 全國大專盃壘球一般組 第五名</li><li>2008 總統盃壘球大專校隊組 第四名</li></ul>"                    
+                },
+                {
                     "MemberCode": "IN34377928",
                     "Name": "黃伊涵",
                     "NameDesc": "Sabrina",
-                    "JobTitle": "Manager",
+                    "JobTitle": "Coach",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-right.svg",
