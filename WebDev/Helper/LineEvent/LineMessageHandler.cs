@@ -319,7 +319,7 @@ namespace WebHome.Helper.LineEvent
             }
             else
             {
-                replyMessage = new TextMessage(__SLOGAN);
+                //replyMessage = new TextMessage(__SLOGAN);
             }
 
             if (replyMessage != null)

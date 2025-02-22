@@ -2125,8 +2125,8 @@ namespace WebHome.Helper
                 .Where(c => c.CourseContract.Status == (int)Naming.CourseContractStatus.待確認);
             if (agent.IsManager())
             {
-                items = items.Join(models.FilterByBranchStoreManager(models.GetTable<CourseContract>(), agent),
-                    r => r.RevisionID, c => c.ContractID, (r, c) => r);
+                //items = items.Join(models.FilterByBranchStoreManager(models.GetTable<CourseContract>(), agent),
+                //    r => r.RevisionID, c => c.ContractID, (r, c) => r);
             }
             else if (agent.IsViceManager())
             {
@@ -2251,7 +2251,7 @@ namespace WebHome.Helper
             var items = models.PromptContractToConfirm();
             if (agent.IsManager())
             {
-                items = models.FilterByBranchStoreManager(items, agent);
+                //items = models.FilterByBranchStoreManager(items, agent);
             }
             else if (agent.IsViceManager())
             {

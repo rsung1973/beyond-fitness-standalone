@@ -1026,6 +1026,10 @@ namespace WebHome.Controllers
             {
                 questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.自主訓練);
             }
+            else if (lessonItem.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+            {
+                questItems = models.GetTable<FeedbackSurveyType>().Where(s => s.ClassType == (int)Naming.LessonPriceStatus.團體課程);
+            }
 
             List<LessonFeedbackSurvey> surveyItems = new List<LessonFeedbackSurvey>();
             if (questItems.Any())

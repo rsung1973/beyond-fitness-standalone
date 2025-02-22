@@ -672,7 +672,7 @@ namespace WebHome.Helper
                     continue;
 
                 var branchItems = coachItems.Where(c => c.BranchID == branchIndicator.BranchID);
-                revenueGoal.CustomRevenueGoal = branchItems.Sum(b => b.LessonTuitionGoal + b.AchievementGoal);
+                revenueGoal.CustomRevenueGoal = branchItems.Sum(b => b.LessonTuitionGoal /*+ b.AchievementGoal*/);
 
                 var baseIndicator = branchIndicator.MonthlyBranchRevenueIndicator.OrderBy(m => m.GradeID).First();
                 revenueGoal.CustomIndicatorPercentage = Math.Round(((decimal?)revenueGoal.CustomRevenueGoal * (decimal?)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal?)baseIndicator.RevenueGoal) ?? 0m, 2);

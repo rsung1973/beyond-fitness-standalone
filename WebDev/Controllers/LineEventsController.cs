@@ -69,16 +69,16 @@ namespace WebHome.Controllers
                         switch (lineEvent.Type)
                         {
                             case EventType.Beacon:
-                                await handler.HandleBeaconEvent();
+                                //await handler.HandleBeaconEvent();
                                 break;
                             case EventType.Follow:
-                                await handler.HandleFollowEvent();
+                                //await handler.HandleFollowEvent();
                                 break;
                             case EventType.Join:
-                                await handler.HandleJoinEvent();
+                                //await handler.HandleJoinEvent();
                                 break;
                             case EventType.Leave:
-                                await handler.HandleLeaveEvent();
+                                //await handler.HandleLeaveEvent();
                                 break;
                             case EventType.Message:
                                 Message message = JsonConvert.DeserializeObject<Message>(lineEvent.Message.ToString());
@@ -90,10 +90,10 @@ namespace WebHome.Controllers
                                     case MessageType.Audio:
                                     case MessageType.Image:
                                     case MessageType.Video:
-                                        await handler.HandleMediaMessage();
+                                        //await handler.HandleMediaMessage();
                                         break;
                                     case MessageType.Sticker:
-                                        await handler.HandleStickerMessage();
+                                        //await handler.HandleStickerMessage();
                                         break;
                                     case MessageType.Location:
                                         await handler.HandleLocationMessage();
@@ -104,7 +104,7 @@ namespace WebHome.Controllers
                                 await handler.HandlePostbackEvent();
                                 break;
                             case EventType.Unfollow:
-                                await handler.HandleUnfollowEvent();
+                                //await handler.HandleUnfollowEvent();
                                 break;
                         }
                     }

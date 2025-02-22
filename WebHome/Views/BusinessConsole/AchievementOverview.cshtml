@@ -18,7 +18,7 @@
 
     Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
 
-    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"];;
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (MonthlyIndicatorQueryViewModel)ViewBag.ViewModel;
@@ -86,7 +86,14 @@
                             </ul>
                         </div>
                         @{
-                            await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2025/MonthlyIndicator.cshtml", _item);
+                            if (_item.PeriodID < 1090)
+                            {
+                                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2021/MonthlyIndicator.cshtml", _item);
+                            }
+                            else
+                            {
+                                await Html.RenderPartialAsync("~/Views/BusinessConsole/Module2025/MonthlyIndicator.cshtml", _item);
+                            }
                         }
                     </div>
                 </div>
