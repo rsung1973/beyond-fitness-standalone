@@ -212,7 +212,7 @@ namespace WebHome.Controllers
                 viewModel.ContractID = viewModel.DecryptKeyValue();
             }
             viewModel.Version = Naming.ContractVersion.Ver2022;
-            var profile = await HttpContext.GetUserAsync();
+            var profile = (await HttpContext.GetUserAsync()).LoadInstance(models);
             var item = models.GetTable<CourseContract>().Where(c => c.ContractID == viewModel.ContractID).FirstOrDefault();
             if (item != null)
             {
@@ -275,6 +275,7 @@ namespace WebHome.Controllers
                 if(profile.IsCoach())
                 {
                     viewModel.FitnessConsultant = profile.UID;
+                    viewModel.BranchID = profile.ServingCoach.WorkBranchID();
                 }
                 viewModel.ContractType = null;
             }

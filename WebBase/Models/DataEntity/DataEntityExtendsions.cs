@@ -447,6 +447,8 @@ namespace WebHome.Models.DataEntity
                         return "S.R";
                     case (int)Naming.LessonPriceStatus.運動防護課程:
                         return "A.T";
+                    case (int)Naming.LessonPriceStatus.團體課程:
+                        return "Group X";
                     default:
                         return item.RegisterLesson.LessonPriceType.Description;
                 }
@@ -886,6 +888,7 @@ namespace WebHome.Models.DataEntity
             CVC,
             CRF,
             CIA,
+            CGX,
         }
 
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
@@ -1029,7 +1032,7 @@ namespace WebHome.Models.DataEntity
     {
         public LessonPriceType CurrentPrice
         {
-            get => this.CourseContractOrder?.Count == 1 ? CourseContractOrder[0].LessonPriceType : this.LessonPriceType;
+            get => this.CourseContractOrder?.Any() == true ? CourseContractOrder.OrderBy(o => o.SeqNo).First().LessonPriceType : this.LessonPriceType;
         }
     }
 

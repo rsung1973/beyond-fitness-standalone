@@ -38,6 +38,7 @@
     List<LessonTime> PIItems = new List<LessonTime>();
     List<LessonTime> SRItems = new List<LessonTime>();
     List<LessonTime> STItems = new List<LessonTime>();
+    List<LessonTime> GXItems = new List<LessonTime>();
 
     foreach (var item in items.OrderBy(l => l.ClassTime))
     {
@@ -54,6 +55,10 @@
         }
         else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.營養課程)
         {
+        }
+        else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+        {
+            GXItems.Add(item);
         }
         else if (item.IsPTSession())
         {
@@ -75,7 +80,8 @@
 
     var dailyItems = PTItems.GroupBy(l => l.ClassTime.Value.Date)
                         .Concat(PIItems.GroupBy(l => l.ClassTime.Value.Date))
-                        .Concat(SRItems.GroupBy(l => l.ClassTime.Value.Date));
+                        .Concat(SRItems.GroupBy(l => l.ClassTime.Value.Date))
+                        .Concat(GXItems.GroupBy(l => l.ClassTime.Value.Date));
 }
 
 @section MainContent
@@ -197,15 +203,15 @@
                         @foreach (var item in PTItems)
                         {
                             <div class="clearfix"></div>
-                            <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">                                
+                            <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
                                 <div class="align-self-start ms-3 me-auto">
-                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>                                                                                                            
-                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>                                                                                                     
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
+                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
                                 </div>
                                 <div class="align-self-center me-1">
-                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>  
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>
                                 </div>
-                                <div class="align-self-center">                                    
+                                <div class="align-self-center">
                                     <i class="fa fa-angle-right color-white opacity-20"></i>
                                 </div>
                             </a>
@@ -241,9 +247,9 @@
                                     <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
                                 </div>
                                 <div class="align-self-center me-1">
-                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>  
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>
                                 </div>
-                                <div class="align-self-center">                                    
+                                <div class="align-self-center">
                                     <i class="fa fa-angle-right color-white opacity-20"></i>
                                 </div>
                             </a>
@@ -252,39 +258,82 @@
                 </div>
             }
 
-            @if (STItems.Any()) {
+            @if (STItems.Any())
+            {
                 <!--S.T-->
-                    <div class="card card-style bg-beyond-dark">
-                        <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
-                            <div class="d-flex align-self-center">
-                                <span class="icon icon-xl bg-beyond-dark rounded-s color-white"><img src="../images/icons/session/function.svg"
-                                        width="40" class="me-3"></span>
-                                <div>
-                                    <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">居家自主訓練·<small
-                                            class="ps-2 font-14 font-400 text-capitalize opacity-60">S.T Session</small></h4>
-                                    <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
-                                        <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
-                                    </svg>
-                                </div>
-                    
+                <div class="card card-style bg-beyond-dark">
+                    <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+                        <div class="d-flex align-self-center">
+                            <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                                <img src="../images/icons/session/function.svg"
+                                     width="40" class="me-3">
+                            </span>
+                            <div>
+                                <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                    居家自主訓練·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">S.T Session</small>
+                                </h4>
+                                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-1 mb-0">
+                                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                </svg>
                             </div>
-                             @foreach (var item in STItems)
-                            {
-                                <div class="clearfix"></div>
-                                <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
-                                    <div class="align-self-start ms-3 me-auto">
-                                        <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
-                                        <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
-                                    </div>
-                                    <div class="align-self-center me-1">
-                                    </div>
-                                    <div class="align-self-center">                                    
-                                        <i class="fa fa-angle-right color-white opacity-20"></i>
-                                    </div>
-                                </a>
-                            }                    
+
                         </div>
-                    </div>                
+                        @foreach (var item in STItems)
+                        {
+                            <div class="clearfix"></div>
+                            <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
+                                <div class="align-self-start ms-3 me-auto">
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
+                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
+                                </div>
+                                <div class="align-self-center me-1">
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fa fa-angle-right color-white opacity-20"></i>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+
+            @if (GXItems.Any())
+            {
+                <!--P.I-->
+                <div class="card card-style bg-beyond-dark">
+                    <div class="content mx-4 mx-lg-5 mx-md-4 mt-5">
+                        <div class="d-flex align-self-center">
+                            <span class="icon icon-xl bg-beyond-dark rounded-s color-white">
+                                <img src="../images/icons/session/core.svg"
+                                     width="40" class="me-3">
+                            </span>
+                            <div>
+                                <h4 class="mb-2 text-uppercase letter-spacing-2 font-20  color-white">
+                                    團課·<small class="ps-2 font-14 font-400 text-capitalize opacity-60">Group X Session</small>
+                                </h4>
+                                <svg width="100%" height="10" xmlns="http://www.w3.org/2000/svg" class="mt-2 mb-0">
+                                    <rect x="0" y="0" width="50" height="3" rx="3" ry="3" fill="#E76751" />
+                                </svg>
+                            </div>
+                        </div>
+                        @foreach (var item in GXItems)
+                        {
+                            <div class="clearfix"></div>
+                            <a id="@($"lesson{item.LessonID}")" href="javascript:gotoCourse('@Html.Raw(item.LessonID.EncryptKey())');" class="d-flex my-5">
+                                <div class="align-self-start ms-3 me-auto">
+                                    <h5 class="letter-spacing-2 color-white">@Html.Raw(item.TrainingPlan.FirstOrDefault()?.TrainingExecution.Emphasis ?? "重點稍後揭曉，一起加油達標")</h5>
+                                    <span class="font-14 color-white opacity-40 letter-spacing-1">@($"{item.ClassTime:yyyy/MM/dd HH:mm}")</span>
+                                </div>
+                                <div class="align-self-center me-1">
+                                    <span class="font-400 font-13 color-beyondwhite-dark float-end"><i class="fa-solid fa-location-dot px-2 pb-1 d-block d-lg-inline d-md-block"></i>@Html.Raw(item.BranchStore?.BranchName ?? item.Place)</span>
+                                </div>
+                                <div class="align-self-center">
+                                    <i class="fa fa-angle-right color-white opacity-20"></i>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                </div>
             }
         </div>
         @if (SRItems.Any())

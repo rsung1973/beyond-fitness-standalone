@@ -51,6 +51,10 @@
                 return i.MonthlyCoachRevenueIndicator
                     .Where(m => m.BranchID == _viewModel.BranchID)
                     .Sum(m => m.SDCount) ?? 0;
+            case Naming.SessionTypeDefinition.GX:
+                return i.MonthlyCoachRevenueIndicator
+                    .Where(m => m.BranchID == _viewModel.BranchID)
+                    .Sum(m => m.GroupXCount) ?? 0;
         }
         return 0;
     }

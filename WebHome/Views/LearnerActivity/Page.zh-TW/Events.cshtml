@@ -71,6 +71,10 @@
                         {
                             <span class="font-15 color-theme opacity-60 letter-spacing-1">自主體能訓練<small class="font-400 color-theme">P.I</small></span>
                         }
+                        else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+                        {
+                            <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">Group X</small></span>
+                        }
                         else
                         {
                             <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">P.T</small></span>
@@ -105,6 +109,10 @@
                     else if (item.IsPISession())
                     {
                         <span class="font-15 color-theme opacity-60 letter-spacing-1">自主體能訓練<small class="font-400 color-theme">P.I</small></span>
+                    }
+                    else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+                    {
+                        <span class="font-15 color-theme opacity-60 letter-spacing-1">體能訓練<small class="font-400 color-theme">Group X</small></span>
                     }
                 </div>
 

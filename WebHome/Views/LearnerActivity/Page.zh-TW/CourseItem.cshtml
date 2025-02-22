@@ -42,6 +42,10 @@
         {
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CourseSD.cshtml", item);
         }
+        else if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+        {
+            await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CoursePT.cshtml", item);
+        }
         else if (item.IsPTSession())
         {
             await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/CoursePT.cshtml", item);

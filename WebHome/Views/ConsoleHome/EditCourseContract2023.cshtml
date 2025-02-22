@@ -18,6 +18,7 @@
         營養顧問課程 = (int)CourseContractType.ContractTypeDefinition.CNA,
         遠距顧問課程 = (int)CourseContractType.ContractTypeDefinition.CVA,
         自主體能訓練課程 = (int)CourseContractType.ContractTypeDefinition.CIA,
+        團體課程 = (int)CourseContractType.ContractTypeDefinition.CGX,
     }
 
     public static ContractTypeCategory? GetTypeCategory(CourseContractType.ContractTypeDefinition? contractType)
@@ -44,6 +45,8 @@
                 return ContractTypeCategory.遠距顧問課程;
             case CourseContractType.ContractTypeDefinition.CIA:
                 return ContractTypeCategory.自主體能訓練課程;
+            case CourseContractType.ContractTypeDefinition.CGX:
+                return ContractTypeCategory.團體課程;
         }
 
         return null;
@@ -104,6 +107,7 @@
                             @*<option class="CNA" value="@((int)ContractTypeCategory.營養顧問課程)" data-virtual="True">營養顧問課程</option>*@
                             <option class="CVA" value="@((int)ContractTypeCategory.遠距顧問課程)" data-virtual="True">遠距顧問課程</option>
                             <option class="CIA" value="@((int)ContractTypeCategory.自主體能訓練課程)">自主體能訓練課程</option>
+                            <option class="CGX" value="@((int)ContractTypeCategory.團體課程)">團體課程</option>
                         </select>
                         <script>
                             $(function () {
@@ -135,6 +139,7 @@
                             <option class="CVA" value="@((int)CourseContractType.ContractTypeDefinition.CVB)">1對2</option>
                             @*<option class="CNA" value="@((int)CourseContractType.ContractTypeDefinition.CNA)">1對1</option>*@
                             <option class="CIA" value="@((int)CourseContractType.ContractTypeDefinition.CIA)">單人</option>
+                            <option class="CGX" value="@((int)CourseContractType.ContractTypeDefinition.CGX)">多人</option>
                         </select>
                         <script>
                             $(function () {
@@ -256,11 +261,13 @@
                                 if (forVirtual == 'True') {
                                     $('select[name="BranchID"] option').slice(1).prop('disabled', true);
                                     $store.prop('disabled', false);
+                                    $store.prop('selected', true);
                                 } else {
                                     $('select[name="BranchID"] option').prop('disabled', false);
                                     $store.prop('disabled', true);
+                                    $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');
                                 }
-                                $('select[name="BranchID"] option:enabled').slice(1).prop('selected', true);
+                                //$('select[name="BranchID"] option:enabled').slice(1).prop('selected', true);
                                 $('select[name="BranchID"]').selectpicker('refresh');
                             }
 

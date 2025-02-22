@@ -30,6 +30,14 @@
     {
         //_pageModel.HasChoice = true;
         bool bookable = !_profile.IsHealthCare();
+        var trialLesson = models.GetTable<RegisterLesson>()
+            .Where(r => r.UID == _model.UID)
+            .Where(r => r.ClassLevel == price.PriceID || r.ClassLevel == price.PriceID);
+        //.Where(r => r.LessonPriceType.Status == (int)Naming.LessonPriceStatus.體驗課程)
+        //.Where(r => !r.BranchStore.Status.HasValue || (r.BranchStore.Status & (int)BranchStore.StatusDefinition.VirtualClassroom) == 0);
+        var trialLessonItem = trialLesson.FirstOrDefault();
+        var trialBookable = trialLessonItem == null;
+
         <li class="list-group-item">
             <div class="media">
                 <div class="pull-left">
@@ -43,7 +51,7 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">P.T Session(60分鐘)</a>
-                        <small class="float-right text-muted"><time>TWD @(price.ListPrice)</time></small>
+                        <small class="float-right text-muted"><time>TWD @(price.ListPrice) @(trialBookable ? 1 : 0)/1</time></small>
                         <div class="msg">
                             <span class="float-right">
                                 <span class="badge bg-green"><i class="zmdi zmdi-pin"></i> 遠距</span>

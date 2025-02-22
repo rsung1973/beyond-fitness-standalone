@@ -2317,7 +2317,9 @@
       <Column Name="AdjustActualBRCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AdjustDealedCountWithBR" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="AdjustTrialDealedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
+		<Column Name="GroupXCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="GroupXAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Association Name="BranchStore_MonthlyCoachRevenueIndicator" Member="BranchStore" ThisKey="BranchID" OtherKey="BranchID" Type="BranchStore" IsForeignKey="true" />
       <Association Name="MonthlyIndicator_MonthlyCoachRevenueIndicator" Member="MonthlyIndicator" ThisKey="PeriodID" OtherKey="PeriodID" Type="MonthlyIndicator" IsForeignKey="true" />
       <Association Name="ProfessionalLevel_MonthlyCoachRevenueIndicator" Member="ProfessionalLevel" ThisKey="LevelID" OtherKey="LevelID" Type="ProfessionalLevel" IsForeignKey="true" />
       <Association Name="ServingCoach_MonthlyCoachRevenueIndicator" Member="ServingCoach" ThisKey="CoachID" OtherKey="CoachID" Type="ServingCoach" IsForeignKey="true" />
@@ -2353,7 +2355,12 @@
       <Column Name="SRAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueIndicator" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+		<Column Name="LessonTuitionIndicatorPercentage" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+		<Column Name="SRLessonsGoal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="SRLessonTuitionGoal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="GroupXCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="GroupXAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Association Name="MonthlyRevenueIndicator_MonthlyRevenueGoal" Member="MonthlyRevenueIndicator" ThisKey="PeriodID,GradeID" OtherKey="PeriodID,GradeID" Type="MonthlyRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="KPI.MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueGoal">
@@ -2387,7 +2394,12 @@
       <Column Name="SRAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SDAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+		<Column Name="LessonTuitionIndicatorPercentage" Type="System.Decimal" DbType="Decimal(18,2)" CanBeNull="true" />
+		<Column Name="SRLessonsGoal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="SRLessonTuitionGoal" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="GroupXCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Column Name="GroupXAchievement" Type="System.Int32" DbType="Int" CanBeNull="true" />
+		<Association Name="MonthlyBranchRevenueIndicator_MonthlyBranchRevenueGoal" Member="MonthlyBranchRevenueIndicator" ThisKey="PeriodID,BranchID,GradeID" OtherKey="PeriodID,BranchID,GradeID" Type="MonthlyBranchRevenueIndicator" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
   <Table Name="dbo.UsageType" Member="UsageType">

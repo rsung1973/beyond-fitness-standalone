@@ -137,6 +137,7 @@ namespace WebHome.Properties
         public LineAuthInfo LineAuth { get; set; } = new LineAuthInfo { };
         public String WebHomePage { get; set; } = "~/MainActivity/Main";
         public String CommonErrorView { get; set; } = "~/Views/Error/Error.cshtml";
+        public bool EnableJobScheduler { get; set; } = true;
     }
 
     public class Settings

@@ -70,12 +70,13 @@ namespace WebHome.Models.Locale
             教練PI = 1005,
             體驗課程 = 1006,
             點數兌換課程 = 1007,
-            團體學員課程 = 1008,
+            團體學員課程 = 1008,  //企業合作方案
             在家訓練 = 1009,
             員工福利課程 = 1010,
             營養課程 = 1012,
             運動防護課程 = 1013,
             運動恢復課程 = 1014,
+            團體課程 = 1015,
         }
 
         public enum LessonPriceFeature
@@ -212,6 +213,7 @@ namespace WebHome.Models.Locale
             教練PI,
             體驗課程,
             在家訓練,
+            團體課程,
         }
 
         public enum ProfessionalCategory
@@ -251,7 +253,9 @@ namespace WebHome.Models.Locale
             Level_4_2nd = 10,
             Level_3_2nd = 11,
             Level_2_2nd = 12,
-            Level_1_2nd = 13
+            Level_1_2nd = 13,
+            FES = 32,
+            RFM = 45,
         }
 
         public enum CourseContractStatus
@@ -512,6 +516,7 @@ namespace WebHome.Models.Locale
             AT = 5,
             SR = 6,
             SD = 7,
+            GX = 8,
         }
 
         public static readonly string[] LevelName =

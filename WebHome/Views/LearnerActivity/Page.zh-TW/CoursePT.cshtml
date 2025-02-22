@@ -50,7 +50,7 @@
             .Where(s => s.RegisterID == registerID);
 
     StageProgress current = models.PromptCurrentStage();
-    
+
     var feedbackItem = models.GetTable<LessonFeedBack>()
                                 .Where(f => f.LessonID == _model.LessonID)
                                 .Where(f => f.RegisterID == registerID).FirstOrDefault();
@@ -61,13 +61,21 @@
     <div class="card header-card shape-rounded" data-card-height="310">
         <div class="card-overlay bg-beyond-dark opacity-95"></div>
     </div>
-    @if (_model.IsPTSession()) {
+    @if (_model.IsPTSession())
+    {
         <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">體能訓練</h1>
-        <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>P.T @(_model.DurationInMinutes) Min<br/>@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
-    } else {
+        <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>P.T @(_model.DurationInMinutes) Min<br />@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
+    }
+    else if (_model.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+    {
+        <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">團體課程</h1>
+        <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>Group X @(_model.DurationInMinutes) Min<br />@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
+    }
+    else
+    {
         <h1 class="boxed-text-xl font-28 color-beyondsunny-light z-index-10 pt-5">自主訓練</h1>
-        <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>P.I @(_model.DurationInMinutes) Min<br/>@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
-    }        
+        <p class="text-center z-index-10"><i class="fa-solid fa-fire-flame-curved px-2"></i>P.I @(_model.DurationInMinutes) Min<br />@($"{_model.ClassTime:yyyy/MM/dd HH:mm}")</p>
+    }
 
     <img style="margin-bottom:-80px" src="../images/icons/session/trx.svg" class="mx-auto over-card bg-transparent" width="200" />
 
@@ -126,7 +134,7 @@
 
     </div>
     @if (_model.LessonAttendance != null
-            && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
+           && _model.GroupingLesson.RegisterLesson.Any(r => r.UID == profile.UID))
     {
         await Html.RenderPartialAsync("~/Views/LearnerActivity/Page.zh-TW/Module/CourseFeedback.cshtml", _model);
     }

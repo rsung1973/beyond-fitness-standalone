@@ -40,27 +40,34 @@
 @{
     LessonTime item = (LessonTime)_model.EventItem;
     bool needApprove = item.PreferredLessonTime != null && !item.PreferredLessonTime.ApproverID.HasValue;
-    <div class="@(needApprove ? "event-name b-approve row" : "event-name b-PT row")" onclick="@Html.Raw(clickHander(item,needApprove))">
-        <div class="col-2 text-left">
-            <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
-        </div>
-        <div class="col-10">
-            <h6>
-                P.T @(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))
-                <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
-                @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
-            </h6>
-            @{
-                var trainingPlan = item.TrainingPlan.FirstOrDefault();
-                if (trainingPlan?.TrainingExecution.Emphasis != null)
-                {
-                    <p>@(trainingPlan?.TrainingExecution.Emphasis)</p>
+    if (item.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+    {
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Index/Coach/EventItems/GroupX.cshtml");
+    }
+    else
+    {
+        <div class="@(needApprove ? "event-name b-approve row" : "event-name b-PT row")" onclick="@Html.Raw(clickHander(item,needApprove))">
+            <div class="col-2 text-left">
+                <h4><span>@(item.ClassTime.Value.ToString("HH:mm"))</span><span>@(item.ClassTime.Value.AddMinutes(item.DurationInMinutes.Value).ToString("HH:mm"))</span></h4>
+            </div>
+            <div class="col-10">
+                <h6>
+                    P.T @(String.Join("、", item.GroupingLesson.RegisterLesson.Select(r => r.UserProfile.RealName)))
+                    <address><i class="zmdi zmdi-pin"></i>@(item.BranchStore.BranchName)</address>
+                    @{ await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/RenderLessonCheck.cshtml", item);}
+                </h6>
+                @{
+                    var trainingPlan = item.TrainingPlan.FirstOrDefault();
+                    if (trainingPlan?.TrainingExecution.Emphasis != null)
+                    {
+                        <p>@(trainingPlan?.TrainingExecution.Emphasis)</p>
+                    }
+                    else
+                    {
+                        <p class="col-blush">Unfinished</p>
+                    }
                 }
-                else
-                {
-                    <p class="col-blush">Unfinished</p>
-                }
-            }
+            </div>
         </div>
-    </div>
+    }
 }

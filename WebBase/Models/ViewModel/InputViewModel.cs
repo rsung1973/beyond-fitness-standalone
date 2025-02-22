@@ -630,6 +630,7 @@ namespace WebHome.Models.ViewModel
             "A.T",
             "S.R",
             "S.D",
+            "G.X",
         };
     }
 

@@ -1,3 +1,4 @@
+set ASPNETCORE_WEBROOT=\\vm-venus\e$\Project\Published\WebHome\wwwroot
 SET ASPNETCORE_ENVIRONMENT=Development
 SET ASPNETCORE_HOSTINGSTARTUPASSEMBLIES=Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation
 SET LAUNCHER_PATH=bin\Debug\net9.0\WebHome.exe

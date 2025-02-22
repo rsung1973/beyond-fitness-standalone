@@ -89,6 +89,7 @@ namespace WebHome.Helper
                         RenewContractSubtotal = r.MonthlyRevenueGoal.RenewContractSubtotal,
                         InstallmentCount = r.MonthlyRevenueGoal.InstallmentCount,
                         InstallmentSubtotal = r.MonthlyRevenueGoal.InstallmentSubtotal,
+                        LessonTuitionIndicatorPercentage = r.MonthlyRevenueGoal.LessonTuitionIndicatorPercentage,
                     };
                 }
             }
@@ -133,6 +134,7 @@ namespace WebHome.Helper
                             AchievementGoal = branchGoal.AchievementGoal,
                             CustomRevenueGoal = branchGoal.CustomRevenueGoal,
                             CustomIndicatorPercentage = branchGoal.CustomIndicatorPercentage,
+                            LessonTuitionIndicatorPercentage = branchGoal.LessonTuitionIndicatorPercentage,
                             NewContractCount = branchGoal.NewContractCount,
                             RenewContractCount = branchGoal.RenewContractCount,
                             NewContractSubtotal = branchGoal.NewContractSubtotal,
@@ -285,6 +287,12 @@ namespace WebHome.Helper
                 .Where(c => c.ClassTime < item.StartDate.AddMonths(1))
                 .Where(t => t.TrainingBySelf == 2);
 
+            IQueryable<LessonTime> GroupXItems = models.GetTable<LessonTime>()
+                .Where(c => c.ClassTime >= item.StartDate)
+                .Where(c => c.ClassTime < item.StartDate.AddMonths(1))
+                .Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程);
+
+
             if (forcedUpdate == true)
             {
                 lessonItems = lessonItems.Where(l => l.SettlementID.HasValue);
@@ -325,14 +333,19 @@ namespace WebHome.Helper
             IQueryable<CourseContract> nonInstallmentItems = contractItems.Where(c => !c.Installment.HasValue);
 
             int lessonAchievement, tuitionAchievement;
+            var level_FM_FES = models.GetTable<ProfessionalLevel>()
+                                        .Where(p => p.CategoryID == (int)Naming.ProfessionalCategory.FM 
+                                            ||  p.CategoryID == (int)Naming.ProfessionalCategory.FES);
+            IQueryable<V_Tuition> exclusive_FM_FES_Items;
 
             void calcHeadquarterAchievement()
             {
                 var voidTuition = voidPayment
                                     .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
+                exclusive_FM_FES_Items = tuitionItems.Where(t => !level_FM_FES.Any(l => l.LevelID == t.ProfessionalLevelID));
 
-                lessonAchievement = tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-                lessonAchievement += (tuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+                lessonAchievement = exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+                lessonAchievement += (exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                 tuitionAchievement = achievementItems.Sum(a => a.ShareAmount) ?? 0;
 
                 IQueryable<TuitionAchievement> newContractAchievementItems = paymentItems
@@ -366,7 +379,7 @@ namespace WebHome.Helper
                         .FirstOrDefault();
                 if (revenueItem != null)
                 {
-                    revenueItem.ActualCompleteLessonCount = tuitionItems.SessionScopeForComleteLesson(models).Count();
+                    revenueItem.ActualCompleteLessonCount = exclusive_FM_FES_Items.SessionScopeForComleteLesson(models).Count();
                     revenueItem.ActualLessonAchievement = lessonAchievement;
                     revenueItem.ActualSharedAchievement = tuitionAchievement;
                     revenueItem.RenewContractCount = nonInstallmentItems.Where(c => c.Renewal == true).Count();
@@ -391,6 +404,8 @@ namespace WebHome.Helper
                     revenueItem.SRAchievement = tuitionItems.SRSessionScope(models).Sum(t => t.ListPrice) ?? 0;
                     revenueItem.SDCount = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
                     revenueItem.SDAchievement = tuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
+                    revenueItem.GroupXCount = GroupXItems.GroupBy(l => new { l.ClassTime, l.AttendingCoach }).Count();
+                    revenueItem.GroupXAchievement = GroupXItems.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
 
                     models.SubmitChanges();
                 }
@@ -410,6 +425,7 @@ namespace WebHome.Helper
                     var branchContractItems = contractItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
                     var branchInstallmentItems = installmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
                     var branchNonInstallmentItems = nonInstallmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
+                    var branchGroupXItems = GroupXItems.Where(t => t.BranchID == branchIndicator.BranchID);
 
                     IQueryable<TuitionAchievement> branchNewContractAchievementItems = paymentItems
                         .Join(models.GetTable<ContractPayment>()
@@ -445,11 +461,12 @@ namespace WebHome.Helper
                             .FirstOrDefault()?.MonthlyBranchRevenueGoal;
                     if (revenueItem != null)
                     {
-                        lessonAchievement = branchTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-                        lessonAchievement += (branchTuitionItems.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+                        exclusive_FM_FES_Items = branchTuitionItems.Where(t => !level_FM_FES.Any(l => l.LevelID == t.ProfessionalLevelID));
+                        lessonAchievement = exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+                        lessonAchievement += (exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                         tuitionAchievement = branchAchievementItems.Sum(a => a.ShareAmount) ?? 0;
 
-                        revenueItem.ActualCompleteLessonCount = branchTuitionItems.SessionScopeForComleteLesson(models).Count();
+                        revenueItem.ActualCompleteLessonCount = exclusive_FM_FES_Items.SessionScopeForComleteLesson(models).Count();
                         revenueItem.ActualLessonAchievement = lessonAchievement;
                         revenueItem.ActualSharedAchievement = tuitionAchievement;
                         revenueItem.RenewContractCount = branchNonInstallmentItems.Where(c => c.Renewal == true).Count();
@@ -474,6 +491,8 @@ namespace WebHome.Helper
                         revenueItem.SRAchievement = branchTuitionItems.SRSessionScope(models).Sum(t => t.ListPrice) ?? 0;
                         revenueItem.SDCount = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Count();
                         revenueItem.SDAchievement = branchTuitionItems.Where(t => t.PriceStatus == (int)Naming.LessonPriceStatus.營養課程).Sum(t => t.ListPrice) ?? 0;
+                        revenueItem.GroupXCount = branchGroupXItems.GroupBy(l=>new { l.ClassTime, l.AttendingCoach }).Count();
+                        revenueItem.GroupXAchievement = branchGroupXItems.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
 
                         models.SubmitChanges();
                     }
@@ -496,6 +515,7 @@ namespace WebHome.Helper
                     IQueryable<CourseContract> coachNonInstallmentItems = coachContractItems.Where(c => !c.Installment.HasValue);
 
                     var coachSTItems = STItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
+                    var coachGroupXItems = GroupXItems.Where(t => t.AttendingCoach == coachIndicator.CoachID);
 
                     IQueryable<TuitionAchievement> coachNewContractAchievementItems = paymentItems
                         .Join(models.GetTable<ContractPayment>()
@@ -595,6 +615,9 @@ namespace WebHome.Helper
                                     .Where(c => c.Renewal == false)
                                     .Where(c => extensionItems.Any(n => n.ContractID == c.ContractID))
                                     .Sum(c => c.CourseContractType.GroupingMemberCount) ?? 0;
+                    coachIndicator.GroupXCount = coachGroupXItems.GroupBy(l => l.ClassTime).Count();
+                    coachIndicator.GroupXAchievement = coachGroupXItems.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
+
                     models.SubmitChanges();
                 }
             }
@@ -653,10 +676,17 @@ namespace WebHome.Helper
 
                 var baseIndicator = branchIndicator.MonthlyBranchRevenueIndicator.OrderBy(m => m.GradeID).First();
                 revenueGoal.CustomIndicatorPercentage = Math.Round(((decimal?)revenueGoal.CustomRevenueGoal * (decimal?)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal?)baseIndicator.RevenueGoal) ?? 0m, 2);
+                revenueGoal.LessonTuitionIndicatorPercentage = Math.Round(((decimal?)revenueGoal.LessonTuitionGoal * (decimal?)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal?)baseIndicator.RevenueGoal) ?? 0m, 2);
 
                 revenueGoal.AchievementGoal = branchItems.Sum(b => b.AchievementGoal);
-                revenueGoal.LessonTuitionGoal = branchItems.Sum(b => b.LessonTuitionGoal);
-                revenueGoal.CompleteLessonsGoal = branchItems.Sum(b => b.CompleteLessonsGoal);
+                var branchPTItems = branchItems
+                                        .Where(b => b.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
+                                        .Where(b => b.ServingCoach.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
+                var branchSRItems = branchItems.Where(b => b.ServingCoach.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Health);
+                revenueGoal.CompleteLessonsGoal = branchPTItems.Sum(b => b.CompleteLessonsGoal);
+                revenueGoal.SRLessonsGoal = branchSRItems.Sum(b => b.CompleteLessonsGoal);
+                revenueGoal.LessonTuitionGoal = branchPTItems.Sum(b => b.LessonTuitionGoal);
+                revenueGoal.SRLessonTuitionGoal = branchSRItems.Sum(b => b.LessonTuitionGoal);
 
                 models.SubmitChanges();
                 branchGoalItems.Add(revenueGoal);
@@ -672,7 +702,10 @@ namespace WebHome.Helper
                 headquarterRevenueGoal.CustomIndicatorPercentage = Math.Round((decimal)headquarterRevenueGoal.CustomRevenueGoal * (decimal)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal)baseIndicator.RevenueGoal, 2);
                 headquarterRevenueGoal.AchievementGoal = branchGoalItems.Sum(b => b.AchievementGoal);
                 headquarterRevenueGoal.LessonTuitionGoal = branchGoalItems.Sum(b => b.LessonTuitionGoal);
+                headquarterRevenueGoal.SRLessonTuitionGoal = branchGoalItems.Sum(b => b.SRLessonTuitionGoal);
                 headquarterRevenueGoal.CompleteLessonsGoal = branchGoalItems.Sum(b => b.CompleteLessonsGoal);
+                headquarterRevenueGoal.SRLessonsGoal = branchGoalItems.Sum(b => b.SRLessonsGoal);
+                headquarterRevenueGoal.LessonTuitionIndicatorPercentage = Math.Round((decimal)headquarterRevenueGoal.LessonTuitionGoal * (decimal)baseIndicator.MonthlyRevenueGrade.IndicatorPercentage / (decimal)baseIndicator.RevenueGoal, 2);
 
                 models.SubmitChanges();
             }

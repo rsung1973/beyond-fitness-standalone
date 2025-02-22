@@ -1702,6 +1702,7 @@ namespace WebHome.Controllers
             職工薪資扣繳福利金 = 18,
             PT_Session課數 = 19,
             總PT上課金額 = 20,
+            上課抽成單價 = 21,
         }
 
         enum ManagerYearlyBonusFields
@@ -1856,6 +1857,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(ManagerBonusFields.職工薪資扣繳福利金.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.PT_Session課數.ToString(), typeof(int)));
                 table.Columns.Add(new DataColumn(ManagerBonusFields.總PT上課金額.ToString(), typeof(int)));
+                table.Columns.Add(new DataColumn(ManagerBonusFields.上課抽成單價.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -1866,6 +1868,11 @@ namespace WebHome.Controllers
                                     || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FES)
                     : salaryItems.Where(s => s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.Special
                                     || s.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM);
+
+                List<int> taxCol =
+                [
+                    (int)ManagerBonusFields.上課抽成單價,
+                ];
 
                 foreach (var g in coachItems.OrderBy(c => c.WorkPlace))
                 {
@@ -1927,11 +1934,19 @@ namespace WebHome.Controllers
                         models.SubmitChanges();
                     }
 
+                    r[(int)ManagerBonusFields.上課抽成單價] = g.PTAverageUnitPrice ?? 0;
+                    eliminateTax(r, taxCol);
+
                     table.Rows.Add(r);
                 }
 
                 table.Columns[ManagerBonusFields.職工薪資扣繳福利金.ToString()].SetOrdinal((int)ManagerBonusFields.分店總上課數);
-
+                table.Columns.Remove(ManagerBonusFields.分店總上課數.ToString());
+                table.Columns.Remove(ManagerBonusFields.分店上課金額.ToString());
+                table.Columns.Remove(ManagerBonusFields.分店業績達成率百分比.ToString());
+                table.Columns.Remove(ManagerBonusFields.滾動式堂數.ToString());
+                table.Columns.Remove(ManagerBonusFields.滾動式平均單價.ToString());
+                table.Columns.Remove(ManagerBonusFields.滾動式抽成.ToString());
                 return table;
             }
 
@@ -2253,6 +2268,8 @@ namespace WebHome.Controllers
             var tsBR = ts.Where(p => p.LessonPriceProperty.Any(r => r.PropertyID == (int)Naming.LessonPriceFeature.BR體驗))
                             .ToArray();
 
+            var GXItems = viewModel.InquireLessonAchievement(models)
+                            .Where(l => l.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程);
 
             DateTime? idx = viewModel.AchievementDateFrom?.FirstDayOfMonth();
 
@@ -2282,6 +2299,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	20
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	21
                 table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	22
+                table.Columns.Add(new DataColumn("Group X上課總數", typeof(int)));      //	23
+                table.Columns.Add(new DataColumn("Group X上課金額", typeof(int)));      //	24
 
                 DataRow r;
 
@@ -2345,6 +2364,10 @@ namespace WebHome.Controllers
                     r[15] = (int)r[9] + (int)r[11] + (int)r[13];
                     r[16] = (int)r[15] + (int)r[16];
 
+                    var items = GXItems.Where(l => l.BranchID == branch.BranchID);
+                    r[23] = items.GroupBy(l => new { l.ClassTime, l.AttendingCoach }).Count();
+                    r[24] = items.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
+
                     table.Rows.Add(r);
                 }
 
@@ -2369,7 +2392,6 @@ namespace WebHome.Controllers
 
                 return table;
             }
-
 
             DataTable buildContractBranchDetails()
             {
@@ -2496,6 +2518,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	24
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	25
                 table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	26
+                table.Columns.Add(new DataColumn("Group X上課總數", typeof(int)));      //	27
+                table.Columns.Add(new DataColumn("Group X上課金額", typeof(int)));      //	28
 
 
                 DataRow r;
@@ -2588,6 +2612,13 @@ namespace WebHome.Controllers
                         }
                     }
 
+                    var items = GXItems.Join(models.GetTable<CoachWorkplace>()
+                                                .Where(l => l.BranchID == branch.Key),
+                                            l => l.AttendingCoach, c => c.CoachID, (l, c) => l);
+                    r[27] = items.GroupBy(l => new { l.ClassTime, l.AttendingCoach }).Count();
+                    r[28] = items.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
+
+
                     table.Rows.Add(r);
                 }
 
@@ -2648,6 +2679,8 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn("T.S (S.R)上課總數", typeof(int)));      //	25
                 table.Columns.Add(new DataColumn("T.S (S.D)上課總數", typeof(int)));      //	26
                 table.Columns.Add(new DataColumn("T.S (P.T-BR)上課總數", typeof(int)));      //	27
+                table.Columns.Add(new DataColumn("Group X上課總數", typeof(int)));      //	28
+                table.Columns.Add(new DataColumn("Group X上課金額", typeof(int)));      //	29
 
 
                 DataRow r;
@@ -2733,6 +2766,11 @@ namespace WebHome.Controllers
                             r[21] = (int)Math.Round((int)r[17] * 100M / (int)r[20]);
                         }
                     }
+
+                    var items = GXItems.Where(l => l.AttendingCoach == (int)coach.First()[16]);
+                    r[28] = items.GroupBy(l => new { l.ClassTime, l.AttendingCoach }).Count();
+                    r[29] = items.Sum(t => t.RegisterLesson.LessonPriceType.ListPrice) ?? 0;
+
 
                     table.Rows.Add(r);
                 }

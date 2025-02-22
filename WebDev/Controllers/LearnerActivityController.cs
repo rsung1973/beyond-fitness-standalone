@@ -1438,6 +1438,15 @@ namespace WebHome.Controllers
             return View("~/Views/LearnerActivity/AppraisePlayerLevel.cshtml");
         }
 
+        public async Task<ActionResult> ApplyLevelRewardAsync(AwardQueryViewModel viewModel)
+        {
+            ViewBag.ViewModel = viewModel;
+            var profile = await HttpContext.GetUserAsync();
+
+            return View("~/Views/LearnerActivity/ApplyLevelReward.cshtml");
+        }
+
+
         [AllowAnonymous]
         public async Task<ActionResult> NotifyToTakeSelfAssessmentAsync()
         {

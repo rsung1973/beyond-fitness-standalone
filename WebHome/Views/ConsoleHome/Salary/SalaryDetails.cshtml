@@ -108,7 +108,7 @@
                                     <div class="list_tb tb2">
                                         <div class="list_tr">
                                             <div class="list_td hd">滾動式業績獎金</div>
-                                            <div class="list_td rt">@($"{reviewItem?.AttendedShare ?? 0:##,###,###,###}")</div>
+                                            <div class="list_td rt">@($"{(int)((reviewItem?.AttendedShare ?? 0)/1.05M):##,###,###,###}")</div>
                                         </div>
                                     </div>
                                 </li>
