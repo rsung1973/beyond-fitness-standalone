@@ -35,7 +35,7 @@
                     "contents": [
                         {
                             "type": "image",
-                            "url": "@Html.Raw(item.IsPISession() ? "https://bpoints.beyond-fitness.com.tw/LearnerActivity/images/lineevent/title/LearnerToPIAssessment.png" : "https://bpoints.beyond-fitness.com.tw/LearnerActivity/images/lineevent/title/LearnerToPTAssessment.png")",
+                            "url": "@Html.Raw(item.IsPISession() ? "https://bpoints.beyond-fitness.com.tw/LearnerActivity/images/lineevent/title/LearnerToPIAssessment.png" : item.IsPTSession() ? "https://bpoints.beyond-fitness.com.tw/LearnerActivity/images/lineevent/title/LearnerToPTAssessment.png" : "https://bpoints.beyond-fitness.com.tw/LearnerActivity/images/lineevent/title/LearnerToGXAssessment.png")",
                             "offsetTop": "0px",
                             "offsetBottom": "0px",
                             "margin": "none",
