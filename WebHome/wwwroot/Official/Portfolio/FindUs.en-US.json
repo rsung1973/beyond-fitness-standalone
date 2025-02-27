@@ -2178,65 +2178,65 @@
                     "Experience": "<ul><li>2021 Challenge Taiwan 113接力 跑步21K</li><li>2019 北濱 75K</li></ul>"                    
                 },
 
-                {
-                    "MemberCode": "UA66087177",
-                    "Name": "蔡雅欣",                    
-                    "NameDesc": "Sammie",
-                    "JobTitle": "",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(242.31 184.4)",
-                            "JobPosition": "translate(242.31 154.46)",
-                            "ImgXShifting": -90,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Be the change that you wish to see in the world.",
-                    "SloganDesc": "Be the change that you wish to see in the world.",
-                    "Desc": "總是尋找新的挑戰，並樂於嘗試各種不同的運動，同時透過熱情感染著身邊的人，並激勵著大家一同參與冒險和運動。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "EXOS",
-                        }, 
-                        {
-                            "Name": "CrossFit",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "Z-TSCA",
-                        }, 
-                        {
-                            "Name": "PADI",
-                        },
-                        {
-                            "Name": "CPRAED"
-                        }                         
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"swimming",
-                        },
-                        {
-                            "Name":"basketball",
-                        },
-                        {
-                            "Name":"badminton",
-                        },
-                        {
-                            "Name":"handstand",
-                        }
-                    ],
-                    "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul>"                    
-                },
+                // {
+                //     "MemberCode": "UA66087177",
+                //     "Name": "蔡雅欣",                    
+                //     "NameDesc": "Sammie",
+                //     "JobTitle": "",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-right.svg",
+                //             "NamePosition": "translate(242.31 184.4)",
+                //             "JobPosition": "translate(242.31 154.46)",
+                //             "ImgXShifting": -90,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "Be the change that you wish to see in the world.",
+                //     "SloganDesc": "Be the change that you wish to see in the world.",
+                //     "Desc": "總是尋找新的挑戰，並樂於嘗試各種不同的運動，同時透過熱情感染著身邊的人，並激勵著大家一同參與冒險和運動。",
+                //     "License":[
+                //         {
+                //             "Name": "ACE",
+                //         },
+                //         {
+                //             "Name": "TRX",
+                //         },
+                //         {
+                //             "Name": "EXOS",
+                //         }, 
+                //         {
+                //             "Name": "CrossFit",
+                //         },
+                //         {
+                //             "Name": "PTAG",
+                //         },
+                //         {
+                //             "Name": "Z-TSCA",
+                //         }, 
+                //         {
+                //             "Name": "PADI",
+                //         },
+                //         {
+                //             "Name": "CPRAED"
+                //         }                         
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"swimming",
+                //         },
+                //         {
+                //             "Name":"basketball",
+                //         },
+                //         {
+                //             "Name":"badminton",
+                //         },
+                //         {
+                //             "Name":"handstand",
+                //         }
+                //     ],
+                //     "Experience": "<h4>2023</h4><ul><li>Challenge Taiwan 51.5KM</li><li>百岳攀登 #雪山主峰 #雪山東峰</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul><h4>2022</h4><ul><li>一日北高360 挑戰賽</li><li>Beyond 新人培訓教官</li><li>Beyond 月內訓講師</li></ul>"                    
+                // },
                 {
                     "MemberCode": "SH76179275",
                     "Name": "郭崇瑋",

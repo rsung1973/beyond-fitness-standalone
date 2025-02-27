@@ -42,12 +42,17 @@
   border-radius: 50% !important;
   width: 80px;
   height: 80px;
-  object-fit: cover;
+  -o-object-fit: cover;
+     object-fit: cover;
   border: 1px solid #EBD7B4;
 }
 .avatar-rounded-circle.large {
   width: 150px;
   height: 150px;
+}
+.avatar-rounded-circle.small-50 {
+  width: 50px;
+  height: 50px;
 }
 .avatar-rounded-circle.small {
   width: 45px;
@@ -106,6 +111,9 @@ h4 {
 }
 
 input {
+  font-size: 15px !important;
+}
+input::-moz-placeholder {
   font-size: 15px !important;
 }
 input::placeholder {
@@ -188,7 +196,7 @@ input::placeholder {
 
 .scroll-container {
   width: 100%;
-  height: 30em;
+  height: 300px;
   margin: 0;
   padding: 10px;
   overflow-y: auto;
@@ -226,12 +234,12 @@ input::placeholder {
 }
 @media (max-width: 990px) and (min-width: 768px) {
   .scroll-container {
-    height: 40em;
+    height: 300px;
   }
 }
 @media (max-width: 767px) {
   .scroll-container {
-    height: 20em;
+    height: 300px;
   }
 }
 
@@ -410,7 +418,8 @@ input::placeholder {
 }
 
 .splide__slide .splide01 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-01-lg.jpg");
@@ -431,7 +440,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0) 33%, rgb(40, 40, 40) 50%, rgba(40, 40, 40, 0.1) 65%, rgba(40, 40, 40, 0.23) 80%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide02 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-02-lg.jpg");
@@ -452,7 +462,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0.1) 50%, rgba(40, 40, 40, 0.8) 70%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide03 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-03-lg.jpg");
@@ -473,7 +484,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgba(40, 40, 40, 0) 0%, rgba(40, 40, 40, 0.3) 20%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide04 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-04-lg.jpg");
@@ -494,7 +506,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0) 68%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide05 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-05-lg.jpg");
@@ -515,7 +528,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0) 20%, rgba(40, 40, 40, 0) 68%, rgba(40, 40, 40, 0.1) 85%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide06 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-06-lg.jpg");
@@ -536,7 +550,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0.3) 40%, rgba(40, 40, 40, 0) 45%, rgba(40, 40, 40, 0) 70%, rgb(40, 40, 40) 100%) !important;
 }
 .splide__slide .splide07 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-07-lg.jpg");
@@ -557,7 +572,8 @@ input::placeholder {
   background: linear-gradient(to bottom, rgb(40, 40, 40) 0%, rgba(40, 40, 40, 0.8) 20%, rgba(40, 40, 40, 0.1) 30%, rgba(40, 40, 40, 0) 70%, rgba(40, 40, 40, 0) 100%) !important;
 }
 .splide__slide .splide08 .container-background {
-  background-size: 100% 100vh !important;
+  height: 100vh;
+  background-size: cover;
   background-repeat: no-repeat !important;
   background-position: top center;
   background-image: url("../images/walkthrough/splide-08-lg.jpg");
@@ -691,7 +707,8 @@ input::placeholder {
   background-color: #fff;
   font-size: 22px;
   font-weight: 600;
-  clip-path: url(#left-clip);
+  -webkit-clip-path: url(#left-clip);
+          clip-path: url(#left-clip);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -766,10 +783,12 @@ input::placeholder {
     /* Adjusted grid layout for mobile */
   }
   .strategy .level {
-    clip-path: url(#left-clip-mobile);
+    -webkit-clip-path: url(#left-clip-mobile);
+            clip-path: url(#left-clip-mobile);
   }
   .strategy .level::after {
-    clip-path: url(#right-clip-mobile);
+    -webkit-clip-path: url(#right-clip-mobile);
+            clip-path: url(#right-clip-mobile);
   }
   .strategy .condition {
     padding: 20px 5px 20px 5px;
