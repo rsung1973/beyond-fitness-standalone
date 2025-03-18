@@ -12,6 +12,10 @@
     "VoiceMessage":"The genuine thoughts <br class=\"d-block d-lg-block d-md-none\" />of our team member",
     "VoiceItem": [
         {
+            "MemberCode": "JE83121985",
+            "BranchID": 5
+        },
+        {
             "MemberCode": "MH1035328",
             "BranchID": 4
         },        

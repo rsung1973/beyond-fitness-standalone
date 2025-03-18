@@ -398,7 +398,7 @@ body.theme-nero {
 */
 
 .theme-nero .fancy-radio input[type="radio"]:checked + span i:after {
-    background-color: transparent
+    /* background-color: transparent */
 }
 
 .theme-nero .fancy-radio.custom-color-darkteal input[type="radio"]:checked + span i:after {
@@ -818,6 +818,12 @@ body.theme-nero {
     /* background: #191f28; */
     background: #282828;
     border-left: 10px solid #fff !important;
+    opacity: .8;
+}
+
+.theme-nero .page-calendar .b-GX {
+    background: #282828;
+    border-left: 10px solid #F5A623 !important;
     opacity: .8;
 }
 

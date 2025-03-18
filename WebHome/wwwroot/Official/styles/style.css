@@ -1,52 +1,185 @@
-{   
-    "Message":"Message·",
-    "MessageDesc":"メッセージ",
-    "MessageSlogan":"自己実現しながら<br />世界を変えていく",
-    "MessageContent1": "<b>親愛なる友人へ</b><br /><br />これはBeyondからの真心を込めた招待状です。<br /><br />我々は、大勢の方の成長をサポートし、健康状態を改善させることで、その人生に確実に足跡を残すことのできる、同じ信念を共有するパートナーを探しています。<br /><br />Beyondは集中力に満ち、真剣さ・職人魂・楽しさを備えた企業です。Beyondでは、我々は単なる同僚というだけでなく、支え合うパートナーであり、友人でもあります。Beyondは風通しの良い、包容力と挑戦に満ちた職場を、そして問題解決能力を育み、コミュニケーションの取りやすい環境を提供します。<br /><br />皆様とともに仕事と人生に共通した意味を深く掘り下げ、開花させます。皆様からのご応募をお待ちしております。",
-    "MessageContent2": "会えるのを楽しみにしています！<br /> See you soon !",
-    "MessageFrom": "Beyondの仲間たちより",
-    "Voice": "Voice·",
-    "VoiceDesc": "パートナーの声",
-    "VoiceSlogan1": "「人生をもっと美しく」",
-    "VoiceSlogan2": "お客様を輝かせる瞬間こそ<br />我々の誇りです",
-    "VoiceMessage":"Beyondの仲間たちの思いをご覧ください",
-    "VoiceItem": [
-        {
-            "MemberCode": "MH1035328",
-            "BranchID": 4
-        },        
-        {
-            "MemberCode": "BD56192749",
-            "BranchID": 1
-        },
-        {
-            "MemberCode": "ZP85915197",
-            "BranchID": 2
-        },
-        {
-            "MemberCode": "FL62099639",
-            "BranchID": 3
-        },
-        {
-            "MemberCode": "RX14099392",
-            "BranchID": 4
-        }
-        // {
-        //     "MemberCode": "CL74347383",
-        //     "BranchID": 1
-        // }
-    ],
-    "Traning": "Traning·",
-    "TraningDesc": "研修制度",
-    "TraningMessageSlogan": "我々は熱意を持って来てくれたあなたを、<br />心から歓迎いたします",
-    "TraningMessage": "台湾のフィットネス・スポーツ産業では、資格を適切に更新せず、定期的な教育・トレーニングを受けず、法律に則って消費者と定型約款も締結していないトレーナーが多いのが現状です。そのためトラブルが多く、顧客は常に権利侵害のリスクを背負わされています。<br /><br />「プロフェッショナル・トレーナー」というのは、規律・基準・信念を持つ職人でなければなりません。しかし、専門的なパーソナルトレーナーを継続的に育成できる組織は、極めて少ないです。そしてBeyond Fitnessこそ、台湾で初めてこの分野に力を入れた企業です。Beyondが目指しているのは、パーソナルトレーナー組織を発展させ、世界と社会に貢献する健康優良企業を創ることです。<br /><br />Beyondは前述したようなビジョンを持ち、努力を怠らない企業であるだけでなく、明るくて楽しい、コミュニケーションと交流を厭わないチームでもあります。我々は仕事をしながら、常に学習し、チャレンジングな環境を創ることを通じて、自己実現を果たそうとしています。我々はともに社内研修・試験・トレーニングを受け、社会貢献活動に取り組み、ともに笑い、成長していきます。",
-    "TraningItem":[
-        {
-            "ID": "Week",
-            "Name": "週ごとの社内研修",
-            "List":[
-                {
-                    "Content": "ケーススタディ",
-                },
-                {
-                    "Content": "グループトレーニング",
+@charset "UTF-8";
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Poppins", "微軟正黑體", "新細明體", sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f8f8f9;
+}
+
+.checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 600px;
+  user-select: none;
+}
+.checkbox-group > * {
+  margin: 0.5rem 0.5rem;
+}
+
+.checkbox-group-legend {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #9c9c9c;
+  text-align: center;
+  line-height: 1.125;
+  margin-bottom: 1.25rem;
+}
+
+.checkbox-input {
+  clip: rect(0 0 0 0);
+  clip-path: inset(100%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+.checkbox-input:checked + .checkbox-tile {
+  border-color: #2260ff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  color: #2260ff;
+}
+.checkbox-input:checked + .checkbox-tile:before {
+  transform: scale(1);
+  opacity: 1;
+  background-color: #2260ff;
+  border-color: #2260ff;
+}
+.checkbox-input:checked + .checkbox-tile .checkbox-icon, .checkbox-input:checked + .checkbox-tile .checkbox-label {
+  color: #2260ff;
+}
+.checkbox-input:focus + .checkbox-tile {
+  border-color: #2260ff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1), 0 0 0 4px #b5c9fc;
+}
+.checkbox-input:focus + .checkbox-tile:before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.checkbox-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  min-height: 7rem;
+  border-radius: 0.5rem;
+  border: 2px solid #b5bfd9;
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  transition: 0.15s ease;
+  cursor: pointer;
+  position: relative;
+}
+.checkbox-tile:before {
+  content: "";
+  position: absolute;
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #b5bfd9;
+  background-color: #fff;
+  border-radius: 50%;
+  top: 0.25rem;
+  left: 0.25rem;
+  opacity: 0;
+  transform: scale(0);
+  transition: 0.25s ease;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='192' height='192' fill='%23FFFFFF' viewBox='0 0 256 256'%3E%3Crect width='256' height='256' fill='none'%3E%3C/rect%3E%3Cpolyline points='216 72.005 104 184 48 128.005' fill='none' stroke='%23FFFFFF' stroke-linecap='round' stroke-linejoin='round' stroke-width='32'%3E%3C/polyline%3E%3C/svg%3E");
+  background-size: 12px;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.checkbox-tile:hover {
+  border-color: #2260ff;
+}
+.checkbox-tile:hover:before {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.checkbox-icon {
+  transition: 0.375s ease;
+  color: #494949;
+}
+.checkbox-icon svg {
+  width: 3rem;
+  height: 3rem;
+}
+
+.checkbox-label {
+  color: #707070;
+  transition: 0.375s ease;
+  text-align: center;
+}/*# sourceMappingURL=style.css.map */40px) scale(0);
+  will-change: transform;
+}
+.project__title a {
+  color: white;
+}
+.project__category {
+  opacity: 0;
+  transition: 0.4s ease;
+  transition-delay: 0.1s;
+  transform: translateY(40px) scale(0);
+  will-change: transform;
+}
+.project__category a {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.3em;
+}
+
+.movie {
+  margin: 0 auto;
+  width: 250px;
+}
+.movie-list:after {
+  content: " ";
+  display: block;
+  clear: both;
+}
+.movie__card {
+  position: relative;
+  width: 250px;
+  height: 370px;
+  transition: 0.2s ease-out;
+}
+.movie [class*=layer] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px;
+}
+.movie .layer-1 {
+  background-image: url(dist/images/deadpool-bg.png);
+  background-size: cover;
+}
+.movie .layer-2 {
+  background-image: url(dist/images/deadpool.png);
+  background-size: cover;
+  transform: translateZ(30px);
+}
+.movie .layer-3 {
+  background-image: url(dist/images/deadpool-title.png);
+  background-size: cover;
+  transform: translateZ(50px);
+}
+.movie .shine {
+  border-radius: 10px;
+}/*# sourceMappingURL=style.css.map */
