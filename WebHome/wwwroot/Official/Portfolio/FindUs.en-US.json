@@ -21,29 +21,32 @@
             "MRT":"Green line( Songshan–Xindian) • Taipei Arena Station Exit 1",
             "MRTShort":"MRT Taipei Arena Station Exit <b>1</b>",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 4,  
             "Slogan": "Exercise is More Than <br class=\"d-block d-lg-block d-md-none\" />a Physical Activity",
             "SloganMessage": "<p>Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy,healthy,and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo14.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo15.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo16.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo17.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo18.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo19.png"
+                },
+                {
+                    "FileName": "Demo20.png"
                 }
-            ],           
+            ],                
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
