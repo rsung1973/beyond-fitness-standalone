@@ -21,30 +21,30 @@
             "MRT":"松山新店線(綠線) • 台北小巨蛋站1號出口",
             "MRTShort":"捷運小巨蛋<b>1號</b>出口",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
-            "BannerImgCount": 3,  
+            "BannerImgCount": 4,  
             "Slogan": "訓練是生活的一部分，<br class=\"hidden-md-down\" />Enjoy the little thing。",
             "SloganMessage": "<p>我們深信著，運動不僅僅是單一活動，更是生活的精華所在。這是一種態度，是每天的一部分，是對自己的愛與呵護。</p><p class=\"hidden-lg-down\">透過訓練，我們不僅在身體上找到更好的自己，更可以在每個瞬間中尋找樂趣。這不只是一種鍛鍊，更是對生活的熱愛，對細微事物的感激。我們堅信，唯有擁有健康，才能真正獲得快樂。</p><p>Beyond提供真正專業而有系統性的訓練，讓您的運動不僅有效，更是一場充滿樂趣和新體驗的冒險。在Beyond希望每個學生都能擁有快樂與健康，並真正享受這美好的時光。因為生活中的小確幸，就蘊藏在這每一次的訓練中！</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo07.png"
+                    "FileName": "Demo14.png"
                 },
                 {
-                    "FileName": "Demo08.png"
+                    "FileName": "Demo15.png"
                 },
                 {
-                    "FileName": "Demo09.png"
+                    "FileName": "Demo16.png"
                 },
                 {
-                    "FileName": "Demo10.png"
+                    "FileName": "Demo17.png"
                 },
                 {
-                    "FileName": "Demo11.png"
+                    "FileName": "Demo18.png"
                 },
                 {
-                    "FileName": "Demo12.png"
+                    "FileName": "Demo19.png"
                 },
                 {
-                    "FileName": "Demo13.png"
+                    "FileName": "Demo20.png"
                 }
             ],           
             "InfoWeekDaysTime": "AM 09:00- PM 22:00",
@@ -1185,38 +1185,38 @@
                     ],
                     "Experience": "<ul><li>ICU 2016 World Cheerleading Hip Hop 銅牌</li></ul>"                                       
                 }, 
-                // {
-                //     "MemberCode": "UY28783404",
-                //     "Name": "吳思平",
-                //     "NameDesc": "Emma",
-                //     "JobTitle": "私人教練",
-                //     "CoverInfo":[
-                //         {
-                //             "Shape": "avatar-right.svg",
-                //             "NamePosition": "translate(65.31 183.4)",
-                //             "JobPosition": "translate(65.31 153.46)",
-                //             "ImgXShifting": -50,
-                //             "ImgYShifting": -20,
-                //         }                        
-                //     ],
-                //     "Slogan": "Be brave in making choices for your life and wholeheartedly embrace the present moment.",
-                //     "SloganDesc": "勇敢為自己的人生做出選擇，並全心全意擁抱當下",
-                //     "Desc": "個性活潑、親和力十足的好夥伴！具有同理心擅長鼓勵他人、給予信心喜歡陪伴身邊的人一同成長。",
-                //     "License":[    
-                //         {
-                //             "Name": "ACE",
-                //         },                                         
-                //         {
-                //             "Name": "CPRAED",
-                //         }               
-                //     ],
-                //     "Sports":[
-                //         {
-                //             "Name":"running",
-                //         }
-                //     ],
-                //     "Experience": "<ul><li>2023路跑協會公益路跑9k</li><li>2023長榮城市觀光馬拉松10k</li><li>2023斯巴達障礙賽</li><li>2023寶礦力水得路跑10k</li><li>2024國道馬拉松10k</li><li>2024萬金石馬拉松 全馬</li><li>2024 Strength CLUB鬥陣基地</li><li>2024 We Power 賽事</li><li>2024國家地理頻道 半馬21k</li><li>2024 台南400馬拉松 半馬21k</li><li>2024台北馬拉松 半馬21k</li></ul>"                                       
-                // }        
+                {
+                    "MemberCode": "UY28783404",
+                    "Name": "吳思平",
+                    "NameDesc": "Emma",
+                    "JobTitle": "私人教練",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(65.31 183.4)",
+                            "JobPosition": "translate(65.31 153.46)",
+                            "ImgXShifting": -70,
+                            "ImgYShifting": -10,
+                        }                        
+                    ],
+                    "Slogan": "Be brave in making choices for your life and wholeheartedly embrace the present moment.",
+                    "SloganDesc": "勇敢為自己的人生做出選擇，並全心全意擁抱當下",
+                    "Desc": "個性活潑、親和力十足的好夥伴！具有同理心擅長鼓勵他人、給予信心喜歡陪伴身邊的人一同成長。",
+                    "License":[    
+                        {
+                            "Name": "ACE",
+                        },                                         
+                        {
+                            "Name": "CPRAED",
+                        }               
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"running",
+                        }
+                    ],
+                    "Experience": "<ul><li>2023路跑協會公益路跑9k</li><li>2023長榮城市觀光馬拉松10k</li><li>2023斯巴達障礙賽</li><li>2023寶礦力水得路跑10k</li><li>2024國道馬拉松10k</li><li>2024萬金石馬拉松 全馬</li><li>2024 Strength CLUB鬥陣基地</li><li>2024 We Power 賽事</li><li>2024國家地理頻道 半馬21k</li><li>2024 台南400馬拉松 半馬21k</li><li>2024台北馬拉松 半馬21k</li></ul>"                                       
+                }        
             ]
         },
         {

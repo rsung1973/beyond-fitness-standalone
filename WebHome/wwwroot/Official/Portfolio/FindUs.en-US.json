@@ -21,29 +21,32 @@
             "MRT":"Green line( Songshan–Xindian) • Taipei Arena Station Exit 1",
             "MRTShort":"MRT Taipei Arena Station Exit <b>1</b>",
             "GoogleMap": "https://maps.app.goo.gl/UMrv2D7zM9JpiGWEA",
-            "BannerImgCount": 1,  
+            "BannerImgCount": 4,  
             "Slogan": "Exercise is More Than <br class=\"d-block d-lg-block d-md-none\" />a Physical Activity",
             "SloganMessage": "<p>Training is not just about getting fit. It's about finding joy in life and appreciating the little things. We believe that health is the key to happiness.</p><p>Beyond provides professional and systematic training that makes exercise effective and enjoyable. We want our students to be happy,healthy,and to truly enjoy their time with us. The little joys of life are found in every workout.</p>",
             "DemoImgItems":[
                 {
-                    "FileName": "Demo01.png"
+                    "FileName": "Demo14.png"
                 },
                 {
-                    "FileName": "Demo02.png"
+                    "FileName": "Demo15.png"
                 },
                 {
-                    "FileName": "Demo03.png"
+                    "FileName": "Demo16.png"
                 },
                 {
-                    "FileName": "Demo04.png"
+                    "FileName": "Demo17.png"
                 },
                 {
-                    "FileName": "Demo05.png"
+                    "FileName": "Demo18.png"
                 },
                 {
-                    "FileName": "Demo06.png"
+                    "FileName": "Demo19.png"
+                },
+                {
+                    "FileName": "Demo20.png"
                 }
-            ],           
+            ],                
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 19:00",
             "FeatureItems":[
@@ -1132,38 +1135,38 @@
                     ],
                     "Experience": "<ul><li>ICU 2016 World Cheerleading Hip Hop 銅牌</li></ul>"                                       
                 }, 
-                // {
-                //     "MemberCode": "UY28783404",
-                //     "Name": "吳思平",
-                //     "NameDesc": "Emma",
-                //     "JobTitle": "Coach",
-                //     "CoverInfo":[
-                //         {
-                //             "Shape": "avatar-right.svg",
-                //             "NamePosition": "translate(65.31 183.4)",
-                //             "JobPosition": "translate(65.31 153.46)",
-                //             "ImgXShifting": -50,
-                //             "ImgYShifting": -20,
-                //         }                        
-                //     ],
-                //     "Slogan": "Be brave in making choices for your life and wholeheartedly embrace the present moment.",
-                //     "SloganDesc": "勇敢為自己的人生做出選擇，並全心全意擁抱當下",
-                //     "Desc": "個性活潑、親和力十足的好夥伴！具有同理心擅長鼓勵他人、給予信心喜歡陪伴身邊的人一同成長。",
-                //     "License":[    
-                //         {
-                //             "Name": "ACE",
-                //         },                                         
-                //         {
-                //             "Name": "CPRAED",
-                //         }               
-                //     ],
-                //     "Sports":[
-                //         {
-                //             "Name":"running",
-                //         }
-                //     ],
-                //     "Experience": "<ul><li>2023路跑協會公益路跑9k</li><li>2023長榮城市觀光馬拉松10k</li><li>2023斯巴達障礙賽</li><li>2023寶礦力水得路跑10k</li><li>2024國道馬拉松10k</li><li>2024萬金石馬拉松 全馬</li><li>2024 Strength CLUB鬥陣基地</li><li>2024 We Power 賽事</li><li>2024國家地理頻道 半馬21k</li><li>2024 台南400馬拉松 半馬21k</li><li>2024台北馬拉松 半馬21k</li></ul>"                                       
-                // }   
+                {
+                    "MemberCode": "UY28783404",
+                    "Name": "吳思平",
+                    "NameDesc": "Emma",
+                    "JobTitle": "Coach",
+                    "CoverInfo":[
+                        {
+                            "Shape": "avatar-right.svg",
+                            "NamePosition": "translate(65.31 183.4)",
+                            "JobPosition": "translate(65.31 153.46)",
+                            "ImgXShifting": -70,
+                            "ImgYShifting": -10,
+                        }                        
+                    ],
+                    "Slogan": "Be brave in making choices for your life and wholeheartedly embrace the present moment.",
+                    "SloganDesc": "勇敢為自己的人生做出選擇，並全心全意擁抱當下",
+                    "Desc": "個性活潑、親和力十足的好夥伴！具有同理心擅長鼓勵他人、給予信心喜歡陪伴身邊的人一同成長。",
+                    "License":[    
+                        {
+                            "Name": "ACE",
+                        },                                         
+                        {
+                            "Name": "CPRAED",
+                        }               
+                    ],
+                    "Sports":[
+                        {
+                            "Name":"running",
+                        }
+                    ],
+                    "Experience": "<ul><li>2023路跑協會公益路跑9k</li><li>2023長榮城市觀光馬拉松10k</li><li>2023斯巴達障礙賽</li><li>2023寶礦力水得路跑10k</li><li>2024國道馬拉松10k</li><li>2024萬金石馬拉松 全馬</li><li>2024 Strength CLUB鬥陣基地</li><li>2024 We Power 賽事</li><li>2024國家地理頻道 半馬21k</li><li>2024 台南400馬拉松 半馬21k</li><li>2024台北馬拉松 半馬21k</li></ul>"                                       
+                }   
             ]
         },
         {
