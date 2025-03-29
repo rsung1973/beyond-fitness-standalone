@@ -760,6 +760,9 @@ namespace WebHome.Models.DataEntity
     partial void InsertBonusYearlySettlement(BonusYearlySettlement instance);
     partial void UpdateBonusYearlySettlement(BonusYearlySettlement instance);
     partial void DeleteBonusYearlySettlement(BonusYearlySettlement instance);
+    partial void InsertUserProfileRegistration(UserProfileRegistration instance);
+    partial void UpdateUserProfileRegistration(UserProfileRegistration instance);
+    partial void DeleteUserProfileRegistration(UserProfileRegistration instance);
     #endregion
 		
 		public BFDataContext(string connection) : 
@@ -2823,6 +2826,14 @@ namespace WebHome.Models.DataEntity
 			get
 			{
 				return this.GetTable<BonusYearlySettlement>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserProfileRegistration> UserProfileRegistration
+		{
+			get
+			{
+				return this.GetTable<UserProfileRegistration>();
 			}
 		}
 		
@@ -6516,6 +6527,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntityRef<BonusDepositAccount> _BonusDepositAccount;
 		
+		private EntitySet<UserProfileRegistration> _UserProfileRegistration;
+		
 		private EntityRef<Attachment> _Attachment;
 		
 		private EntityRef<LevelExpression> _LevelExpression;
@@ -8380,6 +8393,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserProfileRegistration", Storage="_UserProfileRegistration", ThisKey="UID", OtherKey="UID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=86, EmitDefaultValue=false)]
+		public EntitySet<UserProfileRegistration> UserProfileRegistration
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._UserProfileRegistration.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._UserProfileRegistration;
+			}
+			set
+			{
+				this._UserProfileRegistration.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Attachment_UserProfile", Storage="_Attachment", ThisKey="PictureID", OtherKey="AttachmentID", IsForeignKey=true)]
 		public Attachment Attachment
 		{
@@ -9208,6 +9240,18 @@ namespace WebHome.Models.DataEntity
 			entity.UserProfile = null;
 		}
 		
+		private void attach_UserProfileRegistration(UserProfileRegistration entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = this;
+		}
+		
+		private void detach_UserProfileRegistration(UserProfileRegistration entity)
+		{
+			this.SendPropertyChanging();
+			entity.UserProfile = null;
+		}
+		
 		private void Initialize()
 		{
 			this._UserRole = new EntitySet<UserRole>(new Action<UserRole>(this.attach_UserRole), new Action<UserRole>(this.detach_UserRole));
@@ -9274,6 +9318,7 @@ namespace WebHome.Models.DataEntity
 			this._UserProfileProperty = new EntitySet<UserProfileProperty>(new Action<UserProfileProperty>(this.attach_UserProfileProperty), new Action<UserProfileProperty>(this.detach_UserProfileProperty));
 			this._Player = new EntitySet<Player>(new Action<Player>(this.attach_Player), new Action<Player>(this.detach_Player));
 			this._BonusDepositAccount = default(EntityRef<BonusDepositAccount>);
+			this._UserProfileRegistration = new EntitySet<UserProfileRegistration>(new Action<UserProfileRegistration>(this.attach_UserProfileRegistration), new Action<UserProfileRegistration>(this.detach_UserProfileRegistration));
 			this._Attachment = default(EntityRef<Attachment>);
 			this._LevelExpression = default(EntityRef<LevelExpression>);
 			this._UserProfile1 = default(EntityRef<UserProfile>);
@@ -28192,6 +28237,8 @@ namespace WebHome.Models.DataEntity
 		
 		private EntitySet<PaymentTransaction> _PaymentTransaction;
 		
+		private EntitySet<UserProfileRegistration> _UserProfileRegistration;
+		
 		private EntityRef<UserProfile> _Manager;
 		
 		private EntityRef<UserProfile> _ViceManager;
@@ -28806,6 +28853,25 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_UserProfileRegistration", Storage="_UserProfileRegistration", ThisKey="BranchID", OtherKey="BranchID")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=30, EmitDefaultValue=false)]
+		public EntitySet<UserProfileRegistration> UserProfileRegistration
+		{
+			get
+			{
+				if ((this.serializing 
+							&& (this._UserProfileRegistration.HasLoadedOrAssignedValues == false)))
+				{
+					return null;
+				}
+				return this._UserProfileRegistration;
+			}
+			set
+			{
+				this._UserProfileRegistration.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_BranchStore", Storage="_Manager", ThisKey="ManagerID", OtherKey="UID", IsForeignKey=true)]
 		public UserProfile Manager
 		{
@@ -29180,6 +29246,18 @@ namespace WebHome.Models.DataEntity
 			entity.BranchStore = null;
 		}
 		
+		private void attach_UserProfileRegistration(UserProfileRegistration entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = this;
+		}
+		
+		private void detach_UserProfileRegistration(UserProfileRegistration entity)
+		{
+			this.SendPropertyChanging();
+			entity.BranchStore = null;
+		}
+		
 		private void Initialize()
 		{
 			this._RegisterLesson = new EntitySet<RegisterLesson>(new Action<RegisterLesson>(this.attach_RegisterLesson), new Action<RegisterLesson>(this.detach_RegisterLesson));
@@ -29203,6 +29281,7 @@ namespace WebHome.Models.DataEntity
 			this._CourseContractExtension1 = new EntitySet<CourseContractExtension>(new Action<CourseContractExtension>(this.attach_CourseContractExtension1), new Action<CourseContractExtension>(this.detach_CourseContractExtension1));
 			this._TrialLearner = new EntitySet<TrialLearner>(new Action<TrialLearner>(this.attach_TrialLearner), new Action<TrialLearner>(this.detach_TrialLearner));
 			this._PaymentTransaction = new EntitySet<PaymentTransaction>(new Action<PaymentTransaction>(this.attach_PaymentTransaction), new Action<PaymentTransaction>(this.detach_PaymentTransaction));
+			this._UserProfileRegistration = new EntitySet<UserProfileRegistration>(new Action<UserProfileRegistration>(this.attach_UserProfileRegistration), new Action<UserProfileRegistration>(this.detach_UserProfileRegistration));
 			this._Manager = default(EntityRef<UserProfile>);
 			this._ViceManager = default(EntityRef<UserProfile>);
 			this._Organization = default(EntityRef<Organization>);
@@ -67261,6 +67340,14 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _StaffWelfareFund;
 		
+		private System.Nullable<int> _AchievementBonus;
+		
+		private System.Nullable<int> _AttendanceBonus;
+		
+		private string _AchievementRemark;
+		
+		private System.Nullable<int> _ManagementBonus;
+		
 		private EntityRef<MonthlySalary> _MonthlySalary;
 		
 		private EntityRef<UserProfile> _UserProfile;
@@ -67317,6 +67404,14 @@ namespace WebHome.Models.DataEntity
     partial void OnPensionChanged();
     partial void OnStaffWelfareFundChanging(System.Nullable<int> value);
     partial void OnStaffWelfareFundChanged();
+    partial void OnAchievementBonusChanging(System.Nullable<int> value);
+    partial void OnAchievementBonusChanged();
+    partial void OnAttendanceBonusChanging(System.Nullable<int> value);
+    partial void OnAttendanceBonusChanged();
+    partial void OnAchievementRemarkChanging(string value);
+    partial void OnAchievementRemarkChanged();
+    partial void OnManagementBonusChanging(System.Nullable<int> value);
+    partial void OnManagementBonusChanged();
     #endregion
 		
 		public MonthlySalaryDetails()
@@ -67815,6 +67910,90 @@ namespace WebHome.Models.DataEntity
 					this._StaffWelfareFund = value;
 					this.SendPropertyChanged("StaffWelfareFund");
 					this.OnStaffWelfareFundChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=24)]
+		public System.Nullable<int> AchievementBonus
+		{
+			get
+			{
+				return this._AchievementBonus;
+			}
+			set
+			{
+				if ((this._AchievementBonus != value))
+				{
+					this.OnAchievementBonusChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementBonus = value;
+					this.SendPropertyChanged("AchievementBonus");
+					this.OnAchievementBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AttendanceBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=25)]
+		public System.Nullable<int> AttendanceBonus
+		{
+			get
+			{
+				return this._AttendanceBonus;
+			}
+			set
+			{
+				if ((this._AttendanceBonus != value))
+				{
+					this.OnAttendanceBonusChanging(value);
+					this.SendPropertyChanging();
+					this._AttendanceBonus = value;
+					this.SendPropertyChanged("AttendanceBonus");
+					this.OnAttendanceBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AchievementRemark", DbType="NVarChar(256)")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26)]
+		public string AchievementRemark
+		{
+			get
+			{
+				return this._AchievementRemark;
+			}
+			set
+			{
+				if ((this._AchievementRemark != value))
+				{
+					this.OnAchievementRemarkChanging(value);
+					this.SendPropertyChanging();
+					this._AchievementRemark = value;
+					this.SendPropertyChanged("AchievementRemark");
+					this.OnAchievementRemarkChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ManagementBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27)]
+		public System.Nullable<int> ManagementBonus
+		{
+			get
+			{
+				return this._ManagementBonus;
+			}
+			set
+			{
+				if ((this._ManagementBonus != value))
+				{
+					this.OnManagementBonusChanging(value);
+					this.SendPropertyChanging();
+					this._ManagementBonus = value;
+					this.SendPropertyChanged("ManagementBonus");
+					this.OnManagementBonusChanged();
 				}
 			}
 		}
@@ -86301,6 +86480,214 @@ namespace WebHome.Models.DataEntity
 		public void OnSerialized(StreamingContext context)
 		{
 			this.serializing = false;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserProfileRegistration")]
+	[global::System.Runtime.Serialization.DataContractAttribute()]
+	public partial class UserProfileRegistration : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UID;
+		
+		private System.DateTime _RegistrationDate;
+		
+		private int _BranchID;
+		
+		private EntityRef<BranchStore> _BranchStore;
+		
+		private EntityRef<UserProfile> _UserProfile;
+		
+    #region 擴充性方法定義
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUIDChanging(int value);
+    partial void OnUIDChanged();
+    partial void OnRegistrationDateChanging(System.DateTime value);
+    partial void OnRegistrationDateChanged();
+    partial void OnBranchIDChanging(int value);
+    partial void OnBranchIDChanged();
+    #endregion
+		
+		public UserProfileRegistration()
+		{
+			this.Initialize();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UID", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+		public int UID
+		{
+			get
+			{
+				return this._UID;
+			}
+			set
+			{
+				if ((this._UID != value))
+				{
+					if (this._UserProfile.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUIDChanging(value);
+					this.SendPropertyChanging();
+					this._UID = value;
+					this.SendPropertyChanged("UID");
+					this.OnUIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RegistrationDate", DbType="DateTime NOT NULL", IsPrimaryKey=true)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+		public System.DateTime RegistrationDate
+		{
+			get
+			{
+				return this._RegistrationDate;
+			}
+			set
+			{
+				if ((this._RegistrationDate != value))
+				{
+					this.OnRegistrationDateChanging(value);
+					this.SendPropertyChanging();
+					this._RegistrationDate = value;
+					this.SendPropertyChanged("RegistrationDate");
+					this.OnRegistrationDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BranchID", DbType="Int NOT NULL")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+		public int BranchID
+		{
+			get
+			{
+				return this._BranchID;
+			}
+			set
+			{
+				if ((this._BranchID != value))
+				{
+					if (this._BranchStore.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBranchIDChanging(value);
+					this.SendPropertyChanging();
+					this._BranchID = value;
+					this.SendPropertyChanged("BranchID");
+					this.OnBranchIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="BranchStore_UserProfileRegistration", Storage="_BranchStore", ThisKey="BranchID", OtherKey="BranchID", IsForeignKey=true)]
+		public BranchStore BranchStore
+		{
+			get
+			{
+				return this._BranchStore.Entity;
+			}
+			set
+			{
+				BranchStore previousValue = this._BranchStore.Entity;
+				if (((previousValue != value) 
+							|| (this._BranchStore.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._BranchStore.Entity = null;
+						previousValue.UserProfileRegistration.Remove(this);
+					}
+					this._BranchStore.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfileRegistration.Add(this);
+						this._BranchID = value.BranchID;
+					}
+					else
+					{
+						this._BranchID = default(int);
+					}
+					this.SendPropertyChanged("BranchStore");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="UserProfile_UserProfileRegistration", Storage="_UserProfile", ThisKey="UID", OtherKey="UID", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public UserProfile UserProfile
+		{
+			get
+			{
+				return this._UserProfile.Entity;
+			}
+			set
+			{
+				UserProfile previousValue = this._UserProfile.Entity;
+				if (((previousValue != value) 
+							|| (this._UserProfile.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._UserProfile.Entity = null;
+						previousValue.UserProfileRegistration.Remove(this);
+					}
+					this._UserProfile.Entity = value;
+					if ((value != null))
+					{
+						value.UserProfileRegistration.Add(this);
+						this._UID = value.UID;
+					}
+					else
+					{
+						this._UID = default(int);
+					}
+					this.SendPropertyChanged("UserProfile");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void Initialize()
+		{
+			this._BranchStore = default(EntityRef<BranchStore>);
+			this._UserProfile = default(EntityRef<UserProfile>);
+			OnCreated();
+		}
+		
+		[global::System.Runtime.Serialization.OnDeserializingAttribute()]
+		[global::System.ComponentModel.EditorBrowsableAttribute(EditorBrowsableState.Never)]
+		public void OnDeserializing(StreamingContext context)
+		{
+			this.Initialize();
 		}
 	}
 	

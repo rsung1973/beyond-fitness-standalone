@@ -1,16 +1,17 @@
 ﻿@using System.IO
 @using System.Linq.Expressions
-
-@using Microsoft.AspNetCore.Http
 @using System.Net.Mail
 @using System.Net
 @using System.Text
+@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Microsoft.AspNetCore.Mvc.Razor
+
 @using WebHome.Helper
 @using WebHome.Models.Locale
 @using WebHome.Models.ViewModel
 @using WebHome.Models.DataEntity
 @using WebHome.Controllers
-@using Microsoft.AspNetCore.Mvc.ModelBinding
 
 @using Newtonsoft.Json
 @using WebHome.Properties
@@ -32,7 +33,12 @@
 
     //await TestGmail();
 
-    throw new Exception("Test exception....");
+    //throw new Exception("Test exception....");
+    var pageWriter = ViewContext.Writer;
+    ViewContext.Writer = Console.Out;
+    Test02();
+    ViewContext.Writer = pageWriter;
+    @say()
 }
 
 @functions
@@ -42,11 +48,28 @@
     QueryViewModel _viewModel;
     IFormCollection _model;
 
+    HelperResult say()
+    {
+        return new HelperResult(async (writer) =>
+        {
+            var original = ViewContext.Writer;
+            ViewContext.Writer = writer;
+            Test02();
+            await writer.WriteAsync("");
+            ViewContext.Writer = original;
+        });
+    }
+
     void Test01()
     {
         var indicator = models.GetTable<MonthlyIndicator>().Where(i => i.PeriodID == int.Parse(_model["PeriodID"])).First();
         var av = indicator.CalculateAverageLessonPrice(models, int.Parse(_model["CoachID"]));
         <div>@(av)</div>
+    }
+
+    void Test02()
+    {
+        <div>Hello,World!!</div>
     }
 
     async Task TestGmail()

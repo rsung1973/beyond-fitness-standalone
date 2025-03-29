@@ -232,6 +232,7 @@ namespace WebHome.Models.ViewModel
         public String AdministrativeArea { get; set; }
         public int? RelationID { get; set; }
         public String RelationMemo { get; set; }
+        public int? BranchID { get; set; }
 
     }
 

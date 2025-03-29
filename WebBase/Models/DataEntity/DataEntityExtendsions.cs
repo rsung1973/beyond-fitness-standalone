@@ -637,6 +637,11 @@ namespace WebHome.Models.DataEntity
             return level?.CategoryID == (int)Naming.ProfessionalCategory.FES;
         }
 
+        public static bool IsRFM(this ProfessionalLevel level)
+        {
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.FES;
+        }
+
         public static bool IsHealthCare(this ProfessionalLevel level)
         {
             return level?.CategoryID == (int)Naming.ProfessionalCategory.Health;

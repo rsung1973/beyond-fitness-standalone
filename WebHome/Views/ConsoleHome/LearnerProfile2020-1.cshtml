@@ -133,7 +133,7 @@
                                     @{
                                         int remainedCount;
                                         IQueryable<RegisterLesson> remainedLessons;
-                                        var remainedItems = _learner.RemainedLessonCount2024(models, out remainedCount, out remainedLessons, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems);
+                                        var remainedItems = _learner.RemainedLessonCount2024(models, out remainedCount, out remainedLessons, out List<RegisterLesson> remainedPTItems, out List<RegisterLesson> remainedSRItems, out List<RegisterLesson> remainedSDItems, out List<RegisterLesson> remainedPIItems);
                                         remainedCount = remainedPTItems.Sum(r => r.RemainedLessonCount(false));
                                     }
                                     <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
@@ -149,7 +149,7 @@
                                             <small>P.T剩餘堂數</small>
                                         </div>
                                     </li>
-                                    @{ 
+                                    @{
                                         remainedCount = remainedSRItems.Sum(r => r.RemainedLessonCount(false));
                                     }
                                     <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
@@ -161,11 +161,11 @@
                                                 SessionType = (int)Naming.SessionTypeDefinition.SR,
                                             })),@(remainedCount),true);'>
                                         <div class="body">
-                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedSRItems.Count)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedCount)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
                                             <small>S.R剩餘堂數</small>
                                         </div>
                                     </li>
-                                    @{ 
+                                    @{
                                         remainedCount = remainedSDItems.Sum(r => r.RemainedLessonCount(false));
                                     }
                                     <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
@@ -181,10 +181,25 @@
                                             <small>S.D剩餘堂數</small>
                                         </div>
                                     </li>
-                                    @{ 
+                                    @{
+                                        remainedCount = remainedPIItems.Sum(r => r.RemainedLessonCount(false));
+                                    }
+                                    <li class="col-lg-4 col-6" onclick='showRemainedLessons(@Html.Raw(JsonConvert.SerializeObject(
+                                            new
+                                            {
+                                                MemberID = _learner.UID,
+                                                ContractQueryMode = Naming.ContractServiceMode.ContractOnly,
+                                                Status = (int)Naming.CourseContractStatus.已生效,
+                                                SessionType = (int)Naming.SessionTypeDefinition.PI,
+                                            })),@(remainedCount),true);'>
+                                        <div class="body">
+                                            <h5 class="m-b-0 number count-to" data-from="0" data-to="@(remainedCount)" data-speed="1000" data-fresh-interval="700">@(remainedCount)</h5>
+                                            <small>P.I剩餘堂數</small>
+                                        </div>
+                                    </li>                                    @{
                                         remainedCount = models.RemainedLearnerDailyQuestionCount(_learner);
                                     }
-                                    <li class="col-lg-6 col-12" onclick='showLessonQuestion(@Html.Raw(JsonConvert.SerializeObject(
+                                    <li class="col-lg-4 col-6" onclick='showLessonQuestion(@Html.Raw(JsonConvert.SerializeObject(
                                             new
                                             {
                                                 MemberID = _learner.UID,
@@ -194,7 +209,7 @@
                                             <small>運動小學堂剩餘答題數</small>
                                         </div>
                                     </li>
-                                    <li class="col-lg-6 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
+                                    <li class="col-lg-4 col-6" onclick='showContractList(@Html.Raw(JsonConvert.SerializeObject(
                                                 new
                                                 {
                                                     MemberID = _learner.UID,

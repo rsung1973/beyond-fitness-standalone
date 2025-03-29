@@ -81,22 +81,25 @@
                                     </div>
                                 </li>
                             }
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">上課業績獎金</div>
-                                        <div class="list_td rt">@($"{_salary?.AttendanceBonus:##,###,###,###}")</div>
+                            @if (_model.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.RegularPay)
+                            {
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">上課業績獎金</div>
+                                            <div class="list_td rt">@($"{_model.AttendanceBonus:##,###,###,###}")</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li>
-                                <div class="list_tb tb2">
-                                    <div class="list_tr">
-                                        <div class="list_td hd">收款業績獎金</div>
-                                        <div class="list_td rt">@($"{_salary?.AchievementBonus:##,###,###,###}")</div>
+                                </li>
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd">收款業績獎金</div>
+                                            <div class="list_td rt">@($"{_model.AchievementBonus:##,###,###,###}")</div>
+                                        </div>
                                     </div>
-                                </div>
-                            </li>
+                                </li>
+                            }
                             @if (_salary is CoachYearlyAdditionalPay)
                             {
                                 CoachYearlyAdditionalPay payItem = (CoachYearlyAdditionalPay)_salary;
@@ -137,6 +140,18 @@
                                     </div>
                                 </div>
                             </li>
+                            @if (_model.MonthlySalary.SalaryType == (int)MonthlySalary.SalaryTypeEnum.RegularPay)
+                            {
+                                <li>
+                                    <div class="list_tb tb2">
+                                        <div class="list_tr">
+                                            <div class="list_td hd"></div>
+                                            <div class="list_td rt">@Html.Raw(_model.AchievementRemark)</div>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+
                         </ul>
                     </div>
                     <div class="col-md-6 col-sm-6 col-12">

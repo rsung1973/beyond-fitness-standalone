@@ -1864,6 +1864,19 @@ namespace WebHome.Helper.BusinessOperation
                 models.ExecuteCommand(@"UPDATE UserProfile
                         SET        LevelID = {0}
                         WHERE   (UID = {1}) AND (LevelID = {2})", (int)MemberStatusDefinition.ReadyToRegister, m.UID, (int)MemberStatusDefinition.Deleted);
+
+                var registration = m.UserProfile.UserProfileRegistration.OrderByDescending(r => r.RegistrationDate).FirstOrDefault();
+                if (registration?.BranchID != item.CourseContractExtension.BranchID)
+                {
+                    models.GetTable<UserProfileRegistration>().InsertOnSubmit(
+                        new UserProfileRegistration
+                        {
+                            UID = m.UID,
+                            RegistrationDate = DateTime.Now,
+                            BranchID = item.CourseContractExtension.BranchID,
+                        });
+                    models.SubmitChanges();
+                }
             }
 
             if (!item.CourseContractAction.Any(a => a.ActionID == (int)CourseContractAction.ActionType.盤點))
@@ -2048,7 +2061,7 @@ namespace WebHome.Helper.BusinessOperation
 
             if (viewModel.Extension != true || viewModel.Booking != true)
             {
-                ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問股份有限公司服務條款、相關使用及消費合約");
                 return null;
             }
 
@@ -2158,7 +2171,7 @@ namespace WebHome.Helper.BusinessOperation
 
                 if (viewModel.Extension != true)
                 {
-                    ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問有限公司服務條款、相關使用及消費合約");
+                    ModelState.AddModelError("Message", "請閱讀並勾選同意超越體能顧問股份有限公司服務條款、相關使用及消費合約");
                     return null;
                 }
                 

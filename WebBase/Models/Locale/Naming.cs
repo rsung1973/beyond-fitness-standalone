@@ -256,6 +256,7 @@ namespace WebHome.Models.Locale
             Level_1_2nd = 13,
             FES = 32,
             RFM = 45,
+            Director = 46,
         }
 
         public enum CourseContractStatus

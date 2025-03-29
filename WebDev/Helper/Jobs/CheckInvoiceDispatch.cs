@@ -90,32 +90,32 @@ namespace WebHome.Helper.Jobs
             }
         }
 
-        private TurnkeyLog[] GetInvoiceTurnkeyLog(string invoiceNo,String docType,out String result)
+        private TurnkeyLog GetInvoiceTurnkeyLog(string invoiceNo,String receiptNo,out String result,bool cancelled = false)
         {
             using (WebClient client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
-                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?InvoiceNo={invoiceNo}&DocType={docType}";
+                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?InvoiceNo={invoiceNo}&ReceiptNo={receiptNo}&Cancelled={cancelled}";
                 result = client.DownloadString(url);
                 if(result?.Length>0)
                 {
                     FileLogger.Logger.Info(result);
-                    return JsonConvert.DeserializeObject<TurnkeyLog[]>(result);
+                    return JsonConvert.DeserializeObject<TurnkeyLog>(result);
                 }
             }
             return null;
         }
 
-        private TurnkeyLog[] GetAllowanceTurnkeyLog(string allowanceNo, String docType,out String result)
+        private TurnkeyLog GetAllowanceTurnkeyLog(string allowanceNo, String receiptNo,out String result,bool cancelled = false)
         {
             using (WebClient client = new WebClient())
             {
                 client.Encoding = Encoding.UTF8;
-                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?AllowanceNo={allowanceNo}&DocType={docType}";
+                String url = $"{AppSettings.Default.TurnkeyCheckUrl}?AllowanceNo={allowanceNo}&ReceiptNo={receiptNo}&Cancelled={cancelled}";
                 result = client.DownloadString(url);
                 if (result?.Length > 0)
                 {
-                    return JsonConvert.DeserializeObject<TurnkeyLog[]>(result);
+                    return JsonConvert.DeserializeObject<TurnkeyLog>(result);
                 }
             }
             return null;
@@ -125,6 +125,7 @@ namespace WebHome.Helper.Jobs
         {
             foreach (var f in Directory.EnumerateFiles(AppSettings.Default.TurnkeyCheckListPath, "*", SearchOption.AllDirectories))
             {
+                FileLogger.Logger.Debug($"Checking Turnkey Item: {f}");
                 try
                 {
                     if (int.TryParse(Path.GetFileNameWithoutExtension(f), out int docID))
@@ -132,13 +133,13 @@ namespace WebHome.Helper.Jobs
                         var docItem = models.GetTable<Document>().Where(d => d.DocID == docID).FirstOrDefault();
                         if (docItem != null)
                         {
-                            TurnkeyLog[] logItems = null;
+                            TurnkeyLog logItem = null;
                             switch ((Naming.DocumentTypeDefinition)docItem.DocType)
                             {
                                 case Naming.DocumentTypeDefinition.E_Invoice:
                                     var item = docItem.InvoiceItem;
-                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0401",out String result);
-                                    if (logItems?.Length > 0)
+                                    logItem = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", item.Organization.ReceiptNo,out String result);
+                                    if (logItem?.result == true)
                                     {
                                         if (item.InvoiceItemDispatchLog == null)
                                         {
@@ -147,9 +148,9 @@ namespace WebHome.Helper.Jobs
                                             };
                                         }
                                         item.InvoiceItemDispatchLog.DispatchDate = DateTime.Now;
-                                        item.InvoiceItemDispatchLog.Status = logItems[0].STATUS == "C"
+                                        item.InvoiceItemDispatchLog.Status = logItem.TxnCode == "C"
                                             ? (int)Naming.GeneralStatus.Successful
-                                            : logItems[0].STATUS == "E"
+                                            : logItem.TxnCode == "E"
                                                 ? (int)Naming.GeneralStatus.Failed
                                                 : null;
 
@@ -167,8 +168,8 @@ namespace WebHome.Helper.Jobs
 
                                 case Naming.DocumentTypeDefinition.E_InvoiceCancellation:
                                     item = docItem.DerivedDocument?.TargetDocument?.InvoiceItem;
-                                    logItems = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", "C0501",out result);
-                                    if (logItems?.Length > 0)
+                                    logItem = GetInvoiceTurnkeyLog($"{item?.TrackCode}{item?.No}", item.Organization.ReceiptNo, out result, true);
+                                    if (logItem?.result == true)
                                     {
                                         if (item.InvoiceCancellation != null)
                                         {
@@ -180,9 +181,9 @@ namespace WebHome.Helper.Jobs
                                             }
                                             item.InvoiceCancellation.InvoiceCancellationDispatchLog.DispatchDate = DateTime.Now;
                                             item.InvoiceCancellation.InvoiceCancellationDispatchLog.Status = 
-                                                logItems[0].STATUS == "C"
+                                                logItem.TxnCode == "C"
                                                     ? (int)Naming.GeneralStatus.Successful
-                                                    : logItems[0].STATUS == "E"
+                                                    : logItem.TxnCode == "E"
                                                         ? (int)Naming.GeneralStatus.Failed
                                                         : null;
                                             models.SubmitChanges();
@@ -201,8 +202,8 @@ namespace WebHome.Helper.Jobs
 
                                 case Naming.DocumentTypeDefinition.E_Allowance:
                                     var allowance = docItem.InvoiceAllowance;
-                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0401",out result);
-                                    if (logItems?.Length > 0)
+                                    logItem = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0401",out result);
+                                    if (logItem?.result == true)
                                     {
                                         if (allowance.InvoiceAllowanceDispatchLog == null)
                                         {
@@ -212,9 +213,9 @@ namespace WebHome.Helper.Jobs
                                         }
                                         allowance.InvoiceAllowanceDispatchLog.DispatchDate = DateTime.Now;
                                         allowance.InvoiceAllowanceDispatchLog.Status =
-                                                logItems[0].STATUS == "C"
+                                                logItem.TxnCode == "C"
                                                     ? (int)Naming.GeneralStatus.Successful
-                                                    : logItems[0].STATUS == "E"
+                                                    : logItem.TxnCode == "E"
                                                         ? (int)Naming.GeneralStatus.Failed
                                                         : null;
                                         models.SubmitChanges();
@@ -232,8 +233,8 @@ namespace WebHome.Helper.Jobs
 
                                 case Naming.DocumentTypeDefinition.E_AllowanceCancellation:
                                     allowance = docItem.DerivedDocument?.TargetDocument?.InvoiceAllowance;
-                                    logItems = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, "D0501", out result);
-                                    if (logItems?.Length > 0)
+                                    logItem = GetAllowanceTurnkeyLog(allowance?.AllowanceNumber, allowance.InvoiceAllowanceSeller?.ReceiptNo, out result);
+                                    if (logItem?.result == true)
                                     {
                                         if (allowance.InvoiceAllowanceCancellation != null)
                                         {
@@ -369,17 +370,8 @@ namespace WebHome.Helper.Jobs
 
     public class TurnkeyLog
     {
-        public string SEQNO { get; set; }
-        public string SUBSEQNO { get; set; }
-        public string STATUS { get; set; }
-        public string DocType { get; set; }
-        public string TrackCode { get; set; }
-        public string No { get; set; }
-        public string InvoiceNo { get; set; }
-        public DateTime? InvoiceDate { get; set; }
-        public string AllowanceNo { get; set; }
-        public DateTime? AllowanceDate { get; set; }
-        public DateTime? MESSAGE_DTS { get; set; }
+        public bool result { get; set; }
+        public string TxnCode { get; set; }
     }
 
 }
