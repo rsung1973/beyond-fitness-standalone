@@ -1,0 +1,68 @@
+
+
+@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    MonthlyCoachRevenueIndicatorQueryViewModel _viewModel;
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (MonthlyCoachRevenueIndicatorQueryViewModel)ViewBag.ViewModel;
+
+}
+@{
+    MonthlyCoachRevenueIndicator _item = (MonthlyCoachRevenueIndicator)ViewBag.DataItem;
+    MonthlyIndicator _indicator = _item.MonthlyIndicator;
+
+    ServingCoach coach = _item.ServingCoach;
+
+    var salary = models.GetTable<CoachMonthlySalary>()
+                .Where(s => s.CoachID == _item.CoachID)
+                .OrderByDescending(s => s.SettlementID)
+                .FirstOrDefault();
+
+    IQueryable<V_Tuition> items =
+        models.GetTable<V_Tuition>()
+            .Where(t => t.AttendingCoach == _item.CoachID)
+            .FilterByCompleteLesson();
+    if (coach.ProfessionalLevel.IsHealthCare())
+    {
+        items = items.SRSessionScope(models);
+    }
+    else
+    {
+        items = items.SessionScopeForComleteLesson(models);
+    }
+
+    var totalMinutes = items.Join(models.GetTable<LessonPriceType>(),
+            t => t.PriceID,
+            l => l.PriceID,
+            (t, l) => l).Sum(l => l.DurationInMinutes);
+}
+
+<div class="body">
+    <div class="row">
+        <div class="col-12">
+            <h5 class="m-b-5">總累計</h5>
+        </div>
+        <div class="col-12">
+            <p class="text-small">
+                年資：<sapn class="col-blue">@(Math.Round((salary?.JobTenureInDays ?? 0) / 365M, 1))年</sapn> <br>
+                累計客製化課程堂數（不包含TS)：<sapn class="col-blue">@($"{items.Count():##,###,###,###}")</sapn><small class="px-2">堂</small> <br>
+                累計客製化課程小時（不包含TS)：<sapn class="col-blue">@($"{(int)(totalMinutes/60M+0.5M):##,###,###,###}")</sapn><small class="px-2">HR</small> <br>
+            </p>
+        </div>
+    </div>
+</div>

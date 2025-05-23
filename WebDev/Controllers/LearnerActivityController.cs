@@ -483,6 +483,25 @@ namespace WebHome.Controllers
             }
             property.CommitmentDate = DateTime.Now;
             models.SubmitChanges();
+
+            property = models.GetTable<UserProfileProperty>()
+                            .Where(u => u.UID == item.UID)
+                            .Where(p => p.PropertyID == (int)UserProfileProperty.PropertyDefinition.Email)
+                            .FirstOrDefault();
+
+            if (property == null)
+            {
+                property = new UserProfileProperty
+                {
+                    UID = item.UID,
+                    PropertyID = (int)UserProfileProperty.PropertyDefinition.Email,
+                };
+                models.GetTable<UserProfileProperty>().InsertOnSubmit(property);
+            }
+            property.CommitmentDate = DateTime.Now;
+            property.Description = item.PID;
+            models.SubmitChanges();
+
         }
 
         [HttpPost]

@@ -22,17 +22,21 @@
 @if (_viewModel.Lessons.HasValue)
 {
     <option value="">-- 請選擇分期轉開次數 --</option>
-    if ((_viewModel.Lessons >= 25)
+    if (_viewModel.Lessons >= 25)
+    {
+        <option value="2" selected="@(_viewModel.Installments==2)">2次</option>
+    }
+    @*if ((_viewModel.Lessons >= 25)
         || _profile.IsAuthorized(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager }))
     {
         <option value="2" selected="@(_viewModel.Installments==2)">2次</option>
         <option value="3" selected="@(_viewModel.Installments==3)">3次</option>
     }
-    if (_viewModel.Lessons >= 75 
+    if (_viewModel.Lessons >= 75
         || _profile.IsAuthorized(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Manager, (int)Naming.RoleID.ViceManager }))
     {
         <option value="4" selected="@(_viewModel.Installments==4)">4次</option>
-    }
+    }*@
 
 }
 

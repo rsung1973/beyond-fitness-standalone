@@ -1290,7 +1290,7 @@ namespace WebHome.Helper
                     //}
                     //else
                     {
-                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 50)
+                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 40)
                             * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                             * (salary.GradeIndex / 100M)
                             + 0.5M) ?? 0;
@@ -1444,7 +1444,7 @@ namespace WebHome.Helper
                 {
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 60)
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 50)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M)
                         + 0.5M) ?? 0;
@@ -1460,7 +1460,7 @@ namespace WebHome.Helper
                 {
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 70)
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 60)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M)
                         + 0.5M) ?? 0;
@@ -1498,6 +1498,10 @@ namespace WebHome.Helper
                     //        salary.PTAverageUnitPrice = 0;
                     //    }
                     //}
+
+                    salary.AttendedByOther = 0;
+                    salary.AttendedShare = 0;
+                    salary.AttendedByOtherAvgPrice = 0;
 
                     models.SubmitChanges();
                 }
@@ -1561,6 +1565,8 @@ namespace WebHome.Helper
                     }
 
                     calcGeneralAchievement();
+
+                    salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
                     salary.AttendanceBonus = (int?)(salary.PTAttendanceCount
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
@@ -2122,6 +2128,7 @@ namespace WebHome.Helper
                 {
                     int applicableClasses = Math.Min(totalClasses, upperBound) - lowerBound + 1;
                     totalBonus += averagePrice * applicableClasses * config.Percentages[i];
+                    //Console.WriteLine($"抽成獎金: {totalBonus} , {averagePrice} * {applicableClasses} * {config.Percentages[i]}");
                 }
                 else
                 {
@@ -2195,8 +2202,8 @@ namespace WebHome.Helper
 
     class SRBonusConfig
     {
-        public int[] Thresholds { get; set; } = [51, 61, 71, 81, 91, 101, 111]; // 門檻值
-        public decimal[] Percentages { get; set; } = [0.3m, 0.35m, 0.4m, 0.45m, 0.5m, 0.55m, 0.65m]; // 百分比
+        public int[] Thresholds { get; set; } = [51, 61, 71, 81, 91, 101, 111, 121, 131]; // 門檻值
+        public decimal[] Percentages { get; set; } = [0.3m, 0.35m, 0.4m, 0.45m, 0.5m, 0.55m, 0.65m, 0.65m, 0.7m]; // 百分比
         public SeniorityBonus[] SeniorityBonuses { get; set; } = 
             [
                 new SeniorityBonus { MinYears= 5, MaxYears= 8, BonusPercentage= 0.004m },

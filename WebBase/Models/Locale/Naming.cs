@@ -98,6 +98,7 @@ namespace WebHome.Models.Locale
 			BEYOND推廣課 = 1018,
             單堂現場付款 = 1019,
             BR體驗 = 1020,
+            PT轉換教練 = 1021,
         }
 
         public enum LessonSeriesStatus

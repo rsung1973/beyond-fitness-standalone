@@ -608,8 +608,13 @@ namespace WebHome.Controllers
 				ModelState.AddModelError("FeatureID", "未指定上課類型!!");
 			}
 
+            if (!(viewModel.Minutes > 0))
+            {
+                ModelState.AddModelError("Minutes", "未指定上課分鐘數!!");
+            }
 
-			if (!ModelState.IsValid) 
+
+            if (!ModelState.IsValid) 
             {
                 return Json(new { result = false, message = ModelState.ErrorMessage() });
 

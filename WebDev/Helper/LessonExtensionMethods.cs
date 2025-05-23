@@ -22,6 +22,7 @@ using WebHome.Models.ViewModel;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Diagnostics.Contracts;
 
 namespace WebHome.Helper
 {
@@ -1201,6 +1202,11 @@ namespace WebHome.Helper
                             return ;
                         }
                     }
+                    else if (regles.Expiration.HasValue && timeItem.ClassTime.Value > regles.Expiration.Value.AddDays(1))
+                    {
+                        alertMessage = "逾越課程有效期限!!";
+                        return;
+                    }
                 }
             }
 
@@ -1462,6 +1468,12 @@ namespace WebHome.Helper
                         }
                     }
                 }
+                else if (lesson.Expiration.HasValue && lesson.Expiration.Value.AddDays(1) < viewModel.ClassDate.Value)
+                {
+                    ModelState.AddModelError("Message", "已逾越課程有效期限!!");
+                    return null;
+                }
+
             }
 
             if (priceType.IsDistanceLesson && branch?.IsVirtualClassroom() != true)

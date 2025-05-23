@@ -624,7 +624,8 @@ namespace WebHome.Models.DataEntity
 
         public static bool IsManager(this ProfessionalLevel level)
         {
-            return level?.CategoryID == (int)Naming.ProfessionalCategory.FM;
+            return level?.CategoryID == (int)Naming.ProfessionalCategory.FM
+                    && level?.LevelID != (int)Naming.ProfessionLevelDefinition.RFM;
         }
 
         public static bool IsViceManager(this ProfessionalLevel level)
@@ -639,7 +640,7 @@ namespace WebHome.Models.DataEntity
 
         public static bool IsRFM(this ProfessionalLevel level)
         {
-            return level?.CategoryID == (int)Naming.ProfessionalCategory.FES;
+            return level?.LevelID == (int)Naming.ProfessionLevelDefinition.RFM;
         }
 
         public static bool IsHealthCare(this ProfessionalLevel level)
@@ -698,11 +699,11 @@ namespace WebHome.Models.DataEntity
     public partial class MonthlyCoachRevenueIndicator
     {
         public decimal AttendanceCount => (ActualCompleteLessonCount ?? 0)
-                    + (ActualCompleteTSCount ?? 0)
-                    + (ActualCompletePICount ?? 0M) / 2M
-                    + (ATCount ?? 0)
-                    + (SRCount ?? 0)
-                    + (SDCount ?? 0);
+                    //+ (ActualCompleteTSCount ?? 0)
+                    //+ (ActualCompletePICount ?? 0M) / 2M
+                    //+ (ATCount ?? 0)
+                    //+ (SDCount ?? 0)
+                    + (SRCount ?? 0);
 
         public int? FinalActualBRCount { get => (ActualBRCount ?? 0) + (AdjustActualBRCount ?? 0); }
         public int? FinalDealedCountWithBR { get => (DealedCountWithBR ?? 0) + (AdjustDealedCountWithBR ?? 0); }
@@ -1087,6 +1088,7 @@ namespace WebHome.Models.DataEntity
         public enum PropertyDefinition
         {
             ValidEmail = 1301,
+            Email = 1302,
         }
     }
 

@@ -296,14 +296,19 @@ namespace WebHome.Helper
             if (forcedUpdate == true)
             {
                 lessonItems = lessonItems.Where(l => l.SettlementID.HasValue);
+                GroupXItems = GroupXItems.Join(models.GetTable<LessonTimeSettlement>()
+                    .Where(t => t.SettlementID.HasValue), l => l.LessonID, t => t.LessonID, (l, t) => l);
             }
             else if (item.StartDate == DateTime.Today.FirstDayOfMonth())
             {
                 lessonItems = lessonItems.Where(l => l.ClassTime < DateTime.Today.AddDays(1));
+                GroupXItems = GroupXItems.Where(l => l.ClassTime < DateTime.Today.AddDays(1));
             }
             else
             {
                 lessonItems = lessonItems.Where(l => l.SettlementID.HasValue);
+                GroupXItems = GroupXItems.Join(models.GetTable<LessonTimeSettlement>()
+                    .Where(t => t.SettlementID.HasValue), l => l.LessonID, t => t.LessonID, (l, t) => l);
             }
 
             IQueryable<V_Tuition> tuitionItems = lessonItems;
@@ -421,7 +426,7 @@ namespace WebHome.Helper
                             p => p.PaymentID, t => t.InstallmentID, (p, t) => t)
                         .Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
 
-                    var branchTuitionItems = tuitionItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
+                    var branchTuitionItems = tuitionItems.Where(t => t.BranchID == branchIndicator.BranchID);
                     var branchAchievementItems = achievementItems.Where(t => t.CoachWorkPlace == branchIndicator.BranchID);
                     var branchContractItems = contractItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);
                     var branchInstallmentItems = installmentItems.Where(c => c.CourseContractExtension.BranchID == branchIndicator.BranchID);

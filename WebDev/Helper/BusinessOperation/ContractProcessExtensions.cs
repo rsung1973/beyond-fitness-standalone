@@ -462,7 +462,10 @@ namespace WebHome.Helper.BusinessOperation
                     || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CRF
                     || viewModel.ContractType == CourseContractType.ContractTypeDefinition.CVF)
             {
-
+                if (viewModel.UID.Length > 3)
+                {
+                    ModelState.AddModelError("OwnerID", "家庭共享合約類型不得超過3名成員");
+                }
             }
             else
             {

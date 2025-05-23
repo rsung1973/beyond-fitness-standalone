@@ -208,11 +208,17 @@ namespace WebHome.Helper
 
 		public static GroupingLesson RegisterEnterpriseLesson(this GenericManager<BFDataContext> models, RegisterLessonViewModel viewModel)
 		{
-
-            var priceItem = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+            var items = models.GetTable<LessonPriceType>().Where(p => p.Status == (int)Naming.LessonPriceStatus.點數兌換課程)
+                                .Where(p => p.DurationInMinutes == viewModel.Minutes)
                                 .Where(p => p.LessonPriceProperty.Any(p => p.PropertyID == (int)Naming.LessonPriceFeature.BEYOND推廣課))
-                                .Where(p => p.LessonPriceProperty.Any(p => p.PropertyID == (int?)viewModel.FeatureID))
-                                .FirstOrDefault();
+                                .Where(p => p.LessonPriceProperty.Any(p => p.PropertyID == (int?)viewModel.FeatureID));
+
+            if(viewModel.PriceID.HasValue)
+            {
+                items = items.Where(p => p.PriceID == viewModel.PriceID);
+            }
+
+            var priceItem = items.FirstOrDefault();
 
             if (priceItem == null) 
             {
