@@ -882,6 +882,11 @@ namespace WebHome.Controllers
                 return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "遠距課程上課地點錯誤!!");
             }
 
+            if (lesson.Expiration.HasValue && viewModel.ClassDate > lesson.Expiration.Value.AddDays(1))
+            {
+                return View("~/Views/ConsoleHome/Shared/JsAlert.cshtml", model: "已逾越課程有效期限!!");
+            }
+
             LessonTime timeItem = new LessonTime
             {
                 InvitedCoach = viewModel.CoachID,

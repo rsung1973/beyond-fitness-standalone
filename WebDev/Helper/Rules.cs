@@ -56,7 +56,7 @@ namespace WebHome.Helper
         }
 
 
-        private static readonly int?[] SessionScopeForComleteLessonCount = new int?[]
+        public static readonly int?[] SessionScopeForComleteLessonCount = new int?[]
         {
                     (int)Naming.LessonPriceStatus.一般課程,
                     (int)Naming.LessonPriceStatus.已刪除,

@@ -133,7 +133,7 @@ namespace WebHome.Properties
         public String EIPGTM_Key { get; set; } = "GTM-PHVLDDJ8";
 
         public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList");
-        public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyLog";
+        public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyResult";
         public LineAuthInfo LineAuth { get; set; } = new LineAuthInfo { };
         public String WebHomePage { get; set; } = "~/MainActivity/Main";
         public String CommonErrorView { get; set; } = "~/Views/Error/Error.cshtml";

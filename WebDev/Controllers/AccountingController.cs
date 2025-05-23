@@ -1944,9 +1944,11 @@ namespace WebHome.Controllers
                 table.Columns.Remove(ManagerBonusFields.分店總上課數.ToString());
                 table.Columns.Remove(ManagerBonusFields.分店上課金額.ToString());
                 table.Columns.Remove(ManagerBonusFields.分店業績達成率百分比.ToString());
-                table.Columns.Remove(ManagerBonusFields.滾動式堂數.ToString());
-                table.Columns.Remove(ManagerBonusFields.滾動式平均單價.ToString());
-                table.Columns.Remove(ManagerBonusFields.滾動式抽成.ToString());
+                //table.Columns.Remove(ManagerBonusFields.滾動式堂數.ToString());
+                //table.Columns.Remove(ManagerBonusFields.滾動式平均單價.ToString());
+                //table.Columns.Remove(ManagerBonusFields.滾動式抽成.ToString());
+                table.Columns.Remove(ManagerBonusFields.個人上課數.ToString());
+                table.Columns.Remove(ManagerBonusFields.管理獎金抽成.ToString());
                 return table;
             }
 
@@ -2052,7 +2054,7 @@ namespace WebHome.Controllers
                         models.SubmitChanges();
                     }
 
-                    if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
+                    //if (g.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Health)
                     {
                         eliminateTax(r, taxCol);
                     }

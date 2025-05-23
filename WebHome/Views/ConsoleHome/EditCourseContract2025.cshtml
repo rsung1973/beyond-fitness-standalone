@@ -1,0 +1,819 @@
+﻿@using System.IO
+@using System.Linq.Expressions
+
+@using WebHome.Helper
+@using WebHome.Models.Locale
+@using WebHome.Models.ViewModel
+@using WebHome.Models.DataEntity
+@using WebHome.Controllers
+@using Microsoft.AspNetCore.Mvc.ModelBinding
+@using Newtonsoft.Json
+
+@functions
+{
+    public enum ContractTypeCategory
+    {
+        體能顧問課程 = (int)CourseContractType.ContractTypeDefinition.CPA,
+        運動恢復課程 = (int)CourseContractType.ContractTypeDefinition.CRA,
+        營養顧問課程 = (int)CourseContractType.ContractTypeDefinition.CNA,
+        遠距顧問課程 = (int)CourseContractType.ContractTypeDefinition.CVA,
+        自主體能訓練課程 = (int)CourseContractType.ContractTypeDefinition.CIA,
+        團體課程 = (int)CourseContractType.ContractTypeDefinition.CGX,
+    }
+
+    public static ContractTypeCategory? GetTypeCategory(CourseContractType.ContractTypeDefinition? contractType)
+    {
+        switch (contractType)
+        {
+            case CourseContractType.ContractTypeDefinition.CNA:
+                return ContractTypeCategory.營養顧問課程;
+
+            case CourseContractType.ContractTypeDefinition.CPA:
+            case CourseContractType.ContractTypeDefinition.CFA:
+            case CourseContractType.ContractTypeDefinition.CPB:
+            case CourseContractType.ContractTypeDefinition.CPC:
+                return ContractTypeCategory.體能顧問課程;
+
+            case CourseContractType.ContractTypeDefinition.CRA:
+            case CourseContractType.ContractTypeDefinition.CRF:
+                return ContractTypeCategory.運動恢復課程;
+
+            case CourseContractType.ContractTypeDefinition.CVA:
+            case CourseContractType.ContractTypeDefinition.CVF:
+            case CourseContractType.ContractTypeDefinition.CVB:
+            case CourseContractType.ContractTypeDefinition.CVC:
+                return ContractTypeCategory.遠距顧問課程;
+            case CourseContractType.ContractTypeDefinition.CIA:
+                return ContractTypeCategory.自主體能訓練課程;
+            case CourseContractType.ContractTypeDefinition.CGX:
+                return ContractTypeCategory.團體課程;
+        }
+
+        return null;
+    }
+}
+@{
+    ModelSource<UserProfile> models;
+    ModelStateDictionary _modelState;
+    UserProfile _model;
+    CourseContractQueryViewModel _viewModel;
+
+    Layout = "~/Views/ConsoleHome/Template/MainPage.cshtml";
+
+
+    models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
+    _modelState = ViewContext.ModelState;
+    _model = (UserProfile)this.Model;
+    _viewModel = (CourseContractQueryViewModel)ViewBag.ViewModel;
+
+    CourseContract _contract = ViewBag.DataItem as CourseContract;
+
+}
+@section CustomHeader {
+    <!-- JQuery DataTable Css -->
+    <link href="plugins/jquery-datatable/DataTables-1.10.18/css/dataTables.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/Responsive-2.2.2/css/responsive.bootstrap4.min.css" rel="stylesheet">
+    <link href="plugins/jquery-datatable/FixedColumns-3.2.5/css/fixedColumns.bootstrap4.min.css" rel="stylesheet">
+    <!-- Bootstrap Datetimepick -->
+
+    <link href="css/smartcalendar-2.css" rel="stylesheet" />
+    <!-- Custom Css -->
+    <link rel="stylesheet" href="css/customelist.css?2.0" />
+}
+
+<!-- Main Content -->
+<section class="content">
+    @{
+        ViewBag.BlockHeader = "編輯合約";
+        ViewBag.InsertPartial = "~/Views/ConsoleHome/Shared/MyContractHeader.cshtml";
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Module/BlockHeader.cshtml", _model);
+    }
+
+    <!--合約基本資料-->
+    <div class="container-fluid">
+        <div class="card">
+            <div class="header">
+                @{
+                    await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectConsultant.cshtml", _model);
+                }
+            </div>
+            <div class="body">
+                <div class="row clearfix">
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="ContractTypeCategory">
+                            <option value="">-- 請選擇合約類型 --</option>
+                            <option class="CPA" value="@((int)ContractTypeCategory.體能顧問課程)">體能顧問課程</option>
+                            <option class="CRA" value="@((int)ContractTypeCategory.運動恢復課程)">運動恢復課程</option>
+                            @*<option class="CNA" value="@((int)ContractTypeCategory.營養顧問課程)" data-virtual="True">營養顧問課程</option>*@
+                            @*<option class="CVA" value="@((int)ContractTypeCategory.遠距顧問課程)" data-virtual="True">遠距顧問課程</option>*@
+                            <option class="CIA" value="@((int)ContractTypeCategory.自主體能訓練課程)">自主體能訓練課程</option>
+                            <option class="CGX" value="@((int)ContractTypeCategory.團體課程)">團體課程</option>
+                        </select>
+                        <script>
+                            $(function () {
+                                $('select[name="ContractTypeCategory"]').val('@Html.Raw((int?)GetTypeCategory(_viewModel.ContractType))');
+                                $('select[name="ContractTypeCategory"]').on('change', function (event) {
+                                    delete $global.viewModel.ContractType;
+                                    resetInstallmentPlan();
+                                    resetTotalCost();
+                                    resetContractType();
+                                    resetBranch();
+                                    resetPricePackage();
+                                    resetSignOnline();
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="ContractType">
+                            <option class="CPA" value="">-- 請選擇1對?人 --</option>
+                            <option class="CPA" value="@((int)CourseContractType.ContractTypeDefinition.CPA)">1對1</option>
+                            <option class="CPA" value="@((int)CourseContractType.ContractTypeDefinition.CFA)">1對1 - 家人共享</option>
+                            <option class="CPA" value="@((int)CourseContractType.ContractTypeDefinition.CPB)">1對2</option>
+                            @* <option class="CGA" value="@((int)CourseContractType.ContractTypeDefinition.CGC)">1對3</option> *@
+                            <option class="CRA" value="@((int)CourseContractType.ContractTypeDefinition.CRA)">1對1</option>
+                            <option class="CRA" value="@((int)CourseContractType.ContractTypeDefinition.CRF)">1對1 - 家人共享</option>
+                            @*<option class="CVA" value="">-- 請選擇1對?人 --</option>
+                            <option class="CVA" value="@((int)CourseContractType.ContractTypeDefinition.CVA)">1對1</option>
+                            <option class="CVA" value="@((int)CourseContractType.ContractTypeDefinition.CVF)">1對1 - 家人共享</option>
+                            <option class="CVA" value="@((int)CourseContractType.ContractTypeDefinition.CVB)">1對2</option>*@
+                            @*<option class="CNA" value="@((int)CourseContractType.ContractTypeDefinition.CNA)">1對1</option>*@
+                            <option class="CIA" value="@((int)CourseContractType.ContractTypeDefinition.CIA)">單人</option>
+                            <option class="CGX" value="@((int)CourseContractType.ContractTypeDefinition.CGX)">多人</option>
+                        </select>
+                        <script>
+                            $(function () {
+                                @*$('select[name="ContractType"]').val('@Html.Raw((int?)_viewModel.ContractType)');*@
+                                var contractType = @Html.Raw(((int?)_viewModel.ContractType)?.ToString() ?? "null");
+
+                                $('select[name="ContractType"]').on('change', function (event) {
+                                    var ct = $(this).val();
+                                    $global.viewModel.ContractType = ct;
+                                    resetSimpleTotalCost();
+                                });
+                                resetContractType(contractType);
+                            });
+
+                            function resetContractType(contractType) {
+                                var ct = $('select[name="ContractTypeCategory"] option:selected').attr('class');
+                                $('select[name="ContractType"] option').css('display', 'none');
+                                $('select[name="ContractType"] option').prop('selected', false);
+                                //$('select[name="ContractType"] option').prop('disabled', false);
+
+                                if (ct != '') {
+                                    $('select[name="ContractType"] option' + '.' + ct).css('display', 'block');
+                                }
+
+                                if (contractType) {
+                                    $('select[name="ContractType"]').val(contractType);
+                                } else {
+                                    $('select[name="ContractType"] option').eq(0).prop('selected', true);
+                                }
+                                $('select[name="ContractType"]').selectpicker('refresh');
+                            }
+
+                            function resetSignOnline() {
+                                var ct = $('select[name="ContractTypeCategory"] option:selected').attr('class');
+
+                                if (ct == 'CIA') {
+                                    $('input[name="SignOnline"]').prop('checked', false);
+                                    $global.viewModel.SignOnline = false;
+                                    $('.signOnline').css('display', 'none');
+                                } else {
+                                    $('.signOnline').css('display', 'block');
+                                }
+                            }
+                        </script>
+                    </div>
+                    @*<div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="Renewal">
+                            <option value="">-- 是否為續約 --</option>
+                            <option value="True">續約</option>
+                            <option value="False">新約</option>
+                        </select>
+                        <script>
+                            $(function () {
+                                $('select[name="Renewal"]').val('@Html.Raw(_viewModel.Renewal)');
+                                $('select[name="Renewal"]').on('change', function (event) {
+                                    $global.viewModel.Renewal = $(this).val();
+                                });
+                            });
+                        </script>
+                    </div>*@
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="PriceAdjustment">
+                            <option value="">-- 設定購買單位數 --</option>
+                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T1)">固定牌告單位數</option>
+                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T2)">轉讓第三人</option>
+                            <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T3)">轉開新合約</option>
+                            @if (_model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager())
+                            {
+                                <option value="@((int)CourseContractExtension.UnitPriceAdjustmentDefinition.T4)">特別專案優惠</option>
+                            }
+                        </select>
+                        <script>
+                            $(function () {
+                                $('select[name="PriceAdjustment"]').val('@Html.Raw((int)(_viewModel.PriceAdjustment ?? CourseContractExtension.UnitPriceAdjustmentDefinition.T1))');
+                                $global.viewModel.PriceAdjustment = $('select[name="PriceAdjustment"]').val();
+                                $('select[name="PriceAdjustment"]').on('change', function (event) {
+                                    $global.viewModel.PriceAdjustment = $(this).val();
+                                });
+                            });
+                        </script>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6 col-12">
+                        <select class="form-control show-tick" name="BranchID">
+                            <option value="">-- 請選擇上課場所 --</option>
+                            @if (_model.IsAssistant() || _model.IsOfficer())
+                            {
+                            }
+                            else
+                            {
+                                int[] intentStore = ViewBag.IntentStore = models.GetTable<CoachWorkplace>().Where(w => w.CoachID == _model.UID).Select(w => w.BranchID).ToArray();
+                            }
+                            @{
+                                ViewBag.DataItems = models.PromptRealStore();
+                                await Html.RenderPartialAsync("~/Views/SystemInfo/BranchStoreOptions.cshtml", model: _viewModel.BranchID);
+                                //await Html.RenderPartialAsync("~/Views/SystemInfo/VirtualStoreOptions.cshtml", model: _viewModel.BranchID);
+                            }
+                        </select>
+                        <script>
+                            $(function () {
+                                $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');
+                                $('select[name="BranchID"]').on('change', function (event) {
+                                    $global.viewModel.BranchID = $(this).val();
+                                    resetInstallmentPlan();
+                                    resetTotalCost();
+                                });
+                                //$global.viewModel.DurationInMinutes = 60;
+                                resetBranch();
+                            });
+
+                            function resetBranch() {
+                                var ct = $('select[name="ContractTypeCategory"] option:selected').attr('data-virtual');
+                                buildBranch(ct);
+                                $global.viewModel.BranchID = $('select[name="BranchID"]').val();
+                            }
+
+                            function buildBranch(forVirtual) {
+                                $('select[name="BranchID"] option').prop('selected', false);
+                                var $store = $('select[name="BranchID"] option.virtual-store');
+                                if (forVirtual == 'True') {
+                                    $('select[name="BranchID"] option').slice(1).prop('disabled', true);
+                                    $store.prop('disabled', false);
+                                    $store.prop('selected', true);
+                                } else {
+                                    $('select[name="BranchID"] option').prop('disabled', false);
+                                    $store.prop('disabled', true);
+                                    $('select[name="BranchID"]').val('@Html.Raw(_viewModel.BranchID)');
+                                }
+                                //$('select[name="BranchID"] option:enabled').slice(1).prop('selected', true);
+                                $('select[name="BranchID"]').selectpicker('refresh');
+                            }
+
+                        </script>
+                        @*<label class="material-icons help-error-text">clear 請選擇上課場所</label>*@
+                    </div>
+                    <div class="col-lg-12 col-md-6 col-sm-6 col-12">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/SelectLessonPrice2022.cshtml", _model);
+                        }
+                    </div>
+                    <script>
+                        function resetTotalCost() {
+                            $('.btnConfirm').css('display', 'none');
+                            $('#searchPrice').attr('placeholder', '');
+                            $('input[name="OrderLessons"]').val('');
+                            $('#costSummary').empty();
+                        }
+
+                        function resetSimpleTotalCost() {
+                            $('.btnConfirm').css('display', 'none');
+                            $('#costSummary').empty();
+                        }
+
+
+                        function calcTotalCost() {
+                            $global.viewModel.Lessons = null;
+                            $global.viewModel.TotalCost = null;
+                            if ($global.viewModel.PriceID) {
+                                var $formData = $('input[name="OrderLessons"]').serializeObject();
+                                $formData = $.extend($global.viewModel, $formData);
+                                clearErrors();
+                                showLoading();
+                                $.post('@Html.Raw(Url.Action("CalculateTotalCost2022", "ContractConsole"))', $formData, function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        alert(data.message);
+                                    } else {
+                                        $('#costSummary').empty()
+                                            .append(data);
+                                    }
+                                });
+                            } else {
+                                Swal.fire(
+                                    'Oops...',
+                                    '請先選擇課程單價!!',
+                                    'warning'
+                                );
+                            }
+                        }
+                    </script>
+                </div>
+                <div class="row" id="pricePackage">
+                    @{
+                        await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/ListPricePackageItems.cshtml");
+                    }
+                </div>
+                <script>
+                    function resetPricePackage() {
+                        $('#searchPrice').attr('placeholder', '課程單價');
+                        $('#pricePackage').empty();
+                        $('#costSummary').empty();
+                        delete $global.viewModel.OrderPriceID;
+                        delete $global.viewModel.OrderLessons;
+                        $global.viewModel.Lessons = null;
+                        $global.viewModel.PriceID = null;
+                    }
+                </script>
+                <div class="row" id="costSummary">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--學生基本資料-->
+    <div class="container-fluid">
+        <div class="row clearfix">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="header">
+                        <h2><strong>學生基本資料</strong></h2>
+                        <div class="col-md-8 col-lg-8 col-8 float-right">
+                            <div class="input-group">
+                                @{
+                                    ViewBag.SearchAction = Url.Action("SearchContractMember", "ContractConsole");
+                                    await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchLearner.cshtml");
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="body" id="contractMember">
+                        @{
+                            await Html.RenderPartialAsync("~/Views/ContractConsole/Editing/ListContractMember.cshtml", _model);
+                        }
+
+                    </div>
+                    <input type="hidden" name="OwnerID" />
+                    <script>
+                        function loadMemberList() {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("ListContractMember", "ContractConsole"))', $global.viewModel, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    alert(data.message);
+                                } else {
+                                    $('#contractMember').empty()
+                                        .append(data);
+                                }
+                            });
+                        }
+
+                        function editContractMember(uid) {
+                            showLoading();
+                            $.post('@Html.Raw(Url.Action("EditContractMember", "ContractConsole"))', { 'uid': uid, 'OwnerID': $global.viewModel.OwnerID }, function (data) {
+                                hideLoading();
+                                if ($.isPlainObject(data)) {
+                                    alert(data.message);
+                                } else {
+                                    $(data).appendTo($('body'));
+                                }
+                            });
+                            //$global.closeAllModal();
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--其他增補說明-->
+    <!--其他增補說明-->
+    <script>
+        function updateRenewal(renewal) {
+            $global.viewModel.Renewal = renewal;
+            if(renewal) {
+                $('input[name="InitContract"]').prop('checked',false);
+                $('input[name="RenewContract"]').prop('checked', true);
+                $('.forBR').css('display', 'none');
+            } else {
+                $('input[name="InitContract"]').prop('checked', true);
+                $('input[name="RenewContract"]').prop('checked', false);
+                $('.forBR').css('display', '');
+            }
+        }
+        $(function() {
+            updateRenewal(@(_viewModel.Renewal == true ? "true" : "false"));
+        });
+    </script>
+    <div class="container-fluid">
+        <div class="card widget_2">
+            <ul class="row clearfix list-unstyled m-b-0">
+                <li class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="header">
+                        <h2><strong>付款方式</strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="row">
+                            <div class="col-12 m-b-20">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="PaymentMethod" value="現金" />
+                                    <span>現金</span>
+                                </label>
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="PaymentMethod" value="刷卡" />
+                                    <span>刷卡</span>
+                                </label>
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="PaymentMethod" value="轉帳" />
+                                    <span>轉帳</span>
+                                </label>
+                            </div>
+                            @if (_viewModel.PaymentMethod != null)
+                            {
+                                <script>
+                                    $(function () {
+                                    @foreach (var p in _viewModel.PaymentMethod)
+                                    {
+                                        <text>$('input:checkbox[name="PaymentMethod"][value="@Html.Raw(p)"]').prop('checked', true); </text>
+                                    }
+                                                                        });
+                                </script>
+                            }
+                        </div>
+                        <div class="row clearfix installment-plan">
+                            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                <label class="fancy-checkbox">
+                                    <input type="checkbox" name="InstallmentPlan" value="@(true)" checked="@(_viewModel.InstallmentPlan == true)" onclick="checkInstallmentPlan();" />
+                                    <span>分期支付</span>
+                                </label>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-sm-12 col-12">
+                                <select class="form-control show-tick installments" name="Installments" onchange="installmentPlanRemark2022();"></select>
+                                <script>
+
+                                    function installmentPlanRemark() {
+                                        var $installments = $('select[name="Installments"]');
+                                        $global.viewModel.Installments = $installments.val();
+                                        if ($installments.val() != '') {
+                                            var content = '本合約總共購買' + $global.viewModel.Lessons + '堂，分期轉開次數' + $installments.val() + '次，每張轉開合約之費用皆為躉繳並於每月月底前繳清。';
+                                            $global.viewModel.Remark = prepareRemark(content);
+                                        }
+                                    }
+
+                                    function installmentPlanRemark2022() {
+                                        var $installments = $('select[name="Installments"]');
+                                        $global.viewModel.Installments = $installments.val();
+                                        showLoading();
+                                        $.post('@Url.Action("BuildInstallmentRemark","ContractConsole")', $global.viewModel, function (data) {
+                                            hideLoading();
+                                            if ($.isPlainObject(data)) {
+                                                Swal.fire(
+                                                    'Oops...',
+                                                    data.message,
+                                                    'warning'
+                                                );
+                                            } else {
+                                                var nodes = $.parseHTML(data);
+                                                var $remark = $('textarea[name="Remark"]');
+                                                if (nodes.length == 1 && nodes[0].nodeName == "#text") {
+                                                    $remark.val(nodes[0].nodeValue.trim());
+                                                } else {
+                                                    $remark.val();
+                                                    $('body').append(data);
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    function prepareRemark(remark) {
+                                        var $remark = $('textarea[name="Remark"]');
+                                        var content = $remark.val();
+                                        content = remark + content.replace(/本合約.*次。/g, '');
+                                        $remark.val(content);
+                                        return content;
+                                    }
+
+                                    function checkInstallmentPlan() {
+                                        var $installmentPlan = $('input[name="InstallmentPlan"]');
+                                        var $installments = $('.installments');
+                                        if ($installmentPlan.is(':checked')) {
+                                            $installments.css('display', 'block');
+                                            $global.viewModel.InstallmentPlan = true;
+                                        } else {
+                                            $installments.css('display', 'none');
+                                            $('select[name="Installments"]').selectpicker('val', '');
+                                            $global.viewModel.InstallmentPlan = false;
+                                            $('textarea[name="Remark"]').val('');
+                                            $global.viewModel.Remark = null;
+                                        }
+                                    }
+
+                                    $(function () {
+                                        checkInstallmentPlan();
+                                    });
+
+                                    function loadInstallments(lessons, installments) {
+                                        var $installments = $('select[name="Installments"]');
+                                        if (!installments) {
+                                            installments = $installments.val();
+                                        }
+                                        $installments.empty();
+                                        if (lessons == '' || isNaN(Number(lessons))) {
+                                            return;
+                                        }
+                                        showLoading();
+                                        $.post('@Html.Raw(Url.Action("LoadInstallmentPlan2022","CourseContract"))', { 'lessons': lessons, 'installments': installments }, function (data) {
+                                            hideLoading();
+                                            if ($.isPlainObject(data)) {
+                                                Swal.fire(
+                                                    'Oops...',
+                                                    data.message,
+                                                    'warning'
+                                                )
+                                            } else {
+                                                $(data).appendTo($installments);
+                                                $installments.selectpicker('refresh');
+                                                checkInstallmentPlan();
+                                            }
+                                        });
+                                    }
+                                    @if (_viewModel.InstallmentPlan == true || _viewModel.Lessons > 0)
+                                    {
+                                        <text>
+                                            $(function () {
+                                                loadInstallments('@(_viewModel.Lessons)', '@(_viewModel.Installments)');
+                                            });
+                                        </text>
+                                    }
+                                </script>
+                            </div>
+                            @if (_viewModel.PartialEffectiive == true)
+                            {
+                                <script>
+                                    $(function () {
+                                        $('input[name="InstallmentPlan"]').prop('disabled', true);
+                                        $('select[name="Installments"]').prop('diisabled', true);
+                                    });
+                                </script>
+                            }
+                        </div>
+                        <script>
+                            function resetInstallmentPlan() {
+                                $('.installment-plan').css('display', 'block');
+                                //var ct = $('select[name="ContractTypeCategory"]').val();
+                                var $store = $('select[name="BranchID"] option.virtual-store');
+                                if (/*$store.is(':selected') || ct == '5' || ct == '6' ||*/ $global.viewModel.Lessons < 25) {
+                                    $('.installment-plan').css('display', 'none');
+                                    $('input[name="InstallmentPlan"]').prop('checked', false);
+                                    checkInstallmentPlan();
+                                }
+                            }
+
+                            $(function () {
+                                resetInstallmentPlan();
+                            });
+                        </script>
+
+                    </div>
+                </li>
+                <li class="col-lg-6 col-md-6 col-sm-12">
+                    <div class="header">
+                        <h2><strong>引薦人BR設定</strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-12">
+                                <label class="fancy-checkbox custom-bgcolor-pink">
+                                    <input type="checkbox" name="InitContract" disabled="disabled" />
+                                    <span class="col-pink">新約</span>
+                                </label>
+                                <label class="fancy-checkbox custom-bgcolor-green">
+                                    <input type="checkbox" disabled="disabled" name="RenewContract" />
+                                    <span class="col-green">續約</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="row clearfix m-t-10 forBR">
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <div>
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" value="true" name="CheckBRCoach" />
+                                        <span>教練</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-xs-8">
+                                <div class="input-group">
+                                    @{
+                                        ViewBag.SearchAction = Url.Action("SearchBRCoach", "ContractConsole");
+                                        ViewBag.SearchItem = "搜尋教練...";
+                                        ViewBag.LessThanTwo = "你忘了教練的姓名嗎？!(至少2個中、英文字)";
+                                        ViewBag.DataNotFound = "你確定有這個教練？!";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchInput.cshtml");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row clearfix forBR">
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <div>
+                                    <label class="fancy-checkbox">
+                                        <input type="checkbox" value="true" name="CheckBRLearner" />
+                                        <span>學生</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-lg-8 col-md-8 col-xs-8">
+                                <div class="input-group">
+                                    @{
+                                        ViewBag.SearchAction = Url.Action("SearchBRLearner", "ContractConsole");
+                                        ViewBag.SearchItem = "搜尋學生...";
+                                        ViewBag.LessThanTwo = "你忘了學生的姓名嗎？!(至少2個中、英文字)";
+                                        ViewBag.DataNotFound = "你確定有這個學生？!";
+                                        await Html.RenderPartialAsync("~/Views/ConsoleEvent/Module/SearchInput.cshtml");
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="header">
+                        <h2><strong>上傳附件與增補說明</strong></h2>
+                    </div>
+                    <div class="body">
+                        <div class="row clearfix">
+                            <div class="col-12 m-b-20 signOnline">
+                                <div class="fancy-checkbox custom-bgcolor-pink">
+                                    <label><input name="SignOnline" value="true" type="checkbox" onclick="resetAttachment();" @(_viewModel.SignOnline == true ? "checked" : null) /><span><i></i>學生遠端線上簽名</span></label>
+                                </div>
+                                <script>
+                                    function resetAttachment() {
+                                        $('#attachment').css('display', 'block');
+                                        if ($('input[name="SignOnline"]').is(':checked')) {
+                                            $('#attachment').css('display', 'none');
+                                        }
+                                    }
+                                    $(function () {
+                                        resetAttachment();
+                                    });
+                                </script>
+                            </div>
+                            <div class="col-12" id="attachment">
+                                @*<script>
+                                $(function () {
+                                $global.dropifyMessage = {
+                                'default': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)到這邊',
+                                'replace': '點選或拖拉代辦委託書(可上傳格式PDF、GIF、JPG、PNG)取代目前內容',
+                                'remove': '刪除內容',
+                                'error': 'Ooops, 肯定做錯了什麼'
+                                };
+                                $global.dropifyError = {
+                                'fileSize': 'Ooops, 上傳的檔案太大了啦！ ({{ value }} max).',
+                                'imageFormat': 'Ooops, 上傳檔案是PDF或圖檔嗎？！ ({{ value }} only).'
+                                };
+                                });
+                                </script>*@
+                                <form enctype="multipart/form-data" method="post">
+                                    @{
+                                        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/DropifyFileUpload.cshtml");
+                                    }
+                                </form>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <textarea rows="4" class="form-control no-resize" name="Remark" placeholder="請輸入任何想補充的事項...">@(_viewModel.Remark)</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="col-12">
+                    <button type="button" class="btn btn-primary btn-round waves-effect float-right btnConfirm" style="display:none;" onclick="commitContract();">確定，不後悔</button>
+                    <button type="button" class="btn btn-danger btn-simple btn-round waves-effect btnConfirm" style="display:none;" onclick="saveContract();">暫時存檔</button>
+                    <script>
+                        function saveContract() {
+                            clearErrors();
+                            $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
+                            $global.viewModel.Remark = $('textarea[name="Remark"]').val();
+                            $global.viewModel.SignOnline = $('input[name="SignOnline"]').is(':checked');
+                            $global.viewModel.CheckBRLearner = $('input[name="CheckBRLearner"]').is(':checked');
+                            $global.viewModel.CheckBRCoach = $('input[name="CheckBRCoach"]').is(':checked');
+                            $('form').ajaxForm({
+                                url: '@Html.Raw(Url.Action("SaveContract2022", "ContractConsole"))',
+                                data: $global.viewModel,
+                                beforeSubmit: function () {
+                                    showLoading();
+                                },
+                                success: function (data) {
+                                    hideLoading();
+                                    if ($.isPlainObject(data)) {
+                                        Swal.fire(
+                                            'Oops...',
+                                            data.message,
+                                            'warning'
+                                        )
+                                    }
+                                    else {
+                                        $(data).appendTo($('body'));
+                                    }
+                                },
+                                error: function () {
+                                    hideLoading();
+                                }
+                            }).submit();
+                        }
+
+                        function commitContract() {
+                            clearErrors();
+                            $global.viewModel.PaymentMethod = $('input[name="PaymentMethod"]').serializeObject().PaymentMethod;
+                            $global.viewModel.Remark = $('textarea[name="Remark"]').val();
+                            $global.viewModel.SignOnline = $('input[name="SignOnline"]').is(':checked');
+                            $global.viewModel.CheckBRLearner = $('input[name="CheckBRLearner"]').is(':checked');
+                            $global.viewModel.CheckBRCoach = $('input[name="CheckBRCoach"]').is(':checked');
+                        @*
+                                var $formData = $('form').serializeObject();
+                                $formData = $.extend({}, $global.viewModel, $formData);
+                                *@
+
+                                showLoading();
+                        @*
+                                $.post('@Html.Raw(Url.Action("CommitContract2022", "ContractConsole", _viewModel.ContractID))', $formData, function (data) {
+                                hideLoading();
+                                debugger;
+                                console.log(data);
+                                if ($.isPlainObject(data)) {
+                                Swal.fire(
+                                'Oops...',
+                                data.message,
+                                'warning'
+                                )
+                                }
+                                else {
+                                $(data).appendTo($('body'));
+                                }
+                                }).fail(function (jqXHR, textStatus, errorThrown) {
+                                console.log(textStatus);
+                                });
+                                *@
+
+                                $('form').ajaxForm({
+                                    url: '@Html.Raw(Url.Action("CommitContract2022", "ContractConsole", _viewModel.ContractID))',
+                                    data: $global.viewModel,
+                                    beforeSubmit: function () {
+                                        showLoading();
+                                    },
+                                    success: function (data) {
+                                        hideLoading();
+                                        if ($.isPlainObject(data)) {
+                                            Swal.fire(
+                                                'Oops...',
+                                                data.message,
+                                                'warning'
+                                            );
+                                        }
+                                        else {
+                                            $(data).appendTo($('body'));
+                                        }
+                                    },
+                                    error: function () {
+                                        hideLoading();
+                                    }
+                                }).submit();
+                        }
+                    </script>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+@section TailPageJavaScriptInclude {
+    <!--Sparkline Plugin Js-->
+    <script src="plugins/jquery-sparkline/jquery.sparkline.js"></script>
+    <!-- SweetAlert Plugin Js -->
+    <script src="plugins/sweetalert/sweetalert.min.js"></script>
+    <!-- Jquery DataTable Plugin Js -->
+    <script src="bundles/datatablescripts.bundle.js"></script>
+    <script src="plugins/jquery-datatable/Responsive-2.2.2/js/dataTables.responsive.min.js"></script>
+    <script src="plugins/jquery-datatable/FixedColumns-3.2.5/js/dataTables.fixedColumns.min.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("~/Views/ConsoleHome/Shared/KnobJS.cshtml");
+    }
+
+
+    <script type="text/javascript">
+
+    </script>
+}

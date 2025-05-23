@@ -100,10 +100,56 @@
     }
 
     price = models.GetTable<LessonPriceType>()
-                                    .Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程)
-                                    .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
-                                    .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
-                                    .FirstOrDefault();
+            .Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程)
+            .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.PT轉換教練))
+            .FirstOrDefault();
+
+    if (price != null)
+    {
+        var hasPT = models.GetTable<RegisterLesson>()
+                            .Where(r => r.UID == _model.UID)
+                            .Where(r => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(r.LessonPriceType.Status))
+                            .Any();
+        if (hasPT)
+        {
+            var trialCount = models.GetTable<RegisterLesson>()
+                        .Where(r => r.UID == _model.UID)
+                        .Where(r => r.ClassLevel == price.PriceID)
+                        .Count();
+
+            var trialBookable = true;   // trialCount < 2;
+
+            <li class="list-group-item">
+                <div class="media">
+                    <div class="pull-left">
+                        <div class="controls">
+                            <label class="fancy-checkbox">
+                                <input type="checkbox" disabled="@(trialBookable == false)" name="RegisterID" id="trialLesson" value="" onclick="selectBooking(this, '@((int)Naming.LessonPriceStatus.體驗課程)', @(price?.PriceID ?? -1));">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="media-body">
+                        <div class="media-heading">
+                            <a class="m-r-10">P.T Session(60分鐘) - 轉換教練</a>
+                            <small class="float-right text-muted"><time>NT @(price.ListPrice) @(trialCount)</time></small>
+                            <div class="msg">
+                                <span class="float-right">
+                                    <span class="badge bg-blue"><i class="zmdi zmdi-pin"></i> 現場</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        }
+    }
+
+    price = models.GetTable<LessonPriceType>()
+                        .Where(p => p.Status == (int)Naming.LessonPriceStatus.體驗課程)
+                        .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.運動恢復課程))
+                        .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
+                        .FirstOrDefault();
     if (price != null)
     {
         var trialLesson = models.GetTable<RegisterLesson>()
@@ -128,7 +174,7 @@
 }
 @functions
 {
-    void BuildPriceItem(LessonPriceType price, String description, bool bookable = true)
+    void BuildPriceItem(LessonPriceType price, String description, bool bookable = true, bool duration = true)
     {
         <li class="list-group-item">
             <div class="media">
@@ -144,7 +190,14 @@
                 <div class="media-body">
                     <div class="media-heading">
                         <a class="m-r-10">
-                            @($"{description}({price.DurationInMinutes}分鐘)")
+                            @if (duration)
+                            {
+                                @($"{description}({price.DurationInMinutes}分鐘)")
+                            }
+                            else
+                            {
+                                @Html.Raw(description)
+                            }
                         </a>
                         <small class="float-right text-muted"><time>NT @(price.ListPrice) @(bookable ? 1 : 0)/1</time></small>
                         <div class="msg">

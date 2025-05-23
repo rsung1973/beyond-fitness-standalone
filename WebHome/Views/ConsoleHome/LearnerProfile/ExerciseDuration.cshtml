@@ -67,6 +67,13 @@
                     </div>
                     <div class="font-20">
                         @{
+                            var registration = _learner.UserProfileRegistration.OrderByDescending(r => r.RegistrationDate).FirstOrDefault();
+                            if (registration != null)
+                            {
+                                await Html.RenderPartialAsync("~/Views/Common/BranchStoreName.cshtml", registration.BranchStore);
+                            }
+                        }
+                        @{
                             await Html.RenderPartialAsync("~/Views/LearnerProfile/Module/ExerciseSummary2020.cshtml", _learner);
                         }
                     </div>

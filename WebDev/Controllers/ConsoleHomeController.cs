@@ -284,7 +284,7 @@ namespace WebHome.Controllers
                 viewModel.ManagerID = profile.UID;
             }
             ViewBag.ViewModel = viewModel;
-            return View("~/Views/ConsoleHome/EditCourseContract2023.cshtml", profile.LoadInstance(models));
+            return View("~/Views/ConsoleHome/EditCourseContract2025.cshtml", profile.LoadInstance(models));
         }
 
         [RoleAuthorize(new int[] { (int)Naming.RoleID.Administrator, (int)Naming.RoleID.Assistant, (int)Naming.RoleID.Officer, (int)Naming.RoleID.Coach, (int)Naming.RoleID.Servitor })]
@@ -1264,7 +1264,7 @@ namespace WebHome.Controllers
             ViewBag.DataItem = coachItem;
 
             var profile = await HttpContext.GetUserAsync();
-            return View("~/Views/AchievementConsole/CoachAchievement.cshtml", profile.LoadInstance(models));
+            return View("~/Views/AchievementConsole/CoachAchievement2025.cshtml", profile.LoadInstance(models));
         }
 
         public async Task<ActionResult> LoadCourseContractAsync(CourseContractQueryViewModel viewModel)

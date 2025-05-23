@@ -702,6 +702,11 @@ namespace WebHome.Controllers
                 ModelState.AddModelError("realName", "請輸入學員姓名!!");
             }
 
+            if (!viewModel.BranchID.HasValue)
+            {
+                ModelState.AddModelError("BranchID", "請選擇分店!!");
+            }
+
             viewModel.Phone = viewModel.Phone.GetEfficientString();
             //if (viewModel.Phone == null)
             //{

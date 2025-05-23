@@ -666,7 +666,9 @@ namespace WebHome.Models.ViewModel
         public int? Month { get; set; }
 		public int? Lessons { get; set; }
 		public int? AdvisorID { get; set; }
-	}
+        public int? Minutes { get; set; }
+        public int? PriceID { get; set; }
+    }
 
     public class SelfAssessmentViewModel : QueryViewModel
     {

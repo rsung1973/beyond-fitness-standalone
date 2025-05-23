@@ -207,11 +207,11 @@ namespace TestConsole
             {
                 var invoice = models.GetTable<InvoiceItem>()
                         .Where(i => i.TrackCode == "GW")
-                        .Where(i => i.No == "95117583").FirstOrDefault();
+                        .Where(i => i.No == "95116102").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 23100, "退款", new DateTime(2024, 12, 23));
+                    var allowance = models.PrepareAllowanceForPayment(payment, 2800, "退款", new DateTime(2025, 5, 22));
                 }
             }
         }

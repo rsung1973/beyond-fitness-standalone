@@ -793,6 +793,16 @@ namespace WebHome.Helper
             models.GetTable<UserProfile>().InsertOnSubmit(item);
             models.SubmitChanges();
 
+            if(viewModel.BranchID.HasValue)
+            {
+                item.UserProfileRegistration.Add(new UserProfileRegistration
+                {
+                    BranchID = viewModel.BranchID.Value,
+                    RegistrationDate = DateTime.Now
+                });
+                models.SubmitChanges();
+            }
+
             item.InitializeSystemAnnouncement(models);
 
             return item;

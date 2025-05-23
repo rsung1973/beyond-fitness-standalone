@@ -207,10 +207,12 @@ namespace WebHome.Helper
             }
 
             var receivable = models.GetTable<LessonPriceType>()
+                                .Where(p => p.ListPrice > 0)
                                 .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款));
 
-            items = items.Where(r=>r.LessonPriceType.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
-                        //.Where(r => receivable.Any(p => r.ClassLevel == p.PriceID))
+            items = items
+                        //.Where(r=>r.LessonPriceType.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款))
+                        .Join(receivable, r => r.ClassLevel, p => p.PriceID, (r, p) => r)
                         .Where(r => r.RegisterLessonContract == null);
                         //.Where(r => !models.GetTable<RegisterLessonContract>().Any(c => c.RegisterID == r.RegisterID));
 

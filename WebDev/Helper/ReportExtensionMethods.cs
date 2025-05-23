@@ -14,6 +14,8 @@ using WebHome.Models.ViewModel;
 
 using CommonLib.DataAccess;
 using WebHome.Helper.BusinessOperation;
+using Newtonsoft.Json;
+using WebHome.Properties;
 
 namespace WebHome.Helper
 {
@@ -236,8 +238,7 @@ namespace WebHome.Helper
                                         .Select(p => p.ServingCoach.UserProfile.FullName()).Concatenate("/");
                 }
 
-                r[4] = contract.CourseContractType.TypeName
-                    + " (" + contract.LessonPriceType.DurationInMinutes + " 分鐘)";
+                r[4] = $"{contract.CourseContractType.TypeName} ({price?.DurationInMinutes} 分鐘)";
                 r[5] = price?.ListPrice;
 
                 r[6] = item.Where(l => l.CoachAttendance.HasValue).Count();     //item.Where(l => l.AchievementIndex == 1m).Count();
@@ -1036,6 +1037,9 @@ namespace WebHome.Helper
 
                 models.SubmitChanges();
 
+                // 從 JSON 設定檔載入門檻值、百分比與年資加成
+                var bonusConfigSR = LoadSRBonusConfig(Path.Combine(AppSettings.AppRoot, "App_Data", "BonusConfig_SR.json"));
+
                 void calcGeneralAchievement()
                 {
                     var attendingLessons = countableItems.Where(l => l.AttendingCoach == coach.CoachID);
@@ -1093,6 +1097,9 @@ namespace WebHome.Helper
                     }
 
                     salary.JobTenureInDays = models.PromptEmploymentDurationInDays(coach.CoachID);
+                    salary.TSAttendanceCount = helper.LessonItems
+                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
+                            .Where(v => v.AttendingCoach == coach.CoachID).Count();
 
                     models.SubmitChanges();
                 }
@@ -1169,6 +1176,8 @@ namespace WebHome.Helper
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M + ((salary.EmploymentDurationGradeIndex ?? 0) / 1000M)) 
                         + 0.5M) ?? 0;
+
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
 
                     if (coach.ServingCoachProperty.Any(p => p.PropertyID == (int)ServingCoachProperty.PropertyDefinition.Apprentice))
                     {
@@ -1272,20 +1281,22 @@ namespace WebHome.Helper
                 {
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    if(salary.LevelID == (int)Naming.ProfessionLevelDefinition.RFM)
+                    //if(salary.LevelID == (int)Naming.ProfessionLevelDefinition.RFM)
+                    //{
+                    //    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 80)
+                    //        * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                    //        * (salary.GradeIndex / 100M)
+                    //        + 0.5M) ?? 0;
+                    //}
+                    //else
                     {
-                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 80)
+                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 40)
                             * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                             * (salary.GradeIndex / 100M)
                             + 0.5M) ?? 0;
                     }
-                    else
-                    {
-                        salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 60)
-                            * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
-                            * (salary.GradeIndex / 100M)
-                            + 0.5M) ?? 0;
-                    }
+
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
 
                     salary.ManagerBonus = 0;
 
@@ -1331,6 +1342,8 @@ namespace WebHome.Helper
                         salary.AttendanceBonus = 0;
                     }
 
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
+
                     var indicator = models.GetTable<MonthlyIndicator>().Where(s => s.StartDate <= settlement.StartDate && s.EndExclusiveDate > settlement.StartDate).FirstOrDefault();
                     decimal achievementRatio = 0;
                     salary.ManagerBonus = 0;
@@ -1371,7 +1384,7 @@ namespace WebHome.Helper
 
                             if (bonusIdx < ManagerManagementBonusIndex.Length)
                             {
-                                salary.ManagerBonus = (int)(tuitionSubtotal * ViceManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                //salary.ManagerBonus = (int)(tuitionSubtotal * ViceManagerManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
                                 salary.ManagementBonusGrade = ViceManagerManagementBonusRatio[bonusIdx];
                             }
                         }
@@ -1431,16 +1444,33 @@ namespace WebHome.Helper
                 {
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 70)
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 50)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M)
                         + 0.5M) ?? 0;
+
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
 
                     salary.ManagerBonus = 0;
 
                     models.SubmitChanges();
                 }
 
+                void calcRFMBonus()
+                {
+                    salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
+
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 60)
+                        * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                        * (salary.GradeIndex / 100M)
+                        + 0.5M) ?? 0;
+
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
+
+                    salary.ManagerBonus = 0;
+
+                    models.SubmitChanges();
+                }
 
                 void calcHealthCareBonus()
                 {
@@ -1449,27 +1479,29 @@ namespace WebHome.Helper
                                     || v.PriceStatus == (int)Naming.LessonPriceStatus.點數兌換課程)
                             .Where(v => v.AttendingCoach == coach.CoachID).Count();
 
-                    salary.TSAttendanceCount = helper.LessonItems
-                            .Where(v => v.PriceStatus == (int)Naming.LessonPriceStatus.體驗課程)
-                            .Where(v => v.AttendingCoach == coach.CoachID).Count();
+                    // 計算累計獎金
+                    int durationYears = (salary.JobTenureInDays ?? 0) / 365;
+                    salary.AttendanceBonus = (int)(CalculateTotalBonusSR((decimal)(salary.PTAverageUnitPrice ?? 0), salary.PTAttendanceCount ?? 0, durationYears, bonusConfigSR) + 0.5M)
+                                                + salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
+                    //if (HealthCareBonusIndex.ContainsKey(salary.LevelID))
+                    //{
+                    //    decimal totalCount = salary.PTAttendanceCount.Value + salary.TSAttendanceCount.Value / 2M;
+                    //    var bonusLevel = HealthCareBonusIndex[salary.LevelID];
+                    //    var bonusIdx = bonusLevel.Where(i => totalCount >= i[0]).FirstOrDefault();
+                    //    if (bonusIdx != null)
+                    //    {
+                    //        salary.AttendanceBonus = (int)((totalCount - bonusIdx[2]) * bonusIdx[1]);
+                    //        salary.PTAverageUnitPrice = bonusIdx[1];
+                    //    }
+                    //    else
+                    //    {
+                    //        salary.PTAverageUnitPrice = 0;
+                    //    }
+                    //}
 
-                    salary.AttendanceBonus = 0;
-
-                    if (HealthCareBonusIndex.ContainsKey(salary.LevelID))
-                    {
-                        decimal totalCount = salary.PTAttendanceCount.Value + salary.TSAttendanceCount.Value / 2M;
-                        var bonusLevel = HealthCareBonusIndex[salary.LevelID];
-                        var bonusIdx = bonusLevel.Where(i => totalCount >= i[0]).FirstOrDefault();
-                        if (bonusIdx != null)
-                        {
-                            salary.AttendanceBonus = (int)((totalCount - bonusIdx[2]) * bonusIdx[1]);
-                            salary.PTAverageUnitPrice = bonusIdx[1];
-                        }
-                        else
-                        {
-                            salary.PTAverageUnitPrice = 0;
-                        }
-                    }
+                    salary.AttendedByOther = 0;
+                    salary.AttendedShare = 0;
+                    salary.AttendedByOtherAvgPrice = 0;
 
                     models.SubmitChanges();
                 }
@@ -1534,6 +1566,20 @@ namespace WebHome.Helper
 
                     calcGeneralAchievement();
 
+                    salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
+
+                    salary.AttendanceBonus = (int?)(salary.PTAttendanceCount
+                        * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
+                        * (salary.GradeIndex / 100M)
+                        + 0.5M) ?? 0;
+
+                    salary.AttendanceBonus += salary.TSAttendanceCount! * bonusConfigSR.TSBonusUnitPrice;
+
+                    int lessonAchievement = helper.LessonItems.Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+                    lessonAchievement += (helper.LessonItems.Where(t => BusinessConsoleExtensions.SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+
+                    salary.ManagerBonus = (int)(lessonAchievement / 1.05M * 0.01M + 0.5M);
+                    models.SubmitChanges();
                 }
                 else if (coach.ProfessionalLevel.IsFES())
                 {
@@ -1543,6 +1589,15 @@ namespace WebHome.Helper
                     }
                     calcGeneralAchievement();
                     calcFESBonus();
+                }
+                else if (coach.ProfessionalLevel.IsRFM())
+                {
+                    if (forRole != "rfm")
+                    {
+                        continue;
+                    }
+                    calcGeneralAchievement();
+                    calcRFMBonus();
                 }
                 else if (coach.ProfessionalLevel.IsManager())
                 {
@@ -1650,7 +1705,7 @@ namespace WebHome.Helper
 
                                 if (bonusIdx < ManagerManagementBonusIndex.Length)
                                 {
-                                    salary.ManagerBonus = (int)(tuitionSubtotal * ApprenticeManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
+                                    //salary.ManagerBonus = (int)(tuitionSubtotal * ApprenticeManagementBonusRatio[bonusIdx] / 1.05M + 0.5M);
                                     salary.ManagementBonusGrade = ApprenticeManagementBonusRatio[bonusIdx];
                                 }
                                 models.SubmitChanges();
@@ -2059,6 +2114,61 @@ namespace WebHome.Helper
             return items;
         }
 
+        static decimal CalculateTotalBonusSR(decimal averagePrice, int totalClasses, int seniorityYears, SRBonusConfig config)
+        {
+            decimal totalBonus = 0;
+            averagePrice = (int)(averagePrice / 1.05M + 0.5M);
+            // 計算基本抽成獎金
+            for (int i = 0; i < config.Thresholds.Length; i++)
+            {
+                int lowerBound = config.Thresholds[i];
+                int upperBound = (i + 1 < config.Thresholds.Length) ? config.Thresholds[i + 1] - 1 : totalClasses;
+
+                if (totalClasses >= lowerBound)
+                {
+                    int applicableClasses = Math.Min(totalClasses, upperBound) - lowerBound + 1;
+                    totalBonus += averagePrice * applicableClasses * config.Percentages[i];
+                    //Console.WriteLine($"抽成獎金: {totalBonus} , {averagePrice} * {applicableClasses} * {config.Percentages[i]}");
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            // 計算年資加成
+            decimal seniorityBonusPercentage = GetSeniorityBonusPercentage(seniorityYears, config.SeniorityBonuses);
+            totalBonus += totalClasses * averagePrice * seniorityBonusPercentage;
+
+            return totalBonus;
+        }
+
+        static decimal GetSeniorityBonusPercentage(int years, SeniorityBonus[] bonuses)
+        {
+            foreach (var bonus in bonuses)
+            {
+                if ((bonus.MinYears <= years) && (bonus.MaxYears == null || years < bonus.MaxYears))
+                {
+                    return bonus.BonusPercentage;
+                }
+            }
+            return 0;
+        }
+
+        static SRBonusConfig LoadSRBonusConfig(string filePath)
+        {
+            var config = new SRBonusConfig();
+            if (File.Exists(filePath))
+            {
+                string json = File.ReadAllText(filePath);
+                return JsonConvert.DeserializeObject<SRBonusConfig>(json);
+            }
+            else
+            {
+                File.WriteAllText(filePath, config.JsonStringify());
+            }
+            return config;
+        }
     }
 
     public class PaymentMonthlyReportItem
@@ -2090,4 +2200,23 @@ namespace WebHome.Helper
         public int? 終止轉收 { get; set; }
     }
 
+    class SRBonusConfig
+    {
+        public int[] Thresholds { get; set; } = [51, 61, 71, 81, 91, 101, 111, 121, 131]; // 門檻值
+        public decimal[] Percentages { get; set; } = [0.3m, 0.35m, 0.4m, 0.45m, 0.5m, 0.55m, 0.65m, 0.65m, 0.7m]; // 百分比
+        public SeniorityBonus[] SeniorityBonuses { get; set; } = 
+            [
+                new SeniorityBonus { MinYears= 5, MaxYears= 8, BonusPercentage= 0.004m },
+                new SeniorityBonus { MinYears= 8, MaxYears= 10, BonusPercentage= 0.008m},
+                new SeniorityBonus { MinYears = 10, MaxYears = null, BonusPercentage = 0.01m }
+            ];
+        public int TSBonusUnitPrice { get; set; } = 267; // 體驗課抽成單價
+    }
+
+    class SeniorityBonus
+    {
+        public int MinYears { get; set; }
+        public int? MaxYears { get; set; } // 使用 nullable 表示無上限的情況
+        public decimal BonusPercentage { get; set; }
+    }
 }
