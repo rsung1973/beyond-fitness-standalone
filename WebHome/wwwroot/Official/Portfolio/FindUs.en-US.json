@@ -115,7 +115,7 @@
                     "MemberCode": "BD56192749",
                     "Name": "曹育翔",
                     "NameDesc": "Hardy",
-                    "JobTitle": "Headcoach",
+                    "JobTitle": "Director",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -416,47 +416,47 @@
                     ],
                     "Experience": "<ul><li>Gymefit 教練內訓講師（主題：成為教練就比較厲害嗎？）</li><li>參與 The 28th Annual Congress of the European College of Sport Science 論文海報發表</li><li>參與 2022秋季運動與健康學術研討會 論文口頭發表</li></ul>"                                     
                 },
-                {
-                    "MemberCode": "HE21526100",
-                    "Name": "吳優",
-                    "NameDesc": "Una",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(248.88 184.4)",
-                            "JobPosition": "translate(248.88 154.46)",
-                            "ImgXShifting": -150,
-                            "ImgYShifting": -10,
-                        }                        
-                    ],
-                    "Slogan": "Break your own limits and be your true self.",
-                    "SloganDesc": "打破個人框架，做最真實的自己。",
-                    "Desc": "細心、溫和且善解人意，體貼他人的需求並以輕鬆自在的方式相處，讓人感受到舒服與穩定的能量。",
-                    "License":[
-                        {
-                            "Name": "NASM",
-                        },
-                        {
-                            "Name": "Z-ROCHEA",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                    
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"dumbbel",
-                        },
-                        {
-                            "Name":"kettlebell",
-                        },
-                        {
-                            "Name":"skateboarding",
-                        }
-                    ],
-                    "Experience": "<ul><li>企業團課教練</li></ul>"                                     
-                },
+                // {
+                //     "MemberCode": "HE21526100",
+                //     "Name": "吳優",
+                //     "NameDesc": "Una",
+                //     "JobTitle": "Coach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-right.svg",
+                //             "NamePosition": "translate(248.88 184.4)",
+                //             "JobPosition": "translate(248.88 154.46)",
+                //             "ImgXShifting": -150,
+                //             "ImgYShifting": -10,
+                //         }                        
+                //     ],
+                //     "Slogan": "Break your own limits and be your true self.",
+                //     "SloganDesc": "打破個人框架，做最真實的自己。",
+                //     "Desc": "細心、溫和且善解人意，體貼他人的需求並以輕鬆自在的方式相處，讓人感受到舒服與穩定的能量。",
+                //     "License":[
+                //         {
+                //             "Name": "NASM",
+                //         },
+                //         {
+                //             "Name": "Z-ROCHEA",
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }                    
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"dumbbel",
+                //         },
+                //         {
+                //             "Name":"kettlebell",
+                //         },
+                //         {
+                //             "Name":"skateboarding",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>企業團課教練</li></ul>"                                     
+                // },
                 {
                     "MemberCode": "XK4133149",
                     "Name": "楊翔喻",
@@ -593,56 +593,56 @@
                     ],
                     "Experience": "<ul><li>2022~2024 Beyond新人培訓教官</li><li>偏鄉兒童足球活動指導</li></ul>"     
                 },                
-                {
-                    "MemberCode": "HT89731654",
-                    "Name": "黃宇承",
-                    "NameDesc": "Alan",
-                    "JobTitle": "Headcoach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(78.31 183.4)",
-                            "JobPosition": "translate(78.31 153.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "If you are doing your best,you will not have to worry about failure.",
-                    "SloganDesc": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
-                    "Desc": "散發正能量，熱情洋溢，如陽光般溫暖，我深信成功源自持之以恆，沒有奇蹟，只有不懈的累積。",
-                    "License":[
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "EXOS",
-                        },                        
-                        {
-                            "Name": "TRX",
-                        },
-                        {
-                            "Name": "Monster",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                          
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"rowing",
-                        },
-                        {
-                            "Name":"golf",
-                        },
-                        {
-                            "Name":"swimming",
-                        },
-                        {
-                            "Name":"soccer",
-                        }
-                    ],
-                    "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
-                },                              
+                // {
+                //     "MemberCode": "HT89731654",
+                //     "Name": "黃宇承",
+                //     "NameDesc": "Alan",
+                //     "JobTitle": "Headcoach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-left.svg",
+                //             "NamePosition": "translate(78.31 183.4)",
+                //             "JobPosition": "translate(78.31 153.46)",
+                //             "ImgXShifting": -60,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "If you are doing your best,you will not have to worry about failure.",
+                //     "SloganDesc": "寧願跑起來被絆倒無數次，也不願規規矩矩走一輩子。就算跌倒也要豪邁的笑",
+                //     "Desc": "散發正能量，熱情洋溢，如陽光般溫暖，我深信成功源自持之以恆，沒有奇蹟，只有不懈的累積。",
+                //     "License":[
+                //         {
+                //             "Name": "PTAG",
+                //         },
+                //         {
+                //             "Name": "EXOS",
+                //         },                        
+                //         {
+                //             "Name": "TRX",
+                //         },
+                //         {
+                //             "Name": "Monster",
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }                          
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"rowing",
+                //         },
+                //         {
+                //             "Name":"golf",
+                //         },
+                //         {
+                //             "Name":"swimming",
+                //         },
+                //         {
+                //             "Name":"soccer",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
+                // },                              
                 {
                     "MemberCode": "QS10595815",
                     "Name": "邱謹瑜",
@@ -779,7 +779,7 @@
                     "MemberCode": "ZP85915197",
                     "Name": "陳晧宇",
                     "NameDesc": "Hogan",
-                    "JobTitle": "Vice Manager",
+                    "JobTitle": "Coach",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-left.svg",
@@ -864,113 +864,113 @@
                         }                    
                     ]      
                 },
-                {
-                    "MemberCode": "PS66550899",
-                    "Name": "趙昱穎",
-                    "NameDesc": "Frank",
-                    "JobTitle": "Sports Massager",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(220.06 183.4)",
-                            "JobPosition": "translate(220.06 153.46)",
-                            "ImgXShifting": -140,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "If you want to change your life,We need change your habits first.",
-                    "SloganDesc": "改變習慣，就能改變人生。",
-                    "Desc": "個性時而溫暖時而溫柔的擅長傾聽和陪伴他人，並具有優越的覺察力，能夠細緻地觀察出微小的差異，進而推理整個情境。",
-                    "License":[
-                        {
-                            "Name": "IBMA",
-                        }, 
-                        {
-                            "Name": "EMT",
-                        },  
-                        {
-                            "Name": "FMTI"
-                        }
-                        ,  
-                        {
-                            "Name": "NSCA-CPT"
-                        }             
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"badminton",
-                        },
-                        {
-                            "Name":"golf",
-                        },
-                        {
-                            "Name":"orienteering",
-                        }
-                    ],
-                    "Experience": "<ul><li>城市健身房教練</li><li>Dr.Stretch訓練師</li><li>偏鄉兒童足球活動指導</li><li>Beyond 新人培訓教官</li><li>Beyond 恢復部門主教官</li><li>2018 定向越野錦標賽參賽</li></ul>"                    
-                },
-                {
-                    "MemberCode": "UH47224211",
-                    "Name": "沈威",
-                    "NameDesc": "William",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-right.svg",
-                            "NamePosition": "translate(70.31 184.4)",
-                            "JobPosition": "translate(100.31 154.46)",
-                            "ImgXShifting": -30,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "All you truly needs is beginning, for success is born from the relentless effort of one step at a time.",
-                    "SloganDesc": "你唯一需要的是一個開始，成功來自於一步步的努力。",
-                    "Desc": "性格陽光且熱愛挑戰的人，同時擁有卓越的耐心。認為健康為首要之事，同時也享受鼓勵他人走向健康生活的過程。",
-                    "License":[
-                        {
-                            "Name": "TRX",
-                        }, 
-                        {
-                            "Name": "Monster",
-                        },  
-                        {
-                            "Name": "KBC"
-                        },  
-                        {
-                            "Name": "PADI"
-                        },  
-                        {
-                            "Name": "Z-ROCHEA"
-                        },  
-                        {
-                            "Name": "CMAS"
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }               
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"diving",
-                        },
-                        {
-                            "Name":"hiking",
-                        },
-                        {
-                            "Name":"equestrian",
-                        },
-                        {
-                            "Name":"taekwondo",
-                        },
-                        {
-                            "Name":"surfing",
-                        },
-                        {
-                            "Name":"climbing",
-                        }
-                    ],
-                    "Experience": "<ul><li>TRX暑期訓練夏令營</li><li>TRX團課教練</li><li>百岳攀登＃合歡東峰</li></ul>"                    
-                },
+                // {
+                //     "MemberCode": "PS66550899",
+                //     "Name": "趙昱穎",
+                //     "NameDesc": "Frank",
+                //     "JobTitle": "Sports Massager",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-half.svg",
+                //             "NamePosition": "translate(220.06 183.4)",
+                //             "JobPosition": "translate(220.06 153.46)",
+                //             "ImgXShifting": -140,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "If you want to change your life,We need change your habits first.",
+                //     "SloganDesc": "改變習慣，就能改變人生。",
+                //     "Desc": "個性時而溫暖時而溫柔的擅長傾聽和陪伴他人，並具有優越的覺察力，能夠細緻地觀察出微小的差異，進而推理整個情境。",
+                //     "License":[
+                //         {
+                //             "Name": "IBMA",
+                //         }, 
+                //         {
+                //             "Name": "EMT",
+                //         },  
+                //         {
+                //             "Name": "FMTI"
+                //         }
+                //         ,  
+                //         {
+                //             "Name": "NSCA-CPT"
+                //         }             
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"badminton",
+                //         },
+                //         {
+                //             "Name":"golf",
+                //         },
+                //         {
+                //             "Name":"orienteering",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>城市健身房教練</li><li>Dr.Stretch訓練師</li><li>偏鄉兒童足球活動指導</li><li>Beyond 新人培訓教官</li><li>Beyond 恢復部門主教官</li><li>2018 定向越野錦標賽參賽</li></ul>"                    
+                // },
+                // {
+                //     "MemberCode": "UH47224211",
+                //     "Name": "沈威",
+                //     "NameDesc": "William",
+                //     "JobTitle": "Coach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-right.svg",
+                //             "NamePosition": "translate(70.31 184.4)",
+                //             "JobPosition": "translate(100.31 154.46)",
+                //             "ImgXShifting": -30,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "All you truly needs is beginning, for success is born from the relentless effort of one step at a time.",
+                //     "SloganDesc": "你唯一需要的是一個開始，成功來自於一步步的努力。",
+                //     "Desc": "性格陽光且熱愛挑戰的人，同時擁有卓越的耐心。認為健康為首要之事，同時也享受鼓勵他人走向健康生活的過程。",
+                //     "License":[
+                //         {
+                //             "Name": "TRX",
+                //         }, 
+                //         {
+                //             "Name": "Monster",
+                //         },  
+                //         {
+                //             "Name": "KBC"
+                //         },  
+                //         {
+                //             "Name": "PADI"
+                //         },  
+                //         {
+                //             "Name": "Z-ROCHEA"
+                //         },  
+                //         {
+                //             "Name": "CMAS"
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }               
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"diving",
+                //         },
+                //         {
+                //             "Name":"hiking",
+                //         },
+                //         {
+                //             "Name":"equestrian",
+                //         },
+                //         {
+                //             "Name":"taekwondo",
+                //         },
+                //         {
+                //             "Name":"surfing",
+                //         },
+                //         {
+                //             "Name":"climbing",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>TRX暑期訓練夏令營</li><li>TRX團課教練</li><li>百岳攀登＃合歡東峰</li></ul>"                    
+                // },
                 {
                     "MemberCode": "KN49058997",
                     "Name": "陳冠綸",
@@ -1294,7 +1294,7 @@
                     "MemberCode": "BV7219179",
                     "Name": "劉家瑜",
                     "NameDesc": "Peter",
-                    "JobTitle": "Vice Manager",                                
+                    "JobTitle": "Coach",                                
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
@@ -1468,12 +1468,12 @@
                     "MemberCode": "UX92868239",
                     "Name": "薛皓云",
                     "NameDesc": "Sina",
-                    "JobTitle": "Coach",
+                    "JobTitle": "Manager",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(63.61 184.4)",
-                            "JobPosition": "translate(55.61 154.46)",
+                            "NamePosition": "translate(50.61 184.4)",
+                            "JobPosition": "translate(50.61 154.46)",
                             "ImgXShifting": -90,
                             "ImgYShifting": -40,
                         }                        
@@ -2368,34 +2368,34 @@
             "MRT":"Brown line (Muzha) • MRT Jiannan Rd. station Exit 2",
             "MRTShort":"MRT Jiannan Rd. Exit<b>2</b>",
             "GoogleMap": "https://maps.app.goo.gl/se2aJjfsTjZtn8H67",
-            "BannerImgCount": 4,  
+            "BannerImgCount": 5,  
             "Slogan": "Begin your journey to health and confidence with Beyond!",
             "SloganMessage": "<p>At Beyond Fitness, you can comfortably enjoy your own personal time in a space that is both stylish and inviting.<br/><br />The natural lighting enhances your mood, allowing you to effortlessly reclaim your health. Exercise is no longer a burden but an exciting journey toward a more confident and beautiful you.<br/><br/>Together, let’s discover the joy of fitness amidst the busyness of life. Our professional trainers, like trusted friends, will accompany you on your journey to health and confidence.</p>",
             "InfoWeekDaysTime": "09:00 - 22:30",
             "InfoHolidayTime": "08:00 - 19:00",          
             "DemoImgItems":[
                 {
-                    "FileName": "demo01.png"
+                    "FileName": "demo08.png"
                 },
                 {
-                    "FileName": "demo02.png"
+                    "FileName": "demo09.png"
                 },
                 {
-                    "FileName": "demo03.png"
+                    "FileName": "demo10.png"
                 },
                 {
-                    "FileName": "demo04.png"
+                    "FileName": "demo11.png"
                 },
                 {
-                    "FileName": "demo05.png"
+                    "FileName": "demo12.png"
                 },
                 {
-                    "FileName": "demo06.png"
+                    "FileName": "demo13.png"
                 },
                 {
-                    "FileName": "demo07.png"
+                    "FileName": "demo14.png"
                 },
-            ],           
+            ],         
             "FeatureItems":[
                 {
                     "Content": "Exit 2 of MRT Jiannan Rd."
@@ -2494,7 +2494,7 @@
                     "MemberCode": "QQ80184463",
                     "Name": "黃涴資",
                     "NameDesc": "Anna",
-                    "JobTitle": "Vice Manager",
+                    "JobTitle": "Coach",
                     "CoverInfo":[
                         {
                             "Shape": "avatar-full.svg",
