@@ -631,7 +631,8 @@
         </script>
     }
 
-    @if (lessonItem.RegisterLesson.IsSingleCharge && !lessonItem.RegisterLesson.IsPaid)
+    @if (lessonItem.RegisterLesson.IsSingleCharge && !lessonItem.RegisterLesson.IsPaid
+            && lessonItem.RegisterLesson.LessonPriceType.ListPrice > 0)
     {
         <script>
             this.attendLesson = function() {

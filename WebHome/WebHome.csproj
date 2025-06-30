@@ -164,7 +164,6 @@
   <ItemGroup>
     <Folder Include="Models\Resources\" />
     <Folder Include="Views\ContractConsole\Items\" />
-    <Folder Include="Views\SystemInfo\" />
   </ItemGroup>
 
   <ItemGroup>

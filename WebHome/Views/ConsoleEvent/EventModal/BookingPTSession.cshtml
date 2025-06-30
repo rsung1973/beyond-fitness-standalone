@@ -63,7 +63,7 @@
                                     .Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.單堂現場付款));
     if(_model.IsRegular)
     {
-        price = singleChargeItems.Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.舊會員續約))
+        price = singleChargeItems.Where(p => p.LessonPriceProperty.Any(t => t.PropertyID == (int)Naming.LessonPriceFeature.VIP單堂購買))
                     .FirstOrDefault();
     }
 

@@ -38,6 +38,7 @@
 
 
     ViewBag.SalaryItem = _salary;
+    DateTime boundaryDate = new DateTime(2025, 6, 1);
 
 }
 <div class="panel-group full-body" id="accordionDetail_salary" role="tablist" aria-multiselectable="true">
@@ -91,14 +92,17 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li>
-                                    <div class="list_tb tb2">
-                                        <div class="list_tr">
-                                            <div class="list_td hd">收款業績獎金</div>
-                                            <div class="list_td rt">@($"{_model.AchievementBonus:##,###,###,###}")</div>
+                                @if (_model.Settlement.StartDate < boundaryDate)
+                                {
+                                    <li>
+                                        <div class="list_tb tb2">
+                                            <div class="list_tr">
+                                                <div class="list_td hd">收款業績獎金</div>
+                                                <div class="list_td rt">@($"{_model.AchievementBonus:##,###,###,###}")</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
+                                    </li>
+                                }
                             }
                             @if (_salary is CoachYearlyAdditionalPay)
                             {
@@ -250,7 +254,8 @@
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
             }
-            else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ProfessionalLevel.IsManager() || salaryItem.ProfessionalLevel.IsViceManager() || salaryItem.ProfessionalLevel.IsFES()))
+            else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ProfessionalLevel.IsManager() || salaryItem.ProfessionalLevel.IsViceManager() || salaryItem.ProfessionalLevel.IsFES())
+                    && _model.Settlement.StartDate < boundaryDate)
             {
                 await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForCoach.cshtml", _model);
             }

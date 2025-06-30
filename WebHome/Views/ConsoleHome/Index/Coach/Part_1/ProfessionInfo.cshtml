@@ -23,11 +23,12 @@
 
 }
 
-@(_model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Officer)
+@*@(_model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Officer)
                                     ? "CEO"
                                     : _model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.Manager)
                                         ? "FM"
                                         : _model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.ViceManager)
                                             ? "AFM"
                                             : _model.ServingCoach.ProfessionalLevel.LevelName)
-@(_model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.ViceManager) && (int)Naming.ProfessionalCategory.AFM != _model.ServingCoach.ProfessionalLevel.CategoryID.Value ? $" / {_model.ServingCoach.ProfessionalLevel.LevelName}" : null)
+@(_model.UserRoleAuthorization.Any(r => r.RoleID == (int)Naming.RoleID.ViceManager) && (int)Naming.ProfessionalCategory.AFM != _model.ServingCoach.ProfessionalLevel.CategoryID.Value ? $" / {_model.ServingCoach.ProfessionalLevel.LevelName}" : null)*@
+@Html.Raw(_model.ServingCoach.ProfessionalLevel.LevelName)

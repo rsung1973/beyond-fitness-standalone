@@ -45,6 +45,9 @@ namespace WebHome.Helper
                     .Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.自主訓練
                         || l.ELStatus == (int)Naming.LessonPriceStatus.自主訓練);
 
+        public IQueryable<V_Tuition> GroupXItems => LessonItems
+                    .Where(l => l.PriceStatus == (int)Naming.LessonPriceStatus.團體課程);
+
         //public IQueryable<V_Tuition> SRSession
         //{
         //    get

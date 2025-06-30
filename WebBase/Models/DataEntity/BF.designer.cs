@@ -71906,6 +71906,16 @@ namespace WebHome.Models.DataEntity
 		
 		private System.Nullable<int> _StaffWelfareFund;
 		
+		private System.Nullable<int> _TSBonus;
+		
+		private System.Nullable<int> _PIAttendanceCount;
+		
+		private System.Nullable<int> _PIBonus;
+		
+		private System.Nullable<int> _GroupXAttendanceCount;
+		
+		private System.Nullable<int> _GroupXBonus;
+		
 		private EntitySet<CoachBranchMonthlyBonus> _CoachBranchMonthlyBonus;
 		
 		private EntityRef<BranchStore> _BranchStore;
@@ -71974,6 +71984,16 @@ namespace WebHome.Models.DataEntity
     partial void OnBasicWageChanged();
     partial void OnStaffWelfareFundChanging(System.Nullable<int> value);
     partial void OnStaffWelfareFundChanged();
+    partial void OnTSBonusChanging(System.Nullable<int> value);
+    partial void OnTSBonusChanged();
+    partial void OnPIAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnPIAttendanceCountChanged();
+    partial void OnPIBonusChanging(System.Nullable<int> value);
+    partial void OnPIBonusChanged();
+    partial void OnGroupXAttendanceCountChanging(System.Nullable<int> value);
+    partial void OnGroupXAttendanceCountChanged();
+    partial void OnGroupXBonusChanging(System.Nullable<int> value);
+    partial void OnGroupXBonusChanged();
     #endregion
 		
 		public CoachMonthlySalary()
@@ -72526,8 +72546,113 @@ namespace WebHome.Models.DataEntity
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TSBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26)]
+		public System.Nullable<int> TSBonus
+		{
+			get
+			{
+				return this._TSBonus;
+			}
+			set
+			{
+				if ((this._TSBonus != value))
+				{
+					this.OnTSBonusChanging(value);
+					this.SendPropertyChanging();
+					this._TSBonus = value;
+					this.SendPropertyChanged("TSBonus");
+					this.OnTSBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PIAttendanceCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=27)]
+		public System.Nullable<int> PIAttendanceCount
+		{
+			get
+			{
+				return this._PIAttendanceCount;
+			}
+			set
+			{
+				if ((this._PIAttendanceCount != value))
+				{
+					this.OnPIAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._PIAttendanceCount = value;
+					this.SendPropertyChanged("PIAttendanceCount");
+					this.OnPIAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PIBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=28)]
+		public System.Nullable<int> PIBonus
+		{
+			get
+			{
+				return this._PIBonus;
+			}
+			set
+			{
+				if ((this._PIBonus != value))
+				{
+					this.OnPIBonusChanging(value);
+					this.SendPropertyChanging();
+					this._PIBonus = value;
+					this.SendPropertyChanged("PIBonus");
+					this.OnPIBonusChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupXAttendanceCount", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=29)]
+		public System.Nullable<int> GroupXAttendanceCount
+		{
+			get
+			{
+				return this._GroupXAttendanceCount;
+			}
+			set
+			{
+				if ((this._GroupXAttendanceCount != value))
+				{
+					this.OnGroupXAttendanceCountChanging(value);
+					this.SendPropertyChanging();
+					this._GroupXAttendanceCount = value;
+					this.SendPropertyChanged("GroupXAttendanceCount");
+					this.OnGroupXAttendanceCountChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GroupXBonus", DbType="Int")]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=30)]
+		public System.Nullable<int> GroupXBonus
+		{
+			get
+			{
+				return this._GroupXBonus;
+			}
+			set
+			{
+				if ((this._GroupXBonus != value))
+				{
+					this.OnGroupXBonusChanging(value);
+					this.SendPropertyChanging();
+					this._GroupXBonus = value;
+					this.SendPropertyChanged("GroupXBonus");
+					this.OnGroupXBonusChanged();
+				}
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="CoachMonthlySalary_CoachBranchMonthlyBonus", Storage="_CoachBranchMonthlyBonus", ThisKey="CoachID,SettlementID", OtherKey="CoachID,SettlementID")]
-		[global::System.Runtime.Serialization.DataMemberAttribute(Order=26, EmitDefaultValue=false)]
+		[global::System.Runtime.Serialization.DataMemberAttribute(Order=31, EmitDefaultValue=false)]
 		public EntitySet<CoachBranchMonthlyBonus> CoachBranchMonthlyBonus
 		{
 			get

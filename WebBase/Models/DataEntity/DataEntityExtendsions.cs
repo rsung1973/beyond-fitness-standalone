@@ -656,7 +656,7 @@ namespace WebHome.Models.DataEntity
         public static bool IsCoach(this ProfessionalLevel level)
         {
             return level?.CategoryID == (int)Naming.ProfessionalCategory.Senior
-                    || level?.CategoryID == (int)Naming.ProfessionalCategory.Junior;
+                    || level?.CategoryID == (int)Naming.ProfessionalCategory.Coach2025;
         }
     }
 
@@ -899,8 +899,8 @@ namespace WebHome.Models.DataEntity
 
         public static bool IsSuitableForVirtaulClass(ContractTypeDefinition? ct)
         {
-            return ct == ContractTypeDefinition.CPA
-                || ct == ContractTypeDefinition.CNA
+            return /*ct == ContractTypeDefinition.CPA
+                ||*/ ct == ContractTypeDefinition.CNA
                 || ct == ContractTypeDefinition.CVA
                 || ct == ContractTypeDefinition.CVB
                 || ct == ContractTypeDefinition.CVC
