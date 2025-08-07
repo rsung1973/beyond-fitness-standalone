@@ -643,50 +643,50 @@
                 //     ],
                 //     "Experience": "<ul><li>前亞洲盃划船選手</li><li>全運會划船項目金牌</li><li>Beyond Fitness 教練俱樂部總教官</li></ul>"                    
                 // },                              
-                {
-                    "MemberCode": "QS10595815",
-                    "Name": "邱謹瑜",
-                    "NameDesc": "Grace",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-full.svg",
-                            "NamePosition": "translate(60.09 184.4)",
-                            "JobPosition": "translate(70.4 154.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "We are what we repeatedly do. Excellence therefore is not an act, but a habit.",
-                    "SloganDesc": "我們的重複行為造就了我們，所以卓越不是一種行為，而是一種習慣。",
-                    "Desc": "個性中充滿著樂天、樸實與率真。透過我的笑聲，我能夠真誠地影響他人。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "PTAG",
-                        },
-                        {
-                            "Name": "KBC",
-                        },
-                        {
-                            "Name": "CPRAED",
-                        }                    
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"rowing",
-                        },
-                        {
-                            "Name":"surfing",
-                        },
-                        {
-                            "Name":"motocross",
-                        }
-                    ],
-                    "Experience": "<ul><li>前亞運划船選手</li><li>全運會划船項目銀牌</li></ul>"                    
-                },               
+                // {
+                //     "MemberCode": "QS10595815",
+                //     "Name": "邱謹瑜",
+                //     "NameDesc": "Grace",
+                //     "JobTitle": "Coach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-full.svg",
+                //             "NamePosition": "translate(60.09 184.4)",
+                //             "JobPosition": "translate(70.4 154.46)",
+                //             "ImgXShifting": -60,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "We are what we repeatedly do. Excellence therefore is not an act, but a habit.",
+                //     "SloganDesc": "我們的重複行為造就了我們，所以卓越不是一種行為，而是一種習慣。",
+                //     "Desc": "個性中充滿著樂天、樸實與率真。透過我的笑聲，我能夠真誠地影響他人。",
+                //     "License":[
+                //         {
+                //             "Name": "ACE",
+                //         },
+                //         {
+                //             "Name": "PTAG",
+                //         },
+                //         {
+                //             "Name": "KBC",
+                //         },
+                //         {
+                //             "Name": "CPRAED",
+                //         }                    
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"rowing",
+                //         },
+                //         {
+                //             "Name":"surfing",
+                //         },
+                //         {
+                //             "Name":"motocross",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>前亞運划船選手</li><li>全運會划船項目銀牌</li></ul>"                    
+                // },               
                 {
                     "MemberCode": "RW86165852",
                     "Name": "蘇柏銓",
@@ -1015,44 +1015,44 @@
                     ],
                     "Experience": "<ul><li>國立臺北大學一般組男籃</li><li>假日業餘聯賽球員</li><li>北市青年盃籃球賽社男組第四名</li><li>2016-2019大專盃一般組籃球聯賽</li><li>TGB籃球聯賽</li><li>2022 苗栗縣長盃籃球盃賽季軍季軍</li><li>2023 Beyond x waypoint 聯合運動會冠軍組</li></ul>"                    
                 },                    
-                {
-                    "MemberCode": "LA73559663",
-                    "Name": "何秉睿",
-                    "NameDesc": "Ray",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-half.svg",
-                            "NamePosition": "translate(92.31 183.4)",
-                            "JobPosition": "translate(70.31 153.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -40,
-                        }                        
-                    ],
-                    "Slogan": "Start, Be different.",
-                    "SloganDesc": "開始，不一樣  ",
-                    "Desc": "個性陽光活潑，充滿溫暖與貼心，致力於認真訓練。同時，我總是喜歡以幽默和風趣的方式與人互動，讓每個瞬間充滿愉快。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        } ,
-                        {
-                            "Name": "CPRAED",
-                        }         
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"soccer",
-                        },
-                        {
-                            "Name":"golf",
-                        },
-                        {
-                            "Name":"ski",
-                        }
-                    ],
-                    "Experience": "<ul><li>前世青賽滑雪選手</li><li>前世錦賽滑雪選手</li><li>前冬亞運滑雪選手</li><li>前冬奧運滑雪選手</li><li>Beyond fitness 2023 Influence 冠軍🥇</li></ul>"                        
-                },       
+                // {
+                //     "MemberCode": "LA73559663",
+                //     "Name": "何秉睿",
+                //     "NameDesc": "Ray",
+                //     "JobTitle": "Coach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-half.svg",
+                //             "NamePosition": "translate(92.31 183.4)",
+                //             "JobPosition": "translate(70.31 153.46)",
+                //             "ImgXShifting": -60,
+                //             "ImgYShifting": -40,
+                //         }                        
+                //     ],
+                //     "Slogan": "Start, Be different.",
+                //     "SloganDesc": "開始，不一樣  ",
+                //     "Desc": "個性陽光活潑，充滿溫暖與貼心，致力於認真訓練。同時，我總是喜歡以幽默和風趣的方式與人互動，讓每個瞬間充滿愉快。",
+                //     "License":[
+                //         {
+                //             "Name": "ACE",
+                //         } ,
+                //         {
+                //             "Name": "CPRAED",
+                //         }         
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"soccer",
+                //         },
+                //         {
+                //             "Name":"golf",
+                //         },
+                //         {
+                //             "Name":"ski",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>前世青賽滑雪選手</li><li>前世錦賽滑雪選手</li><li>前冬亞運滑雪選手</li><li>前冬奧運滑雪選手</li><li>Beyond fitness 2023 Influence 冠軍🥇</li></ul>"                        
+                // },       
                 {
                     "MemberCode": "UD60058637",
                     "Name": "潘紫瑄",
@@ -1332,50 +1332,50 @@
                     ],
                     "Experience": "<h4>2022~2024</h4><ul><li>Beyond月內訓講師</li><li>Beyond Fitness Responsibility Award 冠軍</li><li>Beyond Fitness Responsibility Award 季軍🥉</li></ul><h4>~2021</h4><ul><li>跆拳道品勢全國賽</li><li>波恩體能顧問私人教練</li></ul>"                                    
                 },
-                {
-                    "MemberCode": "KK31237994",
-                    "Name": "侯炫竹",
-                    "NameDesc": "Ted",
-                    "JobTitle": "Coach",
-                    "CoverInfo":[
-                        {
-                            "Shape": "avatar-left.svg",
-                            "NamePosition": "translate(260.31 183.4)",
-                            "JobPosition": "translate(260.31 153.46)",
-                            "ImgXShifting": -60,
-                            "ImgYShifting": -30,
-                        }                        
-                    ],
-                    "Slogan": "Grow through, when you go through. I'll be with you.",
-                    "SloganDesc": "成長總在經歷過後，我一直都在。",
-                    "Desc": "對我而言，充滿好奇和熱愛挑戰是生活的精髓。這不僅有益於身體健康，還讓我享受生活的分享和探索。",
-                    "License":[
-                        {
-                            "Name": "ACE",
-                        },
-                        {
-                            "Name": "NSCA-CPT",
-                        }, 
-                        {
-                            "Name": "PTAG",
-                        }, 
-                        {
-                            "Name": "AF",
-                        }, 
-                        {
-                            "Name": "CPRAED"
-                        }                        
-                    ],
-                    "Sports":[
-                        {
-                            "Name":"kettlebell",
-                        },
-                        {
-                            "Name":"weightlifting",
-                        }
-                    ],
-                    "Experience": "<ul><li>2022~2023 Beyond教育培訓首席教官</li><li>Beyond足球隊</li><li>桃城硬舉單項健力賽</li></ul>"                    
-                },
+                // {
+                //     "MemberCode": "KK31237994",
+                //     "Name": "侯炫竹",
+                //     "NameDesc": "Ted",
+                //     "JobTitle": "Coach",
+                //     "CoverInfo":[
+                //         {
+                //             "Shape": "avatar-left.svg",
+                //             "NamePosition": "translate(260.31 183.4)",
+                //             "JobPosition": "translate(260.31 153.46)",
+                //             "ImgXShifting": -60,
+                //             "ImgYShifting": -30,
+                //         }                        
+                //     ],
+                //     "Slogan": "Grow through, when you go through. I'll be with you.",
+                //     "SloganDesc": "成長總在經歷過後，我一直都在。",
+                //     "Desc": "對我而言，充滿好奇和熱愛挑戰是生活的精髓。這不僅有益於身體健康，還讓我享受生活的分享和探索。",
+                //     "License":[
+                //         {
+                //             "Name": "ACE",
+                //         },
+                //         {
+                //             "Name": "NSCA-CPT",
+                //         }, 
+                //         {
+                //             "Name": "PTAG",
+                //         }, 
+                //         {
+                //             "Name": "AF",
+                //         }, 
+                //         {
+                //             "Name": "CPRAED"
+                //         }                        
+                //     ],
+                //     "Sports":[
+                //         {
+                //             "Name":"kettlebell",
+                //         },
+                //         {
+                //             "Name":"weightlifting",
+                //         }
+                //     ],
+                //     "Experience": "<ul><li>2022~2023 Beyond教育培訓首席教官</li><li>Beyond足球隊</li><li>桃城硬舉單項健力賽</li></ul>"                    
+                // },
                 {
                     "MemberCode": "UB83379346",
                     "Name": "宋智強",
