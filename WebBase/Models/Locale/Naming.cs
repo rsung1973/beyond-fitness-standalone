@@ -99,6 +99,7 @@ namespace WebHome.Models.Locale
             單堂現場付款 = 1019,
             BR體驗 = 1020,
             PT轉換教練 = 1021,
+            VIP單堂購買 = 1022,
         }
 
         public enum LessonSeriesStatus
@@ -230,6 +231,7 @@ namespace WebHome.Models.Locale
             FES = 1108,
             Health = 1109,
             Health_SD = 1110,
+            Coach2025 = 1111,
         }
 
         public static readonly ProfessionalCategory[] ManagerialLevel = new ProfessionalCategory[]

@@ -156,14 +156,14 @@
                     }
                 </li>
                 @{
-                    currentItems = _items.ByGroupX();
+                    currentItems = _items.ByGroupX(out IQueryable<IGrouping<GroupXItem, LessonTime>> groupItems);
                     currentViewModel = (LessonOverviewQueryViewModel)_viewModel.Duplicate();
                     currentViewModel.KeyID = null;
                     currentViewModel.LessonType = Naming.LessonQueryType.團體課程;
                 }
                 <li class="col-lg-3 col-md-6 col-sm-12">
                     @{
-                        lessonsSummary(currentItems, currentViewModel, "Group X", false);
+                        lessonsSummary(currentItems, currentViewModel, "Group X", true, groupItems);
                     }
                 </li>
             </ul>
@@ -192,44 +192,48 @@
 </section>
 
 @{
-    void lessonsSummary(IQueryable<LessonTime> currentItems, LessonOverviewQueryViewModel currentViewModel, String lessonTypeName, bool hasLearner)
+    void lessonsSummary(IQueryable<LessonTime> currentItems, LessonOverviewQueryViewModel currentViewModel, String lessonTypeName, bool hasLearner, IQueryable<IGrouping<GroupXItem, LessonTime>> groupXItems = null)
     {
-    <div class="body">
-        <div class="row">
-            <div class="col-8">
-                <h5 class="m-t-0">@(lessonTypeName)</h5>
-                <p class="text-small">
-                    @{
-                        var lessonCount = currentItems.Where(t => t.LessonAttendance == null).Count();
-                        var viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                        viewModel.CoachAttended = false;
-                    }
-                    編輯中：<a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a><br />
-                    @if (hasLearner)
-                    {
+        <div class="body">
+            <div class="row">
+                <div class="col-8">
+                    <h5 class="m-t-0">@(lessonTypeName)</h5>
+                    <p class="text-small">
+                        @{
+                            var lessonCount = groupXItems == null
+                                ? currentItems.Where(t => t.LessonAttendance == null).Count()
+                                : groupXItems.Count(g => g.Any(v => v.LessonAttendance == null));
+                            var viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                            viewModel.CoachAttended = false;
+                        }
+                        編輯中：<a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a><br />
+                        @if (hasLearner)
+                        {
 
-                        lessonCount = currentItems.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count();
+                            lessonCount = groupXItems == null
+                                ? currentItems.Where(t => !t.LessonPlan.CommitAttendance.HasValue).Count()
+                                : groupXItems.Count(g => g.Any(t => !t.LessonPlan.CommitAttendance.HasValue));
+                            viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
+                            viewModel.LearnerCommitted = false;
+                            <text>學生未打卡：</text>
+                            <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a>
+                        }
+                    </p>
+                </div>
+                <div class="col-4 text-right">
+                    @{
+                        lessonCount = currentItems.Count();
                         viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                        viewModel.LearnerCommitted = false;
-                        <text>學生未打卡：</text>
-                        <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'>@(lessonCount)</a>
+                        //viewModel.LearnerCommitted = true;
+                        //viewModel.CoachAttended = true;
                     }
-                </p>
-            </div>
-            <div class="col-4 text-right">
-                @{
-                    lessonCount = currentItems.Count();
-                    viewModel = (LessonOverviewQueryViewModel)currentViewModel.Duplicate();
-                    //viewModel.LearnerCommitted = true;
-                    //viewModel.CoachAttended = true;
-                }
-                <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
-                <small class="info">全部</small>
+                    <a href="#" onclick='showLessonList(@Html.Raw(viewModel.JsonStringify()),@(lessonCount));'><h2>@(lessonCount)</h2></a>
+                    <small class="info">全部</small>
+                </div>
             </div>
         </div>
-    </div>
-                        }
-                    }
+    }
+}
 
 @section TailPageJavaScriptInclude {
     <!--Sparkline Plugin Js-->

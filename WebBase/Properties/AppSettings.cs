@@ -138,6 +138,7 @@ namespace WebHome.Properties
         public String WebHomePage { get; set; } = "~/MainActivity/Main";
         public String CommonErrorView { get; set; } = "~/Views/Error/Error.cshtml";
         public bool EnableJobScheduler { get; set; } = true;
+        public int[] SeniorityBonusAvailableLevel { get; set; } = [40,41,49,50];
     }
 
     public class Settings

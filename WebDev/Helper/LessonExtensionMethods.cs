@@ -275,11 +275,11 @@ namespace WebHome.Helper
             return items;
         }
 
-        public static IQueryable<LessonTime> ByGroupX(this IQueryable<LessonTime> items)
+        public static IQueryable<LessonTime> ByGroupX(this IQueryable<LessonTime> items, out IQueryable<IGrouping<GroupXItem,LessonTime>> groupItems)
         {
-            items = items.Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
-                                        .GroupBy(g => new { g.ClassTime, g.AttendingCoach })
-                                        .Select(g => g.First());
+            groupItems = items.Where(t => t.RegisterLesson.LessonPriceType.Status == (int)Naming.LessonPriceStatus.團體課程)
+                                        .GroupBy(g => new GroupXItem { ClassTime = g.ClassTime, AttendingCoach = g.AttendingCoach });
+            items = groupItems.Select(g => g.First());
             return items;
         }
 
@@ -1867,5 +1867,11 @@ namespace WebHome.Helper
             return item;
         }
 
+    }
+
+    public class GroupXItem
+    {
+        public DateTime? ClassTime { get; set; }
+        public int? AttendingCoach { get; set; }
     }
 }

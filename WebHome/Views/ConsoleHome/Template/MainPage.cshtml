@@ -336,14 +336,14 @@
                             </a>
                         </li>
                     }
-                    if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsFES())
+                    @*if (_model.IsAuthorizedSysAdmin() || _model.IsAssistant() || _model.IsOfficer() || _model.IsManager() || _model.IsViceManager() || _model.IsFES())
                     {
                         <li>
                             <a href="javascript:$('').launchDownload('@Html.Raw(Url.Action("AssessmentOverview", "ConsoleHome",new { BranchID = models.GetTable<V_WorkPlace>().Where(v=>v.CoachID==_model.UID).FirstOrDefault()?.WorkPlace }))', { });">
                                 <i class="zmdi zmdi-assignment-account"></i><span>我的考核</span>
                             </a>
                         </li>
-                    }
+                    }*@
                     if (!_model.IsOfficer())
                     {
                         if (_model.IsCoach() || _model.IsManager() || _model.IsViceManager())
@@ -386,7 +386,7 @@
                     </li>*@
                 }
                 <li class="price-thumbnials">
-                    <a href="images/price/p-202503.png" target="_blank"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
+                    <a href="images/price/p-202506.jpg" target="_blank"><i class="zmdi zmdi-search-replace"></i><span>價格詢問球</span> </a>
                 </li>                
                 @if (_model.IsCoach() || _model.IsAssistant() || _model.IsSysAdmin())
                 {
