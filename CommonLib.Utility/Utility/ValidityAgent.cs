@@ -16,7 +16,7 @@ using System.Globalization;
 namespace CommonLib.Utility
 {
     /// <summary>
-    /// Summary description for ValueValidity.
+    /// Summary description for ValidityAgent.
     /// </summary>
     public static class ValidityAgent
     {
@@ -45,6 +45,102 @@ namespace CommonLib.Utility
                                     'M', 'N', 'P', 'R', 'S', 'T',
                                     'W', 'X', 'Y'};
         public static char[] NUMERIC_STRING = { '1', '2', '3', '4', '5', '6', '7', '8', '9', '0' };
+
+        public const string HEX_NUMBER = "0123456789ABCDEF";
+
+        public static readonly Random RANDOM = new Random();
+        public static bool IsSignificantString(object obj)
+        {
+            if (obj != null && (obj is string))
+            {
+                return ((string)obj).Length > 0;
+            }
+            return false;
+        }
+
+        public static void CheckAndCreatePath(string path)
+        {
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+        }
+
+
+        public static void AppendEMailAddr(IList list, object emailAddr)
+        {
+            if (IsSignificantString(emailAddr))
+            {
+                string[] email = emailAddr.ToString().Split(',', ';', ' ', '\r', '\n');
+                foreach (string s in email)
+                {
+                    list.Add(s);
+                }
+            }
+        }
+
+        #region ConvertChineseDate
+
+        /// <summary>
+        /// 將日期轉成民國紀元
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        /// 
+        public static string ConvertChineseDate(this object dateTime)
+        {
+            if (dateTime != null && dateTime is DateTime)
+            {
+                DateTime dt = (DateTime)dateTime;
+                return String.Format("{0}.{1:00}.{2:00}", dt.Year - 1911, dt.Month, dt.Day);
+            }
+
+            return null;
+
+        }
+
+
+        public static string ConvertChineseDate(this object dateTime, string strAsNull)
+        {
+            if (dateTime != null && dateTime is DateTime)
+            {
+                DateTime dt = (DateTime)dateTime;
+                return String.Format("{0}.{1:00}.{2:00}", dt.Year - 1911, dt.Month, dt.Day);
+            }
+
+            return strAsNull;
+
+        }
+
+
+        #endregion
+
+        #region ConvertChineseDateString
+        public static string ConvertChineseDateString(this object dateTime)
+        {
+            if (dateTime != null && dateTime is DateTime)
+            {
+
+                DateTime dt = (DateTime)dateTime;
+                return String.Format("{0}年{1}月{2}日", dt.Year - 1911, dt.Month, dt.Day);
+            }
+            return null;
+        }
+
+        #endregion
+
+
+        public static string ConvertChineseDateTimeString(this object dateTime)
+        {
+            if (dateTime != null && dateTime is DateTime)
+            {
+
+                DateTime dt = (DateTime)dateTime;
+                return String.Format("{0}年{1}月{2}日{3}時{4}分{5}秒",
+                    dt.Year - 1911, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+            }
+            return null;
+        }
 
         public static string MoneyShow(this object numValue)
         {
@@ -148,6 +244,7 @@ namespace CommonLib.Utility
             if (receiptNo.Length != 8)
                 return false;
 
+            const int checkCode = 5;  //  2023-4-1開始新規定
             int code;
             if (!int.TryParse(receiptNo, out code))
             {
@@ -168,10 +265,10 @@ namespace CommonLib.Utility
                 digitSum(((code % 100) / 10) * 4) +
                 (code % 10);
 
-            if (checkSum % 10 == 0)
+            if (checkSum % checkCode == 0)
                 return true;
 
-            if ((code % 100) / 10 == 7 && (checkSum + 1) % 10 == 0)
+            if ((code % 100) / 10 == 7 && (checkSum + 1) % checkCode == 0)
                 return true;
 
             return false;
@@ -181,14 +278,14 @@ namespace CommonLib.Utility
         public static string CreateRandomStringCode(this int codeLength)
         {
             //驗證碼的字元集，去掉了一些容易混淆的字元
-            Thread.Sleep(1);
-            Random oRnd = new Random();
+            var seed = DateTime.Now.Ticks;
             char[] sCode = new char[codeLength];
 
             //生成驗證碼字串
             for (int n = 0; n < codeLength; n++)
             {
-                sCode[n] = DISCERNIBLE_CODE[oRnd.Next(DISCERNIBLE_CODE.Length)];
+                sCode[n] = DISCERNIBLE_CODE[seed % DISCERNIBLE_CODE.Length];
+                seed /= DISCERNIBLE_CODE.Length;
             }
             return new String(sCode);
         }
@@ -197,18 +294,69 @@ namespace CommonLib.Utility
         {
             //驗證碼的字元集，去掉了一些容易混淆的字元
             Thread.Sleep(1);
-            Random oRnd = new Random();
             char[] sCode = new char[codeLength];
 
             //生成驗證碼字串
             for (int n = 0; n < codeLength; n++)
             {
-                sCode[n] = NUMERIC_STRING[oRnd.Next(NUMERIC_STRING.Length)];
+                sCode[n] = NUMERIC_STRING[ValidityAgent.RANDOM.Next(NUMERIC_STRING.Length)];
             }
             return new String(sCode);
         }
 
+        public static String GenerateHexCode(this int length)
+        {
+            StringBuilder sb = new StringBuilder(length);
 
+            for (int i = 0; i < length; i++)
+            {
+                int index = ValidityAgent.RANDOM.Next(HEX_NUMBER.Length);
+                sb.Append(HEX_NUMBER[index]);
+            }
+
+            return sb.ToString();
+        }
+
+
+        public static char[] GetChineseNumberSeries(this int number, int length)
+        {
+            char[] result = new char[length];
+            for (int i = 0; i < length; i++)
+            {
+                result[i] = __CHINESE_NUM_CHAR[number % 10];
+                number /= 10;
+            }
+            return result;
+        }
+
+        public static byte[] UploadData(this XmlNode data, String url, int timeout = 0)
+        {
+            using (WebClientEx client = new WebClientEx())
+            {
+                if (timeout > 0)
+                {
+                    client.Timeout = timeout;
+                }
+                Encoding utf8 = new UTF8Encoding();
+                client.Encoding = utf8;
+                return client.UploadData(url, utf8.GetBytes(data.OuterXml));
+            }
+        }
+
+        public static XmlDocument UploadDocument(this XmlNode data, String url)
+        {
+            byte[] result = data.UploadData(url);
+            if (result != null)
+            {
+                using (MemoryStream ms = new MemoryStream(result))
+                {
+                    XmlDocument doc = new XmlDocument();
+                    doc.Load(ms);
+                    return doc;
+                }
+            }
+            return null;
+        }
 
         public static string GetDateStylePath(this string prefix)
         {
@@ -225,22 +373,9 @@ namespace CommonLib.Utility
             return path;
         }
 
-        public static byte[] HexToByteArray(this string hexString)
+        public static String ToHexString(this byte[] data, String format = "X2", String delimiter = "")
         {
-            byte[] bytes = new byte[hexString.Length / 2];
-
-            for (int i = 0; i < hexString.Length; i += 2)
-            {
-                string s = hexString.Substring(i, 2);
-                bytes[i / 2] = byte.Parse(s, NumberStyles.HexNumber, null);
-            }
-
-            return bytes;
-        }
-
-        public static String ToHexString(this byte[] data, String delimiter = "")
-        {
-            return String.Join(delimiter, data.Select(b => b.ToString("X2")));
+            return String.Join(delimiter, data.Select(b => b.ToString(format)));
         }
 
         public static string ConvertToHalfWidthString(this string str)
@@ -268,6 +403,160 @@ namespace CommonLib.Utility
             return ch;
         }
 
+        public static T NullDefault<T>(this Nullable<T> val)
+            where T : struct
+        {
+            return val.HasValue ? val.Value : default(T);
+        }
+
+
+        #region "驗証輸入的字串"
+        /// 
+        /// 判斷輸入的字串類型。　
+        /// 
+        /// 輸入的字串。(string) 
+        /// 要驗証的類型，可選擇之類型如下列表。(int)         
+        /// 驗証通過則傳回 True，反之則為 False。
+        public static bool ValidateString(this String _value, int _kind)
+        {
+            string RegularExpressions = null;
+            switch (_kind)
+            {
+                case 1:
+                    //由26個英文字母組成的字串
+                    RegularExpressions = "^[A-Za-z]+$";
+                    break;
+                case 2:
+                    //正整數 
+                    RegularExpressions = "^[0-9]*[1-9][0-9]*$";
+                    break;
+                case 3:
+                    //非負整數（正整數 + 0)
+                    RegularExpressions = "^\\d+$";
+                    break;
+                case 4:
+                    //非正整數（負整數 + 0）
+                    RegularExpressions = @"^((-\\d+)|(0+))$";
+                    break;
+                case 5:
+                    //負整數 
+                    RegularExpressions = @"^-[0-9]*[1-9][0-9]*$";
+                    break;
+                case 6:
+                    //整數
+                    RegularExpressions = @"^-?\\d+$";
+                    break;
+                case 7:
+                    //非負浮點數（正浮點數 + 0）
+                    RegularExpressions = @"^\\d+(\\.\\d+)?$";
+                    break;
+                case 8:
+                    //正浮點數
+                    RegularExpressions = @"^(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*))$";
+                    break;
+                case 9:
+                    //非正浮點數（負浮點數 + 0）
+                    RegularExpressions = @"^((-\\d+(\\.\\d+)?)|(0+(\\.0+)?))$";
+                    break;
+                case 10:
+                    //負浮點數
+                    RegularExpressions = @"^(-(([0-9]+\\.[0-9]*[1-9][0-9]*)|([0-9]*[1-9][0-9]*\\.[0-9]+)|([0-9]*[1-9][0-9]*)))$";
+                    break;
+                case 11:
+                    //浮點數
+                    RegularExpressions = @"^(-?\\d+)(\\.\\d+)?$";
+                    break;
+                case 12:
+                    //由26個英文字母的大寫組成的字串
+                    RegularExpressions = "^[A-Z]+$";
+                    break;
+                case 13:
+                    //由26個英文字母的小寫組成的字串
+                    RegularExpressions = "^[a-z]+$";
+                    break;
+                case 14:
+                    //由數位和26個英文字母組成的字串
+                    RegularExpressions = "^[A-Za-z0-9]+$";
+                    break;
+                case 15:
+                    //由數位、26個英文字母或者下劃線組成的字串 
+                    RegularExpressions = "^[0-9a-zA-Z_]+$";
+                    break;
+                case 16:
+                    //email地址
+                    RegularExpressions = "\\w+([-+.']\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*";
+                    break;
+                case 17:
+                    //url
+                    RegularExpressions = "^[a-zA-z]+://(\\w+(-\\w+)*)(\\.(\\w+(-\\w+)*))*(\\?\\S*)?$";
+                    break;
+                case 18:
+                    //只能輸入中文
+                    RegularExpressions = "^[^\u4E00-\u9FA5]";
+                    break;
+                case 19:
+                    //只能輸入0和非0打頭的數字
+                    RegularExpressions = "^(0|[1-9][0-9]*)$";
+                    break;
+                case 20:
+                    //只能輸入數字
+                    RegularExpressions = "^[0-9]*$";
+                    break;
+                case 21:
+                    //只能輸入數字加2位小數
+                    RegularExpressions = "^[0-9]+(.[0-9]{1,2})?$";
+                    break;
+                case 22:
+                    //只能輸入0和非0打頭的數字加2位小數
+                    RegularExpressions = "^(0|[1-9]+)(.[0-9]{1,2})?$";
+                    break;
+                case 23:
+                    //只能輸入0和非0打頭的數字加2位小數，但不匹配0.00
+                    RegularExpressions = "^(0(.(0[1-9]|[1-9][0-9]))?|[1-9]+(.[0-9]{1,2})?)$";
+                    break;
+                //case 24:
+                //    //驗證日期格式 YYYYMMDD, 範圍19000101~20991231
+                //    RegularExpressions = "(19|20)\\d\\d+(0[1-9]|1[012])+(0[1-9]|[12][0-9]|3[01])$";
+                //    break;
+                //case 25:
+                //    //驗證日期格式 MMDDYYYY
+                //    RegularExpressions = "(0[1-9]|1[012])+(0[1-9]|[12][0-9]|3[01])+(19|20)\\d\\d$";
+                //    break;
+                //case 26:
+                //    //驗證日期格式 YYYYMM
+                //    RegularExpressions = "(19|20)\\d\\d+(0[1-9]|1[012])$";
+                //    break;
+                //case 27:
+                //    //驗證日期格式 YYYYMMDD, 範圍00010101~99991231
+                //    RegularExpressions = "(^0000|0001|9999|[0-9]{4})+(0[1-9]|1[0-2])+(0[1-9]|[12][0-9]|3[01])$";
+                //    break; 
+
+                case 28:  //驗證時間格式HH/MM/SS
+                    RegularExpressions = @"([0-1][0-9]|2[0-3])\:[0-5][0-9]\:[0-5][0-9]";
+                    break;
+
+                case 29:  //驗證特殊字元
+                    RegularExpressions = "(?=.*[@#$%^&+=])";
+                    break;
+                default:
+                    break;
+            }
+            if (_kind < 29)
+            {
+                Match m = Regex.Match(_value, RegularExpressions);
+                if (m.Success)
+                    return true;
+                else
+                    return false;
+            }
+            else
+            {
+
+                return false;
+            }
+        }
+        #endregion
+
         /// <summary>
         /// 驗證Email格式
         /// </summary>
@@ -287,7 +576,7 @@ namespace CommonLib.Utility
         /// <returns></returns>
         public static bool IsMobilPhone(this string mobilPhone)
         {
-            return Regex.IsMatch(mobilPhone, @"^09[0-9]{8}$") && !Regex.IsMatch(mobilPhone,"(\\d)\\1{5,}");
+            return Regex.IsMatch(mobilPhone, @"^09[0-9]{8}$") && !Regex.IsMatch(mobilPhone, "(\\d)\\1{5,}");
         }
 
         /// <summary>
@@ -301,5 +590,28 @@ namespace CommonLib.Utility
             return isTel;
         }
 
+        public static String MakePassword(this String password)
+        {
+            if (String.IsNullOrEmpty(password))
+                return null;
+            return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes(password)));
+        }
+
+        //public static string MakePassword(this string password)
+        //{
+        //    if (String.IsNullOrEmpty(password))
+        //        return null;
+        //    MD5 md5 = MD5.Create();
+        //    return String.Join("", md5.ComputeHash(Encoding.Default.GetBytes(password)).Select(i => String.Format("{0:X02}", i)));
+        //}
+
+        public static string HashPassword(this string password)
+        {
+            MD5 md5 = MD5.Create();
+            return String.Join("", md5.ComputeHash(Encoding.Default.GetBytes(password)).Select(i => String.Format("{0:X02}", i)));
+        }
+
+
     }
 }
+

@@ -48,7 +48,38 @@ namespace TestConsole
             //}
 
             //test12();
+            //test13();
 
+        }
+
+        private static void test13()
+        {
+            List<int> priceID = [515, 516, 517, 518, 519];
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                var items = models.GetTable<LessonFeedBack>()
+                    .Where(f => f.FeedBackDate >= new DateTime(2025, 7, 1))
+                    .Where(f => !f.LessonMissionBonus.Any())
+                    .Where(f => priceID.Contains(f.LessonTime.RegisterLesson.ClassLevel.Value))
+                                .ToList();
+                foreach (var item in items)
+                {
+                    try
+                    {
+                        var bonus = item.AwardLessonMissionBonus(models, CampaignMission.CampaignMissionType.FeedbackSurvey);
+                        if (bonus != null)
+                        {
+                            Console.WriteLine($"回補課程點數:UID:{item.RegisterLesson.UID},LessonID:{item.LessonID},BonusID:{bonus.TransactionID}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        FileLogger.Logger.Error(ex);
+                        Console.WriteLine($"Error:{item.LessonTime.RegisterLesson.UID},{item.LessonTime.RegisterLesson.UserProfile.RealName}");
+                    }
+                }
+
+            }
         }
 
         private static void test12()
@@ -206,12 +237,12 @@ namespace TestConsole
             using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoice = models.GetTable<InvoiceItem>()
-                        .Where(i => i.TrackCode == "GW")
-                        .Where(i => i.No == "95116102").FirstOrDefault();
+                        .Where(i => i.TrackCode == "NV")
+                        .Where(i => i.No == "85531675").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 2800, "退款", new DateTime(2025, 5, 22));
+                    var allowance = models.PrepareAllowanceForPayment(payment, 1800, "退款", new DateTime(2025, 7, 3));
                 }
             }
         }

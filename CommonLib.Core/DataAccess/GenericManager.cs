@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Data;
 using System.Linq;
 using System.Data.Linq;
@@ -10,23 +10,25 @@ using CommonLib.Utility;
 using System.Linq.Expressions;
 using System.Collections;
 using CommonLib.Logger;
+using CommonLib.Core.Properties;
+using System.Data.SqlClient;
 
 namespace CommonLib.DataAccess
 {
     /// <summary>
-    /// UserManager ™∫∫K≠n¥y≠z°C
+    /// UserManager ÁöÑÊëòË¶ÅÊèèËø∞„ÄÇ
     /// </summary>
     public partial class GenericManager<T, TEntity> : GenericManager<T>
         where T : DataContext, new()
         where TEntity : class, new()
     {
-        protected internal TEntity _entity;
+        protected internal TEntity? _entity;
 
         public GenericManager() : base() { }
         public GenericManager(GenericManager<T> mgr) : base(mgr) { }
 
 
-        public TEntity DataEntity
+        public TEntity? DataEntity
         {
             get
             {
@@ -43,7 +45,7 @@ namespace CommonLib.DataAccess
         }
 
 
-        protected TEntity instantiateData(IQueryable<TEntity> values)
+        protected TEntity? instantiateData(IQueryable<TEntity> values)
         {
             _entity = values.FirstOrDefault();
             return _entity;
@@ -58,9 +60,12 @@ namespace CommonLib.DataAccess
 
         public void DeleteEntity()
         {
-            _db.GetTable<TEntity>().DeleteOnSubmit(_entity);
-            _db.SubmitChanges();
-            _entity = default(TEntity);
+            if (_entity != null)
+            {
+                _db.GetTable<TEntity>().DeleteOnSubmit(_entity);
+                _db.SubmitChanges();
+                _entity = default(TEntity);
+            }
         }
 
         public TEntity DeleteAny(Expression<Func<TEntity, bool>> predicate)
@@ -98,7 +103,7 @@ namespace CommonLib.DataAccess
         public GenericManager(T db)
         {
             //
-            // TODO: ¶b¶π•[§J´ÿ∫c®Á¶°™∫µ{¶°ΩX
+            // TODO: Âú®Ê≠§Âä†ÂÖ•Âª∫ÊßãÂáΩÂºèÁöÑÁ®ãÂºèÁ¢º
             //
             _db = db;
             _isInstance = false;
@@ -145,9 +150,9 @@ namespace CommonLib.DataAccess
             _db = db;
             _db.Log = log;
 
-            if (_db.Log == null /*&& Settings.Default.SqlLog*/)
+            if (_db.Log == null && AppSettings.Default.SqlLog)
             {
-                _logWriter = new SqlLogger { /*IgnoreSelect = Settings.Default.SqlLogIgnoreSelect*/ }; 
+                _logWriter = new SqlLogger { IgnoreSelect = AppSettings.Default.SqlLogIgnoreSelect }; 
                 _db.Log = _logWriter;
             }
         }
@@ -223,6 +228,24 @@ namespace CommonLib.DataAccess
             return _db.ExecuteQuery<TResult>(query, parameters);
         }
 
+        public IEnumerable<TResult> ExecutePagingQuery<TResult>(IQueryable<TResult> query, int skipCount, int takeCount)
+        {
+            SqlCommand sqlCmd = (SqlCommand)_db.GetCommand(query);
+            var sqlText = sqlCmd.ToExecutableSql();
+            sqlText = $"{sqlText} {(sqlText.Contains("ORDER BY",StringComparison.OrdinalIgnoreCase) ? "" : "ORDER BY (SELECT NULL)")} OFFSET {skipCount} ROWS FETCH NEXT {takeCount} ROWS ONLY";
+            return _db.ExecuteQuery<TResult>(sqlText);
+        }
+
+        public IEnumerable ExecutePagingQuery(Type type, IQueryable query, int skipCount, int takeCount)
+        {
+            SqlCommand sqlCmd = (SqlCommand)_db.GetCommand(query);
+            var sqlText = sqlCmd.ToExecutableSql();
+            sqlText = $"{sqlText} {(sqlText.Contains("ORDER BY", StringComparison.OrdinalIgnoreCase) ? "" : "ORDER BY (SELECT NULL)")} OFFSET {skipCount} ROWS FETCH NEXT {takeCount} ROWS ONLY";
+            return _db.ExecuteQuery(type, sqlText);
+        }
+
+
+
         public int ExecuteCommand(string command, params Object[] parameters)
         {
             return _db.ExecuteCommand(command, parameters);
@@ -265,7 +288,7 @@ namespace CommonLib.DataAccess
             return item;
         }
 
-        #region IDisposable ¶®≠˚
+        #region IDisposable ÊàêÂì°
 
         public void Dispose()
         {

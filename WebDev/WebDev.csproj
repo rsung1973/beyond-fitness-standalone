@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ExternalPdfWrapper\ExternalPdfWrapper.csproj" />
     <ProjectReference Include="..\WebBase\WebBase.csproj" />
   </ItemGroup>
 

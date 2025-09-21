@@ -25,12 +25,12 @@
 }
 
 @{ CourseContract currentItem = models.GetTable<CourseContractRevision>()
-                                     .Where(c => c.OriginalContract == _model.ContractID)
-                                     .Where(r => r.Reason == "終止")
-                                     .Select(r => r.CourseContract)
-                                     .Where(c => c.Status < (int)Naming.CourseContractStatus.已生效)
-                                     .FirstOrDefault();
-    var bookingCount = _model.AttendedLessonCount();
+                                      .Where(c => c.OriginalContract == _model.ContractID)
+                                      .Where(r => r.Reason == "終止")
+                                      .Select(r => r.CourseContract)
+                                      .Where(c => c.Status < (int)Naming.CourseContractStatus.已生效)
+                                      .FirstOrDefault();
+    var bookingCount = Math.Min(_model.AttendedLessonCount(), _model.Lessons.Value);
     var contractCost = _model.TotalCost / _model.Lessons * bookingCount;
     var totalPaid = _model.TotalPaidAmount();
     var applicable = true;}

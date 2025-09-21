@@ -67,11 +67,11 @@ namespace WebHome.Helper
             {
                 if (tableName != null)
                     ds.Tables[0].TableName = ds.DataSetName = tableName;
-                return ConvertToExcel(ds);
+                return ds.ConvertToExcel();
             }
         }
 
-        public static ClosedXML.Excel.XLWorkbook ConvertToExcel(this DataSet ds)
+        public static ClosedXML.Excel.XLWorkbook ConvertToExcel2025(this DataSet ds)
         {
             ClosedXML.Excel.XLWorkbook xls = new ClosedXML.Excel.XLWorkbook();
             try

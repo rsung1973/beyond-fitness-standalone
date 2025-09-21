@@ -252,7 +252,10 @@
             CoachMonthlySalary salaryItem = (CoachMonthlySalary)_salary;
             if (salaryItem.ServingCoach.UserProfile.IsHealthCare())
             {
-                await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
+                if (_model.Settlement.StartDate < boundaryDate)
+                {
+                    await Html.RenderPartialAsync("~/Views/ConsoleHome/Salary/AchievementBonusForHealthCare.cshtml", _model);
+                }
             }
             else if (salaryItem.PTAverageUnitPrice > 0 && !(salaryItem.ProfessionalLevel.IsManager() || salaryItem.ProfessionalLevel.IsViceManager() || salaryItem.ProfessionalLevel.IsFES())
                     && _model.Settlement.StartDate < boundaryDate)

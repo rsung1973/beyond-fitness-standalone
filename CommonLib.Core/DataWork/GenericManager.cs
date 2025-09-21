@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Data;
 using System.Linq;
 using System.Collections.Generic;
@@ -14,24 +14,24 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 namespace CommonLib.Core.DataWork
 {
     /// <summary>
-    /// UserManager ªººK­n´y­z¡C
+    /// UserManager çš„æ‘˜è¦æè¿°ã€‚
     /// </summary>
     public partial class GenericManager<T, TEntity> : GenericManager<T>
         where T : DbContext, new()
         where TEntity : class, new()
     {
-        protected internal TEntity _entity;
+        protected internal TEntity? _entity;
 
         public GenericManager() : base() { }
         public GenericManager(GenericManager<T> models) : base(models) { }
 
 
-        public TEntity DataEntity => _entity;
+        public TEntity? DataEntity => _entity;
 
         public DbSet<TEntity> EntityList => _db.Set<TEntity>();
 
 
-        protected TEntity InstantiateData(IQueryable<TEntity> values)
+        protected TEntity? InstantiateData(IQueryable<TEntity> values)
         {
             _entity = values.FirstOrDefault();
             return _entity;
@@ -46,8 +46,11 @@ namespace CommonLib.Core.DataWork
 
         public void DeleteEntity()
         {
-            _db.Set<TEntity>().Remove(_entity);
-            _db.SaveChanges();
+            if (_entity != null)
+            {
+                _db.Set<TEntity>().Remove(_entity);
+                _db.SaveChanges();
+            }
             _entity = default(TEntity);
         }
 
@@ -83,16 +86,16 @@ namespace CommonLib.Core.DataWork
         public GenericManager(T db)
         {
             //
-            // TODO: ¦b¦¹¥[¤J«Øºc¨ç¦¡ªºµ{¦¡½X
+            // TODO: åœ¨æ­¤åŠ å…¥å»ºæ§‹å‡½å¼çš„ç¨‹å¼ç¢¼
             //
             _db = db;
             _isInstance = false;
         }
 
         public GenericManager()
-            : this(new T())
         {
-
+            _db = new T();
+            _isInstance = true;
         }
 
         public GenericManager(GenericManager<T> mgr)
@@ -104,15 +107,10 @@ namespace CommonLib.Core.DataWork
             }
             else
             {
-                initialize(new T());
+                _db = new T();
             }
         }
 
-
-        private void initialize(T db)
-        {
-            _db = db;
-        }
 
         internal IDbConnection DbConnection => _db.Database.GetDbConnection();
 
@@ -188,7 +186,7 @@ namespace CommonLib.Core.DataWork
             return item;
         }
 
-        #region IDisposable ¦¨­û
+        #region IDisposable æˆå“¡
 
         public void Dispose()
         {

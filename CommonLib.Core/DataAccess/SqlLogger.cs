@@ -57,6 +57,16 @@ namespace CommonLib.DataAccess
             }
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if(_tmp.Length > 0)
+            {
+                __Writer.WriteLog(_tmp.ToString());
+                _tmp.Clear();
+            }
+        }
+
         public StringBuilder Logger => _log;
 
         public override string ToString()

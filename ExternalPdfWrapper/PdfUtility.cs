@@ -1,11 +1,12 @@
 ﻿using CommonLib.PlugInAdapter;
+using CommonLib.Utility.Properties;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools;
-using OpenQA.Selenium.DevTools.V132;
-using OpenQA.Selenium.DevTools.V132.Page;
+using OpenQA.Selenium.DevTools.V135;
+using OpenQA.Selenium.DevTools.V135.Page;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,32 +24,40 @@ namespace ExternalPdfWrapper
     {
         static PdfUtility()
         {
+            AppSettings.Reload();
             if (AppSettings.Default.UseSelenium)
             {
-                ChromeOptions options = new ChromeOptions();
-                options.AddArgument("--headless");
-                options.AddArgument("--disable-gpu");
-                options.AddArgument("--no-sandbox");
-                options.AddArgument("--disable-dev-shm-usage");
-                //options.AddArgument("--remote-debugging-port=9222");
-                //options.AddArgument("--disable-extensions");
-                //options.AddArgument("--disable-infobars");
-                //options.AddArgument("--disable-popup-blocking");
-                //options.AddArgument("--disable-background-networking");
-                //options.AddArgument("--disable-sync");
-                //options.AddArgument("--disable-default-apps");
-                //options.AddArgument("--disable-translate");
-                //options.AddArgument("--disable-extensions");
-                //options.AddArgument("--disable-background-timer-throttling");
-                //options.AddArgument("--disable-renderer-backgrounding");
-                //options.AddArgument("--disable-device-discovery-notifications");
-                //options.AddArgument("--disable-software-rasterizer");
-                //options.AddArgument("--disable-features=TranslateUI");
-                //options.AddArgument("--disable-features=Translate");
-                //options.AddArgument("--disable-features=NetworkService");
-                //options.AddArgument("--disable-features=NetworkServiceInProcess");
+                InitializeChromeDriver();
+            }
 
-                var printOptions = new Dictionary<string, object>
+        }
+
+        private static void InitializeChromeDriver()
+        {
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--headless");
+            options.AddArgument("--disable-gpu");
+            options.AddArgument("--no-sandbox");
+            options.AddArgument("--disable-dev-shm-usage");
+            //options.AddArgument("--remote-debugging-port=9222");
+            //options.AddArgument("--disable-extensions");
+            //options.AddArgument("--disable-infobars");
+            //options.AddArgument("--disable-popup-blocking");
+            //options.AddArgument("--disable-background-networking");
+            //options.AddArgument("--disable-sync");
+            //options.AddArgument("--disable-default-apps");
+            //options.AddArgument("--disable-translate");
+            //options.AddArgument("--disable-extensions");
+            //options.AddArgument("--disable-background-timer-throttling");
+            //options.AddArgument("--disable-renderer-backgrounding");
+            //options.AddArgument("--disable-device-discovery-notifications");
+            //options.AddArgument("--disable-software-rasterizer");
+            //options.AddArgument("--disable-features=TranslateUI");
+            //options.AddArgument("--disable-features=Translate");
+            //options.AddArgument("--disable-features=NetworkService");
+            //options.AddArgument("--disable-features=NetworkServiceInProcess");
+
+            var printOptions = new Dictionary<string, object>
                 {
                     { "landscape", false },
                     { "displayHeaderFooter", false },
@@ -59,11 +68,9 @@ namespace ExternalPdfWrapper
                     //{ "paperHeight", 11.69 } // A4 纸高度（英寸）
                 };
 
-                var driver = new ChromeDriver(options);
-                __Navigation = driver.Navigate();
-                __DevToolsSession = driver.GetDevToolsSession();
-            }
-
+            var driver = new ChromeDriver(options);
+            __Navigation = driver.Navigate();
+            __DevToolsSession = driver.GetDevToolsSession();
         }
 
         static INavigation __Navigation;
@@ -82,6 +89,34 @@ namespace ExternalPdfWrapper
                 //PaperWidth = 8.27,
                 //PaperHeight = 11.69
             };
+
+        //public void ConvertHtmlToImage(string htmlFile, string imgFile, double timeOutInMinute)
+        //{
+        //    ProcessStartInfo info = new ProcessStartInfo
+        //    {
+        //        FileName = AppSettings.Default.Command,
+        //        Arguments = String.Concat(" ",
+        //                        String.Format(AppSettings.Default.ConvertPattern, pdfFile, htmlSource.Contains("://") ? htmlSource : $"file://{htmlSource}")/*,
+        //                        " ",
+        //                        args != null && args.Length > 0 ? String.Join(" ", args) : ""*/),
+        //        CreateNoWindow = true,
+        //        UseShellExecute = false,
+        //        WindowStyle = ProcessWindowStyle.Hidden,
+        //        //WorkingDirectory = AppDomain.CurrentDomain.RelativeSearchPath,
+        //    };
+
+        //    Process proc = new Process();
+        //    proc.EnableRaisingEvents = true;
+        //    //proc.Exited += new EventHandler(proc_Exited);
+
+        //    //if (null != _eventHandler)
+        //    //{
+        //    //    proc.Exited += new EventHandler(_eventHandler);
+        //    //}
+        //    proc.StartInfo = info;
+        //    proc.Start();
+        //    proc.WaitForExit((int)timeOutInMinute * 60000);
+        //}
 
         public static bool AssertFile(String pdfFile, double maxWaitInMilliSeconds = 0)
         {
@@ -113,6 +148,14 @@ namespace ExternalPdfWrapper
 
             t.Wait();
             return true;
+        }
+
+        public void BatchConvertHtmlToPDF(string htmlSource, string pdfFile, double timeOutInMinute, string[] args, String batchFileName = null)
+        {
+            String batchPath = Path.Combine(AppSettings.Default.UseRunBatch, $"{(batchFileName ?? Guid.NewGuid().ToString())}.bat");
+            String arguments = String.Format(AppSettings.Default.ConvertPattern, pdfFile, htmlSource);
+            File.WriteAllText(batchPath, $"\"{AppSettings.Default.Command}\" {arguments}");
+            AssertFile(pdfFile, timeOutInMinute * 60000);
         }
 
         public async Task UseSeleniumConvertHtmlToPDF(string htmlSource, string pdfFile, double timeOutInMinute, string[] args)
@@ -175,27 +218,42 @@ namespace ExternalPdfWrapper
 
         private async Task UseChromeConvertHtmlToPDF(string htmlSource, string pdfFile, double timeOutInMinute, string[] args)
         {
-            __Navigation.GoToUrl(htmlSource);
-            PrintToPDFCommandResponse printResponse = (PrintToPDFCommandResponse)await __DevToolsSession.SendCommand(__PrintCommand);
-            var pdfBytes = Convert.FromBase64String(printResponse.Data);
-            File.WriteAllBytes(pdfFile, pdfBytes);
+            byte[] pdfBytes = null;
+
+            for(int i = 0; i < 3; i++)
+            {
+                try
+                {
+                    __Navigation.GoToUrl(htmlSource);
+                    PrintToPDFCommandResponse printResponse = (PrintToPDFCommandResponse)await __DevToolsSession.SendCommand(__PrintCommand);
+                    pdfBytes = Convert.FromBase64String(printResponse.Data);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                    InitializeChromeDriver();
+                }
+            }
+
+            if (pdfBytes != null)
+                File.WriteAllBytes(pdfFile, pdfBytes);
         }
 
 
-        public void ConvertHtmlToPDF(string htmlFile, string pdfFile, double timeOutInMinute, string[] args)
+        public void ConvertHtmlToPDF(string htmlSource, string pdfFile, double timeOutInMinute, string[] args)
         {
             if (AppSettings.Default.UseRunBatch != null)
             {
-                String batchPath = Path.Combine(AppSettings.Default.UseRunBatch, $"{Guid.NewGuid()}.bat");
-                File.WriteAllText(batchPath, $"\"{AppSettings.Default.Command}\"{String.Concat(" ",
-                                    String.Format(AppSettings.Default.ConvertPattern, pdfFile, htmlFile),
-                                    args != null && args.Length > 0 ? String.Join(" ", args) : "")}");
-                AssertFile(pdfFile, timeOutInMinute * 60000);
+                BatchConvertHtmlToPDF(htmlSource, pdfFile, timeOutInMinute, args);
             }
             else if (AppSettings.Default.UseSelenium)
             {
                 //UseSeleniumConvertHtmlToPDF(htmlSource, pdfFile, timeOutInMinute, args).Wait();
-                UseChromeConvertHtmlToPDF(htmlFile, pdfFile, timeOutInMinute, args).Wait();
+                lock (typeof(PdfUtility))
+                {
+                    UseChromeConvertHtmlToPDF(htmlSource, pdfFile, timeOutInMinute, args).Wait((int)(timeOutInMinute * 60000));
+                }
             }
             else
             {
@@ -203,11 +261,12 @@ namespace ExternalPdfWrapper
                 {
                     FileName = AppSettings.Default.Command,
                     Arguments = String.Concat(" ",
-                                    String.Format(AppSettings.Default.ConvertPattern, pdfFile, htmlFile),
-                                    args != null && args.Length > 0 ? String.Join(" ", args) : ""),
-                    CreateNoWindow = false,
-                    //UseShellExecute = false,
-                    WindowStyle = ProcessWindowStyle.Normal,
+                                    String.Format(AppSettings.Default.ConvertPattern, pdfFile, htmlSource.Contains("://") ? htmlSource : $"file://{htmlSource}")/*,
+                                " ",
+                                args != null && args.Length > 0 ? String.Join(" ", args) : ""*/),
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                    WindowStyle = ProcessWindowStyle.Hidden,
                     //WorkingDirectory = AppDomain.CurrentDomain.RelativeSearchPath,
                 };
 
@@ -236,7 +295,7 @@ namespace ExternalPdfWrapper
                 //}
                 proc.StartInfo = info;
                 proc.Start();
-                proc.WaitForExit((int)timeOutInMinute * 60000);
+                proc.WaitForExit((int)(timeOutInMinute * 60000));
             }
         }
 
@@ -246,97 +305,39 @@ namespace ExternalPdfWrapper
         }
     }
 
-    public partial class AppSettings : IDisposable
+    public class AppSettings : AppSettingsBase
     {
-        public static String AppRoot
-        {
-            get;
-            private set;
-        } = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
-
-        static JObject _Settings;
-
         static AppSettings()
         {
             _default = Initialize<AppSettings>(typeof(AppSettings).Namespace);
         }
 
-        public AppSettings()
+        public AppSettings() : base()
         {
 
-        }
-
-        protected void Save()
-        {
-            String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
-            String propertyName = typeof(AppSettings).Namespace;
-            _Settings[propertyName] = JObject.FromObject(this);
-            File.WriteAllText(filePath, _Settings.ToString());
-        }
-
-        protected static T Initialize<T>(String propertyName)
-            where T : AppSettings, new()
-        {
-            T currentSettings;
-            //String fileName = $"{Assembly.GetExecutingAssembly().GetName()}.settings.json";
-            String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
-            if (File.Exists(filePath))
-            {
-                _Settings = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(filePath));
-            }
-            else
-            {
-                _Settings = new JObject();
-            }
-
-            //String propertyName = Assembly.GetExecutingAssembly().GetName().Name;
-            if (_Settings[propertyName] != null)
-            {
-                currentSettings = _Settings[propertyName].ToObject<T>();
-            }
-            else
-            {
-                currentSettings = new T();
-                _Settings[propertyName] = JObject.FromObject(currentSettings);
-            }
-
-            File.WriteAllText(filePath, _Settings.ToString());
-            return currentSettings;
-        }
-
-        public void Dispose()
-        {
-            dispose(true);
-        }
-
-        bool _disposed;
-        protected void dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                this.Save();
-            }
-            _disposed = true;
-        }
-
-        ~AppSettings()
-        {
-            dispose(false);
         }
 
         static AppSettings _default;
+        public static AppSettings Default
+        {
+            get
+            {
+                return _default;
+            }
+        }
 
-        public static AppSettings Default => _default;
+        public static void Reload()
+        {
+            Reload<AppSettings>(ref _default, typeof(AppSettings).Namespace);
+        }
 
         public String Command { get; set; } = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe";
         public String ConvertPattern { get; set; } = "--headless --disable-gpu --run-all-compositor-stages-before-draw --print-to-pdf-no-header  --print-to-pdf={0} {1}";
-        //"--headless --disable-gpu --run-all-compositor-stages-before-draw --print-to-pdf-no-header  --print-to-pdf={0} file://{1}";
         public String Args { get; set; }
-        public String UserName { get; set; }
-        public String Password { get; set; }
+        public String ScreenshotPattern { get; set; } = "--headless --disable-gpu --run-all-compositor-stages-before-draw --print-to-pdf-no-header  --print-to-pdf={0} {1}";
         public String UseRunBatch { get; set; }
         public bool UseSelenium { get; set; } = false;
-    }
+        public String UserName { get; set; }
+        public String Password { get; set; }
+        }
 }

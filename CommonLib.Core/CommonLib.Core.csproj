@@ -4,6 +4,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <RootNamespace>CommonLib.Core</RootNamespace>
     <OutputType>Library</OutputType>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -26,32 +27,43 @@
     <Compile Include="DataWork\ExtensionMethods.cs" />
     <Compile Include="DataWork\GenericManager.cs" />
     <Compile Include="DataWork\SQLHelper.cs" />
+    <Compile Include="Utility\CsvSerializer.cs" />
     <Compile Include="Utility\DailySequence.cs" />
     <Compile Include="Utility\ExtensionMethods.cs" />
     <Compile Include="Utility\FileLogger.cs" />
     <Compile Include="Utility\FileLoggerFactory.cs" />
     <Compile Include="Utility\FileLoggerProvider.cs" />
+    <Compile Include="Utility\Logger.cs" />
     <Compile Include="Utility\ViewRenderService.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="EntityFramework" Version="6.5.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.0">
+    <PackageReference Include="HtmlAgilityPack" Version="1.12.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.4" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="9.0.4">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.0" />
-    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />
+    <PackageReference Include="Microsoft.Windows.Compatibility" Version="9.0.4" />
     <PackageReference Include="netstandard-System.Data.Linq" Version="1.0.1" />
     <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Security.Cryptography.Csp" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CommonLib.Logger\CommonLib.Logger.csproj" />
     <ProjectReference Include="..\CommonLib.Utility\CommonLib.Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Security\UseCrypto\dsPKCS7.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
 
 </Project>

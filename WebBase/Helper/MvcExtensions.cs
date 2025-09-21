@@ -17,6 +17,7 @@ using CommonLib.Core.Utility;
 using System.Globalization;
 using System.Threading;
 using System.Text;
+using CommonLib.DataAccess;
 
 namespace WebHome.Helper
 {
@@ -120,9 +121,9 @@ namespace WebHome.Helper
             {
                 response.Cookies.Append("fileDownloadToken", fileDownloadToken);
             }
-            response.Headers.Add("Cache-control", "max-age=1");
+            response.Headers.Append("Cache-control", "max-age=1");
             response.ContentType = "application/vnd.ms-excel";
-            response.Headers.Add("Content-Disposition", disposition);
+            response.Headers.Append("Content-Disposition", disposition);
 
             using (var xls = ds.ConvertToExcel())
             {

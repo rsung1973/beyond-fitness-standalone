@@ -227,9 +227,9 @@ namespace CommonLib.Core.Helper
     {
         public int? JobID { get; set; }
         public DateTime Schedule { get; set; }
-        public String AssemblyQualifiedName { get; set; }
-        public String Description { get; set; }
-        public String LastError { get; set; }
+        public String? AssemblyQualifiedName { get; set; }
+        public String? Description { get; set; }
+        public String? LastError { get; set; }
         public bool? Pending { get; set; }
         public IJob CreateExecutionInstance()
         {

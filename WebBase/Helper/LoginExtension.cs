@@ -157,12 +157,12 @@ namespace WebHome.Helper
             return true;
         }
 
-        public static String MakePassword(this String password)
-        {
-            if (String.IsNullOrEmpty(password))
-                return null;
-            return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes(password)));
-        }
+        //public static String MakePassword(this String password)
+        //{
+        //    if (String.IsNullOrEmpty(password))
+        //        return null;
+        //    return Convert.ToBase64String(MD5.Create().ComputeHash(Encoding.Default.GetBytes(password)));
+        //}
 
         public static async void Logout(this HttpContext context)
         {

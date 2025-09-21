@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 //using System.Data.Entity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using WebHome.Properties;
 
 namespace WebHome.Controllers
 {
@@ -232,6 +233,32 @@ namespace WebHome.Controllers
             return View(actionName, forms);
             //this.View(actionName).ExecuteResult(this.ControllerContext);
         }
+
+        public ActionResult ReloadSettings()
+        {
+            AppSettings.Reload();
+            CommonLib.Core.Properties.AppSettings.Reload();
+            CommonLib.Logger.Properties.AppSettings.Reload();
+            ExternalPdfWrapper.AppSettings.Reload();
+
+            return Content(AppSettings.AllSettings.JsonStringify(), "application/json");
+        }
+
+        public ActionResult SaveSettings()
+        {
+            //AppSettings.SaveAll();
+            AppSettings.Default.Save();
+            CommonLib.Core.Properties.AppSettings.Default.Save();
+            CommonLib.Logger.Properties.AppSettings.Default.Save();
+            ExternalPdfWrapper.AppSettings.Default.Save();
+            return Content(AppSettings.AllSettings?.ToString(), "application/json");
+        }
+
+        public ActionResult AllSettings()
+        {
+            return Content(AppSettings.AllSettings?.ToString(), "application/json");
+        }
+
 
     }
 

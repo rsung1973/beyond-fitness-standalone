@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommonLib.Core.Utility;
+using CommonLib.Utility;
+using CommonLib.Utility.Properties;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -10,95 +13,34 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WebHome.Models.ViewModel;
-using CommonLib.Utility;
-using CommonLib.Core.Utility;
 
 namespace WebHome.Properties
 {
-    public partial class AppSettings : IDisposable
+    public partial class AppSettings : AppSettingsBase
     {
-        public static String AppRoot
-        {
-            get;
-            private set;
-        } = Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory);
-
-        static JObject _Settings;
-
         static AppSettings()
         {
             _default = Initialize<AppSettings>(typeof(AppSettings).Namespace);
         }
 
-        public AppSettings()
+        public AppSettings() : base()
         {
-            TurnkeyCheckListPath.CheckStoredPath();
-        }
 
-        public void Save()
-        {
-            String fileName = "App.settings.json";
-            String filePath = Path.Combine(AppRoot, "App_Data", fileName);
-            String propertyName = typeof(AppSettings).Namespace;
-            _Settings[propertyName] = JObject.FromObject(this);
-            File.WriteAllText(filePath, _Settings.ToString());
-        }
-
-        protected static T Initialize<T>(String propertyName)
-            where T : AppSettings, new()
-        {
-            T currentSettings;
-            //String fileName = $"{Assembly.GetExecutingAssembly().GetName()}.settings.json";
-            String fileName = "App.settings.json";
-            String path = Path.Combine(AppRoot, "App_Data").CheckStoredPath();
-            String filePath = Path.Combine(path, fileName);
-            if (File.Exists(filePath))
-            {
-                _Settings = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(filePath));
-            }
-            else
-            {
-                _Settings = new JObject();
-            }
-
-            //String propertyName = Assembly.GetExecutingAssembly().GetName().Name;
-            if (_Settings[propertyName] != null)
-            {
-                currentSettings = _Settings[propertyName].ToObject<T>();
-            }
-            else
-            {
-                currentSettings = new T();
-                _Settings[propertyName] = JObject.FromObject(currentSettings);
-            }
-
-            File.WriteAllText(filePath, _Settings.ToString());
-            return currentSettings;
-        }
-
-        public void Dispose()
-        {
-            dispose(true);
-        }
-
-        bool _disposed;
-        protected void dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                this.Save();
-            }
-            _disposed = true;
-        }
-
-        ~AppSettings()
-        {
-            dispose(false);
         }
 
         static AppSettings _default;
+        public static AppSettings Default
+        {
+            get
+            {
+                return _default;
+            }
+        }
 
-        public static AppSettings Default => _default;
+        public static void Reload()
+        {
+            Reload<AppSettings>(ref _default, typeof(AppSettings).Namespace);
+        }
 
         [JsonIgnore]
         public String AuthorizationCode
@@ -132,7 +74,7 @@ namespace WebHome.Properties
 
         public String EIPGTM_Key { get; set; } = "GTM-PHVLDDJ8";
 
-        public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList");
+        public String TurnkeyCheckListPath { get; set; } = Path.Combine(FileLogger.Logger.LogPath, "TurnkeyCheckList").CheckStoredPath();
         public String TurnkeyCheckUrl { get; set; } = "https://egui.uxifs.com/eivohub/_Test/CheckTurnkeyResult";
         public LineAuthInfo LineAuth { get; set; } = new LineAuthInfo { };
         public String WebHomePage { get; set; } = "~/MainActivity/Main";

@@ -156,25 +156,25 @@
                                         case Naming.LessonPriceStatus.營養課程:
                                         <text>
                                             ●
-                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/priceItem.BundleCount)個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)個月(@(priceItem.BundleCount)堂)。<br />
+                                            @(rc.Title)營養諮詢(S.D)@(registerItem.Lessons/ (priceItem.BundleCount ?? 1))個月，未完成服務@(registerItem.RemainedLessonCount()/priceItem.BundleCount)個月(@(priceItem.BundleCount)堂)。<br />
                                         </text>
                                         break;
                                         case Naming.LessonPriceStatus.運動恢復課程:
                                         <text>
                                             ●
-                                            @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                            @(rc.Title)運動恢復(S.R)@(registerItem.Lessons/ (priceItem.BundleCount ?? 1))堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
                                         </text>
                                         break;
                                         case Naming.LessonPriceStatus.運動防護課程:
                                         <text>
                                             ●
-                                            @(rc.Title)運動防護(A.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                            @(rc.Title)運動防護(A.T)@(registerItem.Lessons/ (priceItem.BundleCount ?? 1))堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
                                         </text>
                                         break;
                                         default:
                                         <text>
                                             ●
-                                            @(rc.Title)私人教練(P.T)@(registerItem.Lessons/priceItem.BundleCount)堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
+                                            @(rc.Title)私人教練(P.T)@(registerItem.Lessons/ (priceItem.BundleCount ?? 1))堂，未完成服務@(registerItem.RemainedLessonCount())堂。<br />
                                         </text>
                                         break;
                                         }

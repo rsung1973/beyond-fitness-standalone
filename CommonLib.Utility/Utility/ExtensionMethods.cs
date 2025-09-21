@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
+using System.Globalization;
+
 //using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
@@ -12,12 +15,15 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Web;
 using System.Xml;
 using System.Xml.Linq;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.Xml.XPath;
 using CommonLib.Helper;
+using Newtonsoft.Json;
 
 namespace CommonLib.Utility
 {
@@ -55,28 +61,36 @@ namespace CommonLib.Utility
             return startIndex >= 0 ? src.Substring(startIndex, length) : src;
         }
 
+        public static String LeftUntil(this String src, String occurs)
+        {
+            int index = src.IndexOf(occurs);
+            return index >= 0 ? src[..index] : src;
+        }
+
         public static String GetXml<T>(this T entData)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = new XmlSerializer(entData.GetType());
             StringBuilder sb = new StringBuilder();
             using (StringWriter sw = new StringWriter(sb))
             {
-                serializer.Serialize(sw, entData);
-                sw.Flush();
-                sw.Close();
+                using (XmlWriter xmlWriter = XmlWriter.Create(sw, new XmlWriterSettings { CheckCharacters = false }))
+                {
+                    serializer.Serialize(xmlWriter, entData);
+                }
             }
             return sb.ToString();
         }
 
         public static XmlDocument ConvertToXml<T>(this T entData)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            XmlSerializer serializer = new XmlSerializer(entData.GetType());
             XmlDocument docMsg = new XmlDocument();
-            //docMsg.PreserveWhitespace = true;
-
             using (MemoryStream ms = new MemoryStream())
             {
-                serializer.Serialize(ms, entData);
+                using (XmlWriter xmlWriter = XmlWriter.Create(ms, new XmlWriterSettings { CheckCharacters = false }))
+                {
+                    serializer.Serialize(xmlWriter, entData);
+                }
                 ms.Flush();
                 ms.Seek(0, SeekOrigin.Begin);
                 docMsg.Load(ms);
@@ -84,6 +98,41 @@ namespace CommonLib.Utility
             return docMsg;
         }
 
+        public static Stream ConvertToXmlStream<T>(this T entData)
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(T));
+            MemoryStream ms = new MemoryStream();
+            using (XmlWriter xmlWriter = XmlWriter.Create(ms, new XmlWriterSettings { CheckCharacters = false }))
+            {
+                serializer.Serialize(xmlWriter, entData);
+            }
+            ms.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
+            return ms;
+        }
+
+        public static void ValidateXmlAgainstSchema(XmlDocument doc, string xsdPath)
+        {
+            try
+            {
+                XmlSchemaSet schemaSet = new XmlSchemaSet();
+                schemaSet.Add(null, xsdPath);
+
+                doc.Schemas = schemaSet;
+
+                doc.Validate((sender, args) =>
+                {
+                    Console.WriteLine($"Validation error: {args.Message}");
+                    Console.WriteLine($"Line: {args.Exception?.LineNumber}, Position: {args.Exception?.LinePosition}");
+                });
+
+                Console.WriteLine("XML validation completed.");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Schema validation error: {ex.Message}");
+            }
+        }
 
         public static T ConvertTo<T>(this XmlDocument docMsg)
         {
@@ -104,6 +153,33 @@ namespace CommonLib.Utility
             xnr.Close();
             return entData;
         }
+
+        public static T DebugConvertTo<T>(this XmlNode doc)
+        {
+            try
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(T));
+                using (var reader = new StringReader(doc.OuterXml))
+                {
+                    return (T)serializer.Deserialize(reader);
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                if (ex.InnerException != null)
+                {
+                    Console.WriteLine($"Inner exception: {ex.InnerException.Message}");
+
+                    // Check if it's a format exception
+                    if (ex.InnerException is FormatException formatEx)
+                    {
+                        Console.WriteLine($"Format error: {formatEx.Message}");
+                    }
+                }
+                throw;
+            }
+        }
+
 
 
         public static T ConvertTo<T>(this Stream dataStream)
@@ -636,124 +712,6 @@ namespace CommonLib.Utility
 
         }
 
-        public static Bitmap GetCode39(this string strSource, bool printCode)
-        {
-            int x = 5; //左邊界 
-            int y = 0; //上邊界 
-            int WidLength = 3; //粗BarCode長度 
-            int NarrowLength = 1; //細BarCode長度 
-            int BarCodeHeight = 24; //BarCode高度 
-            int intSourceLength = strSource.Length;
-            string strEncode = "010010100"; //編碼字串 初值為 起始符號 * 
-
-            string AlphaBet = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ-. $/+%*"; //Code39的字母 
-
-            string[] Code39 = //Code39的各字母對應碼 
-            { 
-                 /**//* 0 */ "000110100",   
-                 /**//* 1 */ "100100001",   
-                 /**//* 2 */ "001100001",   
-                 /**//* 3 */ "101100000", 
-                 /**//* 4 */ "000110001",   
-                 /**//* 5 */ "100110000",   
-                 /**//* 6 */ "001110000",   
-                 /**//* 7 */ "000100101", 
-                 /**//* 8 */ "100100100",   
-                 /**//* 9 */ "001100100",   
-                 /**//* A */ "100001001",   
-                 /**//* B */ "001001001", 
-                 /**//* C */ "101001000",   
-                 /**//* D */ "000011001",   
-                 /**//* E */ "100011000",   
-                 /**//* F */ "001011000", 
-                 /**//* G */ "000001101",   
-                 /**//* H */ "100001100",   
-                 /**//* I */ "001001100",   
-                 /**//* J */ "000011100", 
-                 /**//* K */ "100000011",   
-                 /**//* L */ "001000011",   
-                 /**//* M */ "101000010",   
-                 /**//* N */ "000010011", 
-                 /**//* O */ "100010010",   
-                 /**//* P */ "001010010",   
-                 /**//* Q */ "000000111",   
-                 /**//* R */ "100000110", 
-                 /**//* S */ "001000110",   
-                 /**//* T */ "000010110",   
-                 /**//* U */ "110000001",   
-                 /**//* V */ "011000001", 
-                 /**//* W */ "111000000",   
-                 /**//* X */ "010010001",   
-                 /**//* Y */ "110010000",   
-                 /**//* Z */ "011010000", 
-                 /**//* - */ "010000101",   
-                 /**//* . */ "110000100",   
-                 /**//*' '*/ "011000100", 
-                 /**//* $ */ "010101000", 
-                 /**//* / */ "010100010",   
-                 /**//* + */ "010001010",   
-                 /**//* % */ "000101010",   
-                 /**//* * */ "010010100"  
-            };
-            strSource = strSource.ToUpper();
-            //實作圖片 
-            Bitmap objBitmap = printCode ? new Bitmap(
-              ((WidLength * 3 + NarrowLength * 7) * (intSourceLength + 2)) + (x * 2),
-              BarCodeHeight + (y * 2) + SystemFonts.DefaultFont.Height + 2) :
-                      new Bitmap(
-                      ((WidLength * 3 + NarrowLength * 7) * (intSourceLength + 2)) + (x * 2),
-                      BarCodeHeight + (y * 2));
-            Graphics objGraphics = Graphics.FromImage(objBitmap); //宣告GDI+繪圖介面 
-            //填上底色 
-            objGraphics.FillRectangle(Brushes.White, 0, 0, objBitmap.Width, objBitmap.Height);
-
-            for (int i = 0; i < intSourceLength; i++)
-            {
-                //檢查是否有非法字元 
-                if (AlphaBet.IndexOf(strSource[i]) == -1 || strSource[i] == '*')
-                {
-                    objGraphics.DrawString("含有非法字元",
-                      SystemFonts.DefaultFont, Brushes.Red, x, y);
-                    return objBitmap;
-                }
-                //查表編碼 
-                strEncode = string.Format("{0}0{1}", strEncode,
-                 Code39[AlphaBet.IndexOf(strSource[i])]);
-            }
-
-            strEncode = string.Format("{0}0010010100", strEncode); //補上結束符號 * 
-
-            int intEncodeLength = strEncode.Length; //編碼後長度 
-            int intBarWidth;
-
-            for (int i = 0; i < intEncodeLength; i++) //依碼畫出Code39 BarCode 
-            {
-                intBarWidth = strEncode[i] == '1' ? WidLength : NarrowLength;
-                objGraphics.FillRectangle(i % 2 == 0 ? Brushes.Black : Brushes.White,
-                 x, y, intBarWidth, BarCodeHeight);
-                x += intBarWidth;
-            }
-            if (printCode)
-                objGraphics.DrawString(strSource, SystemFonts.DefaultFont, Brushes.Black, 5, BarCodeHeight + 2);
-            return objBitmap;
-        }
-
-        public static String GetCode39ImageSrc(this string code, bool printCode,float dpi)
-        {
-            using (Bitmap img = code.GetCode39(printCode))
-            {
-                using (MemoryStream buffer = new MemoryStream())
-                {
-                    img.SetResolution(dpi, dpi);
-                    img.Save(buffer, System.Drawing.Imaging.ImageFormat.Png);
-                    StringBuilder sb = new StringBuilder("data:image/png;base64,");
-                    sb.Append(Convert.ToBase64String(buffer.ToArray()));
-                    return sb.ToString();
-                }
-            }
-        }
-
-
         public static String CheckStoredPath(this String fullPath)
         {
             if (!Directory.Exists(fullPath))
@@ -762,6 +720,13 @@ namespace CommonLib.Utility
             }
             return fullPath;
         }
+
+        public static String CheckFullPathExisted(this String fileName, String path)
+        {
+            string fullPath = Path.Combine(path.GetEfficientString() ?? "", fileName.GetEfficientString() ?? "");
+            return File.Exists(fullPath) ? fullPath : null;
+        }
+
 
         public static void Save(this XmlNode doc, String path)
         {
@@ -823,19 +788,22 @@ namespace CommonLib.Utility
             return item;
         }
 
+
+        public delegate XElement BuildElement();
+
+
         public static String CreateRandomPassword(this int passwordLength)
         {
             string allowedChars = "abcdefghjklmnopqrstuvwxyzABCDEFGHIJKMNOPQRSTUVWXYZ123456789";
             string num = "0123456789";
             char[] chars = new char[passwordLength];
-            Random rd = new Random();
 
             for (int i = 0; i < passwordLength; i++)
             {
                 if (i == 4)
-                    chars[i] = num[rd.Next(0, num.Length)];
+                    chars[i] = num[ValidityAgent.RANDOM.Next(0, num.Length)];
                 else
-                    chars[i] = allowedChars[rd.Next(0, allowedChars.Length)];
+                    chars[i] = allowedChars[ValidityAgent.RANDOM.Next(0, allowedChars.Length)];
             }
 
             return new string(chars);
@@ -966,6 +934,131 @@ namespace CommonLib.Utility
             return docMsg;
         }
 
+        public static string[] FromCsvLine(this string csvLine, char delimiter = ',', char quotation = '"', List<String> container = null)
+        {
+            List<string> fields = container ?? new List<string>();
+            bool inQuotes = false;
+            StringBuilder currentField = new StringBuilder();
+
+            for (int i = 0; i < csvLine.Length; i++)
+            {
+                char c = csvLine[i];
+
+                // 遇到雙引號
+                if (c == quotation)
+                {
+                    // 檢查是否為字段開頭的引號（即字段被引號包裹）
+                    if (!inQuotes && currentField.Length == 0)
+                    {
+                        inQuotes = true;
+                    }
+                    // 檢查是否為字段結尾的引號
+                    else if (inQuotes && (i + 1 >= csvLine.Length || csvLine[i + 1] == delimiter))
+                    {
+                        inQuotes = false;
+                    }
+                    // 檢查是否為轉義的雙引號（僅在引號包裹的字段內有效）
+                    else if (inQuotes && i + 1 < csvLine.Length && csvLine[i + 1] == quotation)
+                    {
+                        currentField.Append(quotation);
+                        i++; // 跳過下一個引號
+                    }
+                    // 其他情況：直接當作普通字符（允許未包裹的字段包含雙引號）
+                    else
+                    {
+                        currentField.Append(c);
+                    }
+                }
+                // 遇到逗號，且不在引號包裹的字段內
+                else if (c == delimiter && !inQuotes)
+                {
+                    fields.Add(currentField.ToString());
+                    currentField.Clear();
+                }
+                else
+                {
+                    currentField.Append(c);
+                }
+            }
+
+            // 添加最後一個欄位
+            fields.Add(currentField.ToString());
+
+            return fields.ToArray();
+        }
+
+        public static String[] ParseCsvLine(this String line, char delimiter = ',', char quotation = '"')
+        {
+            if (String.IsNullOrEmpty(line))
+            {
+                return null;
+            }
+
+            List<String> result = new List<string>();
+
+            int start = 0, length = 0;
+            bool quote = false;
+            for (int i = 0; i < line.Length; i++)
+            {
+                if (line[i] == quotation)
+                {
+                    quote = !quote;
+                    length++;
+                    continue;
+                }
+
+                if (line[i] == delimiter)
+                {
+                    if (quote)
+                    {
+                        length++;
+                        continue;
+                    }
+                    else
+                    {
+                        if (length > 0)
+                        {
+                            if (line[start] == quotation && line[start + length - 1] == quotation)
+                            {
+                                result.Add(line.Substring(start + 1, length - 2));
+                            }
+                            else
+                            {
+                                result.Add(line.Substring(start, length));
+                            }
+                        }
+                        else
+                        {
+                            result.Add(String.Empty);
+                        }
+                        start = i + 1;
+                        length = 0;
+                        continue;
+                    }
+                }
+
+                length++;
+            }
+
+            if (length > 0)
+            {
+                if (length > 1 && line[start] == quotation && line[start + length - 1] == quotation)
+                {
+                    result.Add(line.Substring(start + 1, length - 2));
+                }
+                else
+                {
+                    result.Add(line.Substring(start, length));
+                }
+            }
+            else
+            {
+                result.Add(String.Empty);
+            }
+
+            return result.ToArray();
+        }
+
 
         public static String[] ParseCsv(this String line,char delimiter = ',',char quotation='"')
         {
@@ -1081,6 +1174,125 @@ namespace CommonLib.Utility
             });
         }
 
+        public static bool IsUtf8(this byte[] data, int length)
+        {
+            if (data == null)
+                return true;
+
+            bool asc = true;
+            int utf8_n = 0, gbk_n = 0;
+            for (int i = 0; i < length; i++)
+            {
+                if (data[i] > 0 && data[i] < 0x7F)
+                    continue;
+                asc = false;
+
+                if ((data[i + 0] & 0xE0) == 0xC0 && i + 1 <= data.Length)
+                { //双字节格式
+                    if ((data[i + 1] & 0xC0) == 0x80)
+                    {
+                        int n = data[i + 0] & 0xFF;
+                        int n2 = data[i + 1] & 0xFF;
+                        if ((0x81 <= n && n <= 0xFE) && (0x40 <= n2 && n2 <= 0xFE) && (n2 != 0x7F))
+                        {
+                        }
+                        else
+                        {
+                            utf8_n++;
+                            i++;
+                            continue;
+                        }
+                    }
+                }
+                else if ((data[i + 0] & 0xF0) == 0xE0 && i + 2 <= data.Length)
+                { //三字节格式
+                    if (((data[i + 1] & 0xC0) == 0x80) && ((data[i + 2] & 0xC0) == 0x80))
+                    {
+                        utf8_n++;
+                        i += 2;
+                        continue;
+                    }
+                }
+                else if ((data[i + 0] & 0xF8) == 0xF0 && i + 3 <= data.Length)
+                { //四字节格式
+                    if (((data[i + 1] & 0xC0) == 0x80) && ((data[i + 2] & 0xC0) == 0x80) && ((data[i + 3] & 0xC0) == 0x80))
+                    {
+                        utf8_n++;
+                        i += 3;
+                        continue;
+                    }
+                }
+                i++;
+                gbk_n++;
+            }
+            if (asc == false)
+            {
+                if (gbk_n > 0 && 10 * utf8_n < gbk_n)
+                    return false;
+                return true;
+            }
+            return true;
+        }
+
+        public static String ReadString(this Stream stream)
+        {
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
+        }
+
+        public static byte[] FromHexStringToBytes(this String data, int delimitSpace = 0)
+        {
+            int length = (data.Length + delimitSpace + 1) / (2 + delimitSpace);
+            byte[] buf = new byte[length];
+            for (int i = 0; i < length; i++)
+            {
+                buf[i] = Convert.ToByte(data.Substring(i * (2 + delimitSpace), 2), 16);
+            }
+            return buf;
+        }
+
+        public static byte[] HexToByteArray(this string hexString)
+        {
+            byte[] bytes = new byte[hexString.Length / 2];
+
+            for (int i = 0; i < hexString.Length; i += 2)
+            {
+                string s = hexString.Substring(i, 2);
+                bytes[i / 2] = byte.Parse(s, NumberStyles.HexNumber, null);
+            }
+
+            return bytes;
+        }
+
+        public static TEnum? ToEnumValue<TEnum>(this String source)
+            where TEnum : struct
+        {
+            TEnum val;
+            return Enum.TryParse<TEnum>(source, out val) ? val : (TEnum?)null;
+        }
+
+        public static string StringMask(this string source, int startIndex, int length, char replaceCharacter)
+        {
+            StringBuilder sb = new StringBuilder(source);
+            for (int i = 0, idx = startIndex; i < length && idx < sb.Length; i++, idx++)
+            {
+                sb[idx] = replaceCharacter;
+            }
+            return sb.ToString();
+        }
+
+        public static String GetString(this DataRow row, int index)
+        {
+            return (row[index] as String)?.GetEfficientString() ?? $"{row[index]}";
+        }
+
+        public static String GetString(this DataRow row, String columnName)
+        {
+            return (row[columnName] as String)?.GetEfficientString() ?? $"{row[columnName]}";
+        }
+
         public static Newtonsoft.Json.JsonSerializerSettings CommonJsonSettings = new Newtonsoft.Json.JsonSerializerSettings
         {
             NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore,
@@ -1115,6 +1327,45 @@ namespace CommonLib.Utility
             return encodedBase64?.Replace('-', '+').Replace('_', '/').Replace('.', '=');
         }
 
+        public static T DeserializeObjectFromFile<T>(this string jsonPath)
+        {
+            if (File.Exists(jsonPath))
+            {
+                return JsonConvert.DeserializeObject<T>(File.ReadAllText(jsonPath));
+            }
+            return default;
+        }
+
+        public static void SerializeObjectToJsonFile(this Object model, String jsonPath)
+        {
+            File.WriteAllText(jsonPath, model.JsonStringify());
+        }
+
+        public static String ToAmountString(this decimal? value)
+        {
+            return $"{(value ?? 0):##,###,###,###,##0}";
+        }
+
+        public static String ToAmountString(this decimal value)
+        {
+            return $"{value:##,###,###,###,##0}";
+        }
+
+        public static String EscapeFileNameCharacter(this String forFileName, char replacement)
+        {
+            StringBuilder sb = new StringBuilder(forFileName);
+            foreach (var ch in Path.GetInvalidFileNameChars())
+            {
+                for (int i = 0; i < sb.Length; i++)
+                {
+                    if (sb[i] == ch)
+                    {
+                        sb[i] = replacement;
+                    }
+                }
+            }
+            return sb.ToString();
+        }
     }
 
     public class EventArgs<T> : EventArgs

@@ -1,17 +1,18 @@
-using System;
-using System.Collections;
-using System.Threading;
-using System.IO;
-using System.Text;
-using CommonLib.Logger.Properties;
-using System.Collections.Generic;
+Ôªøusing CommonLib.Logger.Properties;
 using CommonLib.PlugInAdapter;
 using CommonLib.Utility;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace CommonLib.Logger
 {
     /// <summary>
-    /// Logger ™∫∫K≠n¥y≠z°C
+    /// Logger ÁöÑÊëòË¶ÅÊèèËø∞„ÄÇ
     /// </summary>
     public class Logger : IDisposable , ILogger
     {
@@ -27,21 +28,21 @@ namespace CommonLib.Logger
         public Logger()
         {
             //
-            // TODO: ¶b¶π•[§J´ÿ∫c®Á¶°™∫µ{¶°ΩX
+            // TODO: Âú®Ê≠§Âä†ÂÖ•Âª∫ÊßãÂáΩÂºèÁöÑÁ®ãÂºèÁ¢º
             //
-            if (!String.IsNullOrEmpty(Settings.Default.LogPath))
-                _path = Settings.Default.LogPath;
-            else
-                _path = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "logs");
+            if (String.IsNullOrEmpty(AppSettings.Default.LogPath))
+            {
+                AppSettings.Default.LogPath = Path.Combine(Path.GetFullPath(AppDomain.CurrentDomain.BaseDirectory), "logs");
+                AppSettings.Default.Save();
+            }
 
-            if (!Directory.Exists(_path))
-                Directory.CreateDirectory(_path);
+            _path = AppSettings.Default.LogPath.CheckStoredPath();
 
-            _dbg = new LogWriter(this, "SystemLog.dbg");
-            _err = new LogWriter(this, "SystemLog.err");
-            _nfo = new LogWriter(this, "SystemLog.nfo");
-            _wrn = new LogWriter(this, "SystemLog.wrn");
-            _tra = new LogWriter(this, "SystemLog.trace");
+            _dbg = new LogWriter(this, $"SystemLog_{Process.GetCurrentProcess().Id}.dbg");
+            _err = new LogWriter(this, $"SystemLog_{Process.GetCurrentProcess().Id}.err");
+            _nfo = new LogWriter(this, $"SystemLog_{Process.GetCurrentProcess().Id}.nfo");
+            _wrn = new LogWriter(this, $"SystemLog_{Process.GetCurrentProcess().Id}.wrn");
+            _tra = new LogWriter(this, $"SystemLog_{Process.GetCurrentProcess().Id}.trace");
         }
 
         public TextWriter OutputWriter
@@ -158,11 +159,11 @@ namespace CommonLib.Logger
         }
 
 
-        #region IDisposable ¶®≠˚
+        #region IDisposable ÊàêÂì°
 
         public void Dispose()
         {
-            // TODO:  •[§J Logger.Dispose πÍß@
+            // TODO:  Âä†ÂÖ• Logger.Dispose ÂØ¶‰Ωú
             dispose(true);
         }
 

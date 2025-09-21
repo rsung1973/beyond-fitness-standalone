@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using CommonLib.Core.Properties;
 using CommonLib.Core.Utility;
 using CommonLib.PlugInAdapter;
 
@@ -11,8 +12,8 @@ namespace CommonLib.Core.Helper
     public class PlugInHelper
     {
         private static PlugInHelper _instance;
-        private IPdfUtility _pdfUtility;
-        private ILogger _logger;
+        private IPdfUtility? _pdfUtility;
+        private ILogger? _logger;
         
         static PlugInHelper() 
         {
@@ -28,40 +29,40 @@ namespace CommonLib.Core.Helper
         {
             try
             {
-                if (!String.IsNullOrEmpty(Startup.Properties["IPdfUtilityImpl"]))
+                if (!String.IsNullOrEmpty(AppSettings.Default.IPdfUtilityImpl))
                 {
-                    FileLogger.Logger.Info("Pdf Utility intent type => " + Startup.Properties["IPdfUtilityImpl"]);
+                    FileLogger.Logger.Info("Pdf Utility intent type => " + AppSettings.Default.IPdfUtilityImpl);
 
-                    Type type = Type.GetType(Startup.Properties["IPdfUtilityImpl"]);
+                    Type? type = Type.GetType(AppSettings.Default.IPdfUtilityImpl);
                     if (type != null && type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
                     {
-                        _pdfUtility = (IPdfUtility)type.Assembly.CreateInstance(type.FullName);
-                        FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility.GetType().FullName);
+                        _pdfUtility = (IPdfUtility?)type.Assembly.CreateInstance(type.FullName!);
+                        FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility?.GetType().FullName);
                     }
                     else
                     {
-                        FileLogger.Logger.Warn("Pdf Utility intent type not found => " + Startup.Properties["IPdfUtilityImpl"]);
+                        FileLogger.Logger.Warn("Pdf Utility intent type not found => " + AppSettings.Default.IPdfUtilityImpl);
                     }
                 }
 
                 if (_pdfUtility == null)
                 {
-                    if (!String.IsNullOrEmpty(Startup.Properties["IPdfUtilityImplAssembly"]))
+                    if (!String.IsNullOrEmpty(AppSettings.Default.IPdfUtilityImplAssembly))
                     {
-                        FileLogger.Logger.Info("Pdf Utility intent assembly => " + Startup.Properties["IPdfUtilityImplAssembly"]);
+                        FileLogger.Logger.Info("Pdf Utility intent assembly => " + AppSettings.Default.IPdfUtilityImplAssembly);
 
-                        var assembly = Assembly.LoadFrom(Startup.Properties["IPdfUtilityImplAssembly"]);
+                        var assembly = Assembly.LoadFrom(AppSettings.Default.IPdfUtilityImplAssembly);
                         if (assembly != null)
                         {
-                            Type type = assembly.GetType(Startup.Properties["IPdfUtilityImplType"]);
+                            Type? type = assembly.GetType(AppSettings.Default.IPdfUtilityImpl);
                             if (type != null && type.GetInterface("CommonLib.PlugInAdapter.IPdfUtility") != null)
                             {
-                                _pdfUtility = (IPdfUtility)assembly.CreateInstance(type.FullName);
-                                FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility.GetType().FullName);
+                                _pdfUtility = (IPdfUtility?)assembly.CreateInstance(type.FullName!);
+                                FileLogger.Logger.Info("Pdf Utility => " + _pdfUtility?.GetType().FullName);
                             }
                             else
                             {
-                                FileLogger.Logger.Warn($"Pdf Utility intent type not found => {Startup.Properties["IPdfUtilityImplType"]},{Startup.Properties["IPdfUtilityImplAssembly"]}");
+                                FileLogger.Logger.Warn($"Pdf Utility intent type not found => {Startup.Properties["IPdfUtilityImplType"]},{AppSettings.Default.IPdfUtilityImplAssembly}");
                             }
                         }
                     }

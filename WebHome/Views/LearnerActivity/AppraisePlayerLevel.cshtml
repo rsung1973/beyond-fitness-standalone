@@ -78,29 +78,29 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    AwardQueryViewModel _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
     var Response = ViewContext.HttpContext.Response;
 
-    appraisalStage = models.PromptCurrentStage();
+    appraisalStage = models.PromptCurrentStage(_viewModel.DateFrom);
     StageProgress stage = null;
-    if (appraisalStage != null)
-    {
-        stage = appraisalStage;
-        appraisalStage = models.GetTable<StageProgress>()
-                .Where(s => s.ProgressID < appraisalStage.ProgressID)
-                .OrderByDescending(s => s.ProgressID)
-                .FirstOrDefault();
-    }
+    //if (appraisalStage != null)
+    //{
+    //    stage = appraisalStage;
+    //    //appraisalStage = models.GetTable<StageProgress>()
+    //    //        .Where(s => s.ProgressID < appraisalStage.ProgressID)
+    //    //        .OrderByDescending(s => s.ProgressID)
+    //    //        .FirstOrDefault();
+    //}
 
     if (appraisalStage != null)
     {
         DateTime start = appraisalStage.StartDate.Value;
         DateTime exclusiveEnd = appraisalStage.EndExclusiveDate.Value;
 
-        //stage = models.GetTable<StageProgress>()
-        //        .Where(s => s.ProgressID > appraisalStage.ProgressID)
-        //        .OrderBy(s => s.ProgressID)
-        //        .FirstOrDefault();
+        stage = models.GetTable<StageProgress>()
+                .Where(s => s.ProgressID > appraisalStage.ProgressID)
+                .OrderBy(s => s.ProgressID)
+                .FirstOrDefault();
 
         if (stage != null)
         {
@@ -109,6 +109,10 @@
             IQueryable<UserProfile> items = models.GetTable<UserProfile>()
                                                 .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
                                                     || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister);
+            if(_viewModel.UID.HasValue)
+            {
+                items = items.Where(u => u.UID == _viewModel.UID);
+            }
 
             foreach (var learner in items)
             {

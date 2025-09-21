@@ -73,18 +73,18 @@
     models = (ModelSource<UserProfile>)ViewContext.HttpContext.Items["Models"]; ;
     _modelState = ViewContext.ModelState;
 
-    QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
+    AwardQueryViewModel _viewModel = ViewBag.ViewModel as AwardQueryViewModel;
     var Response = ViewContext.HttpContext.Response;
 
-    appraisalStage = models.PromptCurrentStage();
+    appraisalStage = models.PromptCurrentStage(_viewModel.DateFrom);
     StageProgress stage = null;
     if (appraisalStage != null)
     {
         stage = appraisalStage;
-        appraisalStage = models.GetTable<StageProgress>()
-                .Where(s => s.ProgressID < appraisalStage.ProgressID)
-                .OrderByDescending(s => s.ProgressID)
-                .FirstOrDefault();
+        //appraisalStage = models.GetTable<StageProgress>()
+        //        .Where(s => s.ProgressID < appraisalStage.ProgressID)
+        //        .OrderByDescending(s => s.ProgressID)
+        //        .FirstOrDefault();
     }
 
     if (appraisalStage != null)
@@ -97,6 +97,10 @@
             IQueryable<UserProfile> items = models.GetTable<UserProfile>()
                                                 .Where(u => u.LevelID == (int)Naming.MemberStatusDefinition.Checked
                                                     || u.LevelID == (int)Naming.MemberStatusDefinition.ReadyToRegister);
+            if (_viewModel.UID.HasValue)
+            {
+                items = items.Where(u => u.UID == _viewModel.UID);
+            }
 
             foreach (var learner in items)
             {
