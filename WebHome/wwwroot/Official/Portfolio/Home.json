@@ -25,12 +25,12 @@
     "Location": "Location•",
     "LocationDesc": "分店資訊",
     "NewsItem": [
-        // {
-        //     "ImgName": "event03-img"
-        // },
         {
-            "ImgName": "event02-img",
-            "Link": "Campaign"
-        }
+            "ImgName": "event04-img"
+        },
+        // {
+        //     "ImgName": "event02-img",
+        //     "Link": "Campaign"
+        // }
     ]    
 }
