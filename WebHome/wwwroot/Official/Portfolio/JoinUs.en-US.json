@@ -27,10 +27,10 @@
             "MemberCode": "ZP85915197",
             "BranchID": 2
         },
-        {
-            "MemberCode": "FL62099639",
-            "BranchID": 3
-        },
+        // {
+        //     "MemberCode": "FL62099639",
+        //     "BranchID": 3
+        // },
         {
             "MemberCode": "RX14099392",
             "BranchID": 4

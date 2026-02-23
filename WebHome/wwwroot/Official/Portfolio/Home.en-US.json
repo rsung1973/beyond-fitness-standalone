@@ -26,6 +26,9 @@
     "NewsItem": [
         {
             "ImgName": "event04-img"
-        }
+        },
+        {
+            "ImgName": "event05-img"
+        }, 
     ]  
 }

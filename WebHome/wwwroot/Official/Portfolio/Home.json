@@ -27,10 +27,13 @@
     "NewsItem": [
         {
             "ImgName": "event04-img"
-        },
-        // {
-        //     "ImgName": "event02-img",
-        //     "Link": "Campaign"
-        // }
+        },  
+        {
+            "ImgName": "event05-img"
+        },       
+            // {
+            //     "ImgName": "event02-img",
+            //     "Link": "Campaign"
+            // }
     ]    
 }
