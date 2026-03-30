@@ -30,7 +30,8 @@
                 .Where(r => r.MonthlyBranchRevenueGoal != null)
                 .Select(r => r.MonthlyBranchRevenueGoal).FirstOrDefault();
         totalAchievementAmt = (item?.ActualLessonAchievement ?? 0)
-                                + (item?.GroupXAchievement ?? 0);
+                                + (item?.GroupXAchievement ?? 0)
+                                + (item?.SRAchievement ?? 0);
 
         TempData["RevenueGoal"] = item;
 
@@ -40,7 +41,8 @@
                         .Select(r => r.MonthlyBranchRevenueGoal)
                         .FirstOrDefault();
         totalAchievementAmtLastMonth = (lastMonth?.ActualLessonAchievement ?? 0)
-                                        + (lastMonth.GroupXAchievement ?? 0);
+                                        + (lastMonth.GroupXAchievement ?? 0)
+                                        + (lastMonth.SRAchievement ?? 0);
 
     }
     else
@@ -48,7 +50,8 @@
         MonthlyRevenueGoal item = _model.MonthlyRevenueIndicator.Where(r => r.MonthlyRevenueGoal != null)
                 .Select(r => r.MonthlyRevenueGoal).FirstOrDefault();
         totalAchievementAmt = (item?.ActualLessonAchievement ?? 0)
-                                 + (item?.GroupXAchievement ?? 0);
+                                 + (item?.GroupXAchievement ?? 0)
+                                 + (item?.SRAchievement ?? 0);
 
         TempData["RevenueGoal"] = item;
 
@@ -58,7 +61,8 @@
                         .Select(r => r.MonthlyRevenueGoal)
                         .FirstOrDefault();
         totalAchievementAmtLastMonth = (lastMonth?.ActualLessonAchievement ?? 0)
-                                         + (lastMonth?.GroupXAchievement ?? 0);
+                                         + (lastMonth?.GroupXAchievement ?? 0)
+                                         + (lastMonth?.SRAchievement ?? 0);
     }
 
     if (TempData["RevenueGoal"] == null)

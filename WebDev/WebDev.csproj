@@ -1,104 +1,124 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
-    <Nullable>disable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <OutputType>Library</OutputType>
-    <RootNamespace>WebHome</RootNamespace>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<OutputType>Library</OutputType>
+		<RootNamespace>WebHome</RootNamespace>
+		<DisableStaticWebAssets>true</DisableStaticWebAssets>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="bin\Debug\net8.0\" />
-    <Folder Include="Models\EIVO\" />
-    <Folder Include="Views\" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Compile Remove="wwwroot\css\**" />
+	  <Compile Remove="wwwroot\js\**" />
+	  <Compile Remove="wwwroot\lib\**" />
+	  <Content Remove="wwwroot\css\**" />
+	  <Content Remove="wwwroot\js\**" />
+	  <Content Remove="wwwroot\lib\**" />
+	  <EmbeddedResource Remove="wwwroot\css\**" />
+	  <EmbeddedResource Remove="wwwroot\js\**" />
+	  <EmbeddedResource Remove="wwwroot\lib\**" />
+	  <None Remove="wwwroot\css\**" />
+	  <None Remove="wwwroot\js\**" />
+	  <None Remove="wwwroot\lib\**" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ExternalPdfWrapper\ExternalPdfWrapper.csproj" />
-    <ProjectReference Include="..\WebBase\WebBase.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+	  <Content Remove="wwwroot\favicon.ico" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="LineMessagingAPISDK">
-      <HintPath>..\WebHome\bin\Dependencies\LineMessagingAPISDK\netstandard2.0\LineMessagingAPISDK.dll</HintPath>
-    </Reference>
-    <Reference Include="MessagingToolkit.QRCode">
-      <HintPath>..\WebHome\bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
-    </Reference>
-    <Reference Include="QREncrypter">
-      <HintPath>..\WebHome\bin\Dependencies\Lib\QREncrypter.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="bin\Debug\net8.0\" />
+		<Folder Include="Models\EIVO\" />
+		<Folder Include="Views\" />
+		<Folder Include="wwwroot\" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Models\MIG3_1\C0401.cs">
-      <DependentUpon>C0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\C0501.cs">
-      <DependentUpon>C0501.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\C0701.cs">
-      <DependentUpon>C0701.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\D0401.cs">
-      <DependentUpon>D0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\D0501.cs">
-      <DependentUpon>D0501.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0401.cs">
-      <DependentUpon>E0401.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0402.cs">
-      <DependentUpon>E0402.xsd</DependentUpon>
-    </Compile>
-    <Compile Update="Models\MIG3_1\E0501.cs">
-      <DependentUpon>E0501.xsd</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\ExternalPdfWrapper\ExternalPdfWrapper.csproj" />
+		<ProjectReference Include="..\WebBase\WebBase.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Content Update="appsettings.Development.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-    <Content Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
-  </ItemGroup>
+	<ItemGroup>
+		<Reference Include="LineMessagingAPISDK">
+			<HintPath>..\WebHome\bin\Dependencies\LineMessagingAPISDK\netstandard2.0\LineMessagingAPISDK.dll</HintPath>
+		</Reference>
+		<Reference Include="MessagingToolkit.QRCode">
+			<HintPath>..\WebHome\bin\Dependencies\Lib\MessagingToolkit.QRCode.dll</HintPath>
+		</Reference>
+		<Reference Include="QREncrypter">
+			<HintPath>..\WebHome\bin\Dependencies\Lib\QREncrypter.dll</HintPath>
+		</Reference>
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="Models\MIG3_1\C0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\C0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\C0701.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\D0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\D0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0401.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0402.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\E0501.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Update="Models\MIG3_1\GenericType_3.1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Models\MIG3_1\C0401.cs">
+			<DependentUpon>C0401.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\C0501.cs">
+			<DependentUpon>C0501.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\C0701.cs">
+			<DependentUpon>C0701.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\D0401.cs">
+			<DependentUpon>D0401.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\D0501.cs">
+			<DependentUpon>D0501.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\E0401.cs">
+			<DependentUpon>E0401.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\E0402.cs">
+			<DependentUpon>E0402.xsd</DependentUpon>
+		</Compile>
+		<Compile Update="Models\MIG3_1\E0501.cs">
+			<DependentUpon>E0501.xsd</DependentUpon>
+		</Compile>
+	</ItemGroup>
 
+	<ItemGroup>
+		<Content Update="appsettings.Development.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<Content Update="appsettings.json">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Update="Models\MIG3_1\C0401.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\C0501.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\C0701.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\D0401.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\D0501.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\E0401.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\E0402.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\E0501.xsd">
+			<SubType>Designer</SubType>
+		</None>
+		<None Update="Models\MIG3_1\GenericType_3.1.xsd">
+			<SubType>Designer</SubType>
+		</None>
+	</ItemGroup>
 </Project>

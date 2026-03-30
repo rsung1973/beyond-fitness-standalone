@@ -49,14 +49,14 @@ namespace WebHome.Helper
         public static IQueryable<MonthlyCoachRevenueIndicator> InquireDataForCoachRanking(this MonthlyIndicatorQueryViewModel viewModel, GenericManager<BFDataContext> models, out IQueryable<MonthlyIndicator> indicators)
         {
             var items = viewModel.InquireData(models, out indicators);
-            if (items.Any())
-            {
-                var lastIndicator = indicators.OrderByDescending(i=>i.PeriodID).First();
-                var coachID = models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.PeriodID == lastIndicator.PeriodID)
-                                .Where(c => models.GetTable<ProfessionalLevelReview>().Any(r => c.LevelID == r.LevelID))
-                                .Select(c => c.CoachID);
-                items = items.Where(m => coachID.Any(c => m.CoachID == c));
-            }
+            //if (items.Any())
+            //{
+            //    var lastIndicator = indicators.OrderByDescending(i=>i.PeriodID).First();
+            //    var coachID = models.GetTable<MonthlyCoachRevenueIndicator>().Where(c => c.PeriodID == lastIndicator.PeriodID)
+            //                    .Where(c => models.GetTable<ProfessionalLevelReview>().Any(r => c.LevelID == r.LevelID))
+            //                    .Select(c => c.CoachID);
+            //    items = items.Where(m => coachID.Any(c => m.CoachID == c));
+            //}
             return items;
         }
 

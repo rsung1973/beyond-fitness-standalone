@@ -289,6 +289,7 @@ namespace WebHome.Controllers.Base
                 else 
                 {
                     viewModel.CarrierType = null;
+                    viewModel.CarrierId1 = null;
                 }
             }
             else if (viewModel.CarrierType == "ReceiptNo")
@@ -330,17 +331,17 @@ namespace WebHome.Controllers.Base
             viewModel.CarrierId1 = viewModel.CarrierId1.GetEfficientString();
             viewModel.CarrierType = viewModel.CarrierType.GetEfficientString();
             viewModel.BuyerReceiptNo = viewModel.BuyerReceiptNo.GetEfficientString();
-            if (viewModel.CarrierId1 != null)
-            {
-                if (viewModel.BuyerReceiptNo != null)
-                {
-                    ModelState.AddModelError("CarrierId1", "買受人統編與載具請擇一輸入");
-                }
-                else if (viewModel.CarrierType == null)
-                {
-                    ModelState.AddModelError("CarrierType", "請選擇發票載具類型");
-                }
-            }
+            //if (viewModel.CarrierId1 != null)
+            //{
+            //    if (viewModel.BuyerReceiptNo != null)
+            //    {
+            //        ModelState.AddModelError("CarrierId1", "買受人統編與載具請擇一輸入");
+            //    }
+            //    else if (viewModel.CarrierType == null)
+            //    {
+            //        ModelState.AddModelError("CarrierType", "請選擇發票載具類型");
+            //    }
+            //}
 
             viewModel.Brief = viewModel.Brief?
                 .Select(b => b.GetEfficientString())

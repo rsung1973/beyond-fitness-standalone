@@ -259,6 +259,17 @@ namespace WebHome.Controllers
             return Content(AppSettings.AllSettings?.ToString(), "application/json");
         }
 
+        public async Task<ActionResult> RebuildBonusSettlement()
+        {
+            var items = models.GetTable<BonusDepositAccount>();
+            foreach (var item in items)
+            {
+                item.CommitBonusSettlement(models, true);
+            }
+
+            await Task.CompletedTask;
+            return Ok();
+        }
 
     }
 

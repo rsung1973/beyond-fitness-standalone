@@ -92,6 +92,7 @@
 
   <ItemGroup>
     <Content Remove="wwwroot\%2a%2a" />
+    <Content Remove="wwwroot\favicon.ico" />
     <Content Remove="wwwroot\Profile.7z" />
   </ItemGroup>
 
@@ -164,6 +165,7 @@
   <ItemGroup>
     <Folder Include="Models\Resources\" />
     <Folder Include="Views\ContractConsole\Items\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
   <ItemGroup>

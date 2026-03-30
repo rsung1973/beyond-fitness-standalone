@@ -22,7 +22,7 @@ namespace TestConsole
                 AppSettings.Default.BFDbConnection = "Password=beyond;Persist Security Info=True;User ID=bf;Initial Catalog=BeyondFitness;Data Source=210.65.88.120\\sqlexpress,1433;MultipleActiveResultSets=true;";
                 //AppSettings.Default.BFDbConnection = "Password=beyond;Persist Security Info=True;User ID=bf;Initial Catalog=BeyondFitnessProd2;Data Source=vm-titan\\sqlexpress,1433;MultipleActiveResultSets=true;";
             }
-
+            //test14();
             test03();
 
             //test02(args);
@@ -50,6 +50,24 @@ namespace TestConsole
             //test12();
             //test13();
 
+        }
+
+        private static void test14()
+        {
+            DateTime start = DateTime.Now;
+            DateTime? settlementDate = new DateTime(2025, 11, 1);
+            using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
+            {
+                if (!settlementDate.HasValue)
+                {
+                    settlementDate = DateTime.Today;
+                }
+
+                DateTime execDate = settlementDate.Value.AddMonths(-1);
+                DateTime startDate = new DateTime(execDate.Year, execDate.Month, 1);
+                models.ExecuteSettlement(startDate, startDate.AddMonths(1), settlementDate);
+            }
+            Console.WriteLine((DateTime.Now - start).TotalSeconds);
         }
 
         private static void test13()
@@ -237,12 +255,12 @@ namespace TestConsole
             using (ModelSource<BFDataContext> models = new ModelSource<BFDataContext>())
             {
                 var invoice = models.GetTable<InvoiceItem>()
-                        .Where(i => i.TrackCode == "NV")
-                        .Where(i => i.No == "85531675").FirstOrDefault();
+                        .Where(i => i.TrackCode == "UV")
+                        .Where(i => i.No == "85532087").FirstOrDefault();
                 var payment = invoice?.Payment.FirstOrDefault();
                 if (payment != null)
                 {
-                    var allowance = models.PrepareAllowanceForPayment(payment, 1800, "退款", new DateTime(2025, 7, 3));
+                    var allowance = models.PrepareAllowanceForPayment(payment, 400, "退款", new DateTime(2025, 12, 17));
                 }
             }
         }

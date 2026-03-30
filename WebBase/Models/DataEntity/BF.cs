@@ -1,4 +1,4 @@
-namespace WebHome.Models.DataEntity
+﻿namespace WebHome.Models.DataEntity
 {
     public partial class BFDataContext
     {
@@ -10,7 +10,7 @@ namespace WebHome.Models.DataEntity
 
         partial void OnCreated()
         {
-            this.CommandTimeout = 300;
+            this.CommandTimeout = 86400;
         }
 
     }
