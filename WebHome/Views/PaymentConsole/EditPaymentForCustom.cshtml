@@ -1,4 +1,4 @@
-
+﻿
 
 @using System.IO
 @using System.Linq.Expressions
@@ -22,7 +22,7 @@
     _modelState = ViewContext.ModelState;
     _model = (UserProfile)this.Model;
     _viewModel = (PaymentQueryViewModel)ViewBag.ViewModel;
-    _viewModel.PayoffDate = DateTime.Now;
+    //_viewModel.PayoffDate = DateTime.Now;
     if (!_viewModel.TransactionType.HasValue)
     {
         _viewModel.TransactionType = (int)Naming.PaymentTransactionType.食飲品;

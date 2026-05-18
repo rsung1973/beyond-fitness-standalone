@@ -272,7 +272,7 @@ namespace WebHome.Controllers
 
             if (authorizationCode == null)
             {
-                return RedirectToAction("Login", "LearnerActivity");
+                return RedirectToAction("Logout", "LearnerActivity");
             }
 
             using (var httpClient = new HttpClient())

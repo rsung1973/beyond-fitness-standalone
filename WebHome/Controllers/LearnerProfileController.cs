@@ -176,7 +176,7 @@ namespace WebHome.Controllers
 
         public ActionResult EditTrainingItem(TrainingItemViewModel viewModel)
         {
-            if (!models.GetTable<TrainingExecution>().Any(t => t.ExecutionID == viewModel.ExecutionID))
+            if (viewModel == null || !models.GetTable<TrainingExecution>().Any(t => t.ExecutionID == viewModel.ExecutionID))
             {
                 return View("~/Views/ConsoleHome/Shared/AlertMessage.cshtml", model: "資料錯誤!!");
             }

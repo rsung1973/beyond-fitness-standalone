@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <OutputType>Library</OutputType>
     <RootNamespace>WebHome</RootNamespace>
+	<DisableStaticWebAssets>true</DisableStaticWebAssets>
   </PropertyGroup>
 
   <ItemGroup>

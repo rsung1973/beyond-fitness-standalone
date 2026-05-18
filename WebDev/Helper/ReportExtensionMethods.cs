@@ -1485,7 +1485,7 @@ namespace WebHome.Helper
                 {
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 50)
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 70)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M)
                         + 0.5M) ?? 0;
@@ -1612,7 +1612,7 @@ namespace WebHome.Helper
 
                     salary.GradeIndex = salary.ProfessionalLevel?.ProfessionalLevelBasicSalary?.SalaryDetails.CommissionGrade ?? 0;
 
-                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 50)
+                    salary.AttendanceBonus = (int?)(Math.Min(salary.PTAttendanceCount ?? 0, 70)
                         * (int?)(salary.PTAverageUnitPrice / 1.05M + 0.5M)
                         * (salary.GradeIndex / 100M)
                         + 0.5M) ?? 0;

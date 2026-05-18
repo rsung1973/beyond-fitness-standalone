@@ -338,20 +338,19 @@ namespace WebHome.Helper
             IQueryable<CourseContract> nonInstallmentItems = contractItems.Where(c => !c.Installment.HasValue);
 
             int lessonAchievement, tuitionAchievement;
-            var level_FM_FES_CEO = models.GetTable<ProfessionalLevel>()
-                                        .Where(p => p.CategoryID == (int)Naming.ProfessionalCategory.FM
-                                            || p.CategoryID == (int)Naming.ProfessionalCategory.FES
+            var level_FES_CEO = models.GetTable<ProfessionalLevel>()
+                                        .Where(p => p.CategoryID == (int)Naming.ProfessionalCategory.FES
                                             || p.CategoryID == (int)Naming.ProfessionalCategory.Special);
-            IQueryable<V_Tuition> exclusive_FM_FES_Items;
+            IQueryable<V_Tuition> exclusive_CEO_FES_Items;
 
             void calcHeadquarterAchievement()
             {
                 var voidTuition = voidPayment
                                     .Join(models.GetTable<TuitionAchievement>(), p => p.PaymentID, t => t.InstallmentID, (p, t) => t);
-                exclusive_FM_FES_Items = tuitionItems.Where(t => !level_FM_FES_CEO.Any(l => l.LevelID == t.ProfessionalLevelID));
+                exclusive_CEO_FES_Items = tuitionItems.Where(t => !level_FES_CEO.Any(l => l.LevelID == t.ProfessionalLevelID));
 
-                lessonAchievement = exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-                lessonAchievement += (exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+                lessonAchievement = exclusive_CEO_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+                lessonAchievement += (exclusive_CEO_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                 tuitionAchievement = achievementItems.Sum(a => a.ShareAmount) ?? 0;
 
                 IQueryable<TuitionAchievement> newContractAchievementItems = paymentItems
@@ -385,7 +384,7 @@ namespace WebHome.Helper
                         .FirstOrDefault();
                 if (revenueItem != null)
                 {
-                    revenueItem.ActualCompleteLessonCount = exclusive_FM_FES_Items.SessionScopeForComleteLesson(models).Count();
+                    revenueItem.ActualCompleteLessonCount = exclusive_CEO_FES_Items.SessionScopeForComleteLesson(models).Count();
                     revenueItem.ActualLessonAchievement = lessonAchievement;
                     revenueItem.ActualSharedAchievement = tuitionAchievement;
                     revenueItem.RenewContractCount = nonInstallmentItems.Where(c => c.Renewal == true).Count();
@@ -467,12 +466,12 @@ namespace WebHome.Helper
                             .FirstOrDefault()?.MonthlyBranchRevenueGoal;
                     if (revenueItem != null)
                     {
-                        exclusive_FM_FES_Items = branchTuitionItems.Where(t => !level_FM_FES_CEO.Any(l => l.LevelID == t.ProfessionalLevelID));
-                        lessonAchievement = exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
-                        lessonAchievement += (exclusive_FM_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
+                        exclusive_CEO_FES_Items = branchTuitionItems.Where(t => !level_FES_CEO.Any(l => l.LevelID == t.ProfessionalLevelID));
+                        lessonAchievement = exclusive_CEO_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.PriceStatus)).Sum(t => t.ListPrice * t.GroupingMemberCount * t.PercentageOfDiscount / 100) ?? 0;
+                        lessonAchievement += (exclusive_CEO_FES_Items.Where(t => SessionScopeForAchievement.Contains(t.ELStatus)).Sum(l => l.EnterpriseListPrice * l.GroupingMemberCount * l.PercentageOfDiscount / 100) ?? 0);
                         tuitionAchievement = branchAchievementItems.Sum(a => a.ShareAmount) ?? 0;
 
-                        revenueItem.ActualCompleteLessonCount = exclusive_FM_FES_Items.SessionScopeForComleteLesson(models).Count();
+                        revenueItem.ActualCompleteLessonCount = exclusive_CEO_FES_Items.SessionScopeForComleteLesson(models).Count();
                         revenueItem.ActualLessonAchievement = lessonAchievement;
                         revenueItem.ActualSharedAchievement = tuitionAchievement;
                         revenueItem.RenewContractCount = branchNonInstallmentItems.Where(c => c.Renewal == true).Count();

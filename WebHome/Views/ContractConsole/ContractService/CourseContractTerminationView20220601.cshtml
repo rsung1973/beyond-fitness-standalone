@@ -1,4 +1,4 @@
-
+﻿
 @using System.IO
 @using System.Linq.Expressions
 
@@ -351,8 +351,8 @@
                             <td colspan="2">發票開立日期：@($"{invoice?.InvoiceDate:yyyy/MM/dd}")</td>
                         </tr>
                         <tr>
-                            <td>賣方統編：@(invoice?.InvoiceSeller.ReceiptNo)</td>
-                            <td colspan="2">賣方名稱：@(invoice?.InvoiceSeller.CustomerName)</td>
+                            <td>賣方統編：@(invoice?.Organization.ReceiptNo)</td>
+                            <td colspan="2">賣方名稱：@(invoice?.Organization.CompanyName)</td>
                         </tr>
                         <tr>
                             <td>買方統編：@(invoice?.InvoiceBuyer.IsB2C()!=true ? invoice?.InvoiceBuyer.ReceiptNo : null)</td>
@@ -363,7 +363,7 @@
                         <td colspan="2">數量：1</td>
                         </tr>
                         <tr>
-                        <td>單價：@($"{invoice?.InvoiceAmountType.TotalAmount:##,###,###,###}")</td>
+                        <td>單價：@($"{returnAmt:##,###,###,###}")</td>
                             @{
                                 var costPrice = returnAmt / 1.05M;
                             }

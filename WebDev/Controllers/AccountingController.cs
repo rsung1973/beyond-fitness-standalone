@@ -1904,8 +1904,8 @@ namespace WebHome.Controllers
 
                     r[(int)ManagerBonusFields.上課獎金] = (g.AttendanceBonus ?? 0)
                         //+ (g.AttendedShare ?? 0)
-                        + (g.TSBonus ?? 0)
-                        //+ (g.PIBonus ?? 0)
+                        //+ (g.TSBonus ?? 0)
+                        + (g.PIBonus ?? 0)
                         + (g.GroupXBonus ?? 0);
                     if (g.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.FM
                             || g.ProfessionalLevel.CategoryID == (int)Naming.ProfessionalCategory.AFM)

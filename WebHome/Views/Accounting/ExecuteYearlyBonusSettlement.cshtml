@@ -34,7 +34,7 @@
                                     .Where(s => s.UID == account.UID)
                                     .Where(s => s.Year == indicator.Year).FirstOrDefault();
 
-            if(yearSettlement == null)
+            if (yearSettlement == null)
             {
                 yearSettlement = new BonusYearlySettlement
                 {
@@ -48,7 +48,7 @@
                                     .Where(s => s.UID == account.UID)
                                     .Where(s => s.Year == indicator.Year - 1).FirstOrDefault();
 
-            yearSettlement.YearlyExpiringTotalGains = expiringGained.Sum(t => (int?)t.TransactionPoint) ?? 0;
+            yearSettlement.YearlyExpiringTotalGains = expiringItems.Sum(t => (int?)t.TransactionPoint) ?? 0;
             yearSettlement.YearlyTotalConsumption = consumptionItems.Sum(t => (int?)t.TransactionPoint) ?? 0;
             int balance = yearSettlement.YearlyExpiringTotalGains + yearSettlement.YearlyTotalConsumption + (lastSettlement?.LastYearConsumptionDiscount ?? 0);
             yearSettlement.LastYearConsumptionDiscount = Math.Min(0, balance);
@@ -102,7 +102,15 @@
                     .Where(b => b.ExpirationDate >= start)
                     .Where(b => b.ExpirationDate < exclusiveEnd);
 
-        var accountItems = models.GetTable<BonusDepositAccount>();
+        IQueryable<BonusDepositAccount> accountItems =
+            models.GetTable<BonusDepositAccount>()
+                .Where(b => !models.GetTable<BonusYearlySettlement>().Any(s => s.UID == b.UID));
+
+        if (_viewModel.id.HasValue)
+        {
+            accountItems = accountItems.Where(a => a.UID == _viewModel.id.Value);
+        }
+
         foreach (var account in accountItems)
         {
             ExecuteSettlement(account);

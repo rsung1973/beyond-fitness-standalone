@@ -33,7 +33,9 @@
     var eventsActive = "";
     var campaignActive = "";
     var indexActive = "";
-    
+    var transactionActive = "";
+
+
     if (ViewBag.From == "Settings")
     {
         settingsActive = "active-nav";
@@ -58,7 +60,12 @@
     {
         indexActive = "active-nav";
     }
-    
+
+    if (ViewBag.From == "TransactionForActiveContract")
+    {
+        transactionActive = "active-nav";
+    }
+
 }
 
 @section Header
@@ -98,20 +105,21 @@
         }
         totalCount = (int?)ViewContext.HttpContext.Items["TotalEventCount"] ?? 0;
     }
-<div id="footer-bar" class="footer-bar-2">
-    <a href="Index" class="@(indexActive)"><i class="fa-solid fa-mountain mb-2"></i><span class="font-12">任務集點</span></a>
-    <a href="CampaignStrategy" class="@(campaignActive)"><i class="fa-solid fa-dice mb-2"></i><span class="font-12">玩家攻略</span></a>
-    <a href="Events" class="@(eventsActive)">
-        <i class="fa fa-bell mb-2"></i>
-        <span class="font-12">我的通知</span>
-        @if (totalCount > 0)
-        {
-            <em class="badge bg-beyondred-dark">@(totalCount)</em>
-        }
-    </a>
-    <a href="ContactBook" class="@(contactBookActive)"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
-    <a href="Settings" class="@(settingsActive)"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
-</div>
+    <div id="footer-bar" class="footer-bar-2">
+        <a href="Index" class="@(indexActive)"><i class="fa-solid fa-home mb-2"></i><span class="font-12">首頁</span></a>
+        @*<a href="CampaignStrategy" class="@(campaignActive)"><i class="fa-solid fa-dice mb-2"></i><span class="font-12">玩家攻略</span></a>*@
+        <a href="Calendar" class="@(transactionActive)"><i class="fa-solid fa-calendar mb-2"></i><span class="font-12">運動行事曆</span></a>
+        <a href="Events" class="@(eventsActive)">
+            <i class="fa fa-bell mb-2"></i>
+            <span class="font-12">我的通知</span>
+            @if (totalCount > 0)
+            {
+                <em class="badge bg-beyondred-dark">@(totalCount)</em>
+            }
+        </a>
+        <a href="ContactBook" class="@(contactBookActive)"><i class="fa-solid fa-book mb-2"></i><span class="font-12">運動日誌</span></a>
+        <a href="Settings" class="@(settingsActive)"><i class="fa-solid fa-palette mb-2"></i><span class="font-12">喜好設定</span></a>
+    </div>
 }
 
 @RenderSection("MainContent", false)
