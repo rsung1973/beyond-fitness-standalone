@@ -1757,6 +1757,7 @@ namespace WebHome.Controllers
             TS上課獎金,
             合作課獎金,
             GroupX獎金,
+            UID,
         }
 
         enum CoachYearlyBonusFields
@@ -1998,6 +1999,7 @@ namespace WebHome.Controllers
                 table.Columns.Add(new DataColumn(CoachBonusFields.TS上課獎金.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.合作課獎金.ToString(), typeof(decimal)));
                 table.Columns.Add(new DataColumn(CoachBonusFields.GroupX獎金.ToString(), typeof(decimal)));
+                table.Columns.Add(new DataColumn(CoachBonusFields.UID.ToString(), typeof(int)));
 
                 DataRow r;
 
@@ -2006,8 +2008,12 @@ namespace WebHome.Controllers
                                     && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM
                                     && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.AFM
                                     && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FES)
+                        .OrderBy(c => c.WorkPlace)
+                        .ThenBy(c => c.CoachID)
                     : salaryItems.Where(s => s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.Special
-                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM);
+                                    && s.ProfessionalLevel.CategoryID != (int)Naming.ProfessionalCategory.FM)
+                        .OrderBy(c => c.WorkPlace)
+                        .ThenBy(c => c.CoachID);
 
                 List<int> taxCol = new List<int>
                 {
@@ -2079,6 +2085,7 @@ namespace WebHome.Controllers
                     r[(int)CoachBonusFields.TS上課獎金] = g.TSBonus ?? 0;
                     r[(int)CoachBonusFields.合作課獎金] = g.AttendedShare ?? 0;
                     r[(int)CoachBonusFields.GroupX獎金] = g.GroupXBonus ?? 0;
+                    r[(int)CoachBonusFields.UID] = g.CoachID;
 
                     if (salaryDetails != null)
                     {

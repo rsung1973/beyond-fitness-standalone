@@ -29,7 +29,7 @@
     if (price != null)
     {
         //_pageModel.HasChoice = true;
-        bool bookable = !_profile.IsHealthCare();
+        bool bookable = true; // !_profile.IsHealthCare();
         var trialLesson = models.GetTable<RegisterLesson>()
             .Where(r => r.UID == _model.UID)
             .Where(r => r.ClassLevel == price.PriceID || r.ClassLevel == price.PriceID);

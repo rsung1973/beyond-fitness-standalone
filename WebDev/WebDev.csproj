@@ -25,6 +25,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Helper\PerformanceSettlementExtensions.cs" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Remove="wwwroot\favicon.ico" />
 	</ItemGroup>
 

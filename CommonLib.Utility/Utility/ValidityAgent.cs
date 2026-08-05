@@ -576,7 +576,7 @@ namespace CommonLib.Utility
         /// <returns></returns>
         public static bool IsMobilPhone(this string mobilPhone)
         {
-            return Regex.IsMatch(mobilPhone, @"^09[0-9]{8}$") && !Regex.IsMatch(mobilPhone, "(\\d)\\1{5,}");
+            return Regex.IsMatch(mobilPhone, @"^09[0-9]{8}$") && !Regex.IsMatch(mobilPhone, "(\\d)\\1{8,}");
         }
 
         /// <summary>

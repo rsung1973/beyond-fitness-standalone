@@ -44,7 +44,7 @@
 
     var profile = await Context.GetUserAsync();
     QueryViewModel _viewModel = ViewBag.ViewModel as QueryViewModel;
-    int? lessonID = null;
+    int? lessonID = _viewModel.id;
 
     if (_viewModel?.KeyID != null)
     {
@@ -109,7 +109,7 @@
                             @*<input type="number" class="form-control validate-number" id="Hydration" placeholder="2000" name="WaterIntake" value="@($"{GetItem(assessment,"WaterIntake")?.Score:.}")" />*@
                             <label for="Hydration" class="color-theme font-500 font-15">水分攝取 Fluid intake</label>
                             <select id="Hydration" class="font-15" name="WaterIntake">
-                                <option value="" disabled selected>近8小時水分攝取</option>
+                                <option value="">近8小時水分攝取</option>
                                 <option value="1" selected="@(assessmentItem?.SelectedIndex == 1)">1 - 極度缺乏(目前馬上補充也還是缺乏)</option>
                                 <option value="2" selected="@(assessmentItem?.SelectedIndex == 2)">3 - 有點缺乏(即時補充可以接近正常狀態)</option>
                                 <option value="3" selected="@(assessmentItem?.SelectedIndex == 3)">6 - 及格(差不多正常)</option>

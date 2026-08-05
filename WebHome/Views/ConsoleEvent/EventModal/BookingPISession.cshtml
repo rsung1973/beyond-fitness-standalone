@@ -153,7 +153,7 @@
         var payoffStatus = totalPaid > 0;
         bool revisionStatus = contract.RevisionList.Any(c => c.CourseContract.Status < (int)Naming.CourseContractStatus.已生效);
         //_pageModel.GroupComplete = item.GroupingMemberCount == item.GroupingLesson.RegisterLesson.Count ? true : false;
-        bool bookable = /*_pageModel.GroupComplete &&*/ validContract && payoffStatus && !revisionStatus && !_profile.IsHealthCare()
+        bool bookable = /*_pageModel.GroupComplete &&*/ validContract && payoffStatus && !revisionStatus /*&& !_profile.IsHealthCare()*/
                             && item.UserProfile.LearnerFitnessAdvisor.Any(a => a.CoachID == _profile.UID);
         if (bookable)
         {
